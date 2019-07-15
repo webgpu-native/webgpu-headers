@@ -375,7 +375,7 @@ typedef struct wgpuBlendDescriptor {
 } wgpuBlendDescriptor;
 
 typedef struct wgpuBufferCopyView {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuBuffer buffer;
     uint64_t offset;
@@ -384,7 +384,7 @@ typedef struct wgpuBufferCopyView {
 } wgpuBufferCopyView;
 
 typedef struct wgpuBufferDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuBufferUsageBit usage;
     uint64_t size;
@@ -398,17 +398,17 @@ typedef struct wgpuColor {
 } wgpuColor;
 
 typedef struct wgpuCommandBufferDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
 } wgpuCommandBufferDescriptor;
 
 typedef struct wgpuCommandEncoderDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
 } wgpuCommandEncoderDescriptor;
 
 typedef struct wgpuComputePassDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
 } wgpuComputePassDescriptor;
 
@@ -425,7 +425,7 @@ typedef struct wgpuExtent3D {
 } wgpuExtent3D;
 
 typedef struct wgpuFenceDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     uint64_t initialValue;
 } wgpuFenceDescriptor;
@@ -437,21 +437,21 @@ typedef struct wgpuOrigin3D {
 } wgpuOrigin3D;
 
 typedef struct wgpuPipelineLayoutDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     uint32_t bindGroupLayoutCount;
     wgpuBindGroupLayout const * bindGroupLayouts;
 } wgpuPipelineLayoutDescriptor;
 
 typedef struct wgpuPipelineStageDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuShaderModule module;
     char const * entryPoint;
 } wgpuPipelineStageDescriptor;
 
 typedef struct wgpuRasterizationStateDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuFrontFace frontFace;
     wgpuCullMode cullMode;
@@ -471,7 +471,7 @@ typedef struct wgpuRenderPassDepthStencilAttachmentDescriptor {
 } wgpuRenderPassDepthStencilAttachmentDescriptor;
 
 typedef struct wgpuSamplerDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuAddressMode addressModeU;
     wgpuAddressMode addressModeV;
@@ -485,7 +485,7 @@ typedef struct wgpuSamplerDescriptor {
 } wgpuSamplerDescriptor;
 
 typedef struct wgpuShaderModuleDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     uint32_t codeSize;
     uint32_t const * code;
@@ -499,7 +499,7 @@ typedef struct wgpuStencilStateFaceDescriptor {
 } wgpuStencilStateFaceDescriptor;
 
 typedef struct wgpuTextureViewDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuTextureFormat format;
     wgpuTextureViewDimension dimension;
@@ -517,7 +517,7 @@ typedef struct wgpuVertexAttributeDescriptor {
 } wgpuVertexAttributeDescriptor;
 
 typedef struct wgpuBindGroupDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuBindGroupLayout layout;
     uint32_t bindingCount;
@@ -525,14 +525,14 @@ typedef struct wgpuBindGroupDescriptor {
 } wgpuBindGroupDescriptor;
 
 typedef struct wgpuBindGroupLayoutDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     uint32_t bindingCount;
     wgpuBindGroupLayoutBinding const * bindings;
 } wgpuBindGroupLayoutDescriptor;
 
 typedef struct wgpuColorStateDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuTextureFormat format;
     wgpuBlendDescriptor alphaBlend;
@@ -541,14 +541,14 @@ typedef struct wgpuColorStateDescriptor {
 } wgpuColorStateDescriptor;
 
 typedef struct wgpuComputePipelineDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuPipelineLayout layout;
     wgpuPipelineStageDescriptor const * computeStage;
 } wgpuComputePipelineDescriptor;
 
 typedef struct wgpuDepthStencilStateDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuTextureFormat format;
     bool depthWriteEnabled;
@@ -568,7 +568,7 @@ typedef struct wgpuRenderPassColorAttachmentDescriptor {
 } wgpuRenderPassColorAttachmentDescriptor;
 
 typedef struct wgpuTextureCopyView {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuTexture texture;
     uint32_t mipLevel;
@@ -577,7 +577,7 @@ typedef struct wgpuTextureCopyView {
 } wgpuTextureCopyView;
 
 typedef struct wgpuTextureDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuTextureUsageBit usage;
     wgpuTextureDimension dimension;
@@ -602,7 +602,7 @@ typedef struct wgpuRenderPassDescriptor {
 } wgpuRenderPassDescriptor;
 
 typedef struct wgpuVertexInputDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuIndexFormat indexFormat;
     uint32_t bufferCount;
@@ -610,7 +610,7 @@ typedef struct wgpuVertexInputDescriptor {
 } wgpuVertexInputDescriptor;
 
 typedef struct wgpuRenderPipelineDescriptor {
-    const void* nextInChain;
+    void const * nextInChain;
     wgpuStructureType structureType;
     wgpuPipelineLayout layout;
     wgpuPipelineStageDescriptor const * vertexStage;
