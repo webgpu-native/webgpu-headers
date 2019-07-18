@@ -588,7 +588,7 @@ typedef struct WGPURenderPipelineDescriptor {
     void const * nextInChain;
     WGPUPipelineLayout layout;
     WGPUPipelineStageDescriptor vertexStage;
-    WGPUPipelineStageDescriptor fragmentStage;
+    WGPUPipelineStageDescriptor const * fragmentStage;
     WGPUVertexInputDescriptor vertexInput;
     WGPUPrimitiveTopology primitiveTopology;
     WGPURasterizationStateDescriptor const * rasterizationState;
