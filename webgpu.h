@@ -23,6 +23,8 @@
 
 const uint64_t WGPU_WHOLE_SIZE = 0xffffffffffffffffULL; // UINT64_MAX
 
+typedef uint32_t WGPUFlags;
+
 typedef struct WGPUBindGroupImpl* WGPUBindGroup;
 typedef struct WGPUBindGroupLayoutImpl* WGPUBindGroupLayout;
 typedef struct WGPUBufferImpl* WGPUBuffer;
@@ -41,14 +43,14 @@ typedef struct WGPUShaderModuleImpl* WGPUShaderModule;
 typedef struct WGPUTextureImpl* WGPUTexture;
 typedef struct WGPUTextureViewImpl* WGPUTextureView;
 
-typedef enum {
+typedef enum WGPUAddressMode {
     WGPUAddressMode_Repeat = 0x00000000,
     WGPUAddressMode_MirrorRepeat = 0x00000001,
     WGPUAddressMode_ClampToEdge = 0x00000002,
     WGPUAddressMode_Force32 = 0x7FFFFFFF
 } WGPUAddressMode;
 
-typedef enum {
+typedef enum WGPUBindingType {
     WGPUBindingType_UniformBuffer = 0x00000000,
     WGPUBindingType_StorageBuffer = 0x00000001,
     WGPUBindingType_ReadonlyStorageBuffer = 0x00000002,
@@ -58,7 +60,7 @@ typedef enum {
     WGPUBindingType_Force32 = 0x7FFFFFFF
 } WGPUBindingType;
 
-typedef enum {
+typedef enum WGPUBlendFactor {
     WGPUBlendFactor_Zero = 0x00000000,
     WGPUBlendFactor_One = 0x00000001,
     WGPUBlendFactor_SrcColor = 0x00000002,
@@ -75,7 +77,7 @@ typedef enum {
     WGPUBlendFactor_Force32 = 0x7FFFFFFF
 } WGPUBlendFactor;
 
-typedef enum {
+typedef enum WGPUBlendOperation {
     WGPUBlendOperation_Add = 0x00000000,
     WGPUBlendOperation_Subtract = 0x00000001,
     WGPUBlendOperation_ReverseSubtract = 0x00000002,
@@ -84,7 +86,7 @@ typedef enum {
     WGPUBlendOperation_Force32 = 0x7FFFFFFF
 } WGPUBlendOperation;
 
-typedef enum {
+typedef enum WGPUBufferMapAsyncStatus {
     WGPUBufferMapAsyncStatus_Success = 0x00000000,
     WGPUBufferMapAsyncStatus_Error = 0x00000001,
     WGPUBufferMapAsyncStatus_Unknown = 0x00000002,
@@ -92,7 +94,7 @@ typedef enum {
     WGPUBufferMapAsyncStatus_Force32 = 0x7FFFFFFF
 } WGPUBufferMapAsyncStatus;
 
-typedef enum {
+typedef enum WGPUCompareFunction {
     WGPUCompareFunction_Never = 0x00000000,
     WGPUCompareFunction_Less = 0x00000001,
     WGPUCompareFunction_LessEqual = 0x00000002,
@@ -104,14 +106,14 @@ typedef enum {
     WGPUCompareFunction_Force32 = 0x7FFFFFFF
 } WGPUCompareFunction;
 
-typedef enum {
+typedef enum WGPUCullMode {
     WGPUCullMode_None = 0x00000000,
     WGPUCullMode_Front = 0x00000001,
     WGPUCullMode_Back = 0x00000002,
     WGPUCullMode_Force32 = 0x7FFFFFFF
 } WGPUCullMode;
 
-typedef enum {
+typedef enum WGPUFenceCompletionStatus {
     WGPUFenceCompletionStatus_Success = 0x00000000,
     WGPUFenceCompletionStatus_Error = 0x00000001,
     WGPUFenceCompletionStatus_Unknown = 0x00000002,
@@ -119,37 +121,37 @@ typedef enum {
     WGPUFenceCompletionStatus_Force32 = 0x7FFFFFFF
 } WGPUFenceCompletionStatus;
 
-typedef enum {
+typedef enum WGPUFilterMode {
     WGPUFilterMode_Nearest = 0x00000000,
     WGPUFilterMode_Linear = 0x00000001,
     WGPUFilterMode_Force32 = 0x7FFFFFFF
 } WGPUFilterMode;
 
-typedef enum {
+typedef enum WGPUFrontFace {
     WGPUFrontFace_CCW = 0x00000000,
     WGPUFrontFace_CW = 0x00000001,
     WGPUFrontFace_Force32 = 0x7FFFFFFF
 } WGPUFrontFace;
 
-typedef enum {
+typedef enum WGPUIndexFormat {
     WGPUIndexFormat_Uint16 = 0x00000000,
     WGPUIndexFormat_Uint32 = 0x00000001,
     WGPUIndexFormat_Force32 = 0x7FFFFFFF
 } WGPUIndexFormat;
 
-typedef enum {
+typedef enum WGPUInputStepMode {
     WGPUInputStepMode_Vertex = 0x00000000,
     WGPUInputStepMode_Instance = 0x00000001,
     WGPUInputStepMode_Force32 = 0x7FFFFFFF
 } WGPUInputStepMode;
 
-typedef enum {
+typedef enum WGPULoadOp {
     WGPULoadOp_Clear = 0x00000000,
     WGPULoadOp_Load = 0x00000001,
     WGPULoadOp_Force32 = 0x7FFFFFFF
 } WGPULoadOp;
 
-typedef enum {
+typedef enum WGPUPrimitiveTopology {
     WGPUPrimitiveTopology_PointList = 0x00000000,
     WGPUPrimitiveTopology_LineList = 0x00000001,
     WGPUPrimitiveTopology_LineStrip = 0x00000002,
@@ -158,7 +160,7 @@ typedef enum {
     WGPUPrimitiveTopology_Force32 = 0x7FFFFFFF
 } WGPUPrimitiveTopology;
 
-typedef enum {
+typedef enum WGPUStencilOperation {
     WGPUStencilOperation_Keep = 0x00000000,
     WGPUStencilOperation_Zero = 0x00000001,
     WGPUStencilOperation_Replace = 0x00000002,
@@ -170,26 +172,26 @@ typedef enum {
     WGPUStencilOperation_Force32 = 0x7FFFFFFF
 } WGPUStencilOperation;
 
-typedef enum {
+typedef enum WGPUStoreOp {
     WGPUStoreOp_Store = 0x00000000,
     WGPUStoreOp_Force32 = 0x7FFFFFFF
 } WGPUStoreOp;
 
-typedef enum {
+typedef enum WGPUTextureAspect {
     WGPUTextureAspect_All = 0x00000000,
     WGPUTextureAspect_StencilOnly = 0x00000001,
     WGPUTextureAspect_DepthOnly = 0x00000002,
     WGPUTextureAspect_Force32 = 0x7FFFFFFF
 } WGPUTextureAspect;
 
-typedef enum {
+typedef enum WGPUTextureDimension {
     WGPUTextureDimension_1D = 0x00000000,
     WGPUTextureDimension_2D = 0x00000001,
     WGPUTextureDimension_3D = 0x00000002,
     WGPUTextureDimension_Force32 = 0x7FFFFFFF
 } WGPUTextureDimension;
 
-typedef enum {
+typedef enum WGPUTextureFormat {
     WGPUTextureFormat_R8Unorm = 0x00000000,
     WGPUTextureFormat_R8Snorm = 0x00000001,
     WGPUTextureFormat_R8Uint = 0x00000002,
@@ -251,7 +253,7 @@ typedef enum {
     WGPUTextureFormat_Force32 = 0x7FFFFFFF
 } WGPUTextureFormat;
 
-typedef enum {
+typedef enum WGPUTextureViewDimension {
     WGPUTextureViewDimension_1D = 0x00000000,
     WGPUTextureViewDimension_2D = 0x00000001,
     WGPUTextureViewDimension_2DArray = 0x00000002,
@@ -261,7 +263,7 @@ typedef enum {
     WGPUTextureViewDimension_Force32 = 0x7FFFFFFF
 } WGPUTextureViewDimension;
 
-typedef enum {
+typedef enum WGPUVertexFormat {
     WGPUVertexFormat_UChar2 = 0x00000000,
     WGPUVertexFormat_UChar4 = 0x00000001,
     WGPUVertexFormat_Char2 = 0x00000002,
@@ -295,21 +297,22 @@ typedef enum {
     WGPUVertexFormat_Force32 = 0x7FFFFFFF
 } WGPUVertexFormat;
 
-typedef enum {
-    WGPUBufferUsageBit_None = 0x00000000,
-    WGPUBufferUsageBit_MapRead = 0x00000001,
-    WGPUBufferUsageBit_MapWrite = 0x00000002,
-    WGPUBufferUsageBit_CopySrc = 0x00000004,
-    WGPUBufferUsageBit_CopyDst = 0x00000008,
-    WGPUBufferUsageBit_Index = 0x00000010,
-    WGPUBufferUsageBit_Vertex = 0x00000020,
-    WGPUBufferUsageBit_Uniform = 0x00000040,
-    WGPUBufferUsageBit_Storage = 0x00000080,
-    WGPUBufferUsageBit_Indirect = 0x00000100,
-    WGPUBufferUsageBit_Force32 = 0x7FFFFFFF
-} WGPUBufferUsageBit;
+typedef enum WGPUBufferUsage {
+    WGPUBufferUsage_None = 0x00000000,
+    WGPUBufferUsage_MapRead = 0x00000001,
+    WGPUBufferUsage_MapWrite = 0x00000002,
+    WGPUBufferUsage_CopySrc = 0x00000004,
+    WGPUBufferUsage_CopyDst = 0x00000008,
+    WGPUBufferUsage_Index = 0x00000010,
+    WGPUBufferUsage_Vertex = 0x00000020,
+    WGPUBufferUsage_Uniform = 0x00000040,
+    WGPUBufferUsage_Storage = 0x00000080,
+    WGPUBufferUsage_Indirect = 0x00000100,
+    WGPUBufferUsage_Force32 = 0x7FFFFFFF
+} WGPUBufferUsage;
+typedef WGPUFlags WGPUBufferUsageFlags;
 
-typedef enum {
+typedef enum WGPUColorWriteMask {
     WGPUColorWriteMask_None = 0x00000000,
     WGPUColorWriteMask_Red = 0x00000001,
     WGPUColorWriteMask_Green = 0x00000002,
@@ -318,32 +321,27 @@ typedef enum {
     WGPUColorWriteMask_All = 0x0000000F,
     WGPUColorWriteMask_Force32 = 0x7FFFFFFF
 } WGPUColorWriteMask;
+typedef WGPUFlags WGPUColorWriteMaskFlags;
 
-typedef enum {
-    WGPUFace_None = 0x00000000,
-    WGPUFace_Back = 0x00000001,
-    WGPUFace_Front = 0x00000002,
-    WGPUFace_Both = 0x00000003,
-    WGPUFace_Force32 = 0x7FFFFFFF
-} WGPUFace;
+typedef enum WGPUShaderStage {
+    WGPUShaderStage_None = 0x00000000,
+    WGPUShaderStage_Vertex = 0x00000001,
+    WGPUShaderStage_Fragment = 0x00000002,
+    WGPUShaderStage_Compute = 0x00000004,
+    WGPUShaderStage_Force32 = 0x7FFFFFFF
+} WGPUShaderStage;
+typedef WGPUFlags WGPUShaderStageFlags;
 
-typedef enum {
-    WGPUShaderStageBit_None = 0x00000000,
-    WGPUShaderStageBit_Vertex = 0x00000001,
-    WGPUShaderStageBit_Fragment = 0x00000002,
-    WGPUShaderStageBit_Compute = 0x00000004,
-    WGPUShaderStageBit_Force32 = 0x7FFFFFFF
-} WGPUShaderStageBit;
-
-typedef enum {
-    WGPUTextureUsageBit_None = 0x00000000,
-    WGPUTextureUsageBit_CopySrc = 0x00000001,
-    WGPUTextureUsageBit_CopyDst = 0x00000002,
-    WGPUTextureUsageBit_Sampled = 0x00000004,
-    WGPUTextureUsageBit_Storage = 0x00000008,
-    WGPUTextureUsageBit_OutputAttachment = 0x00000010,
-    WGPUTextureUsageBit_Force32 = 0x7FFFFFFF
-} WGPUTextureUsageBit;
+typedef enum WGPUTextureUsage {
+    WGPUTextureUsage_None = 0x00000000,
+    WGPUTextureUsage_CopySrc = 0x00000001,
+    WGPUTextureUsage_CopyDst = 0x00000002,
+    WGPUTextureUsage_Sampled = 0x00000004,
+    WGPUTextureUsage_Storage = 0x00000008,
+    WGPUTextureUsage_OutputAttachment = 0x00000010,
+    WGPUTextureUsage_Force32 = 0x7FFFFFFF
+} WGPUTextureUsage;
+typedef WGPUFlags WGPUTextureUsageFlags;
 
 
 typedef struct WGPUBindGroupBinding {
@@ -357,7 +355,7 @@ typedef struct WGPUBindGroupBinding {
 
 typedef struct WGPUBindGroupLayoutBinding {
     uint32_t binding;
-    WGPUShaderStageBit visibility;
+    WGPUShaderStageFlags visibility;
     WGPUBindingType type;
     bool dynamic;
     bool multisampled;
@@ -380,7 +378,7 @@ typedef struct WGPUBufferCopyView {
 
 typedef struct WGPUBufferDescriptor {
     void const * nextInChain;
-    WGPUBufferUsageBit usage;
+    WGPUBufferUsageFlags usage;
     uint64_t size;
 } WGPUBufferDescriptor;
 
@@ -518,7 +516,7 @@ typedef struct WGPUColorStateDescriptor {
     WGPUTextureFormat format;
     WGPUBlendDescriptor alphaBlend;
     WGPUBlendDescriptor colorBlend;
-    WGPUColorWriteMask writeMask;
+    WGPUColorWriteMaskFlags writeMask;
 } WGPUColorStateDescriptor;
 
 typedef struct WGPUComputePipelineDescriptor {
@@ -556,7 +554,7 @@ typedef struct WGPUTextureCopyView {
 
 typedef struct WGPUTextureDescriptor {
     void const * nextInChain;
-    WGPUTextureUsageBit usage;
+    WGPUTextureUsageFlags usage;
     WGPUTextureDimension dimension;
     WGPUExtent3D size;
     uint32_t arrayLayerCount;
