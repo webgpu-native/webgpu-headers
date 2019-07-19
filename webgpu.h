@@ -523,7 +523,7 @@ typedef struct WGPUColorStateDescriptor {
 typedef struct WGPUComputePipelineDescriptor {
     void const * nextInChain;
     WGPUPipelineLayout layout;
-    WGPUPipelineStageDescriptor const * computeStage;
+    WGPUPipelineStageDescriptor computeStage;
 } WGPUComputePipelineDescriptor;
 
 typedef struct WGPUDepthStencilStateDescriptor {
