@@ -697,84 +697,7 @@ typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTe
 typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture);
 
 
-struct WGPUProcTable_s {
-    WGPUProcReference reference;
-    WGPUProcRelease release;
-
-    WGPUProcBufferUnmap bufferUnmap;
-    WGPUProcBufferDestroy bufferDestroy;
-    WGPUProcBufferMapReadAsync bufferMapReadAsync;
-    WGPUProcBufferMapWriteAsync bufferMapWriteAsync;
-
-    WGPUProcCommandEncoderFinish commandEncoderFinish;
-    WGPUProcCommandEncoderBeginComputePass commandEncoderBeginComputePass;
-    WGPUProcCommandEncoderBeginRenderPass commandEncoderBeginRenderPass;
-    WGPUProcCommandEncoderCopyBufferToBuffer commandEncoderCopyBufferToBuffer;
-    WGPUProcCommandEncoderCopyBufferToTexture commandEncoderCopyBufferToTexture;
-    WGPUProcCommandEncoderCopyTextureToBuffer commandEncoderCopyTextureToBuffer;
-    WGPUProcCommandEncoderCopyTextureToTexture commandEncoderCopyTextureToTexture;
-    WGPUProcCommandEncoderInsertDebugMarker commandEncoderInsertDebugMarker;
-    WGPUProcCommandEncoderPopDebugGroup commandEncoderPopDebugGroup;
-    WGPUProcCommandEncoderPushDebugGroup commandEncoderPushDebugGroup;
-
-    WGPUProcComputePassEncoderInsertDebugMarker computePassEncoderInsertDebugMarker;
-    WGPUProcComputePassEncoderPopDebugGroup computePassEncoderPopDebugGroup;
-    WGPUProcComputePassEncoderPushDebugGroup computePassEncoderPushDebugGroup;
-    WGPUProcComputePassEncoderSetPipeline computePassEncoderSetPipeline;
-    WGPUProcComputePassEncoderSetBindGroup computePassEncoderSetBindGroup;
-    WGPUProcComputePassEncoderDispatch computePassEncoderDispatch;
-    WGPUProcComputePassEncoderDispatchIndirect computePassEncoderDispatchIndirect;
-    WGPUProcComputePassEncoderEndPass computePassEncoderEndPass;
-
-    WGPUProcDeviceCreateBindGroup deviceCreateBindGroup;
-    WGPUProcDeviceCreateBindGroupLayout deviceCreateBindGroupLayout;
-    WGPUProcDeviceCreateBuffer deviceCreateBuffer;
-    WGPUProcDeviceCreateBufferMapped deviceCreateBufferMapped;
-    WGPUProcDeviceCreateCommandEncoder deviceCreateCommandEncoder;
-    WGPUProcDeviceCreateComputePipeline deviceCreateComputePipeline;
-    WGPUProcDeviceCreateRenderPipeline deviceCreateRenderPipeline;
-    WGPUProcDeviceCreatePipelineLayout deviceCreatePipelineLayout;
-    WGPUProcDeviceCreateQueue deviceCreateQueue;
-    WGPUProcDeviceCreateSampler deviceCreateSampler;
-    WGPUProcDeviceCreateShaderModule deviceCreateShaderModule;
-    WGPUProcDeviceCreateTexture deviceCreateTexture;
-    WGPUProcDeviceCreateBufferMappedAsync deviceCreateBufferMappedAsync;
-
-    WGPUProcFenceGetCompletedValue fenceGetCompletedValue;
-    WGPUProcFenceOnCompletion fenceOnCompletion;
-
-    WGPUProcQueueSubmit queueSubmit;
-    WGPUProcQueueSignal queueSignal;
-    WGPUProcQueueCreateFence queueCreateFence;
-
-    WGPUProcRenderPassEncoderSetPipeline renderPassEncoderSetPipeline;
-    WGPUProcRenderPassEncoderSetBindGroup renderPassEncoderSetBindGroup;
-    WGPUProcRenderPassEncoderDraw renderPassEncoderDraw;
-    WGPUProcRenderPassEncoderDrawIndexed renderPassEncoderDrawIndexed;
-    WGPUProcRenderPassEncoderDrawIndirect renderPassEncoderDrawIndirect;
-    WGPUProcRenderPassEncoderDrawIndexedIndirect renderPassEncoderDrawIndexedIndirect;
-    WGPUProcRenderPassEncoderInsertDebugMarker renderPassEncoderInsertDebugMarker;
-    WGPUProcRenderPassEncoderPopDebugGroup renderPassEncoderPopDebugGroup;
-    WGPUProcRenderPassEncoderPushDebugGroup renderPassEncoderPushDebugGroup;
-    WGPUProcRenderPassEncoderSetStencilReference renderPassEncoderSetStencilReference;
-    WGPUProcRenderPassEncoderSetBlendColor renderPassEncoderSetBlendColor;
-    WGPUProcRenderPassEncoderSetViewport renderPassEncoderSetViewport;
-    WGPUProcRenderPassEncoderSetScissorRect renderPassEncoderSetScissorRect;
-    WGPUProcRenderPassEncoderSetVertexBuffers renderPassEncoderSetVertexBuffers;
-    WGPUProcRenderPassEncoderSetIndexBuffer renderPassEncoderSetIndexBuffer;
-    WGPUProcRenderPassEncoderEndPass renderPassEncoderEndPass;
-
-    WGPUProcTextureCreateDefaultView textureCreateDefaultView;
-    WGPUProcTextureCreateView textureCreateView;
-    WGPUProcTextureDestroy textureDestroy;
-
-};
-typedef struct WGPUProcTable_s WGPUProcTable;
-
-// Stuff below is for convenience and will forward calls to a static WGPUProcTable.
-
-// Set which WGPUProcTable will be used
-WGPU_EXPORT void wgpuSetProcs(const WGPUProcTable* procs);
+#if !defined(WGPU_SKIP_DECLARATIONS)
 
 WGPU_EXPORT void wgpuReference(WGPUObject object);
 WGPU_EXPORT void wgpuRelease(WGPUObject object);
@@ -853,6 +776,9 @@ WGPU_EXPORT void wgpuRenderPassEncoderEndPass(WGPURenderPassEncoder renderPassEn
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateDefaultView(WGPUTexture texture);
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
 WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
+
+
+#endif  // !defined(WGPU_SKIP_DECLARATIONS)
 
 #ifdef __cplusplus
 } // extern "C"
