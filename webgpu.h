@@ -619,7 +619,6 @@ extern "C" {
 
 // Procs of Buffer
 typedef void (*WGPUProcBufferUnmap)(WGPUBuffer buffer);
-typedef void (*WGPUProcBufferDestroy)(WGPUBuffer buffer);
 typedef void (*WGPUProcBufferMapReadAsync)(WGPUBuffer buffer, WGPUBufferMapReadCallback callback, void * userdata);
 typedef void (*WGPUProcBufferMapWriteAsync)(WGPUBuffer buffer, WGPUBufferMapWriteCallback callback, void * userdata);
 
@@ -690,14 +689,12 @@ typedef void (*WGPUProcRenderPassEncoderEndPass)(WGPURenderPassEncoder renderPas
 // Procs of Texture
 typedef WGPUTextureView (*WGPUProcTextureCreateDefaultView)(WGPUTexture texture);
 typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
-typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture);
 
 
 #if !defined(WGPU_SKIP_DECLARATIONS)
 
 // Methods of Buffer
 WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer);
-WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer);
 WGPU_EXPORT void wgpuBufferMapReadAsync(WGPUBuffer buffer, WGPUBufferMapReadCallback callback, void * userdata);
 WGPU_EXPORT void wgpuBufferMapWriteAsync(WGPUBuffer buffer, WGPUBufferMapWriteCallback callback, void * userdata);
 
@@ -768,7 +765,6 @@ WGPU_EXPORT void wgpuRenderPassEncoderEndPass(WGPURenderPassEncoder renderPassEn
 // Methods of Texture
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateDefaultView(WGPUTexture texture);
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
-WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
 
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
