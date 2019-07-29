@@ -24,7 +24,6 @@
 const uint64_t WGPU_WHOLE_SIZE = 0xffffffffffffffffULL; // UINT64_MAX
 
 typedef uint32_t WGPUFlags;
-typedef void* WGPUObject;
 
 typedef struct WGPUBindGroupImpl* WGPUBindGroup;
 typedef struct WGPUBindGroupLayoutImpl* WGPUBindGroupLayout;
@@ -618,14 +617,25 @@ typedef void (*WGPUFenceOnCompletionCallback)(WGPUFenceCompletionStatus status, 
 extern "C" {
 #endif
 
-typedef void (*WGPUProcReference)(WGPUObject object);
-typedef void (*WGPUProcRelease)(WGPUObject object);
+// Procs of BindGroup
+typedef void (*WGPUProcBindGroupReference)(WGPUBindGroup bindGroup);
+typedef void (*WGPUProcBindGroupRelease)(WGPUBindGroup bindGroup);
+
+// Procs of BindGroupLayout
+typedef void (*WGPUProcBindGroupLayoutReference)(WGPUBindGroupLayout bindGroupLayout);
+typedef void (*WGPUProcBindGroupLayoutRelease)(WGPUBindGroupLayout bindGroupLayout);
 
 // Procs of Buffer
 typedef void (*WGPUProcBufferUnmap)(WGPUBuffer buffer);
 typedef void (*WGPUProcBufferDestroy)(WGPUBuffer buffer);
 typedef void (*WGPUProcBufferMapReadAsync)(WGPUBuffer buffer, WGPUBufferMapReadCallback callback, void * userdata);
 typedef void (*WGPUProcBufferMapWriteAsync)(WGPUBuffer buffer, WGPUBufferMapWriteCallback callback, void * userdata);
+typedef void (*WGPUProcBufferReference)(WGPUBuffer buffer);
+typedef void (*WGPUProcBufferRelease)(WGPUBuffer buffer);
+
+// Procs of CommandBuffer
+typedef void (*WGPUProcCommandBufferReference)(WGPUCommandBuffer commandBuffer);
+typedef void (*WGPUProcCommandBufferRelease)(WGPUCommandBuffer commandBuffer);
 
 // Procs of CommandEncoder
 typedef WGPUCommandBuffer (*WGPUProcCommandEncoderFinish)(WGPUCommandEncoder commandEncoder, WGPUCommandBufferDescriptor const * descriptor);
@@ -638,6 +648,8 @@ typedef void (*WGPUProcCommandEncoderCopyTextureToTexture)(WGPUCommandEncoder co
 typedef void (*WGPUProcCommandEncoderInsertDebugMarker)(WGPUCommandEncoder commandEncoder, char const * groupLabel);
 typedef void (*WGPUProcCommandEncoderPopDebugGroup)(WGPUCommandEncoder commandEncoder);
 typedef void (*WGPUProcCommandEncoderPushDebugGroup)(WGPUCommandEncoder commandEncoder, char const * groupLabel);
+typedef void (*WGPUProcCommandEncoderReference)(WGPUCommandEncoder commandEncoder);
+typedef void (*WGPUProcCommandEncoderRelease)(WGPUCommandEncoder commandEncoder);
 
 // Procs of ComputePassEncoder
 typedef void (*WGPUProcComputePassEncoderInsertDebugMarker)(WGPUComputePassEncoder computePassEncoder, char const * groupLabel);
@@ -648,6 +660,12 @@ typedef void (*WGPUProcComputePassEncoderSetBindGroup)(WGPUComputePassEncoder co
 typedef void (*WGPUProcComputePassEncoderDispatch)(WGPUComputePassEncoder computePassEncoder, uint32_t x, uint32_t y, uint32_t z);
 typedef void (*WGPUProcComputePassEncoderDispatchIndirect)(WGPUComputePassEncoder computePassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
 typedef void (*WGPUProcComputePassEncoderEndPass)(WGPUComputePassEncoder computePassEncoder);
+typedef void (*WGPUProcComputePassEncoderReference)(WGPUComputePassEncoder computePassEncoder);
+typedef void (*WGPUProcComputePassEncoderRelease)(WGPUComputePassEncoder computePassEncoder);
+
+// Procs of ComputePipeline
+typedef void (*WGPUProcComputePipelineReference)(WGPUComputePipeline computePipeline);
+typedef void (*WGPUProcComputePipelineRelease)(WGPUComputePipeline computePipeline);
 
 // Procs of Device
 typedef WGPUBindGroup (*WGPUProcDeviceCreateBindGroup)(WGPUDevice device, WGPUBindGroupDescriptor const * descriptor);
@@ -663,15 +681,25 @@ typedef WGPUSampler (*WGPUProcDeviceCreateSampler)(WGPUDevice device, WGPUSample
 typedef WGPUShaderModule (*WGPUProcDeviceCreateShaderModule)(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
 typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 typedef void (*WGPUProcDeviceCreateBufferMappedAsync)(WGPUDevice device, WGPUBufferDescriptor const * descriptor, WGPUBufferCreateMappedCallback callback, void * userdata);
+typedef void (*WGPUProcDeviceReference)(WGPUDevice device);
+typedef void (*WGPUProcDeviceRelease)(WGPUDevice device);
 
 // Procs of Fence
 typedef uint64_t (*WGPUProcFenceGetCompletedValue)(WGPUFence fence);
 typedef void (*WGPUProcFenceOnCompletion)(WGPUFence fence, uint64_t value, WGPUFenceOnCompletionCallback callback, void * userdata);
+typedef void (*WGPUProcFenceReference)(WGPUFence fence);
+typedef void (*WGPUProcFenceRelease)(WGPUFence fence);
+
+// Procs of PipelineLayout
+typedef void (*WGPUProcPipelineLayoutReference)(WGPUPipelineLayout pipelineLayout);
+typedef void (*WGPUProcPipelineLayoutRelease)(WGPUPipelineLayout pipelineLayout);
 
 // Procs of Queue
 typedef void (*WGPUProcQueueSubmit)(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands);
 typedef void (*WGPUProcQueueSignal)(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
 typedef WGPUFence (*WGPUProcQueueCreateFence)(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
+typedef void (*WGPUProcQueueReference)(WGPUQueue queue);
+typedef void (*WGPUProcQueueRelease)(WGPUQueue queue);
 
 // Procs of RenderPassEncoder
 typedef void (*WGPUProcRenderPassEncoderSetPipeline)(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline);
@@ -690,23 +718,54 @@ typedef void (*WGPUProcRenderPassEncoderSetScissorRect)(WGPURenderPassEncoder re
 typedef void (*WGPUProcRenderPassEncoderSetVertexBuffers)(WGPURenderPassEncoder renderPassEncoder, uint32_t startSlot, uint32_t count, WGPUBuffer const * buffers, uint64_t const * offsets);
 typedef void (*WGPUProcRenderPassEncoderSetIndexBuffer)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, uint64_t offset);
 typedef void (*WGPUProcRenderPassEncoderEndPass)(WGPURenderPassEncoder renderPassEncoder);
+typedef void (*WGPUProcRenderPassEncoderReference)(WGPURenderPassEncoder renderPassEncoder);
+typedef void (*WGPUProcRenderPassEncoderRelease)(WGPURenderPassEncoder renderPassEncoder);
+
+// Procs of RenderPipeline
+typedef void (*WGPUProcRenderPipelineReference)(WGPURenderPipeline renderPipeline);
+typedef void (*WGPUProcRenderPipelineRelease)(WGPURenderPipeline renderPipeline);
+
+// Procs of Sampler
+typedef void (*WGPUProcSamplerReference)(WGPUSampler sampler);
+typedef void (*WGPUProcSamplerRelease)(WGPUSampler sampler);
+
+// Procs of ShaderModule
+typedef void (*WGPUProcShaderModuleReference)(WGPUShaderModule shaderModule);
+typedef void (*WGPUProcShaderModuleRelease)(WGPUShaderModule shaderModule);
 
 // Procs of Texture
 typedef WGPUTextureView (*WGPUProcTextureCreateDefaultView)(WGPUTexture texture);
 typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
 typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture);
+typedef void (*WGPUProcTextureReference)(WGPUTexture texture);
+typedef void (*WGPUProcTextureRelease)(WGPUTexture texture);
+
+// Procs of TextureView
+typedef void (*WGPUProcTextureViewReference)(WGPUTextureView textureView);
+typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView);
 
 
 #if !defined(WGPU_SKIP_DECLARATIONS)
 
-WGPU_EXPORT void wgpuReference(WGPUObject object);
-WGPU_EXPORT void wgpuRelease(WGPUObject object);
+// Methods of BindGroup
+WGPU_EXPORT void wgpuBindGroupReference(WGPUBindGroup bindGroup);
+WGPU_EXPORT void wgpuBindGroupRelease(WGPUBindGroup bindGroup);
+
+// Methods of BindGroupLayout
+WGPU_EXPORT void wgpuBindGroupLayoutReference(WGPUBindGroupLayout bindGroupLayout);
+WGPU_EXPORT void wgpuBindGroupLayoutRelease(WGPUBindGroupLayout bindGroupLayout);
 
 // Methods of Buffer
 WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer);
 WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer);
 WGPU_EXPORT void wgpuBufferMapReadAsync(WGPUBuffer buffer, WGPUBufferMapReadCallback callback, void * userdata);
 WGPU_EXPORT void wgpuBufferMapWriteAsync(WGPUBuffer buffer, WGPUBufferMapWriteCallback callback, void * userdata);
+WGPU_EXPORT void wgpuBufferReference(WGPUBuffer buffer);
+WGPU_EXPORT void wgpuBufferRelease(WGPUBuffer buffer);
+
+// Methods of CommandBuffer
+WGPU_EXPORT void wgpuCommandBufferReference(WGPUCommandBuffer commandBuffer);
+WGPU_EXPORT void wgpuCommandBufferRelease(WGPUCommandBuffer commandBuffer);
 
 // Methods of CommandEncoder
 WGPU_EXPORT WGPUCommandBuffer wgpuCommandEncoderFinish(WGPUCommandEncoder commandEncoder, WGPUCommandBufferDescriptor const * descriptor);
@@ -719,6 +778,8 @@ WGPU_EXPORT void wgpuCommandEncoderCopyTextureToTexture(WGPUCommandEncoder comma
 WGPU_EXPORT void wgpuCommandEncoderInsertDebugMarker(WGPUCommandEncoder commandEncoder, char const * groupLabel);
 WGPU_EXPORT void wgpuCommandEncoderPopDebugGroup(WGPUCommandEncoder commandEncoder);
 WGPU_EXPORT void wgpuCommandEncoderPushDebugGroup(WGPUCommandEncoder commandEncoder, char const * groupLabel);
+WGPU_EXPORT void wgpuCommandEncoderReference(WGPUCommandEncoder commandEncoder);
+WGPU_EXPORT void wgpuCommandEncoderRelease(WGPUCommandEncoder commandEncoder);
 
 // Methods of ComputePassEncoder
 WGPU_EXPORT void wgpuComputePassEncoderInsertDebugMarker(WGPUComputePassEncoder computePassEncoder, char const * groupLabel);
@@ -729,6 +790,12 @@ WGPU_EXPORT void wgpuComputePassEncoderSetBindGroup(WGPUComputePassEncoder compu
 WGPU_EXPORT void wgpuComputePassEncoderDispatch(WGPUComputePassEncoder computePassEncoder, uint32_t x, uint32_t y, uint32_t z);
 WGPU_EXPORT void wgpuComputePassEncoderDispatchIndirect(WGPUComputePassEncoder computePassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
 WGPU_EXPORT void wgpuComputePassEncoderEndPass(WGPUComputePassEncoder computePassEncoder);
+WGPU_EXPORT void wgpuComputePassEncoderReference(WGPUComputePassEncoder computePassEncoder);
+WGPU_EXPORT void wgpuComputePassEncoderRelease(WGPUComputePassEncoder computePassEncoder);
+
+// Methods of ComputePipeline
+WGPU_EXPORT void wgpuComputePipelineReference(WGPUComputePipeline computePipeline);
+WGPU_EXPORT void wgpuComputePipelineRelease(WGPUComputePipeline computePipeline);
 
 // Methods of Device
 WGPU_EXPORT WGPUBindGroup wgpuDeviceCreateBindGroup(WGPUDevice device, WGPUBindGroupDescriptor const * descriptor);
@@ -744,15 +811,25 @@ WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPUSamplerDe
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
 WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 WGPU_EXPORT void wgpuDeviceCreateBufferMappedAsync(WGPUDevice device, WGPUBufferDescriptor const * descriptor, WGPUBufferCreateMappedCallback callback, void * userdata);
+WGPU_EXPORT void wgpuDeviceReference(WGPUDevice device);
+WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device);
 
 // Methods of Fence
 WGPU_EXPORT uint64_t wgpuFenceGetCompletedValue(WGPUFence fence);
 WGPU_EXPORT void wgpuFenceOnCompletion(WGPUFence fence, uint64_t value, WGPUFenceOnCompletionCallback callback, void * userdata);
+WGPU_EXPORT void wgpuFenceReference(WGPUFence fence);
+WGPU_EXPORT void wgpuFenceRelease(WGPUFence fence);
+
+// Methods of PipelineLayout
+WGPU_EXPORT void wgpuPipelineLayoutReference(WGPUPipelineLayout pipelineLayout);
+WGPU_EXPORT void wgpuPipelineLayoutRelease(WGPUPipelineLayout pipelineLayout);
 
 // Methods of Queue
 WGPU_EXPORT void wgpuQueueSubmit(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands);
 WGPU_EXPORT void wgpuQueueSignal(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
 WGPU_EXPORT WGPUFence wgpuQueueCreateFence(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
+WGPU_EXPORT void wgpuQueueReference(WGPUQueue queue);
+WGPU_EXPORT void wgpuQueueRelease(WGPUQueue queue);
 
 // Methods of RenderPassEncoder
 WGPU_EXPORT void wgpuRenderPassEncoderSetPipeline(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline);
@@ -771,11 +848,31 @@ WGPU_EXPORT void wgpuRenderPassEncoderSetScissorRect(WGPURenderPassEncoder rende
 WGPU_EXPORT void wgpuRenderPassEncoderSetVertexBuffers(WGPURenderPassEncoder renderPassEncoder, uint32_t startSlot, uint32_t count, WGPUBuffer const * buffers, uint64_t const * offsets);
 WGPU_EXPORT void wgpuRenderPassEncoderSetIndexBuffer(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, uint64_t offset);
 WGPU_EXPORT void wgpuRenderPassEncoderEndPass(WGPURenderPassEncoder renderPassEncoder);
+WGPU_EXPORT void wgpuRenderPassEncoderReference(WGPURenderPassEncoder renderPassEncoder);
+WGPU_EXPORT void wgpuRenderPassEncoderRelease(WGPURenderPassEncoder renderPassEncoder);
+
+// Methods of RenderPipeline
+WGPU_EXPORT void wgpuRenderPipelineReference(WGPURenderPipeline renderPipeline);
+WGPU_EXPORT void wgpuRenderPipelineRelease(WGPURenderPipeline renderPipeline);
+
+// Methods of Sampler
+WGPU_EXPORT void wgpuSamplerReference(WGPUSampler sampler);
+WGPU_EXPORT void wgpuSamplerRelease(WGPUSampler sampler);
+
+// Methods of ShaderModule
+WGPU_EXPORT void wgpuShaderModuleReference(WGPUShaderModule shaderModule);
+WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule);
 
 // Methods of Texture
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateDefaultView(WGPUTexture texture);
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
 WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
+WGPU_EXPORT void wgpuTextureReference(WGPUTexture texture);
+WGPU_EXPORT void wgpuTextureRelease(WGPUTexture texture);
+
+// Methods of TextureView
+WGPU_EXPORT void wgpuTextureViewReference(WGPUTextureView textureView);
+WGPU_EXPORT void wgpuTextureViewRelease(WGPUTextureView textureView);
 
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
