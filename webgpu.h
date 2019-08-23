@@ -36,6 +36,8 @@ typedef struct WGPUDeviceImpl* WGPUDevice;
 typedef struct WGPUFenceImpl* WGPUFence;
 typedef struct WGPUPipelineLayoutImpl* WGPUPipelineLayout;
 typedef struct WGPUQueueImpl* WGPUQueue;
+typedef struct WGPURenderBundleImpl* WGPURenderBundle;
+typedef struct WGPURenderBundleEncoderImpl* WGPURenderBundleEncoder;
 typedef struct WGPURenderPassEncoderImpl* WGPURenderPassEncoder;
 typedef struct WGPURenderPipelineImpl* WGPURenderPipeline;
 typedef struct WGPUSamplerImpl* WGPUSampler;
@@ -184,6 +186,13 @@ typedef enum WGPUTextureAspect {
     WGPUTextureAspect_Force32 = 0x7FFFFFFF
 } WGPUTextureAspect;
 
+typedef enum WGPUTextureComponentType {
+    WGPUTextureComponentType_Float = 0x00000000,
+    WGPUTextureComponentType_Sint = 0x00000001,
+    WGPUTextureComponentType_Uint = 0x00000002,
+    WGPUTextureComponentType_Force32 = 0x7FFFFFFF
+} WGPUTextureComponentType;
+
 typedef enum WGPUTextureDimension {
     WGPUTextureDimension_1D = 0x00000000,
     WGPUTextureDimension_2D = 0x00000001,
@@ -196,60 +205,54 @@ typedef enum WGPUTextureFormat {
     WGPUTextureFormat_R8Snorm = 0x00000001,
     WGPUTextureFormat_R8Uint = 0x00000002,
     WGPUTextureFormat_R8Sint = 0x00000003,
-    WGPUTextureFormat_R16Unorm = 0x00000004,
-    WGPUTextureFormat_R16Snorm = 0x00000005,
-    WGPUTextureFormat_R16Uint = 0x00000006,
-    WGPUTextureFormat_R16Sint = 0x00000007,
-    WGPUTextureFormat_R16Float = 0x00000008,
-    WGPUTextureFormat_RG8Unorm = 0x00000009,
-    WGPUTextureFormat_RG8Snorm = 0x0000000A,
-    WGPUTextureFormat_RG8Uint = 0x0000000B,
-    WGPUTextureFormat_RG8Sint = 0x0000000C,
-    WGPUTextureFormat_R32Float = 0x0000000D,
-    WGPUTextureFormat_R32Uint = 0x0000000E,
-    WGPUTextureFormat_R32Sint = 0x0000000F,
-    WGPUTextureFormat_RG16Unorm = 0x00000010,
-    WGPUTextureFormat_RG16Snorm = 0x00000011,
-    WGPUTextureFormat_RG16Uint = 0x00000012,
-    WGPUTextureFormat_RG16Sint = 0x00000013,
-    WGPUTextureFormat_RG16Float = 0x00000014,
-    WGPUTextureFormat_RGBA8Unorm = 0x00000015,
-    WGPUTextureFormat_RGBA8UnormSrgb = 0x00000016,
-    WGPUTextureFormat_RGBA8Snorm = 0x00000017,
-    WGPUTextureFormat_RGBA8Uint = 0x00000018,
-    WGPUTextureFormat_RGBA8Sint = 0x00000019,
-    WGPUTextureFormat_BGRA8Unorm = 0x0000001A,
-    WGPUTextureFormat_BGRA8UnormSrgb = 0x0000001B,
-    WGPUTextureFormat_RGB10A2Unorm = 0x0000001C,
-    WGPUTextureFormat_RG11B10Float = 0x0000001D,
-    WGPUTextureFormat_RG32Float = 0x0000001E,
-    WGPUTextureFormat_RG32Uint = 0x0000001F,
-    WGPUTextureFormat_RG32Sint = 0x00000020,
-    WGPUTextureFormat_RGBA16Unorm = 0x00000021,
-    WGPUTextureFormat_RGBA16Snorm = 0x00000022,
-    WGPUTextureFormat_RGBA16Uint = 0x00000023,
-    WGPUTextureFormat_RGBA16Sint = 0x00000024,
-    WGPUTextureFormat_RGBA16Float = 0x00000025,
-    WGPUTextureFormat_RGBA32Float = 0x00000026,
-    WGPUTextureFormat_RGBA32Uint = 0x00000027,
-    WGPUTextureFormat_RGBA32Sint = 0x00000028,
-    WGPUTextureFormat_Depth32Float = 0x00000029,
-    WGPUTextureFormat_Depth24Plus = 0x0000002A,
-    WGPUTextureFormat_Depth24PlusStencil8 = 0x0000002B,
-    WGPUTextureFormat_BC1RGBAUnorm = 0x0000002C,
-    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x0000002D,
-    WGPUTextureFormat_BC2RGBAUnorm = 0x0000002E,
-    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x0000002F,
-    WGPUTextureFormat_BC3RGBAUnorm = 0x00000030,
-    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x00000031,
-    WGPUTextureFormat_BC4RUnorm = 0x00000032,
-    WGPUTextureFormat_BC4RSnorm = 0x00000033,
-    WGPUTextureFormat_BC5RGUnorm = 0x00000034,
-    WGPUTextureFormat_BC5RGSnorm = 0x00000035,
-    WGPUTextureFormat_BC6HRGBUfloat = 0x00000036,
-    WGPUTextureFormat_BC6HRGBSfloat = 0x00000037,
-    WGPUTextureFormat_BC7RGBAUnorm = 0x00000038,
-    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000039,
+    WGPUTextureFormat_R16Uint = 0x00000004,
+    WGPUTextureFormat_R16Sint = 0x00000005,
+    WGPUTextureFormat_R16Float = 0x00000006,
+    WGPUTextureFormat_RG8Unorm = 0x00000007,
+    WGPUTextureFormat_RG8Snorm = 0x00000008,
+    WGPUTextureFormat_RG8Uint = 0x00000009,
+    WGPUTextureFormat_RG8Sint = 0x0000000A,
+    WGPUTextureFormat_R32Float = 0x0000000B,
+    WGPUTextureFormat_R32Uint = 0x0000000C,
+    WGPUTextureFormat_R32Sint = 0x0000000D,
+    WGPUTextureFormat_RG16Uint = 0x0000000E,
+    WGPUTextureFormat_RG16Sint = 0x0000000F,
+    WGPUTextureFormat_RG16Float = 0x00000010,
+    WGPUTextureFormat_RGBA8Unorm = 0x00000011,
+    WGPUTextureFormat_RGBA8UnormSrgb = 0x00000012,
+    WGPUTextureFormat_RGBA8Snorm = 0x00000013,
+    WGPUTextureFormat_RGBA8Uint = 0x00000014,
+    WGPUTextureFormat_RGBA8Sint = 0x00000015,
+    WGPUTextureFormat_BGRA8Unorm = 0x00000016,
+    WGPUTextureFormat_BGRA8UnormSrgb = 0x00000017,
+    WGPUTextureFormat_RGB10A2Unorm = 0x00000018,
+    WGPUTextureFormat_RG11B10Float = 0x00000019,
+    WGPUTextureFormat_RG32Float = 0x0000001A,
+    WGPUTextureFormat_RG32Uint = 0x0000001B,
+    WGPUTextureFormat_RG32Sint = 0x0000001C,
+    WGPUTextureFormat_RGBA16Uint = 0x0000001D,
+    WGPUTextureFormat_RGBA16Sint = 0x0000001E,
+    WGPUTextureFormat_RGBA16Float = 0x0000001F,
+    WGPUTextureFormat_RGBA32Float = 0x00000020,
+    WGPUTextureFormat_RGBA32Uint = 0x00000021,
+    WGPUTextureFormat_RGBA32Sint = 0x00000022,
+    WGPUTextureFormat_Depth32Float = 0x00000023,
+    WGPUTextureFormat_Depth24Plus = 0x00000024,
+    WGPUTextureFormat_Depth24PlusStencil8 = 0x00000025,
+    WGPUTextureFormat_BC1RGBAUnorm = 0x00000026,
+    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x00000027,
+    WGPUTextureFormat_BC2RGBAUnorm = 0x00000028,
+    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x00000029,
+    WGPUTextureFormat_BC3RGBAUnorm = 0x0000002A,
+    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x0000002B,
+    WGPUTextureFormat_BC4RUnorm = 0x0000002C,
+    WGPUTextureFormat_BC4RSnorm = 0x0000002D,
+    WGPUTextureFormat_BC5RGUnorm = 0x0000002E,
+    WGPUTextureFormat_BC5RGSnorm = 0x0000002F,
+    WGPUTextureFormat_BC6HRGBUfloat = 0x00000030,
+    WGPUTextureFormat_BC6HRGBSfloat = 0x00000031,
+    WGPUTextureFormat_BC7RGBAUnorm = 0x00000032,
+    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000033,
     WGPUTextureFormat_Force32 = 0x7FFFFFFF
 } WGPUTextureFormat;
 
@@ -360,6 +363,7 @@ typedef struct WGPUBindGroupLayoutBinding {
     bool dynamic;
     bool multisampled;
     WGPUTextureViewDimension textureDimension;
+    WGPUTextureComponentType textureComponentType;
 } WGPUBindGroupLayoutBinding;
 
 typedef struct WGPUBlendDescriptor {
@@ -444,6 +448,18 @@ typedef struct WGPURasterizationStateDescriptor {
     float depthBiasSlopeScale;
     float depthBiasClamp;
 } WGPURasterizationStateDescriptor;
+
+typedef struct WGPURenderBundleDescriptor {
+    void const * nextInChain;
+} WGPURenderBundleDescriptor;
+
+typedef struct WGPURenderBundleEncoderDescriptor {
+    void const * nextInChain;
+    uint32_t colorFormatsCount;
+    WGPUTextureFormat const * colorFormats;
+    WGPUTextureFormat const * depthStencilFormat;
+    uint32_t sampleCount;
+} WGPURenderBundleEncoderDescriptor;
 
 typedef struct WGPURenderPassDepthStencilAttachmentDescriptor {
     WGPUTextureView attachment;
@@ -654,6 +670,7 @@ typedef WGPUComputePipeline (*WGPUProcDeviceCreateComputePipeline)(WGPUDevice de
 typedef WGPURenderPipeline (*WGPUProcDeviceCreateRenderPipeline)(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor);
 typedef WGPUPipelineLayout (*WGPUProcDeviceCreatePipelineLayout)(WGPUDevice device, WGPUPipelineLayoutDescriptor const * descriptor);
 typedef WGPUQueue (*WGPUProcDeviceCreateQueue)(WGPUDevice device);
+typedef WGPURenderBundleEncoder (*WGPUProcDeviceCreateRenderBundleEncoder)(WGPUDevice device, WGPURenderBundleEncoderDescriptor const * descriptor);
 typedef WGPUSampler (*WGPUProcDeviceCreateSampler)(WGPUDevice device, WGPUSamplerDescriptor const * descriptor);
 typedef WGPUShaderModule (*WGPUProcDeviceCreateShaderModule)(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
 typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
@@ -668,6 +685,20 @@ typedef void (*WGPUProcQueueSubmit)(WGPUQueue queue, uint32_t commandCount, WGPU
 typedef void (*WGPUProcQueueSignal)(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
 typedef WGPUFence (*WGPUProcQueueCreateFence)(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
 
+// Procs of RenderBundleEncoder
+typedef void (*WGPUProcRenderBundleEncoderSetPipeline)(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline);
+typedef void (*WGPUProcRenderBundleEncoderSetBindGroup)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint64_t const * dynamicOffsets);
+typedef void (*WGPUProcRenderBundleEncoderDraw)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance);
+typedef void (*WGPUProcRenderBundleEncoderDrawIndexed)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance);
+typedef void (*WGPUProcRenderBundleEncoderDrawIndirect)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
+typedef void (*WGPUProcRenderBundleEncoderDrawIndexedIndirect)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
+typedef void (*WGPUProcRenderBundleEncoderInsertDebugMarker)(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel);
+typedef void (*WGPUProcRenderBundleEncoderPopDebugGroup)(WGPURenderBundleEncoder renderBundleEncoder);
+typedef void (*WGPUProcRenderBundleEncoderPushDebugGroup)(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel);
+typedef void (*WGPUProcRenderBundleEncoderSetVertexBuffers)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t startSlot, uint32_t count, WGPUBuffer const * buffers, uint64_t const * offsets);
+typedef void (*WGPUProcRenderBundleEncoderSetIndexBuffer)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, uint64_t offset);
+typedef WGPURenderBundle (*WGPUProcRenderBundleEncoderFinish)(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderBundleDescriptor const * descriptor);
+
 // Procs of RenderPassEncoder
 typedef void (*WGPUProcRenderPassEncoderSetPipeline)(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline);
 typedef void (*WGPUProcRenderPassEncoderSetBindGroup)(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint64_t const * dynamicOffsets);
@@ -675,6 +706,7 @@ typedef void (*WGPUProcRenderPassEncoderDraw)(WGPURenderPassEncoder renderPassEn
 typedef void (*WGPUProcRenderPassEncoderDrawIndexed)(WGPURenderPassEncoder renderPassEncoder, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance);
 typedef void (*WGPUProcRenderPassEncoderDrawIndirect)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
 typedef void (*WGPUProcRenderPassEncoderDrawIndexedIndirect)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
+typedef void (*WGPUProcRenderPassEncoderExecuteBundles)(WGPURenderPassEncoder renderPassEncoder, uint32_t bundlesCount, WGPURenderBundle const * bundles);
 typedef void (*WGPUProcRenderPassEncoderInsertDebugMarker)(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel);
 typedef void (*WGPUProcRenderPassEncoderPopDebugGroup)(WGPURenderPassEncoder renderPassEncoder);
 typedef void (*WGPUProcRenderPassEncoderPushDebugGroup)(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel);
@@ -730,6 +762,7 @@ WGPU_EXPORT WGPUComputePipeline wgpuDeviceCreateComputePipeline(WGPUDevice devic
 WGPU_EXPORT WGPURenderPipeline wgpuDeviceCreateRenderPipeline(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor);
 WGPU_EXPORT WGPUPipelineLayout wgpuDeviceCreatePipelineLayout(WGPUDevice device, WGPUPipelineLayoutDescriptor const * descriptor);
 WGPU_EXPORT WGPUQueue wgpuDeviceCreateQueue(WGPUDevice device);
+WGPU_EXPORT WGPURenderBundleEncoder wgpuDeviceCreateRenderBundleEncoder(WGPUDevice device, WGPURenderBundleEncoderDescriptor const * descriptor);
 WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPUSamplerDescriptor const * descriptor);
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
 WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
@@ -744,6 +777,20 @@ WGPU_EXPORT void wgpuQueueSubmit(WGPUQueue queue, uint32_t commandCount, WGPUCom
 WGPU_EXPORT void wgpuQueueSignal(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
 WGPU_EXPORT WGPUFence wgpuQueueCreateFence(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
 
+// Methods of RenderBundleEncoder
+WGPU_EXPORT void wgpuRenderBundleEncoderSetPipeline(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline);
+WGPU_EXPORT void wgpuRenderBundleEncoderSetBindGroup(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint64_t const * dynamicOffsets);
+WGPU_EXPORT void wgpuRenderBundleEncoderDraw(WGPURenderBundleEncoder renderBundleEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance);
+WGPU_EXPORT void wgpuRenderBundleEncoderDrawIndexed(WGPURenderBundleEncoder renderBundleEncoder, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance);
+WGPU_EXPORT void wgpuRenderBundleEncoderDrawIndirect(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
+WGPU_EXPORT void wgpuRenderBundleEncoderDrawIndexedIndirect(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
+WGPU_EXPORT void wgpuRenderBundleEncoderInsertDebugMarker(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel);
+WGPU_EXPORT void wgpuRenderBundleEncoderPopDebugGroup(WGPURenderBundleEncoder renderBundleEncoder);
+WGPU_EXPORT void wgpuRenderBundleEncoderPushDebugGroup(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel);
+WGPU_EXPORT void wgpuRenderBundleEncoderSetVertexBuffers(WGPURenderBundleEncoder renderBundleEncoder, uint32_t startSlot, uint32_t count, WGPUBuffer const * buffers, uint64_t const * offsets);
+WGPU_EXPORT void wgpuRenderBundleEncoderSetIndexBuffer(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, uint64_t offset);
+WGPU_EXPORT WGPURenderBundle wgpuRenderBundleEncoderFinish(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderBundleDescriptor const * descriptor);
+
 // Methods of RenderPassEncoder
 WGPU_EXPORT void wgpuRenderPassEncoderSetPipeline(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline);
 WGPU_EXPORT void wgpuRenderPassEncoderSetBindGroup(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint64_t const * dynamicOffsets);
@@ -751,6 +798,7 @@ WGPU_EXPORT void wgpuRenderPassEncoderDraw(WGPURenderPassEncoder renderPassEncod
 WGPU_EXPORT void wgpuRenderPassEncoderDrawIndexed(WGPURenderPassEncoder renderPassEncoder, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance);
 WGPU_EXPORT void wgpuRenderPassEncoderDrawIndirect(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
 WGPU_EXPORT void wgpuRenderPassEncoderDrawIndexedIndirect(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset);
+WGPU_EXPORT void wgpuRenderPassEncoderExecuteBundles(WGPURenderPassEncoder renderPassEncoder, uint32_t bundlesCount, WGPURenderBundle const * bundles);
 WGPU_EXPORT void wgpuRenderPassEncoderInsertDebugMarker(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel);
 WGPU_EXPORT void wgpuRenderPassEncoderPopDebugGroup(WGPURenderPassEncoder renderPassEncoder);
 WGPU_EXPORT void wgpuRenderPassEncoderPushDebugGroup(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel);
