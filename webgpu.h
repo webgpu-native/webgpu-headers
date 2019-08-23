@@ -616,6 +616,10 @@ typedef struct WGPURenderPipelineDescriptor {
 } WGPURenderPipelineDescriptor;
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef void (*WGPUBufferCreateMappedCallback)(WGPUBufferMapAsyncStatus status,
                                                WGPUCreateBufferMappedResult result,
                                                void* userdata);
@@ -628,10 +632,6 @@ typedef void (*WGPUBufferMapWriteCallback)(WGPUBufferMapAsyncStatus status,
                                            uint64_t dataLength,
                                            void* userdata);
 typedef void (*WGPUFenceOnCompletionCallback)(WGPUFenceCompletionStatus status, void* userdata);
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 // Procs of Buffer
 typedef void (*WGPUProcBufferUnmap)(WGPUBuffer buffer);
@@ -813,7 +813,6 @@ WGPU_EXPORT void wgpuRenderPassEncoderEndPass(WGPURenderPassEncoder renderPassEn
 // Methods of Texture
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateDefaultView(WGPUTexture texture);
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
-
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
 
