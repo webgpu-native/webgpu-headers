@@ -121,7 +121,7 @@ typedef enum WGPUBufferMapAsyncStatus {
     WGPUBufferMapAsyncStatus_Success = 0x00000000,
     WGPUBufferMapAsyncStatus_Error = 0x00000001,
     WGPUBufferMapAsyncStatus_Unknown = 0x00000002,
-    WGPUBufferMapAsyncStatus_ContextLost = 0x00000003,
+    WGPUBufferMapAsyncStatus_DeviceLost = 0x00000003,
     WGPUBufferMapAsyncStatus_Force32 = 0x7FFFFFFF
 } WGPUBufferMapAsyncStatus;
 
@@ -144,11 +144,27 @@ typedef enum WGPUCullMode {
     WGPUCullMode_Force32 = 0x7FFFFFFF
 } WGPUCullMode;
 
+typedef enum WGPUErrorFilter {
+    WGPUErrorFilter_None = 0x00000000,
+    WGPUErrorFilter_Validation = 0x00000001,
+    WGPUErrorFilter_OutOfMemory = 0x00000002,
+    WGPUErrorFilter_Force32 = 0x7FFFFFFF
+} WGPUErrorFilter;
+
+typedef enum WGPUErrorType {
+    WGPUErrorType_NoError = 0x00000000,
+    WGPUErrorType_Validation = 0x00000001,
+    WGPUErrorType_OutOfMemory = 0x00000002,
+    WGPUErrorType_Unknown = 0x00000003,
+    WGPUErrorType_DeviceLost = 0x00000004,
+    WGPUErrorType_Force32 = 0x7FFFFFFF
+} WGPUErrorType;
+
 typedef enum WGPUFenceCompletionStatus {
     WGPUFenceCompletionStatus_Success = 0x00000000,
     WGPUFenceCompletionStatus_Error = 0x00000001,
     WGPUFenceCompletionStatus_Unknown = 0x00000002,
-    WGPUFenceCompletionStatus_ContextLost = 0x00000003,
+    WGPUFenceCompletionStatus_DeviceLost = 0x00000003,
     WGPUFenceCompletionStatus_Force32 = 0x7FFFFFFF
 } WGPUFenceCompletionStatus;
 
@@ -660,7 +676,9 @@ typedef void (*WGPUBufferMapWriteCallback)(WGPUBufferMapAsyncStatus status,
                                            void* data,
                                            uint64_t dataLength,
                                            void* userdata);
+typedef void (*WGPUDeviceLostCallback)(const char* message, void* userdata);
 typedef void (*WGPUFenceOnCompletionCallback)(WGPUFenceCompletionStatus status, void* userdata);
+typedef void (*WGPUErrorCallback)(WGPUErrorType type, const char* message, void* userdata);
 
 // Methods of Buffer
 WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer);
@@ -704,6 +722,10 @@ WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPUSamplerDe
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
 WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 WGPU_EXPORT void wgpuDeviceCreateBufferMappedAsync(WGPUDevice device, WGPUBufferDescriptor const * descriptor, WGPUBufferCreateMappedCallback callback, void * userdata);
+WGPU_EXPORT bool wgpuDevicePopErrorScope(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
+WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter filter);
+WGPU_EXPORT void wgpuDeviceSetDeviceLostCallback(WGPUDevice device, WGPUDeviceLostCallback callback, void * userdata);
+WGPU_EXPORT void wgpuDeviceSetUncapturedErrorCallback(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 
 // Methods of Fence
 WGPU_EXPORT uint64_t wgpuFenceGetCompletedValue(WGPUFence fence);
