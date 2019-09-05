@@ -246,68 +246,70 @@ typedef enum WGPUTextureDimension {
 } WGPUTextureDimension;
 
 typedef enum WGPUTextureFormat {
-    WGPUTextureFormat_R8Unorm = 0x00000000,
-    WGPUTextureFormat_R8Snorm = 0x00000001,
-    WGPUTextureFormat_R8Uint = 0x00000002,
-    WGPUTextureFormat_R8Sint = 0x00000003,
-    WGPUTextureFormat_R16Uint = 0x00000004,
-    WGPUTextureFormat_R16Sint = 0x00000005,
-    WGPUTextureFormat_R16Float = 0x00000006,
-    WGPUTextureFormat_RG8Unorm = 0x00000007,
-    WGPUTextureFormat_RG8Snorm = 0x00000008,
-    WGPUTextureFormat_RG8Uint = 0x00000009,
-    WGPUTextureFormat_RG8Sint = 0x0000000A,
-    WGPUTextureFormat_R32Float = 0x0000000B,
-    WGPUTextureFormat_R32Uint = 0x0000000C,
-    WGPUTextureFormat_R32Sint = 0x0000000D,
-    WGPUTextureFormat_RG16Uint = 0x0000000E,
-    WGPUTextureFormat_RG16Sint = 0x0000000F,
-    WGPUTextureFormat_RG16Float = 0x00000010,
-    WGPUTextureFormat_RGBA8Unorm = 0x00000011,
-    WGPUTextureFormat_RGBA8UnormSrgb = 0x00000012,
-    WGPUTextureFormat_RGBA8Snorm = 0x00000013,
-    WGPUTextureFormat_RGBA8Uint = 0x00000014,
-    WGPUTextureFormat_RGBA8Sint = 0x00000015,
-    WGPUTextureFormat_BGRA8Unorm = 0x00000016,
-    WGPUTextureFormat_BGRA8UnormSrgb = 0x00000017,
-    WGPUTextureFormat_RGB10A2Unorm = 0x00000018,
-    WGPUTextureFormat_RG11B10Float = 0x00000019,
-    WGPUTextureFormat_RG32Float = 0x0000001A,
-    WGPUTextureFormat_RG32Uint = 0x0000001B,
-    WGPUTextureFormat_RG32Sint = 0x0000001C,
-    WGPUTextureFormat_RGBA16Uint = 0x0000001D,
-    WGPUTextureFormat_RGBA16Sint = 0x0000001E,
-    WGPUTextureFormat_RGBA16Float = 0x0000001F,
-    WGPUTextureFormat_RGBA32Float = 0x00000020,
-    WGPUTextureFormat_RGBA32Uint = 0x00000021,
-    WGPUTextureFormat_RGBA32Sint = 0x00000022,
-    WGPUTextureFormat_Depth32Float = 0x00000023,
-    WGPUTextureFormat_Depth24Plus = 0x00000024,
-    WGPUTextureFormat_Depth24PlusStencil8 = 0x00000025,
-    WGPUTextureFormat_BC1RGBAUnorm = 0x00000026,
-    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x00000027,
-    WGPUTextureFormat_BC2RGBAUnorm = 0x00000028,
-    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x00000029,
-    WGPUTextureFormat_BC3RGBAUnorm = 0x0000002A,
-    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x0000002B,
-    WGPUTextureFormat_BC4RUnorm = 0x0000002C,
-    WGPUTextureFormat_BC4RSnorm = 0x0000002D,
-    WGPUTextureFormat_BC5RGUnorm = 0x0000002E,
-    WGPUTextureFormat_BC5RGSnorm = 0x0000002F,
-    WGPUTextureFormat_BC6HRGBUfloat = 0x00000030,
-    WGPUTextureFormat_BC6HRGBSfloat = 0x00000031,
-    WGPUTextureFormat_BC7RGBAUnorm = 0x00000032,
-    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000033,
+    WGPUTextureFormat_Undefined = 0x00000000,
+    WGPUTextureFormat_R8Unorm = 0x00000001,
+    WGPUTextureFormat_R8Snorm = 0x00000002,
+    WGPUTextureFormat_R8Uint = 0x00000003,
+    WGPUTextureFormat_R8Sint = 0x00000004,
+    WGPUTextureFormat_R16Uint = 0x00000005,
+    WGPUTextureFormat_R16Sint = 0x00000006,
+    WGPUTextureFormat_R16Float = 0x00000007,
+    WGPUTextureFormat_RG8Unorm = 0x00000008,
+    WGPUTextureFormat_RG8Snorm = 0x00000009,
+    WGPUTextureFormat_RG8Uint = 0x0000000A,
+    WGPUTextureFormat_RG8Sint = 0x0000000B,
+    WGPUTextureFormat_R32Float = 0x0000000C,
+    WGPUTextureFormat_R32Uint = 0x0000000D,
+    WGPUTextureFormat_R32Sint = 0x0000000E,
+    WGPUTextureFormat_RG16Uint = 0x0000000F,
+    WGPUTextureFormat_RG16Sint = 0x00000010,
+    WGPUTextureFormat_RG16Float = 0x00000011,
+    WGPUTextureFormat_RGBA8Unorm = 0x00000012,
+    WGPUTextureFormat_RGBA8UnormSrgb = 0x00000013,
+    WGPUTextureFormat_RGBA8Snorm = 0x00000014,
+    WGPUTextureFormat_RGBA8Uint = 0x00000015,
+    WGPUTextureFormat_RGBA8Sint = 0x00000016,
+    WGPUTextureFormat_BGRA8Unorm = 0x00000017,
+    WGPUTextureFormat_BGRA8UnormSrgb = 0x00000018,
+    WGPUTextureFormat_RGB10A2Unorm = 0x00000019,
+    WGPUTextureFormat_RG11B10Float = 0x0000001A,
+    WGPUTextureFormat_RG32Float = 0x0000001B,
+    WGPUTextureFormat_RG32Uint = 0x0000001C,
+    WGPUTextureFormat_RG32Sint = 0x0000001D,
+    WGPUTextureFormat_RGBA16Uint = 0x0000001E,
+    WGPUTextureFormat_RGBA16Sint = 0x0000001F,
+    WGPUTextureFormat_RGBA16Float = 0x00000020,
+    WGPUTextureFormat_RGBA32Float = 0x00000021,
+    WGPUTextureFormat_RGBA32Uint = 0x00000022,
+    WGPUTextureFormat_RGBA32Sint = 0x00000023,
+    WGPUTextureFormat_Depth32Float = 0x00000024,
+    WGPUTextureFormat_Depth24Plus = 0x00000025,
+    WGPUTextureFormat_Depth24PlusStencil8 = 0x00000026,
+    WGPUTextureFormat_BC1RGBAUnorm = 0x00000027,
+    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x00000028,
+    WGPUTextureFormat_BC2RGBAUnorm = 0x00000029,
+    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x0000002A,
+    WGPUTextureFormat_BC3RGBAUnorm = 0x0000002B,
+    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x0000002C,
+    WGPUTextureFormat_BC4RUnorm = 0x0000002D,
+    WGPUTextureFormat_BC4RSnorm = 0x0000002E,
+    WGPUTextureFormat_BC5RGUnorm = 0x0000002F,
+    WGPUTextureFormat_BC5RGSnorm = 0x00000030,
+    WGPUTextureFormat_BC6HRGBUfloat = 0x00000031,
+    WGPUTextureFormat_BC6HRGBSfloat = 0x00000032,
+    WGPUTextureFormat_BC7RGBAUnorm = 0x00000033,
+    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000034,
     WGPUTextureFormat_Force32 = 0x7FFFFFFF
 } WGPUTextureFormat;
 
 typedef enum WGPUTextureViewDimension {
-    WGPUTextureViewDimension_1D = 0x00000000,
-    WGPUTextureViewDimension_2D = 0x00000001,
-    WGPUTextureViewDimension_2DArray = 0x00000002,
-    WGPUTextureViewDimension_Cube = 0x00000003,
-    WGPUTextureViewDimension_CubeArray = 0x00000004,
-    WGPUTextureViewDimension_3D = 0x00000005,
+    WGPUTextureViewDimension_Undefined = 0x00000000,
+    WGPUTextureViewDimension_1D = 0x00000001,
+    WGPUTextureViewDimension_2D = 0x00000002,
+    WGPUTextureViewDimension_2DArray = 0x00000003,
+    WGPUTextureViewDimension_Cube = 0x00000004,
+    WGPUTextureViewDimension_CubeArray = 0x00000005,
+    WGPUTextureViewDimension_3D = 0x00000006,
     WGPUTextureViewDimension_Force32 = 0x7FFFFFFF
 } WGPUTextureViewDimension;
 
@@ -502,7 +504,7 @@ typedef struct WGPURenderBundleEncoderDescriptor {
     void const * nextInChain;
     uint32_t colorFormatsCount;
     WGPUTextureFormat const * colorFormats;
-    WGPUTextureFormat const * depthStencilFormat;
+    WGPUTextureFormat depthStencilFormat;
     uint32_t sampleCount;
 } WGPURenderBundleEncoderDescriptor;
 
@@ -776,7 +778,6 @@ typedef void (*WGPUProcRenderPassEncoderSetVertexBuffers)(WGPURenderPassEncoder 
 typedef void (*WGPUProcRenderPassEncoderSetViewport)(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth);
 
 // Procs of Texture
-typedef WGPUTextureView (*WGPUProcTextureCreateDefaultView)(WGPUTexture texture);
 typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
 
 #endif  // !defined(WGPU_SKIP_PROCS)
@@ -875,7 +876,6 @@ WGPU_EXPORT void wgpuRenderPassEncoderSetVertexBuffers(WGPURenderPassEncoder ren
 WGPU_EXPORT void wgpuRenderPassEncoderSetViewport(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth);
 
 // Methods of Texture
-WGPU_EXPORT WGPUTextureView wgpuTextureCreateDefaultView(WGPUTexture texture);
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
