@@ -651,7 +651,7 @@ typedef struct WGPURenderPipelineDescriptor {
     WGPUPipelineLayout layout;
     WGPUPipelineStageDescriptor vertexStage;
     WGPUPipelineStageDescriptor const * fragmentStage;
-    WGPUVertexInputDescriptor vertexInput;
+    WGPUVertexInputDescriptor const * vertexInput;
     WGPUPrimitiveTopology primitiveTopology;
     WGPURasterizationStateDescriptor const * rasterizationState;
     uint32_t sampleCount;
