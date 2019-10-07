@@ -221,6 +221,7 @@ typedef enum WGPUStencilOperation {
 
 typedef enum WGPUStoreOp {
     WGPUStoreOp_Store = 0x00000000,
+    WGPUStoreOp_Clear = 0x00000001,
     WGPUStoreOp_Force32 = 0x7FFFFFFF
 } WGPUStoreOp;
 
@@ -407,7 +408,7 @@ typedef struct WGPUBindGroupLayoutBinding {
     uint32_t binding;
     WGPUShaderStageFlags visibility;
     WGPUBindingType type;
-    bool dynamic;
+    bool hasDynamicOffset;
     bool multisampled;
     WGPUTextureViewDimension textureDimension;
     WGPUTextureComponentType textureComponentType;
@@ -429,6 +430,7 @@ typedef struct WGPUBufferCopyView {
 
 typedef struct WGPUBufferDescriptor {
     void const * nextInChain;
+    char const * label;
     WGPUBufferUsageFlags usage;
     uint64_t size;
 } WGPUBufferDescriptor;
@@ -442,14 +444,17 @@ typedef struct WGPUColor {
 
 typedef struct WGPUCommandBufferDescriptor {
     void const * nextInChain;
+    char const * label;
 } WGPUCommandBufferDescriptor;
 
 typedef struct WGPUCommandEncoderDescriptor {
     void const * nextInChain;
+    char const * label;
 } WGPUCommandEncoderDescriptor;
 
 typedef struct WGPUComputePassDescriptor {
     void const * nextInChain;
+    char const * label;
 } WGPUComputePassDescriptor;
 
 typedef struct WGPUCreateBufferMappedResult {
@@ -466,6 +471,7 @@ typedef struct WGPUExtent3D {
 
 typedef struct WGPUFenceDescriptor {
     void const * nextInChain;
+    char const * label;
     uint64_t initialValue;
 } WGPUFenceDescriptor;
 
@@ -477,6 +483,7 @@ typedef struct WGPUOrigin3D {
 
 typedef struct WGPUPipelineLayoutDescriptor {
     void const * nextInChain;
+    char const * label;
     uint32_t bindGroupLayoutCount;
     WGPUBindGroupLayout const * bindGroupLayouts;
 } WGPUPipelineLayoutDescriptor;
@@ -498,10 +505,12 @@ typedef struct WGPURasterizationStateDescriptor {
 
 typedef struct WGPURenderBundleDescriptor {
     void const * nextInChain;
+    char const * label;
 } WGPURenderBundleDescriptor;
 
 typedef struct WGPURenderBundleEncoderDescriptor {
     void const * nextInChain;
+    char const * label;
     uint32_t colorFormatsCount;
     WGPUTextureFormat const * colorFormats;
     WGPUTextureFormat depthStencilFormat;
@@ -520,6 +529,7 @@ typedef struct WGPURenderPassDepthStencilAttachmentDescriptor {
 
 typedef struct WGPUSamplerDescriptor {
     void const * nextInChain;
+    char const * label;
     WGPUAddressMode addressModeU;
     WGPUAddressMode addressModeV;
     WGPUAddressMode addressModeW;
@@ -533,6 +543,7 @@ typedef struct WGPUSamplerDescriptor {
 
 typedef struct WGPUShaderModuleDescriptor {
     void const * nextInChain;
+    char const * label;
     uint32_t codeSize;
     uint32_t const * code;
 } WGPUShaderModuleDescriptor;
@@ -546,6 +557,7 @@ typedef struct WGPUStencilStateFaceDescriptor {
 
 typedef struct WGPUTextureViewDescriptor {
     void const * nextInChain;
+    char const * label;
     WGPUTextureFormat format;
     WGPUTextureViewDimension dimension;
     uint32_t baseMipLevel;
@@ -563,6 +575,7 @@ typedef struct WGPUVertexAttributeDescriptor {
 
 typedef struct WGPUBindGroupDescriptor {
     void const * nextInChain;
+    char const * label;
     WGPUBindGroupLayout layout;
     uint32_t bindingCount;
     WGPUBindGroupBinding const * bindings;
@@ -570,6 +583,7 @@ typedef struct WGPUBindGroupDescriptor {
 
 typedef struct WGPUBindGroupLayoutDescriptor {
     void const * nextInChain;
+    char const * label;
     uint32_t bindingCount;
     WGPUBindGroupLayoutBinding const * bindings;
 } WGPUBindGroupLayoutDescriptor;
@@ -584,6 +598,7 @@ typedef struct WGPUColorStateDescriptor {
 
 typedef struct WGPUComputePipelineDescriptor {
     void const * nextInChain;
+    char const * label;
     WGPUPipelineLayout layout;
     WGPUPipelineStageDescriptor computeStage;
 } WGPUComputePipelineDescriptor;
@@ -617,6 +632,7 @@ typedef struct WGPUTextureCopyView {
 
 typedef struct WGPUTextureDescriptor {
     void const * nextInChain;
+    char const * label;
     WGPUTextureUsageFlags usage;
     WGPUTextureDimension dimension;
     WGPUExtent3D size;
@@ -634,6 +650,8 @@ typedef struct WGPUVertexBufferDescriptor {
 } WGPUVertexBufferDescriptor;
 
 typedef struct WGPURenderPassDescriptor {
+    void const * nextInChain;
+    char const * label;
     uint32_t colorAttachmentCount;
     WGPURenderPassColorAttachmentDescriptor const * colorAttachments;
     WGPURenderPassDepthStencilAttachmentDescriptor const * depthStencilAttachment;
@@ -648,6 +666,7 @@ typedef struct WGPUVertexInputDescriptor {
 
 typedef struct WGPURenderPipelineDescriptor {
     void const * nextInChain;
+    char const * label;
     WGPUPipelineLayout layout;
     WGPUPipelineStageDescriptor vertexStage;
     WGPUPipelineStageDescriptor const * fragmentStage;
