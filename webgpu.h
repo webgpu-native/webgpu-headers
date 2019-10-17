@@ -71,10 +71,10 @@ typedef struct WGPURenderPassEncoderImpl* WGPURenderPassEncoder;
 typedef struct WGPURenderPipelineImpl* WGPURenderPipeline;
 typedef struct WGPUSamplerImpl* WGPUSampler;
 typedef struct WGPUShaderModuleImpl* WGPUShaderModule;
-typedef struct WGPUTextureImpl* WGPUTexture;
-typedef struct WGPUTextureViewImpl* WGPUTextureView;
 typedef struct WGPUSurfaceImpl* WGPUSurface;
 typedef struct WGPUSwapChainImpl* WGPUSwapChain;
+typedef struct WGPUTextureImpl* WGPUTexture;
+typedef struct WGPUTextureViewImpl* WGPUTextureView;
 
 typedef enum WGPUAddressMode {
     WGPUAddressMode_Repeat = 0x00000000,
@@ -397,8 +397,8 @@ typedef enum WGPUTextureUsage {
 typedef WGPUFlags WGPUTextureUsageFlags;
 
 typedef enum WGPUPresentMode {
-  WGPUPresentMode_NoVsync = 0,
-  WGPUPresentMode_Vsync = 1,
+  WGPUPresentMode_NoVSync = 0,
+  WGPUPresentMode_VSync = 1,
 } WGPUPresentMode;
 
 
@@ -765,8 +765,8 @@ typedef WGPURenderBundleEncoder (*WGPUProcDeviceCreateRenderBundleEncoder)(WGPUD
 typedef WGPURenderPipeline (*WGPUProcDeviceCreateRenderPipeline)(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor);
 typedef WGPUSampler (*WGPUProcDeviceCreateSampler)(WGPUDevice device, WGPUSamplerDescriptor const * descriptor);
 typedef WGPUShaderModule (*WGPUProcDeviceCreateShaderModule)(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
-typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 typedef WGPUSwapChain (*WGPUProcDeviceCreateSwapChain)(WGPUDevice device, WGPUSurface surface, WGPUSwapChainDescriptor const * descriptor);
+typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 typedef bool (*WGPUProcDevicePopErrorScope)(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 typedef void (*WGPUProcDevicePushErrorScope)(WGPUDevice device, WGPUErrorFilter filter);
 typedef void (*WGPUProcDeviceSetDeviceLostCallback)(WGPUDevice device, WGPUDeviceLostCallback callback, void * userdata);
@@ -814,13 +814,13 @@ typedef void (*WGPUProcRenderPassEncoderSetStencilReference)(WGPURenderPassEncod
 typedef void (*WGPUProcRenderPassEncoderSetVertexBuffers)(WGPURenderPassEncoder renderPassEncoder, uint32_t startSlot, uint32_t count, WGPUBuffer const * buffers, uint64_t const * offsets);
 typedef void (*WGPUProcRenderPassEncoderSetViewport)(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth);
 
-// Procs of Texture
-typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
-typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture);
-
 // Procs of SwapChain
 typedef WGPUTextureView (*WGPUProcSwapChainGetCurrentTextureView)(WGPUSwapChain swapChain);
 typedef void (*WGPUProcSwapChainPresent)(WGPUSwapChain swapChain);
+
+// Procs of Texture
+typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
+typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture);
 
 #endif  // !defined(WGPU_SKIP_PROCS)
 
@@ -870,8 +870,8 @@ WGPU_EXPORT WGPURenderBundleEncoder wgpuDeviceCreateRenderBundleEncoder(WGPUDevi
 WGPU_EXPORT WGPURenderPipeline wgpuDeviceCreateRenderPipeline(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor);
 WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPUSamplerDescriptor const * descriptor);
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
-WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 WGPU_EXPORT WGPUSwapChain wgpuDeviceCreateSwapChain(WGPUDevice device, WGPUSurface surface, WGPUSwapChainDescriptor const * descriptor);
+WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 WGPU_EXPORT bool wgpuDevicePopErrorScope(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter filter);
 WGPU_EXPORT void wgpuDeviceSetDeviceLostCallback(WGPUDevice device, WGPUDeviceLostCallback callback, void * userdata);
@@ -919,17 +919,17 @@ WGPU_EXPORT void wgpuRenderPassEncoderSetStencilReference(WGPURenderPassEncoder 
 WGPU_EXPORT void wgpuRenderPassEncoderSetVertexBuffers(WGPURenderPassEncoder renderPassEncoder, uint32_t startSlot, uint32_t count, WGPUBuffer const * buffers, uint64_t const * offsets);
 WGPU_EXPORT void wgpuRenderPassEncoderSetViewport(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth);
 
-// Methods of Texture
-WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
-WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
-
 // Methods of SwapChain
 WGPU_EXPORT WGPUTextureView wgpuSwapChainGetCurrentTextureView(WGPUSwapChain swapChain);
 WGPU_EXPORT void wgpuSwapChainPresent(WGPUSwapChain swapChain);
 
+// Methods of Texture
+WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
+WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
+
 // Surface creation
 WGPUSurface wgpuCreateSurfaceFromMetalLayer(void *layer);
-WGPUSurface wgpuCreateSurfaceFromWindowsHwnd(void *_hinstance, void *hwnd);
+WGPUSurface wgpuCreateSurfaceFromWindowsHwnd(void *hinstance, void *hwnd);
 WGPUSurface wgpuCreateSurfaceFromXlib(const void **display, uint64_t window);
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
