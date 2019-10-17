@@ -396,6 +396,10 @@ typedef enum WGPUTextureUsage {
 } WGPUTextureUsage;
 typedef WGPUFlags WGPUTextureUsageFlags;
 
+#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_METAL_LAYER 0x00000001
+#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_WINDOWS_HWND 0x00000002
+#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_XLIB 0x00000003
+
 typedef enum WGPUPresentMode {
   WGPUPresentMode_NoVSync = 0,
   WGPUPresentMode_VSync = 1,
@@ -694,18 +698,18 @@ typedef struct WGPUSurfaceDescriptor {
 } WGPUSurfaceDescriptor;
 
 typedef struct WGPUSurfaceDescriptorForMetalLayer {
-    WGPUSurfaceDescriptor base;
-    void *layer;
+    uint32_t sType;
+    void * layer;
 } WGPUSurfaceDescriptorForMetalLayer;
 
 typedef struct WGPUSurfaceDescriptorForWindowsHwnd {
-    WGPUSurfaceDescriptor base;
+    uint32_t sType;
     void * hinstance;
     void * hwnd;
 } WGPUSurfaceDescriptorForWindowsHwnd;
 
 typedef struct WGPUSurfaceDescriptorForXlib {
-    WGPUSurfaceDescriptor base;
+    uint32_t sType;
     void * const * display;
     uint64_t window;
 } WGPUSurfaceDescriptorForXlib;
@@ -797,6 +801,9 @@ typedef void (*WGPUProcDeviceSetUncapturedErrorCallback)(WGPUDevice device, WGPU
 // Procs of Fence
 typedef uint64_t (*WGPUProcFenceGetCompletedValue)(WGPUFence fence);
 typedef void (*WGPUProcFenceOnCompletion)(WGPUFence fence, uint64_t value, WGPUFenceOnCompletionCallback callback, void * userdata);
+
+// Procs of Instance
+typedef WGPUSurface (*WGPUProcCreateSurface)(WGPUSurfaceDescriptor const * descriptor);
 
 // Procs of Queue
 typedef WGPUFence (*WGPUProcQueueCreateFence)(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
