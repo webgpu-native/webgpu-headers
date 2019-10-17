@@ -688,6 +688,28 @@ typedef struct WGPURenderPipelineDescriptor {
     bool alphaToCoverageEnabled;
 } WGPURenderPipelineDescriptor;
 
+typedef struct WGPUSurfaceDescriptor {
+    void const * nextInChain;
+    char const * label;
+} WGPUSurfaceDescriptor;
+
+typedef struct WGPUSurfaceDescriptorForMetalLayer {
+    WGPUSurfaceDescriptor base;
+    void *layer;
+} WGPUSurfaceDescriptorForMetalLayer;
+
+typedef struct WGPUSurfaceDescriptorForWindowsHwnd {
+    WGPUSurfaceDescriptor base;
+    void * hinstance;
+    void * hwnd;
+} WGPUSurfaceDescriptorForWindowsHwnd;
+
+typedef struct WGPUSurfaceDescriptorForXlib {
+    WGPUSurfaceDescriptor base;
+    void * const * display;
+    uint64_t window;
+} WGPUSurfaceDescriptorForXlib;
+
 typedef struct WGPUSwapChainDescriptor {
     void const * nextInChain;
     char const * label;
@@ -928,9 +950,7 @@ WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextu
 WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
 
 // Surface creation
-WGPUSurface wgpuCreateSurfaceFromMetalLayer(void *layer);
-WGPUSurface wgpuCreateSurfaceFromWindowsHwnd(void *hinstance, void *hwnd);
-WGPUSurface wgpuCreateSurfaceFromXlib(const void **display, uint64_t window);
+WGPUSurface wgpuCreateSurface(WGPUSurfaceDescriptor const * descriptor);
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
 
