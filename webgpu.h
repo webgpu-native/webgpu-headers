@@ -71,6 +71,8 @@ typedef struct WGPURenderPassEncoderImpl* WGPURenderPassEncoder;
 typedef struct WGPURenderPipelineImpl* WGPURenderPipeline;
 typedef struct WGPUSamplerImpl* WGPUSampler;
 typedef struct WGPUShaderModuleImpl* WGPUShaderModule;
+typedef struct WGPUSurfaceImpl* WGPUSurface;
+typedef struct WGPUSwapChainImpl* WGPUSwapChain;
 typedef struct WGPUTextureImpl* WGPUTexture;
 typedef struct WGPUTextureViewImpl* WGPUTextureView;
 
@@ -394,6 +396,15 @@ typedef enum WGPUTextureUsage {
 } WGPUTextureUsage;
 typedef WGPUFlags WGPUTextureUsageFlags;
 
+#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_METAL_LAYER 0x00000001
+#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_WINDOWS_HWND 0x00000002
+#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_XLIB 0x00000003
+
+typedef enum WGPUPresentMode {
+  WGPUPresentMode_NoVSync = 0,
+  WGPUPresentMode_VSync = 1,
+} WGPUPresentMode;
+
 
 typedef struct WGPUBindGroupBinding {
     uint32_t binding;
@@ -681,6 +692,37 @@ typedef struct WGPURenderPipelineDescriptor {
     bool alphaToCoverageEnabled;
 } WGPURenderPipelineDescriptor;
 
+typedef struct WGPUSurfaceDescriptor {
+    void const * nextInChain;
+    char const * label;
+} WGPUSurfaceDescriptor;
+
+typedef struct WGPUSurfaceDescriptorForMetalLayer {
+    uint32_t sType;
+    void * layer;
+} WGPUSurfaceDescriptorForMetalLayer;
+
+typedef struct WGPUSurfaceDescriptorForWindowsHwnd {
+    uint32_t sType;
+    void * hinstance;
+    void * hwnd;
+} WGPUSurfaceDescriptorForWindowsHwnd;
+
+typedef struct WGPUSurfaceDescriptorForXlib {
+    uint32_t sType;
+    void * const * display;
+    uint64_t window;
+} WGPUSurfaceDescriptorForXlib;
+
+typedef struct WGPUSwapChainDescriptor {
+    void const * nextInChain;
+    char const * label;
+    WGPUTextureUsageFlags usage;
+    WGPUTextureFormat format;
+    uint32_t width;
+    uint32_t height;
+    WGPUPresentMode presentMode;
+} WGPUTextureDescriptor;
 
 #ifdef __cplusplus
 extern "C" {
@@ -749,6 +791,7 @@ typedef WGPURenderBundleEncoder (*WGPUProcDeviceCreateRenderBundleEncoder)(WGPUD
 typedef WGPURenderPipeline (*WGPUProcDeviceCreateRenderPipeline)(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor);
 typedef WGPUSampler (*WGPUProcDeviceCreateSampler)(WGPUDevice device, WGPUSamplerDescriptor const * descriptor);
 typedef WGPUShaderModule (*WGPUProcDeviceCreateShaderModule)(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
+typedef WGPUSwapChain (*WGPUProcDeviceCreateSwapChain)(WGPUDevice device, WGPUSurface surface, WGPUSwapChainDescriptor const * descriptor);
 typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 typedef bool (*WGPUProcDevicePopErrorScope)(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 typedef void (*WGPUProcDevicePushErrorScope)(WGPUDevice device, WGPUErrorFilter filter);
@@ -758,6 +801,9 @@ typedef void (*WGPUProcDeviceSetUncapturedErrorCallback)(WGPUDevice device, WGPU
 // Procs of Fence
 typedef uint64_t (*WGPUProcFenceGetCompletedValue)(WGPUFence fence);
 typedef void (*WGPUProcFenceOnCompletion)(WGPUFence fence, uint64_t value, WGPUFenceOnCompletionCallback callback, void * userdata);
+
+// Procs of Instance
+typedef WGPUSurface (*WGPUProcCreateSurface)(WGPUSurfaceDescriptor const * descriptor);
 
 // Procs of Queue
 typedef WGPUFence (*WGPUProcQueueCreateFence)(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
@@ -796,6 +842,10 @@ typedef void (*WGPUProcRenderPassEncoderSetScissorRect)(WGPURenderPassEncoder re
 typedef void (*WGPUProcRenderPassEncoderSetStencilReference)(WGPURenderPassEncoder renderPassEncoder, uint32_t reference);
 typedef void (*WGPUProcRenderPassEncoderSetVertexBuffer)(WGPURenderPassEncoder renderPassEncoder, uint32_t slot, WGPUBuffer buffer, uint64_t offset);
 typedef void (*WGPUProcRenderPassEncoderSetViewport)(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth);
+
+// Procs of SwapChain
+typedef WGPUTextureView (*WGPUProcSwapChainGetCurrentTextureView)(WGPUSwapChain swapChain);
+typedef void (*WGPUProcSwapChainPresent)(WGPUSwapChain swapChain);
 
 // Procs of Texture
 typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
@@ -849,6 +899,7 @@ WGPU_EXPORT WGPURenderBundleEncoder wgpuDeviceCreateRenderBundleEncoder(WGPUDevi
 WGPU_EXPORT WGPURenderPipeline wgpuDeviceCreateRenderPipeline(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor);
 WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPUSamplerDescriptor const * descriptor);
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
+WGPU_EXPORT WGPUSwapChain wgpuDeviceCreateSwapChain(WGPUDevice device, WGPUSurface surface, WGPUSwapChainDescriptor const * descriptor);
 WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 WGPU_EXPORT bool wgpuDevicePopErrorScope(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter filter);
@@ -897,9 +948,16 @@ WGPU_EXPORT void wgpuRenderPassEncoderSetStencilReference(WGPURenderPassEncoder 
 WGPU_EXPORT void wgpuRenderPassEncoderSetVertexBuffer(WGPURenderPassEncoder renderPassEncoder, uint32_t slot, WGPUBuffer buffer, uint64_t offset);
 WGPU_EXPORT void wgpuRenderPassEncoderSetViewport(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth);
 
+// Methods of SwapChain
+WGPU_EXPORT WGPUTextureView wgpuSwapChainGetCurrentTextureView(WGPUSwapChain swapChain);
+WGPU_EXPORT void wgpuSwapChainPresent(WGPUSwapChain swapChain);
+
 // Methods of Texture
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
 WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
+
+// Surface creation
+WGPUSurface wgpuCreateSurface(WGPUSurfaceDescriptor const * descriptor);
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
 
