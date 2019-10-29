@@ -200,6 +200,12 @@ typedef enum WGPULoadOp {
     WGPULoadOp_Force32 = 0x7FFFFFFF
 } WGPULoadOp;
 
+typedef enum WGPUPresentMode {
+    WGPUPresentMode_NoVSync = 0x00000000,
+    WGPUPresentMode_VSync = 0x00000001,
+    WGPUPresentMode_Force32 = 0x7FFFFFFF
+} WGPUPresentMode;
+
 typedef enum WGPUPrimitiveTopology {
     WGPUPrimitiveTopology_PointList = 0x00000000,
     WGPUPrimitiveTopology_LineList = 0x00000001,
@@ -208,6 +214,14 @@ typedef enum WGPUPrimitiveTopology {
     WGPUPrimitiveTopology_TriangleStrip = 0x00000004,
     WGPUPrimitiveTopology_Force32 = 0x7FFFFFFF
 } WGPUPrimitiveTopology;
+
+typedef enum WGPUSType {
+    WGPUSType_Invalid = 0x00000000,
+    WGPUSType_SurfaceDescriptorFromMetalLayer = 0x00000001,
+    WGPUSType_SurfaceDescriptorFromWindowsHwnd = 0x00000002,
+    WGPUSType_SurfaceDescriptorFromXlib = 0x00000003,
+    WGPUSType_Force32 = 0x7FFFFFFF
+} WGPUSType;
 
 typedef enum WGPUStencilOperation {
     WGPUStencilOperation_Keep = 0x00000000,
@@ -396,15 +410,6 @@ typedef enum WGPUTextureUsage {
 } WGPUTextureUsage;
 typedef WGPUFlags WGPUTextureUsageFlags;
 
-#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_METAL_LAYER 0x00000001
-#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_WINDOWS_HWND 0x00000002
-#define WGPU_STYPE_SURFACE_DESCRIPTOR_FROM_XLIB 0x00000003
-
-typedef enum WGPUPresentMode {
-  WGPUPresentMode_NoVSync = 0,
-  WGPUPresentMode_VSync = 1,
-} WGPUPresentMode;
-
 
 typedef struct WGPUBindGroupBinding {
     uint32_t binding;
@@ -566,6 +571,41 @@ typedef struct WGPUStencilStateFaceDescriptor {
     WGPUStencilOperation passOp;
 } WGPUStencilStateFaceDescriptor;
 
+typedef struct WGPUSurfaceDescriptor {
+    void const * nextInChain;
+    char const * label;
+} WGPUSurfaceDescriptor;
+
+typedef struct WGPUSurfaceDescriptorFromMetalLayer {
+    void const * nextInChain;
+    WGPUSType sType;
+    void * layer;
+} WGPUSurfaceDescriptorFromMetalLayer;
+
+typedef struct WGPUSurfaceDescriptorFromWindowsHwnd {
+    void const * nextInChain;
+    WGPUSType sType;
+    void * hinstance;
+    void * hwnd;
+} WGPUSurfaceDescriptorFromWindowsHwnd;
+
+typedef struct WGPUSurfaceDescriptorFromWindowsXlib {
+    void const * nextInChain;
+    WGPUSType sType;
+    void * display;
+    uint64_t window;
+} WGPUSurfaceDescriptorFromWindowsXlib;
+
+typedef struct WGPUSwapChainDescriptor {
+    void const * nextInChain;
+    char const * label;
+    WGPUTextureUsageFlags usage;
+    WGPUTextureFormat format;
+    uint32_t width;
+    uint32_t height;
+    WGPUPresentMode presentMode;
+} WGPUSwapChainDescriptor;
+
 typedef struct WGPUTextureViewDescriptor {
     void const * nextInChain;
     char const * label;
@@ -692,37 +732,6 @@ typedef struct WGPURenderPipelineDescriptor {
     bool alphaToCoverageEnabled;
 } WGPURenderPipelineDescriptor;
 
-typedef struct WGPUSurfaceDescriptor {
-    void const * nextInChain;
-    char const * label;
-} WGPUSurfaceDescriptor;
-
-typedef struct WGPUSurfaceDescriptorForMetalLayer {
-    uint32_t sType;
-    void * layer;
-} WGPUSurfaceDescriptorForMetalLayer;
-
-typedef struct WGPUSurfaceDescriptorForWindowsHwnd {
-    uint32_t sType;
-    void * hinstance;
-    void * hwnd;
-} WGPUSurfaceDescriptorForWindowsHwnd;
-
-typedef struct WGPUSurfaceDescriptorForXlib {
-    uint32_t sType;
-    void * const * display;
-    uint64_t window;
-} WGPUSurfaceDescriptorForXlib;
-
-typedef struct WGPUSwapChainDescriptor {
-    void const * nextInChain;
-    char const * label;
-    WGPUTextureUsageFlags usage;
-    WGPUTextureFormat format;
-    uint32_t width;
-    uint32_t height;
-    WGPUPresentMode presentMode;
-} WGPUTextureDescriptor;
 
 #ifdef __cplusplus
 extern "C" {
@@ -747,6 +756,7 @@ typedef void (*WGPUProc)();
 
 #if !defined(WGPU_SKIP_PROCS)
 
+typedef WGPUSurface (*WGPUProcCreateSurface)(WGPUSurfaceDescriptor const * descriptor);
 typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, const char* procName);
 
 // Procs of Buffer
@@ -802,9 +812,6 @@ typedef void (*WGPUProcDeviceSetUncapturedErrorCallback)(WGPUDevice device, WGPU
 typedef uint64_t (*WGPUProcFenceGetCompletedValue)(WGPUFence fence);
 typedef void (*WGPUProcFenceOnCompletion)(WGPUFence fence, uint64_t value, WGPUFenceOnCompletionCallback callback, void * userdata);
 
-// Procs of Instance
-typedef WGPUSurface (*WGPUProcCreateSurface)(WGPUSurfaceDescriptor const * descriptor);
-
 // Procs of Queue
 typedef WGPUFence (*WGPUProcQueueCreateFence)(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
 typedef void (*WGPUProcQueueSignal)(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
@@ -855,6 +862,7 @@ typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture);
 
 #if !defined(WGPU_SKIP_DECLARATIONS)
 
+WGPU_EXPORT WGPUSurface wgpuCreateSurface(WGPUSurfaceDescriptor const * descriptor);
 WGPU_EXPORT WGPUProc WGPUGetProcAddress(WGPUDevice device, const char* procName);
 
 // Methods of Buffer
@@ -955,9 +963,6 @@ WGPU_EXPORT void wgpuSwapChainPresent(WGPUSwapChain swapChain);
 // Methods of Texture
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor);
 WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
-
-// Surface creation
-WGPUSurface wgpuCreateSurface(WGPUSurfaceDescriptor const * descriptor);
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
 
