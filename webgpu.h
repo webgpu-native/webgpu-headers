@@ -27,10 +27,10 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#ifndef WGPU_WGPU_H_
-#define WGPU_WGPU_H_
+#ifndef WEBGPU_H_
+#define WEBGPU_H_
 
-#if !defined(WGPU_EXPORT)
+#if defined(WGPU_SHARED_LIBRARY)
 #    if defined(_WIN32)
 #        if defined(WGPU_IMPLEMENTATION)
 #            define WGPU_EXPORT __declspec(dllexport)
@@ -44,7 +44,9 @@
 #            define WGPU_EXPORT
 #        endif
 #    endif  // defined(_WIN32)
-#endif  // defined(WGPU_EXPORT)
+#else       // defined(WGPU_SHARED_LIBRARY)
+#    define WGPU_EXPORT
+#endif  // defined(WGPU_SHARED_LIBRARY)
 
 #include <stdint.h>
 #include <stddef.h>
@@ -965,4 +967,4 @@ WGPUSurface wgpuCreateSurface(WGPUSurfaceDescriptor const * descriptor);
 } // extern "C"
 #endif
 
-#endif // WGPU_WGPU_H_
+#endif // WEBGPU_H_
