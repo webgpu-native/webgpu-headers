@@ -621,9 +621,9 @@ typedef struct WGPUTextureViewDescriptor {
 } WGPUTextureViewDescriptor;
 
 typedef struct WGPUVertexAttributeDescriptor {
-    uint32_t shaderLocation;
-    uint64_t offset;
     WGPUVertexFormat format;
+    uint64_t offset;
+    uint32_t shaderLocation;
 } WGPUVertexAttributeDescriptor;
 
 typedef struct WGPUBindGroupDescriptor {
@@ -695,12 +695,12 @@ typedef struct WGPUTextureDescriptor {
     uint32_t sampleCount;
 } WGPUTextureDescriptor;
 
-typedef struct WGPUVertexBufferDescriptor {
-    uint64_t stride;
+typedef struct WGPUVertexBufferLayoutDescriptor {
+    uint64_t arrayStride;
     WGPUInputStepMode stepMode;
     uint32_t attributeCount;
     WGPUVertexAttributeDescriptor const * attributes;
-} WGPUVertexBufferDescriptor;
+} WGPUVertexBufferLayoutDescriptor;
 
 typedef struct WGPURenderPassDescriptor {
     void const * nextInChain;
@@ -710,12 +710,12 @@ typedef struct WGPURenderPassDescriptor {
     WGPURenderPassDepthStencilAttachmentDescriptor const * depthStencilAttachment;
 } WGPURenderPassDescriptor;
 
-typedef struct WGPUVertexInputDescriptor {
+typedef struct WGPUVertexStateDescriptor {
     void const * nextInChain;
     WGPUIndexFormat indexFormat;
-    uint32_t bufferCount;
-    WGPUVertexBufferDescriptor const * buffers;
-} WGPUVertexInputDescriptor;
+    uint32_t vertexBufferCount;
+    WGPUVertexBufferLayoutDescriptor const * vertexBuffers;
+} WGPUVertexStateDescriptor;
 
 typedef struct WGPURenderPipelineDescriptor {
     void const * nextInChain;
@@ -723,7 +723,7 @@ typedef struct WGPURenderPipelineDescriptor {
     WGPUPipelineLayout layout;
     WGPUProgrammableStageDescriptor vertexStage;
     WGPUProgrammableStageDescriptor const * fragmentStage;
-    WGPUVertexInputDescriptor const * vertexInput;
+    WGPUVertexStateDescriptor const * vertexState;
     WGPUPrimitiveTopology primitiveTopology;
     WGPURasterizationStateDescriptor const * rasterizationState;
     uint32_t sampleCount;
