@@ -80,12 +80,30 @@ typedef struct WGPUSwapChainImpl* WGPUSwapChain;
 typedef struct WGPUTextureImpl* WGPUTexture;
 typedef struct WGPUTextureViewImpl* WGPUTextureView;
 
+typedef enum WGPUAdapterType {
+    WGPUAdapterType_DiscreteGPU = 0x00000000,
+    WGPUAdapterType_IntegratedGPU = 0x00000001,
+    WGPUAdapterType_CPU = 0x00000002,
+    WGPUAdapterType_Unknown = 0x00000003,
+    WGPUAdapterType_Force32 = 0x7FFFFFFF
+} WGPUAdapterType;
+
 typedef enum WGPUAddressMode {
     WGPUAddressMode_Repeat = 0x00000000,
     WGPUAddressMode_MirrorRepeat = 0x00000001,
     WGPUAddressMode_ClampToEdge = 0x00000002,
     WGPUAddressMode_Force32 = 0x7FFFFFFF
 } WGPUAddressMode;
+
+typedef enum WGPUBackendType {
+    WGPUBackendType_D3D11 = 0x00000000,
+    WGPUBackendType_D3D12 = 0x00000001,
+    WGPUBackendType_Metal = 0x00000002,
+    WGPUBackendType_Vulkan = 0x00000003,
+    WGPUBackendType_OpenGL = 0x00000004,
+    WGPUBackendType_OpenGLES = 0x00000005,
+    WGPUBackendType_Force32 = 0x7FFFFFFF
+} WGPUBackendType;
 
 typedef enum WGPUBindingType {
     WGPUBindingType_UniformBuffer = 0x00000000,
@@ -418,6 +436,15 @@ typedef WGPUFlags WGPUTextureUsageFlags;
 typedef struct WGPUAdapterDescriptor {
     void const * nextInChain;
 } WGPUAdapterDescriptor;
+
+typedef struct WGPUAdapterProperties {
+    void const * nextInChain;
+    uint32_t deviceID;
+    uint32_t vendorID;
+    char const * name;
+    WGPUAdapterType adapterType;
+    WGPUBackendType backendType;
+} WGPUAdapterProperties;
 
 typedef struct WGPUBindGroupBinding {
     uint32_t binding;
@@ -767,9 +794,10 @@ typedef void (*WGPUProc)();
 #if !defined(WGPU_SKIP_PROCS)
 
 typedef WGPUInstance (*WGPUProcCreateInstance)(WGPUInstanceDescriptor const * descriptor);
-typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, const char* procName);
+typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procName);
 
 // Procs of Adapter
+typedef bool (*WGPUProcAdapterGetProperties)(WGPUAdapter adapter, WGPUAdapterProperties * properties);
 typedef void (*WGPUProcAdapterRequestDevice)(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Procs of Buffer
@@ -881,9 +909,10 @@ typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture);
 #if !defined(WGPU_SKIP_DECLARATIONS)
 
 WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPUInstanceDescriptor const * descriptor);
-WGPU_EXPORT WGPUProc WGPUGetProcAddress(WGPUDevice device, const char* procName);
+WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName);
 
 // Methods of Adapter
+WGPU_EXPORT bool wgpuAdapterGetProperties(WGPUAdapter adapter, WGPUAdapterProperties * properties);
 WGPU_EXPORT void wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Methods of Buffer
