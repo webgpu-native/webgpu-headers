@@ -96,13 +96,13 @@ typedef enum WGPUAddressMode {
 } WGPUAddressMode;
 
 typedef enum WGPUBackendType {
-    WGPUBackendType_D3D11 = 0x00000000,
-    WGPUBackendType_D3D12 = 0x00000001,
-    WGPUBackendType_Metal = 0x00000002,
-    WGPUBackendType_Vulkan = 0x00000003,
-    WGPUBackendType_OpenGL = 0x00000004,
-    WGPUBackendType_OpenGLES = 0x00000005,
-    WGPUBackendType_Null = 0x00000006,
+    WGPUBackendType_Null = 0x00000000,
+    WGPUBackendType_D3D11 = 0x00000001,
+    WGPUBackendType_D3D12 = 0x00000002,
+    WGPUBackendType_Metal = 0x00000003,
+    WGPUBackendType_Vulkan = 0x00000004,
+    WGPUBackendType_OpenGL = 0x00000005,
+    WGPUBackendType_OpenGLES = 0x00000006,
     WGPUBackendType_Force32 = 0x7FFFFFFF
 } WGPUBackendType;
 
@@ -626,21 +626,18 @@ typedef struct WGPUSurfaceDescriptor {
 } WGPUSurfaceDescriptor;
 
 typedef struct WGPUSurfaceDescriptorFromMetalLayer {
-    WGPUChainedStruct const * nextInChain;
-    WGPUSType sType;
+    WGPUChainedStruct chain;
     void * layer;
 } WGPUSurfaceDescriptorFromMetalLayer;
 
 typedef struct WGPUSurfaceDescriptorFromWindowsHWND {
-    WGPUChainedStruct const * nextInChain;
-    WGPUSType sType;
+    WGPUChainedStruct chain;
     void * hinstance;
     void * hwnd;
 } WGPUSurfaceDescriptorFromWindowsHWND;
 
 typedef struct WGPUSurfaceDescriptorFromXlib {
-    WGPUChainedStruct const * nextInChain;
-    WGPUSType sType;
+    WGPUChainedStruct chain;
     void * display;
     uint32_t window;
 } WGPUSurfaceDescriptorFromXlib;
