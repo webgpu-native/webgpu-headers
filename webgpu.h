@@ -435,7 +435,7 @@ typedef WGPUFlags WGPUTextureUsageFlags;
 
 
 typedef struct WGPUChainedStruct {
-    struct WGPUChainedStruct const * nextInChain;
+    struct WGPUChainedStruct const * next;
     WGPUSType sType;
 } WGPUChainedStruct;
 
