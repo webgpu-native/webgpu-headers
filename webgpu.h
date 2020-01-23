@@ -797,6 +797,7 @@ typedef void (*WGPUErrorCallback)(WGPUErrorType type, char const * message, void
 typedef void (*WGPUFenceOnCompletionCallback)(WGPUFenceCompletionStatus status, void * userdata);
 typedef void (*WGPURequestAdapterCallback)(WGPUAdapter result, void * userdata);
 typedef void (*WGPURequestDeviceCallback)(WGPUDevice result, void * userdata);
+typedef void (*WGPUSurfaceGetPreferredFormatCallback)(WGPUTextureFormat format, void * userdata);
 
 typedef void (*WGPUProc)();
 
@@ -904,6 +905,9 @@ typedef void (*WGPUProcRenderPassEncoderSetScissorRect)(WGPURenderPassEncoder re
 typedef void (*WGPUProcRenderPassEncoderSetStencilReference)(WGPURenderPassEncoder renderPassEncoder, uint32_t reference);
 typedef void (*WGPUProcRenderPassEncoderSetVertexBuffer)(WGPURenderPassEncoder renderPassEncoder, uint32_t slot, WGPUBuffer buffer, uint64_t offset);
 typedef void (*WGPUProcRenderPassEncoderSetViewport)(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth);
+
+// Procs of Surface
+typedef void (*WGPUProcSurfaceGetPreferredFormat)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceGetPreferredFormatCallback callback, void * userdata);
 
 // Procs of SwapChain
 typedef WGPUTextureView (*WGPUProcSwapChainGetCurrentTextureView)(WGPUSwapChain swapChain);
@@ -1019,6 +1023,9 @@ WGPU_EXPORT void wgpuRenderPassEncoderSetScissorRect(WGPURenderPassEncoder rende
 WGPU_EXPORT void wgpuRenderPassEncoderSetStencilReference(WGPURenderPassEncoder renderPassEncoder, uint32_t reference);
 WGPU_EXPORT void wgpuRenderPassEncoderSetVertexBuffer(WGPURenderPassEncoder renderPassEncoder, uint32_t slot, WGPUBuffer buffer, uint64_t offset);
 WGPU_EXPORT void wgpuRenderPassEncoderSetViewport(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth);
+
+// Methods of Surface
+WGPU_EXPORT void wgpuSurfaceGetPreferredFormat(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceGetPreferredFormatCallback callback, void * userdata);
 
 // Methods of SwapChain
 WGPU_EXPORT WGPUTextureView wgpuSwapChainGetCurrentTextureView(WGPUSwapChain swapChain);
