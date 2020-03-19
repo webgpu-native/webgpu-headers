@@ -113,6 +113,8 @@ typedef enum WGPUBindingType {
     WGPUBindingType_Sampler = 0x00000003,
     WGPUBindingType_SampledTexture = 0x00000004,
     WGPUBindingType_StorageTexture = 0x00000005,
+    WGPUBindingType_ReadonlyStorageTexture = 0x00000006,
+    WGPUBindingType_WriteonlyStorageTexture = 0x00000007,
     WGPUBindingType_Force32 = 0x7FFFFFFF
 } WGPUBindingType;
 
@@ -470,6 +472,7 @@ typedef struct WGPUBindGroupLayoutBinding {
     bool multisampled;
     WGPUTextureViewDimension textureDimension;
     WGPUTextureComponentType textureComponentType;
+    WGPUTextureFormat storageTextureFormat;
 } WGPUBindGroupLayoutBinding;
 
 typedef struct WGPUBlendDescriptor {
