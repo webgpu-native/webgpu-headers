@@ -444,11 +444,6 @@ typedef struct WGPUChainedStruct {
     WGPUSType sType;
 } WGPUChainedStruct;
 
-typedef struct WGPUAdapterDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    WGPUSurface compatibleSurface;
-} WGPUAdapterDescriptor;
-
 typedef struct WGPUAdapterProperties {
     WGPUChainedStruct const * nextInChain;
     uint32_t deviceID;
@@ -598,6 +593,11 @@ typedef struct WGPURenderPassDepthStencilAttachmentDescriptor {
     WGPUStoreOp stencilStoreOp;
     uint32_t clearStencil;
 } WGPURenderPassDepthStencilAttachmentDescriptor;
+
+typedef struct WGPURequestAdapterOptions {
+    WGPUChainedStruct const * nextInChain;
+    WGPUSurface compatibleSurface;
+} WGPURequestAdapterOptions;
 
 typedef struct WGPUSamplerDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -872,7 +872,7 @@ typedef void (*WGPUProcFenceOnCompletion)(WGPUFence fence, uint64_t value, WGPUF
 // Procs of Instance
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor);
 typedef void (*WGPUProcInstanceProcessEvents)(WGPUInstance instance);
-typedef void (*WGPUProcInstanceRequestAdapter)(WGPUInstance instance, WGPUAdapterDescriptor const * descriptor, WGPURequestAdapterCallback callback, void * userdata);
+typedef void (*WGPUProcInstanceRequestAdapter)(WGPUInstance instance, WGPURequestAdapterOptions const * options, WGPURequestAdapterCallback callback, void * userdata);
 
 // Procs of Queue
 typedef WGPUFence (*WGPUProcQueueCreateFence)(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
@@ -995,7 +995,7 @@ WGPU_EXPORT void wgpuFenceOnCompletion(WGPUFence fence, uint64_t value, WGPUFenc
 // Methods of Instance
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor);
 WGPU_EXPORT void wgpuInstanceProcessEvents(WGPUInstance instance);
-WGPU_EXPORT void wgpuInstanceRequestAdapter(WGPUInstance instance, WGPUAdapterDescriptor const * descriptor, WGPURequestAdapterCallback callback, void * userdata);
+WGPU_EXPORT void wgpuInstanceRequestAdapter(WGPUInstance instance, WGPURequestAdapterOptions const * options, WGPURequestAdapterCallback callback, void * userdata);
 
 // Methods of Queue
 WGPU_EXPORT WGPUFence wgpuQueueCreateFence(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
