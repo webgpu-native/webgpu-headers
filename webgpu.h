@@ -446,6 +446,7 @@ typedef struct WGPUChainedStruct {
 
 typedef struct WGPUAdapterDescriptor {
     WGPUChainedStruct const * nextInChain;
+    WGPUSurface compatibleSurface;
 } WGPUAdapterDescriptor;
 
 typedef struct WGPUAdapterProperties {
