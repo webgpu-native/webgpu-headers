@@ -254,6 +254,8 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceDescriptorFromWindowsHWND = 0x00000002,
     WGPUSType_SurfaceDescriptorFromXlib = 0x00000003,
     WGPUSType_SurfaceDescriptorFromHTMLCanvasId = 0x00000004,
+    WGPUSType_ShaderModuleSPIRVDescripor = 0x00000005,
+    WGPUSType_ShaderModuleWGSLDescripor = 0x00000006,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
@@ -630,9 +632,18 @@ typedef struct WGPUSamplerDescriptor {
 typedef struct WGPUShaderModuleDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
+} WGPUShaderModuleDescriptor;
+
+typedef struct WGPUShaderModuleSPIRVDescriptor {
+    WGPUChainedStruct chain;
     uint32_t codeSize;
     uint32_t const * code;
-} WGPUShaderModuleDescriptor;
+} WGPUShaderModuleSPIRVDescriptor;
+
+typedef struct WGPUShaderModuleWGSLDescriptor {
+    WGPUChainedStruct chain;
+    char const * source;
+} WGPUShaderModuleWGSLDescriptor;
 
 typedef struct WGPUStencilStateFaceDescriptor {
     WGPUCompareFunction compare;
