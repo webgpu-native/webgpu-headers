@@ -803,7 +803,7 @@ typedef void (*WGPURequestAdapterCallback)(WGPUAdapter result, void * userdata);
 typedef void (*WGPURequestDeviceCallback)(WGPUDevice result, void * userdata);
 typedef void (*WGPUSurfaceGetPreferredFormatCallback)(WGPUTextureFormat format, void * userdata);
 
-typedef void (*WGPUProc)();
+typedef void (*WGPUProc)(void);
 
 #if !defined(WGPU_SKIP_PROCS)
 
