@@ -254,8 +254,8 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceDescriptorFromWindowsHWND = 0x00000002,
     WGPUSType_SurfaceDescriptorFromXlib = 0x00000003,
     WGPUSType_SurfaceDescriptorFromHTMLCanvasId = 0x00000004,
-    WGPUSType_ShaderModuleSPIRVDescripor = 0x00000005,
-    WGPUSType_ShaderModuleWGSLDescripor = 0x00000006,
+    WGPUSType_ShaderModuleSPIRVDescriptor = 0x00000005,
+    WGPUSType_ShaderModuleWGSLDescriptor = 0x00000006,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
