@@ -605,9 +605,11 @@ typedef struct WGPURenderPassDepthStencilAttachmentDescriptor {
     WGPULoadOp depthLoadOp;
     WGPUStoreOp depthStoreOp;
     float clearDepth;
+    bool depthReadOnly;
     WGPULoadOp stencilLoadOp;
     WGPUStoreOp stencilStoreOp;
     uint32_t clearStencil;
+    bool stencilReadOnly;
 } WGPURenderPassDepthStencilAttachmentDescriptor;
 
 typedef struct WGPURequestAdapterOptions {
@@ -760,7 +762,6 @@ typedef struct WGPUTextureCopyView {
     WGPUChainedStruct const * nextInChain;
     WGPUTexture texture;
     uint32_t mipLevel;
-    uint32_t arrayLayer;
     WGPUOrigin3D origin;
 } WGPUTextureCopyView;
 
