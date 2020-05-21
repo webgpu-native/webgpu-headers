@@ -488,14 +488,6 @@ typedef struct WGPUBlendDescriptor {
     WGPUBlendFactor dstFactor;
 } WGPUBlendDescriptor;
 
-typedef struct WGPUBufferCopyView {
-    WGPUChainedStruct const * nextInChain;
-    WGPUBuffer buffer;
-    uint64_t offset;
-    uint32_t bytesPerRow;
-    uint32_t rowsPerImage;
-} WGPUBufferCopyView;
-
 typedef struct WGPUBufferDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
@@ -686,6 +678,13 @@ typedef struct WGPUSwapChainDescriptor {
     WGPUPresentMode presentMode;
 } WGPUSwapChainDescriptor;
 
+typedef struct WGPUTextureDataLayout {
+    WGPUChainedStruct const * nextInChain;
+    uint64_t offset;
+    uint32_t bytesPerRow;
+    uint32_t rowsPerImage;
+} WGPUTextureDataLayout;
+
 typedef struct WGPUTextureViewDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
@@ -718,6 +717,12 @@ typedef struct WGPUBindGroupLayoutDescriptor {
     uint32_t entryCount;
     WGPUBindGroupLayoutEntry const * entries;
 } WGPUBindGroupLayoutDescriptor;
+
+typedef struct WGPUBufferCopyView {
+    WGPUChainedStruct const * nextInChain;
+    WGPUTextureDataLayout layout;
+    WGPUBuffer buffer;
+} WGPUBufferCopyView;
 
 typedef struct WGPUColorStateDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -906,6 +911,8 @@ typedef void (*WGPUProcQuerySetDestroy)(WGPUQuerySet querySet);
 typedef WGPUFence (*WGPUProcQueueCreateFence)(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
 typedef void (*WGPUProcQueueSignal)(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
 typedef void (*WGPUProcQueueSubmit)(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands);
+typedef void (*WGPUProcQueueWriteBuffer)(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size);
+typedef void (*WGPUProcQueueWriteTexture)(WGPUQueue queue, WGPUTextureCopyView destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize);
 
 // Procs of RenderBundleEncoder
 typedef void (*WGPUProcRenderBundleEncoderDraw)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance);
@@ -1037,6 +1044,8 @@ WGPU_EXPORT void wgpuQuerySetDestroy(WGPUQuerySet querySet);
 WGPU_EXPORT WGPUFence wgpuQueueCreateFence(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
 WGPU_EXPORT void wgpuQueueSignal(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
 WGPU_EXPORT void wgpuQueueSubmit(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands);
+WGPU_EXPORT void wgpuQueueWriteBuffer(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size);
+WGPU_EXPORT void wgpuQueueWriteTexture(WGPUQueue queue, WGPUTextureCopyView destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize);
 
 // Methods of RenderBundleEncoder
 WGPU_EXPORT void wgpuRenderBundleEncoderDraw(WGPURenderBundleEncoder renderBundleEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance);
