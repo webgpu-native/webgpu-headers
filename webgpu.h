@@ -437,6 +437,13 @@ typedef enum WGPUColorWriteMask {
 } WGPUColorWriteMask;
 typedef WGPUFlags WGPUColorWriteMaskFlags;
 
+typedef enum WGPUMapMode {
+    WGPUMapMode_Read = 0x00000001,
+    WGPUMapMode_Write = 0x00000002,
+    WGPUMapMode_Force32 = 0x7FFFFFFF
+} WGPUMapMode;
+typedef WGPUFlags WGPUMapModeFlags;
+
 typedef enum WGPUShaderStage {
     WGPUShaderStage_None = 0x00000000,
     WGPUShaderStage_Vertex = 0x00000001,
@@ -833,8 +840,7 @@ typedef struct WGPURenderPipelineDescriptor {
 extern "C" {
 #endif
 
-typedef void (*WGPUBufferMapReadCallback)(WGPUBufferMapAsyncStatus status, void const * data, uint64_t dataLength, void * userdata);
-typedef void (*WGPUBufferMapWriteCallback)(WGPUBufferMapAsyncStatus status, void * data, uint64_t dataLength, void * userdata);
+typedef void (*WGPUBufferMapCallback)(WGPUBufferMapAsyncStatus status, void * userdata);
 typedef void (*WGPUDeviceLostCallback)(char const * message, void * userdata);
 typedef void (*WGPUErrorCallback)(WGPUErrorType type, char const * message, void * userdata);
 typedef void (*WGPUFenceOnCompletionCallback)(WGPUFenceCompletionStatus status, void * userdata);
@@ -857,8 +863,7 @@ typedef void (*WGPUProcAdapterRequestDevice)(WGPUAdapter adapter, WGPUDeviceDesc
 typedef void (*WGPUProcBufferDestroy)(WGPUBuffer buffer);
 typedef void const * (*WGPUProcBufferGetConstMappedRange)(WGPUBuffer buffer);
 typedef void * (*WGPUProcBufferGetMappedRange)(WGPUBuffer buffer);
-typedef void (*WGPUProcBufferMapReadAsync)(WGPUBuffer buffer, WGPUBufferMapReadCallback callback, void * userdata);
-typedef void (*WGPUProcBufferMapWriteAsync)(WGPUBuffer buffer, WGPUBufferMapWriteCallback callback, void * userdata);
+typedef void (*WGPUProcBufferMapAsync)(WGPUBuffer buffer, WGPUMapModeFlags flags, size_t offset, size_t size, WGPUBufferMapCallback callback, void * userdata);
 typedef void (*WGPUProcBufferUnmap)(WGPUBuffer buffer);
 
 // Procs of CommandEncoder
@@ -994,8 +999,7 @@ WGPU_EXPORT void wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPUDeviceDescrip
 WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer);
 WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer);
 WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer);
-WGPU_EXPORT void wgpuBufferMapReadAsync(WGPUBuffer buffer, WGPUBufferMapReadCallback callback, void * userdata);
-WGPU_EXPORT void wgpuBufferMapWriteAsync(WGPUBuffer buffer, WGPUBufferMapWriteCallback callback, void * userdata);
+WGPU_EXPORT void wgpuBufferMapAsync(WGPUBuffer buffer, WGPUMapModeFlags flags, size_t offset, size_t size, WGPUBufferMapCallback callback, void * userdata);
 WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer);
 
 // Methods of CommandEncoder
