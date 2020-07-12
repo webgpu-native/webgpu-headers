@@ -227,14 +227,14 @@ typedef enum WGPULoadOp {
     WGPULoadOp_Force32 = 0x7FFFFFFF
 } WGPULoadOp;
 
-typedef enum WGPUPipelineStatisticsName {
-    WGPUPipelineStatisticsName_VertexShaderInvocations = 0x00000000,
-    WGPUPipelineStatisticsName_ClipperInvocations = 0x00000001,
-    WGPUPipelineStatisticsName_ClipperPrimitivesOut = 0x00000002,
-    WGPUPipelineStatisticsName_FragmentShaderInvocations = 0x00000003,
-    WGPUPipelineStatisticsName_ComputeShaderInvocations = 0x00000004,
-    WGPUPipelineStatisticsName_Force32 = 0x7FFFFFFF
-} WGPUPipelineStatisticsName;
+typedef enum WGPUPipelineStatisticName {
+    WGPUPipelineStatisticName_VertexShaderInvocations = 0x00000000,
+    WGPUPipelineStatisticName_ClipperInvocations = 0x00000001,
+    WGPUPipelineStatisticName_ClipperPrimitivesOut = 0x00000002,
+    WGPUPipelineStatisticName_FragmentShaderInvocations = 0x00000003,
+    WGPUPipelineStatisticName_ComputeShaderInvocations = 0x00000004,
+    WGPUPipelineStatisticName_Force32 = 0x7FFFFFFF
+} WGPUPipelineStatisticName;
 
 typedef enum WGPUPresentMode {
     WGPUPresentMode_Immediate = 0x00000000,
@@ -581,7 +581,7 @@ typedef struct WGPUQuerySetDescriptor {
     char const * label;
     WGPUQueryType type;
     uint32_t count;
-    WGPUPipelineStatisticsName const * pipelineStatistics;
+    WGPUPipelineStatisticName const * pipelineStatistics;
     uint32_t pipelineStatisticsCount;
 } WGPUQuerySetDescriptor;
 
