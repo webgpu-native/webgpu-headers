@@ -210,8 +210,9 @@ typedef enum WGPUFrontFace {
 } WGPUFrontFace;
 
 typedef enum WGPUIndexFormat {
-    WGPUIndexFormat_Uint16 = 0x00000000,
-    WGPUIndexFormat_Uint32 = 0x00000001,
+    WGPUIndexFormat_Undefined = 0x00000000,
+    WGPUIndexFormat_Uint16 = 0x00000001,
+    WGPUIndexFormat_Uint32 = 0x00000002,
     WGPUIndexFormat_Force32 = 0x7FFFFFFF
 } WGPUIndexFormat;
 
@@ -299,6 +300,7 @@ typedef enum WGPUTextureComponentType {
     WGPUTextureComponentType_Float = 0x00000000,
     WGPUTextureComponentType_Sint = 0x00000001,
     WGPUTextureComponentType_Uint = 0x00000002,
+    WGPUTextureComponentType_DepthComparison = 0x00000003,
     WGPUTextureComponentType_Force32 = 0x7FFFFFFF
 } WGPUTextureComponentType;
 
@@ -336,33 +338,35 @@ typedef enum WGPUTextureFormat {
     WGPUTextureFormat_BGRA8Unorm = 0x00000017,
     WGPUTextureFormat_BGRA8UnormSrgb = 0x00000018,
     WGPUTextureFormat_RGB10A2Unorm = 0x00000019,
-    WGPUTextureFormat_RG11B10Float = 0x0000001A,
-    WGPUTextureFormat_RG32Float = 0x0000001B,
-    WGPUTextureFormat_RG32Uint = 0x0000001C,
-    WGPUTextureFormat_RG32Sint = 0x0000001D,
-    WGPUTextureFormat_RGBA16Uint = 0x0000001E,
-    WGPUTextureFormat_RGBA16Sint = 0x0000001F,
-    WGPUTextureFormat_RGBA16Float = 0x00000020,
-    WGPUTextureFormat_RGBA32Float = 0x00000021,
-    WGPUTextureFormat_RGBA32Uint = 0x00000022,
-    WGPUTextureFormat_RGBA32Sint = 0x00000023,
-    WGPUTextureFormat_Depth32Float = 0x00000024,
-    WGPUTextureFormat_Depth24Plus = 0x00000025,
-    WGPUTextureFormat_Depth24PlusStencil8 = 0x00000026,
-    WGPUTextureFormat_BC1RGBAUnorm = 0x00000027,
-    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x00000028,
-    WGPUTextureFormat_BC2RGBAUnorm = 0x00000029,
-    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x0000002A,
-    WGPUTextureFormat_BC3RGBAUnorm = 0x0000002B,
-    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x0000002C,
-    WGPUTextureFormat_BC4RUnorm = 0x0000002D,
-    WGPUTextureFormat_BC4RSnorm = 0x0000002E,
-    WGPUTextureFormat_BC5RGUnorm = 0x0000002F,
-    WGPUTextureFormat_BC5RGSnorm = 0x00000030,
-    WGPUTextureFormat_BC6HRGBUfloat = 0x00000031,
-    WGPUTextureFormat_BC6HRGBSfloat = 0x00000032,
-    WGPUTextureFormat_BC7RGBAUnorm = 0x00000033,
-    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000034,
+    WGPUTextureFormat_RG11B10Ufloat = 0x0000001A,
+    WGPUTextureFormat_RGB9E5Ufloat = 0x0000001B,
+    WGPUTextureFormat_RG32Float = 0x0000001C,
+    WGPUTextureFormat_RG32Uint = 0x0000001D,
+    WGPUTextureFormat_RG32Sint = 0x0000001E,
+    WGPUTextureFormat_RGBA16Uint = 0x0000001F,
+    WGPUTextureFormat_RGBA16Sint = 0x00000020,
+    WGPUTextureFormat_RGBA16Float = 0x00000021,
+    WGPUTextureFormat_RGBA32Float = 0x00000022,
+    WGPUTextureFormat_RGBA32Uint = 0x00000023,
+    WGPUTextureFormat_RGBA32Sint = 0x00000024,
+    WGPUTextureFormat_Depth32Float = 0x00000025,
+    WGPUTextureFormat_Depth24Plus = 0x00000026,
+    WGPUTextureFormat_Depth24PlusStencil8 = 0x00000027,
+    WGPUTextureFormat_Stencil8 = 0x00000028,
+    WGPUTextureFormat_BC1RGBAUnorm = 0x00000029,
+    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x0000002A,
+    WGPUTextureFormat_BC2RGBAUnorm = 0x0000002B,
+    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x0000002C,
+    WGPUTextureFormat_BC3RGBAUnorm = 0x0000002D,
+    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x0000002E,
+    WGPUTextureFormat_BC4RUnorm = 0x0000002F,
+    WGPUTextureFormat_BC4RSnorm = 0x00000030,
+    WGPUTextureFormat_BC5RGUnorm = 0x00000031,
+    WGPUTextureFormat_BC5RGSnorm = 0x00000032,
+    WGPUTextureFormat_BC6HRGBUfloat = 0x00000033,
+    WGPUTextureFormat_BC6HRGBFloat = 0x00000034,
+    WGPUTextureFormat_BC7RGBAUnorm = 0x00000035,
+    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000036,
     WGPUTextureFormat_Force32 = 0x7FFFFFFF
 } WGPUTextureFormat;
 
@@ -592,6 +596,7 @@ typedef struct WGPURasterizationStateDescriptor {
     int32_t depthBias;
     float depthBiasSlopeScale;
     float depthBiasClamp;
+    bool clampDepth;
 } WGPURasterizationStateDescriptor;
 
 typedef struct WGPURenderBundleDescriptor {
@@ -637,6 +642,7 @@ typedef struct WGPUSamplerDescriptor {
     float lodMinClamp;
     float lodMaxClamp;
     WGPUCompareFunction compare;
+    uint32_t maxAnisotropy;
 } WGPUSamplerDescriptor;
 
 typedef struct WGPUShaderModuleDescriptor {
@@ -947,7 +953,7 @@ typedef void (*WGPUProcRenderBundleEncoderInsertDebugMarker)(WGPURenderBundleEnc
 typedef void (*WGPUProcRenderBundleEncoderPopDebugGroup)(WGPURenderBundleEncoder renderBundleEncoder);
 typedef void (*WGPUProcRenderBundleEncoderPushDebugGroup)(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel);
 typedef void (*WGPUProcRenderBundleEncoderSetBindGroup)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
-typedef void (*WGPUProcRenderBundleEncoderSetIndexBuffer)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, uint64_t offset, uint64_t size);
+typedef void (*WGPUProcRenderBundleEncoderSetIndexBuffer)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size);
 typedef void (*WGPUProcRenderBundleEncoderSetPipeline)(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline);
 typedef void (*WGPUProcRenderBundleEncoderSetVertexBuffer)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t slot, WGPUBuffer buffer, uint64_t offset, uint64_t size);
 
@@ -1086,7 +1092,7 @@ WGPU_EXPORT void wgpuRenderBundleEncoderInsertDebugMarker(WGPURenderBundleEncode
 WGPU_EXPORT void wgpuRenderBundleEncoderPopDebugGroup(WGPURenderBundleEncoder renderBundleEncoder);
 WGPU_EXPORT void wgpuRenderBundleEncoderPushDebugGroup(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel);
 WGPU_EXPORT void wgpuRenderBundleEncoderSetBindGroup(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
-WGPU_EXPORT void wgpuRenderBundleEncoderSetIndexBuffer(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, uint64_t offset, uint64_t size);
+WGPU_EXPORT void wgpuRenderBundleEncoderSetIndexBuffer(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size);
 WGPU_EXPORT void wgpuRenderBundleEncoderSetPipeline(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline);
 WGPU_EXPORT void wgpuRenderBundleEncoderSetVertexBuffer(WGPURenderBundleEncoder renderBundleEncoder, uint32_t slot, WGPUBuffer buffer, uint64_t offset, uint64_t size);
 
