@@ -150,6 +150,8 @@ typedef enum WGPUBufferMapAsyncStatus {
     WGPUBufferMapAsyncStatus_Error = 0x00000001,
     WGPUBufferMapAsyncStatus_Unknown = 0x00000002,
     WGPUBufferMapAsyncStatus_DeviceLost = 0x00000003,
+    WGPUBufferMapAsyncStatus_DestroyedBeforeCallback = 0x00000004,
+    WGPUBufferMapAsyncStatus_UnmappedBeforeCallback = 0x00000005,
     WGPUBufferMapAsyncStatus_Force32 = 0x7FFFFFFF
 } WGPUBufferMapAsyncStatus;
 
