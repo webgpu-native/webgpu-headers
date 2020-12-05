@@ -53,6 +53,7 @@
 #include <stdbool.h>
 
 #define WGPU_WHOLE_SIZE (0xffffffffffffffffULL)
+#define WGPU_COPY_STRIDE_UNDEFINED (0xffffffffUL)
 
 typedef uint32_t WGPUFlags;
 
