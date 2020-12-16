@@ -111,13 +111,13 @@ typedef enum WGPUBackendType {
 typedef enum WGPUBindingType {
     WGPUBindingType_UniformBuffer = 0x00000000,
     WGPUBindingType_StorageBuffer = 0x00000001,
-    WGPUBindingType_ReadonlyStorageBuffer = 0x00000002,
+    WGPUBindingType_ReadOnlyStorageBuffer = 0x00000002,
     WGPUBindingType_Sampler = 0x00000003,
     WGPUBindingType_ComparisonSampler = 0x00000004,
     WGPUBindingType_SampledTexture = 0x00000005,
     WGPUBindingType_MultisampledTexture = 0x00000006,
-    WGPUBindingType_ReadonlyStorageTexture = 0x00000007,
-    WGPUBindingType_WriteonlyStorageTexture = 0x00000008,
+    WGPUBindingType_ReadOnlyStorageTexture = 0x00000007,
+    WGPUBindingType_WriteOnlyStorageTexture = 0x00000008,
     WGPUBindingType_Force32 = 0x7FFFFFFF
 } WGPUBindingType;
 
