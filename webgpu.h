@@ -445,12 +445,13 @@ typedef enum WGPUBufferUsage {
 typedef WGPUFlags WGPUBufferUsageFlags;
 
 typedef enum WGPUFeatureName {
-  WGPUFeatureName_DepthClamping = 0x00000000,
-  WGPUFeatureName_Depth24UnormStencil8 = 0x00000001,
-  WGPUFeatureName_Depth32FloatStencil8 = 0x00000002,
-  WGPUFeatureName_PipelineStatisticsQuery = 0x00000003,
-  WGPUFeatureName_TextureCompressionBC = 0x00000004,
-  WGPUFeatureName_TimestampQuery = 0x00000005,
+  WGPUFeatureName_Undefined = 0x00000000,
+  WGPUFeatureName_DepthClamping = 0x00000001,
+  WGPUFeatureName_Depth24UnormStencil8 = 0x00000002,
+  WGPUFeatureName_Depth32FloatStencil8 = 0x00000003,
+  WGPUFeatureName_PipelineStatisticsQuery = 0x00000004,
+  WGPUFeatureName_TextureCompressionBC = 0x00000005,
+  WGPUFeatureName_TimestampQuery = 0x00000006,
   WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName;
 
