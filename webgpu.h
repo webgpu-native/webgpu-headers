@@ -108,19 +108,6 @@ typedef enum WGPUBackendType {
     WGPUBackendType_Force32 = 0x7FFFFFFF
 } WGPUBackendType;
 
-typedef enum WGPUBindingType {
-    WGPUBindingType_UniformBuffer = 0x00000000,
-    WGPUBindingType_StorageBuffer = 0x00000001,
-    WGPUBindingType_ReadOnlyStorageBuffer = 0x00000002,
-    WGPUBindingType_Sampler = 0x00000003,
-    WGPUBindingType_ComparisonSampler = 0x00000004,
-    WGPUBindingType_SampledTexture = 0x00000005,
-    WGPUBindingType_MultisampledTexture = 0x00000006,
-    WGPUBindingType_ReadOnlyStorageTexture = 0x00000007,
-    WGPUBindingType_WriteOnlyStorageTexture = 0x00000008,
-    WGPUBindingType_Force32 = 0x7FFFFFFF
-} WGPUBindingType;
-
 typedef enum WGPUBlendFactor {
     WGPUBlendFactor_Zero = 0x00000000,
     WGPUBlendFactor_One = 0x00000001,
@@ -146,6 +133,14 @@ typedef enum WGPUBlendOperation {
     WGPUBlendOperation_Max = 0x00000004,
     WGPUBlendOperation_Force32 = 0x7FFFFFFF
 } WGPUBlendOperation;
+
+typedef enum WGPUBufferBindingType {
+    WGPUBufferBindingType_Undefined = 0x00000000,
+    WGPUBufferBindingType_Uniform = 0x00000001,
+    WGPUBufferBindingType_Storage = 0x00000002,
+    WGPUBufferBindingType_ReadOnlyStorage = 0x00000003,
+    WGPUBufferBindingType_Force32 = 0x7FFFFFFF
+} WGPUBufferBindingType;
 
 typedef enum WGPUBufferMapAsyncStatus {
     WGPUBufferMapAsyncStatus_Success = 0x00000000,
@@ -284,6 +279,14 @@ typedef enum WGPUSType {
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
+typedef enum WGPUSamplerBindingType {
+    WGPUSamplerBindingType_Undefined = 0x00000000,
+    WGPUSamplerBindingType_Filtering = 0x00000001,
+    WGPUSamplerBindingType_NonFiltering = 0x00000002,
+    WGPUSamplerBindingType_Comparison = 0x00000003,
+    WGPUSamplerBindingType_Force32 = 0x7FFFFFFF
+} WGPUSamplerBindingType;
+
 typedef enum WGPUStencilOperation {
     WGPUStencilOperation_Keep = 0x00000000,
     WGPUStencilOperation_Zero = 0x00000001,
@@ -295,6 +298,13 @@ typedef enum WGPUStencilOperation {
     WGPUStencilOperation_DecrementWrap = 0x00000007,
     WGPUStencilOperation_Force32 = 0x7FFFFFFF
 } WGPUStencilOperation;
+
+typedef enum WGPUStorageTextureAccess {
+    WGPUStorageTextureAccess_Undefined = 0x00000000,
+    WGPUStorageTextureAccess_ReadOnly = 0x00000001,
+    WGPUStorageTextureAccess_WriteOnly = 0x00000002,
+    WGPUStorageTextureAccess_Force32 = 0x7FFFFFFF
+} WGPUStorageTextureAccess;
 
 typedef enum WGPUStoreOp {
     WGPUStoreOp_Store = 0x00000000,
@@ -382,6 +392,16 @@ typedef enum WGPUTextureFormat {
     WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000036,
     WGPUTextureFormat_Force32 = 0x7FFFFFFF
 } WGPUTextureFormat;
+
+typedef enum WGPUTextureSampleType {
+    WGPUTextureSampleType_Undefined = 0x00000000,
+    WGPUTextureSampleType_Float = 0x00000001,
+    WGPUTextureSampleType_UnfilterableFloat = 0x00000002,
+    WGPUTextureSampleType_Depth = 0x00000003,
+    WGPUTextureSampleType_Sint = 0x00000004,
+    WGPUTextureSampleType_Uint = 0x00000005,
+    WGPUTextureSampleType_Force32 = 0x7FFFFFFF
+} WGPUTextureSampleType;
 
 typedef enum WGPUTextureViewDimension {
     WGPUTextureViewDimension_Undefined = 0x00000000,
@@ -507,23 +527,18 @@ typedef struct WGPUBindGroupEntry {
     WGPUTextureView textureView;
 } WGPUBindGroupEntry;
 
-typedef struct WGPUBindGroupLayoutEntry {
-    uint32_t binding;
-    WGPUShaderStageFlags visibility;
-    WGPUBindingType type;
-    bool hasDynamicOffset;
-    uint64_t minBufferBindingSize;
-    bool multisampled;
-    WGPUTextureViewDimension viewDimension;
-    WGPUTextureComponentType textureComponentType;
-    WGPUTextureFormat storageTextureFormat;
-} WGPUBindGroupLayoutEntry;
-
 typedef struct WGPUBlendDescriptor {
     WGPUBlendOperation operation;
     WGPUBlendFactor srcFactor;
     WGPUBlendFactor dstFactor;
 } WGPUBlendDescriptor;
+
+typedef struct WGPUBufferBindingLayout {
+    WGPUChainedStruct const * nextInChain;
+    WGPUBufferBindingType type;
+    bool hasDynamicOffset;
+    uint64_t minBindingSize;
+} WGPUBufferBindingLayout;
 
 typedef struct WGPUBufferDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -644,6 +659,11 @@ typedef struct WGPURequestAdapterOptions {
     WGPUSurface compatibleSurface;
 } WGPURequestAdapterOptions;
 
+typedef struct WGPUSamplerBindingLayout {
+    WGPUChainedStruct const * nextInChain;
+    WGPUSamplerBindingType type;
+} WGPUSamplerBindingLayout;
+
 typedef struct WGPUSamplerDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
@@ -656,7 +676,7 @@ typedef struct WGPUSamplerDescriptor {
     float lodMinClamp;
     float lodMaxClamp;
     WGPUCompareFunction compare;
-    uint32_t maxAnisotropy;
+    uint16_t maxAnisotropy;
 } WGPUSamplerDescriptor;
 
 typedef struct WGPUShaderModuleDescriptor {
@@ -681,6 +701,13 @@ typedef struct WGPUStencilStateFaceDescriptor {
     WGPUStencilOperation depthFailOp;
     WGPUStencilOperation passOp;
 } WGPUStencilStateFaceDescriptor;
+
+typedef struct WGPUStorageTextureBindingLayout {
+    WGPUChainedStruct const * nextInChain;
+    WGPUStorageTextureAccess access;
+    WGPUTextureFormat format;
+    WGPUTextureViewDimension viewDimension;
+} WGPUStorageTextureBindingLayout;
 
 typedef struct WGPUSurfaceDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -719,6 +746,13 @@ typedef struct WGPUSwapChainDescriptor {
     WGPUPresentMode presentMode;
 } WGPUSwapChainDescriptor;
 
+typedef struct WGPUTextureBindingLayout {
+    WGPUChainedStruct const * nextInChain;
+    WGPUTextureSampleType sampleType;
+    WGPUTextureViewDimension viewDimension;
+    bool multisampled;
+} WGPUTextureBindingLayout;
+
 typedef struct WGPUTextureDataLayout {
     WGPUChainedStruct const * nextInChain;
     uint64_t offset;
@@ -752,12 +786,15 @@ typedef struct WGPUBindGroupDescriptor {
     WGPUBindGroupEntry const * entries;
 } WGPUBindGroupDescriptor;
 
-typedef struct WGPUBindGroupLayoutDescriptor {
+typedef struct WGPUBindGroupLayoutEntry {
     WGPUChainedStruct const * nextInChain;
-    char const * label;
-    uint32_t entryCount;
-    WGPUBindGroupLayoutEntry const * entries;
-} WGPUBindGroupLayoutDescriptor;
+    uint32_t binding;
+    WGPUShaderStageFlags visibility;
+    WGPUBufferBindingLayout buffer;
+    WGPUSamplerBindingLayout sampler;
+    WGPUTextureBindingLayout texture;
+    WGPUStorageTextureBindingLayout storageTexture;
+} WGPUBindGroupLayoutEntry;
 
 typedef struct WGPUBufferCopyView {
     WGPUChainedStruct const * nextInChain;
@@ -804,6 +841,7 @@ typedef struct WGPUTextureCopyView {
     WGPUTexture texture;
     uint32_t mipLevel;
     WGPUOrigin3D origin;
+    WGPUTextureAspect aspect;
 } WGPUTextureCopyView;
 
 typedef struct WGPUTextureDescriptor {
@@ -823,6 +861,13 @@ typedef struct WGPUVertexBufferLayoutDescriptor {
     uint32_t attributeCount;
     WGPUVertexAttributeDescriptor const * attributes;
 } WGPUVertexBufferLayoutDescriptor;
+
+typedef struct WGPUBindGroupLayoutDescriptor {
+    WGPUChainedStruct const * nextInChain;
+    char const * label;
+    uint32_t entryCount;
+    WGPUBindGroupLayoutEntry const * entries;
+} WGPUBindGroupLayoutDescriptor;
 
 typedef struct WGPURenderPassDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -991,7 +1036,7 @@ typedef void (*WGPUProcRenderPassEncoderPopDebugGroup)(WGPURenderPassEncoder ren
 typedef void (*WGPUProcRenderPassEncoderPushDebugGroup)(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel);
 typedef void (*WGPUProcRenderPassEncoderSetBindGroup)(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
 typedef void (*WGPUProcRenderPassEncoderSetBlendColor)(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color);
-typedef void (*WGPUProcRenderPassEncoderSetIndexBuffer)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, uint64_t offset, uint64_t size);
+typedef void (*WGPUProcRenderPassEncoderSetIndexBuffer)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size);
 typedef void (*WGPUProcRenderPassEncoderSetPipeline)(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline);
 typedef void (*WGPUProcRenderPassEncoderSetScissorRect)(WGPURenderPassEncoder renderPassEncoder, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 typedef void (*WGPUProcRenderPassEncoderSetStencilReference)(WGPURenderPassEncoder renderPassEncoder, uint32_t reference);
@@ -1132,7 +1177,7 @@ WGPU_EXPORT void wgpuRenderPassEncoderPopDebugGroup(WGPURenderPassEncoder render
 WGPU_EXPORT void wgpuRenderPassEncoderPushDebugGroup(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel);
 WGPU_EXPORT void wgpuRenderPassEncoderSetBindGroup(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
 WGPU_EXPORT void wgpuRenderPassEncoderSetBlendColor(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color);
-WGPU_EXPORT void wgpuRenderPassEncoderSetIndexBuffer(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, uint64_t offset, uint64_t size);
+WGPU_EXPORT void wgpuRenderPassEncoderSetIndexBuffer(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size);
 WGPU_EXPORT void wgpuRenderPassEncoderSetPipeline(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline);
 WGPU_EXPORT void wgpuRenderPassEncoderSetScissorRect(WGPURenderPassEncoder renderPassEncoder, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 WGPU_EXPORT void wgpuRenderPassEncoderSetStencilReference(WGPURenderPassEncoder renderPassEncoder, uint32_t reference);
