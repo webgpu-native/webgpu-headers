@@ -66,7 +66,6 @@ typedef struct WGPUCommandEncoderImpl* WGPUCommandEncoder;
 typedef struct WGPUComputePassEncoderImpl* WGPUComputePassEncoder;
 typedef struct WGPUComputePipelineImpl* WGPUComputePipeline;
 typedef struct WGPUDeviceImpl* WGPUDevice;
-typedef struct WGPUFenceImpl* WGPUFence;
 typedef struct WGPUInstanceImpl* WGPUInstance;
 typedef struct WGPUPipelineLayoutImpl* WGPUPipelineLayout;
 typedef struct WGPUQuerySetImpl* WGPUQuerySet;
@@ -197,14 +196,6 @@ typedef enum WGPUErrorType {
     WGPUErrorType_Force32 = 0x7FFFFFFF
 } WGPUErrorType;
 
-typedef enum WGPUFenceCompletionStatus {
-    WGPUFenceCompletionStatus_Success = 0x00000000,
-    WGPUFenceCompletionStatus_Error = 0x00000001,
-    WGPUFenceCompletionStatus_Unknown = 0x00000002,
-    WGPUFenceCompletionStatus_DeviceLost = 0x00000003,
-    WGPUFenceCompletionStatus_Force32 = 0x7FFFFFFF
-} WGPUFenceCompletionStatus;
-
 typedef enum WGPUFilterMode {
     WGPUFilterMode_Nearest = 0x00000000,
     WGPUFilterMode_Linear = 0x00000001,
@@ -267,6 +258,14 @@ typedef enum WGPUQueryType {
     WGPUQueryType_Timestamp = 0x00000002,
     WGPUQueryType_Force32 = 0x7FFFFFFF
 } WGPUQueryType;
+
+typedef enum WGPUQueueWorkDoneStatus {
+    WGPUQueueWorkDoneStatus_Success = 0x00000000,
+    WGPUQueueWorkDoneStatus_Error = 0x00000001,
+    WGPUQueueWorkDoneStatus_Unknown = 0x00000002,
+    WGPUQueueWorkDoneStatus_DeviceLost = 0x00000003,
+    WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
+} WGPUQueueWorkDoneStatus;
 
 typedef enum WGPUSType {
     WGPUSType_Invalid = 0x00000000,
@@ -579,12 +578,6 @@ typedef struct WGPUExtent3D {
     uint32_t height;
     uint32_t depth;
 } WGPUExtent3D;
-
-typedef struct WGPUFenceDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    char const * label;
-    uint64_t initialValue;
-} WGPUFenceDescriptor;
 
 typedef struct WGPUInstanceDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -912,7 +905,7 @@ typedef void (*WGPUCreateReadyComputePipelineCallback)(WGPUCreateReadyPipelineSt
 typedef void (*WGPUCreateReadyRenderPipelineCallback)(WGPUCreateReadyPipelineStatus status, WGPURenderPipeline pipeline, char const * message, void * userdata);
 typedef void (*WGPUDeviceLostCallback)(char const * message, void * userdata);
 typedef void (*WGPUErrorCallback)(WGPUErrorType type, char const * message, void * userdata);
-typedef void (*WGPUFenceOnCompletionCallback)(WGPUFenceCompletionStatus status, void * userdata);
+typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, void * userdata);
 typedef void (*WGPURequestAdapterCallback)(WGPUAdapter result, void * userdata);
 typedef void (*WGPURequestDeviceCallback)(WGPUDevice result, void * userdata);
 typedef void (*WGPUSurfaceGetPreferredFormatCallback)(WGPUTextureFormat format, void * userdata);
@@ -987,10 +980,6 @@ typedef void (*WGPUProcDevicePushErrorScope)(WGPUDevice device, WGPUErrorFilter 
 typedef void (*WGPUProcDeviceSetDeviceLostCallback)(WGPUDevice device, WGPUDeviceLostCallback callback, void * userdata);
 typedef void (*WGPUProcDeviceSetUncapturedErrorCallback)(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 
-// Procs of Fence
-typedef uint64_t (*WGPUProcFenceGetCompletedValue)(WGPUFence fence);
-typedef void (*WGPUProcFenceOnCompletion)(WGPUFence fence, uint64_t value, WGPUFenceOnCompletionCallback callback, void * userdata);
-
 // Procs of Instance
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor);
 typedef void (*WGPUProcInstanceProcessEvents)(WGPUInstance instance);
@@ -1000,8 +989,7 @@ typedef void (*WGPUProcInstanceRequestAdapter)(WGPUInstance instance, WGPUReques
 typedef void (*WGPUProcQuerySetDestroy)(WGPUQuerySet querySet);
 
 // Procs of Queue
-typedef WGPUFence (*WGPUProcQueueCreateFence)(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
-typedef void (*WGPUProcQueueSignal)(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
+typedef void (*WGPUProcQueueOnSubmittedWorkDone)(WGPUQueue queue, uint64_t signalValue, WGPUQueueWorkDoneCallback callback, void * userdata);
 typedef void (*WGPUProcQueueSubmit)(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands);
 typedef void (*WGPUProcQueueWriteBuffer)(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size);
 typedef void (*WGPUProcQueueWriteTexture)(WGPUQueue queue, WGPUTextureCopyView const * destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize);
@@ -1128,10 +1116,6 @@ WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter fil
 WGPU_EXPORT void wgpuDeviceSetDeviceLostCallback(WGPUDevice device, WGPUDeviceLostCallback callback, void * userdata);
 WGPU_EXPORT void wgpuDeviceSetUncapturedErrorCallback(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 
-// Methods of Fence
-WGPU_EXPORT uint64_t wgpuFenceGetCompletedValue(WGPUFence fence);
-WGPU_EXPORT void wgpuFenceOnCompletion(WGPUFence fence, uint64_t value, WGPUFenceOnCompletionCallback callback, void * userdata);
-
 // Methods of Instance
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor);
 WGPU_EXPORT void wgpuInstanceProcessEvents(WGPUInstance instance);
@@ -1141,8 +1125,7 @@ WGPU_EXPORT void wgpuInstanceRequestAdapter(WGPUInstance instance, WGPURequestAd
 WGPU_EXPORT void wgpuQuerySetDestroy(WGPUQuerySet querySet);
 
 // Methods of Queue
-WGPU_EXPORT WGPUFence wgpuQueueCreateFence(WGPUQueue queue, WGPUFenceDescriptor const * descriptor);
-WGPU_EXPORT void wgpuQueueSignal(WGPUQueue queue, WGPUFence fence, uint64_t signalValue);
+WGPU_EXPORT void wgpuQueueOnSubmittedWorkDone(WGPUQueue queue, uint64_t signalValue, WGPUQueueWorkDoneCallback callback, void * userdata);
 WGPU_EXPORT void wgpuQueueSubmit(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands);
 WGPU_EXPORT void wgpuQueueWriteBuffer(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size);
 WGPU_EXPORT void wgpuQueueWriteTexture(WGPUQueue queue, WGPUTextureCopyView const * destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize);
