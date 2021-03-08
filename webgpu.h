@@ -527,11 +527,11 @@ typedef struct WGPUBindGroupEntry {
     WGPUTextureView textureView;
 } WGPUBindGroupEntry;
 
-typedef struct WGPUBlendDescriptor {
-    WGPUBlendOperation operation;
+typedef struct WGPUBlendComponent {
     WGPUBlendFactor srcFactor;
     WGPUBlendFactor dstFactor;
-} WGPUBlendDescriptor;
+    WGPUBlendOperation operation;
+} WGPUBlendComponent;
 
 typedef struct WGPUBufferBindingLayout {
     WGPUChainedStruct const * nextInChain;
@@ -584,6 +584,13 @@ typedef struct WGPUInstanceDescriptor {
     WGPUChainedStruct const * nextInChain;
 } WGPUInstanceDescriptor;
 
+typedef struct WGPUMultisampleState {
+    WGPUChainedStruct const * nextInChain;
+    uint32_t count;
+    uint32_t mask;
+    bool alphaToCoverageEnabled;
+} WGPUMultisampleState;
+
 typedef struct WGPUOrigin3D {
     uint32_t x;
     uint32_t y;
@@ -596,6 +603,14 @@ typedef struct WGPUPipelineLayoutDescriptor {
     uint32_t bindGroupLayoutCount;
     WGPUBindGroupLayout const * bindGroupLayouts;
 } WGPUPipelineLayoutDescriptor;
+
+typedef struct WGPUPrimitiveState {
+    WGPUChainedStruct const * nextInChain;
+    WGPUPrimitiveTopology topology;
+    WGPUIndexFormat stripIndexFormat;
+    WGPUFrontFace frontFace;
+    WGPUCullMode cullMode;
+} WGPUPrimitiveState;
 
 typedef struct WGPUProgrammableStageDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -611,16 +626,6 @@ typedef struct WGPUQuerySetDescriptor {
     WGPUPipelineStatisticName const * pipelineStatistics;
     uint32_t pipelineStatisticsCount;
 } WGPUQuerySetDescriptor;
-
-typedef struct WGPURasterizationStateDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    WGPUFrontFace frontFace;
-    WGPUCullMode cullMode;
-    int32_t depthBias;
-    float depthBiasSlopeScale;
-    float depthBiasClamp;
-    bool clampDepth;
-} WGPURasterizationStateDescriptor;
 
 typedef struct WGPURenderBundleDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -689,12 +694,12 @@ typedef struct WGPUShaderModuleWGSLDescriptor {
     char const * source;
 } WGPUShaderModuleWGSLDescriptor;
 
-typedef struct WGPUStencilStateFaceDescriptor {
+typedef struct WGPUStencilFaceState {
     WGPUCompareFunction compare;
     WGPUStencilOperation failOp;
     WGPUStencilOperation depthFailOp;
     WGPUStencilOperation passOp;
-} WGPUStencilStateFaceDescriptor;
+} WGPUStencilFaceState;
 
 typedef struct WGPUStorageTextureBindingLayout {
     WGPUChainedStruct const * nextInChain;
@@ -790,13 +795,11 @@ typedef struct WGPUBindGroupLayoutEntry {
     WGPUStorageTextureBindingLayout storageTexture;
 } WGPUBindGroupLayoutEntry;
 
-typedef struct WGPUColorStateDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    WGPUTextureFormat format;
-    WGPUBlendDescriptor alphaBlend;
-    WGPUBlendDescriptor colorBlend;
-    WGPUColorWriteMaskFlags writeMask;
-} WGPUColorStateDescriptor;
+typedef struct WGPUBlendState {
+    bool enabled;
+    WGPUBlendComponent color;
+    WGPUBlendComponent alpha;
+} WGPUBlendState;
 
 typedef struct WGPUComputePipelineDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -805,16 +808,19 @@ typedef struct WGPUComputePipelineDescriptor {
     WGPUProgrammableStageDescriptor computeStage;
 } WGPUComputePipelineDescriptor;
 
-typedef struct WGPUDepthStencilStateDescriptor {
+typedef struct WGPUDepthStencilState {
     WGPUChainedStruct const * nextInChain;
     WGPUTextureFormat format;
     bool depthWriteEnabled;
     WGPUCompareFunction depthCompare;
-    WGPUStencilStateFaceDescriptor stencilFront;
-    WGPUStencilStateFaceDescriptor stencilBack;
+    WGPUStencilFaceState stencilFront;
+    WGPUStencilFaceState stencilBack;
     uint32_t stencilReadMask;
     uint32_t stencilWriteMask;
-} WGPUDepthStencilStateDescriptor;
+    int32_t depthBias;
+    float depthBiasSlopeScale;
+    float depthBiasClamp;
+} WGPUDepthStencilState;
 
 typedef struct WGPUImageCopyBuffer {
     WGPUChainedStruct const * nextInChain;
@@ -863,6 +869,13 @@ typedef struct WGPUBindGroupLayoutDescriptor {
     WGPUBindGroupLayoutEntry const * entries;
 } WGPUBindGroupLayoutDescriptor;
 
+typedef struct WGPUColorTargetState {
+    WGPUChainedStruct const * nextInChain;
+    WGPUTextureFormat format;
+    WGPUBlendState blend;
+    WGPUColorWriteMaskFlags writeMask;
+} WGPUColorTargetState;
+
 typedef struct WGPURenderPassDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
@@ -872,28 +885,31 @@ typedef struct WGPURenderPassDescriptor {
     WGPUQuerySet occlusionQuerySet;
 } WGPURenderPassDescriptor;
 
-typedef struct WGPUVertexStateDescriptor {
+typedef struct WGPUVertexState {
     WGPUChainedStruct const * nextInChain;
-    WGPUIndexFormat indexFormat;
-    uint32_t vertexBufferCount;
-    WGPUVertexBufferLayout const * vertexBuffers;
-} WGPUVertexStateDescriptor;
+    WGPUShaderModule module;
+    char const * entryPoint;
+    uint32_t bufferCount;
+    WGPUVertexBufferLayout const * buffers;
+} WGPUVertexState;
+
+typedef struct WGPUFragmentState {
+    WGPUChainedStruct const * nextInChain;
+    WGPUShaderModule module;
+    char const * entryPoint;
+    uint32_t targetCount;
+    WGPUColorTargetState const * targets;
+} WGPUFragmentState;
 
 typedef struct WGPURenderPipelineDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
     WGPUPipelineLayout layout;
-    WGPUProgrammableStageDescriptor vertexStage;
-    WGPUProgrammableStageDescriptor const * fragmentStage;
-    WGPUVertexStateDescriptor const * vertexState;
-    WGPUPrimitiveTopology primitiveTopology;
-    WGPURasterizationStateDescriptor const * rasterizationState;
-    uint32_t sampleCount;
-    WGPUDepthStencilStateDescriptor const * depthStencilState;
-    uint32_t colorStateCount;
-    WGPUColorStateDescriptor const * colorStates;
-    uint32_t sampleMask;
-    bool alphaToCoverageEnabled;
+    WGPUVertexState vertex;
+    WGPUPrimitiveState primitive;
+    WGPUDepthStencilState depthStencil;
+    WGPUMultisampleState multisample;
+    WGPUFragmentState fragment;
 } WGPURenderPipelineDescriptor;
 
 
