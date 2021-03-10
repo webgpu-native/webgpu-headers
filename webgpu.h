@@ -796,7 +796,6 @@ typedef struct WGPUBindGroupLayoutEntry {
 } WGPUBindGroupLayoutEntry;
 
 typedef struct WGPUBlendState {
-    bool enabled;
     WGPUBlendComponent color;
     WGPUBlendComponent alpha;
 } WGPUBlendState;
@@ -872,7 +871,7 @@ typedef struct WGPUBindGroupLayoutDescriptor {
 typedef struct WGPUColorTargetState {
     WGPUChainedStruct const * nextInChain;
     WGPUTextureFormat format;
-    WGPUBlendState blend;
+    WGPUBlendState const * blend;
     WGPUColorWriteMaskFlags writeMask;
 } WGPUColorTargetState;
 
@@ -907,9 +906,9 @@ typedef struct WGPURenderPipelineDescriptor {
     WGPUPipelineLayout layout;
     WGPUVertexState vertex;
     WGPUPrimitiveState primitive;
-    WGPUDepthStencilState depthStencil;
+    WGPUDepthStencilState const * depthStencil;
     WGPUMultisampleState multisample;
-    WGPUFragmentState fragment;
+    WGPUFragmentState const * fragment;
 } WGPURenderPipelineDescriptor;
 
 
