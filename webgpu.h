@@ -275,6 +275,7 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceDescriptorFromCanvasHTMLSelector = 0x00000004,
     WGPUSType_ShaderModuleSPIRVDescriptor = 0x00000005,
     WGPUSType_ShaderModuleWGSLDescriptor = 0x00000006,
+    WGPUSType_PrimitiveDepthClampingState = 0x00000007,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
@@ -603,6 +604,11 @@ typedef struct WGPUPipelineLayoutDescriptor {
     uint32_t bindGroupLayoutCount;
     WGPUBindGroupLayout const * bindGroupLayouts;
 } WGPUPipelineLayoutDescriptor;
+
+typedef struct WGPUPrimitiveDepthClampingState {
+    WGPUChainedStruct chain;
+    bool clampDepth;
+} WGPUPrimitiveDepthClampingState;
 
 typedef struct WGPUPrimitiveState {
     WGPUChainedStruct const * nextInChain;
