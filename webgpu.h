@@ -577,7 +577,7 @@ typedef struct WGPUDeviceDescriptor {
 typedef struct WGPUExtent3D {
     uint32_t width;
     uint32_t height;
-    uint32_t depth;
+    uint32_t depthOrArrayLayers;
 } WGPUExtent3D;
 
 typedef struct WGPUInstanceDescriptor {
