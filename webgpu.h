@@ -110,17 +110,17 @@ typedef enum WGPUBackendType {
 typedef enum WGPUBlendFactor {
     WGPUBlendFactor_Zero = 0x00000000,
     WGPUBlendFactor_One = 0x00000001,
-    WGPUBlendFactor_SrcColor = 0x00000002,
-    WGPUBlendFactor_OneMinusSrcColor = 0x00000003,
+    WGPUBlendFactor_Src = 0x00000002,
+    WGPUBlendFactor_OneMinusSrc = 0x00000003,
     WGPUBlendFactor_SrcAlpha = 0x00000004,
     WGPUBlendFactor_OneMinusSrcAlpha = 0x00000005,
-    WGPUBlendFactor_DstColor = 0x00000006,
-    WGPUBlendFactor_OneMinusDstColor = 0x00000007,
+    WGPUBlendFactor_Dst = 0x00000006,
+    WGPUBlendFactor_OneMinusDst = 0x00000007,
     WGPUBlendFactor_DstAlpha = 0x00000008,
     WGPUBlendFactor_OneMinusDstAlpha = 0x00000009,
     WGPUBlendFactor_SrcAlphaSaturated = 0x0000000A,
-    WGPUBlendFactor_BlendColor = 0x0000000B,
-    WGPUBlendFactor_OneMinusBlendColor = 0x0000000C,
+    WGPUBlendFactor_Constant = 0x0000000B,
+    WGPUBlendFactor_OneMinusConstant = 0x0000000C,
     WGPUBlendFactor_Force32 = 0x7FFFFFFF
 } WGPUBlendFactor;
 
@@ -647,8 +647,8 @@ typedef struct WGPURenderBundleEncoderDescriptor {
     uint32_t sampleCount;
 } WGPURenderBundleEncoderDescriptor;
 
-typedef struct WGPURenderPassDepthStencilAttachmentDescriptor {
-    WGPUTextureView attachment;
+typedef struct WGPURenderPassDepthStencilAttachment {
+    WGPUTextureView view;
     WGPULoadOp depthLoadOp;
     WGPUStoreOp depthStoreOp;
     float clearDepth;
@@ -657,7 +657,7 @@ typedef struct WGPURenderPassDepthStencilAttachmentDescriptor {
     WGPUStoreOp stencilStoreOp;
     uint32_t clearStencil;
     bool stencilReadOnly;
-} WGPURenderPassDepthStencilAttachmentDescriptor;
+} WGPURenderPassDepthStencilAttachment;
 
 typedef struct WGPURequestAdapterOptions {
     WGPUChainedStruct const * nextInChain;
@@ -841,13 +841,13 @@ typedef struct WGPUImageCopyTexture {
     WGPUTextureAspect aspect;
 } WGPUImageCopyTexture;
 
-typedef struct WGPURenderPassColorAttachmentDescriptor {
-    WGPUTextureView attachment;
+typedef struct WGPURenderPassColorAttachment {
+    WGPUTextureView view;
     WGPUTextureView resolveTarget;
     WGPULoadOp loadOp;
     WGPUStoreOp storeOp;
     WGPUColor clearColor;
-} WGPURenderPassColorAttachmentDescriptor;
+} WGPURenderPassColorAttachment;
 
 typedef struct WGPUTextureDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -885,8 +885,8 @@ typedef struct WGPURenderPassDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
     uint32_t colorAttachmentCount;
-    WGPURenderPassColorAttachmentDescriptor const * colorAttachments;
-    WGPURenderPassDepthStencilAttachmentDescriptor const * depthStencilAttachment;
+    WGPURenderPassColorAttachment const * colorAttachments;
+    WGPURenderPassDepthStencilAttachment const * depthStencilAttachment;
     WGPUQuerySet occlusionQuerySet;
 } WGPURenderPassDescriptor;
 
@@ -1046,7 +1046,7 @@ typedef void (*WGPUProcRenderPassEncoderInsertDebugMarker)(WGPURenderPassEncoder
 typedef void (*WGPUProcRenderPassEncoderPopDebugGroup)(WGPURenderPassEncoder renderPassEncoder);
 typedef void (*WGPUProcRenderPassEncoderPushDebugGroup)(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel);
 typedef void (*WGPUProcRenderPassEncoderSetBindGroup)(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
-typedef void (*WGPUProcRenderPassEncoderSetBlendColor)(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color);
+typedef void (*WGPUProcRenderPassEncoderSetBlendConstant)(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color);
 typedef void (*WGPUProcRenderPassEncoderSetIndexBuffer)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size);
 typedef void (*WGPUProcRenderPassEncoderSetPipeline)(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline);
 typedef void (*WGPUProcRenderPassEncoderSetScissorRect)(WGPURenderPassEncoder renderPassEncoder, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
@@ -1182,7 +1182,7 @@ WGPU_EXPORT void wgpuRenderPassEncoderInsertDebugMarker(WGPURenderPassEncoder re
 WGPU_EXPORT void wgpuRenderPassEncoderPopDebugGroup(WGPURenderPassEncoder renderPassEncoder);
 WGPU_EXPORT void wgpuRenderPassEncoderPushDebugGroup(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel);
 WGPU_EXPORT void wgpuRenderPassEncoderSetBindGroup(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
-WGPU_EXPORT void wgpuRenderPassEncoderSetBlendColor(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color);
+WGPU_EXPORT void wgpuRenderPassEncoderSetBlendConstant(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color);
 WGPU_EXPORT void wgpuRenderPassEncoderSetIndexBuffer(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size);
 WGPU_EXPORT void wgpuRenderPassEncoderSetPipeline(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline);
 WGPU_EXPORT void wgpuRenderPassEncoderSetScissorRect(WGPURenderPassEncoder renderPassEncoder, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
