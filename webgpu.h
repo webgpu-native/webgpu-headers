@@ -164,6 +164,21 @@ typedef enum WGPUCompareFunction {
     WGPUCompareFunction_Force32 = 0x7FFFFFFF
 } WGPUCompareFunction;
 
+typedef enum WGPUCompilationInfoRequestStatus {
+    WGPUCompilationInfoRequestStatus_Success = 0x00000000,
+    WGPUCompilationInfoRequestStatus_Error = 0x00000001,
+    WGPUCompilationInfoRequestStatus_DeviceLost = 0x00000002,
+    WGPUCompilationInfoRequestStatus_Unknown = 0x00000003,
+    WGPUCompilationInfoRequestStatus_Force32 = 0x7FFFFFFF
+} WGPUCompilationInfoRequestStatus;
+
+typedef enum WGPUCompilationMessageType {
+    WGPUCompilationMessageType_Error = 0x00000000,
+    WGPUCompilationMessageType_Warning = 0x00000001,
+    WGPUCompilationMessageType_Info = 0x00000002,
+    WGPUCompilationMessageType_Force32 = 0x7FFFFFFF
+} WGPUCompilationMessageType;
+
 typedef enum WGPUCreatePipelineAsyncStatus {
     WGPUCreatePipelineAsyncStatus_Success = 0x00000000,
     WGPUCreatePipelineAsyncStatus_Error = 0x00000001,
@@ -566,6 +581,13 @@ typedef struct WGPUCommandEncoderDescriptor {
     char const * label;
 } WGPUCommandEncoderDescriptor;
 
+typedef struct WGPUCompilationMessage {
+    char const * message;
+    WGPUCompilationMessageType type;
+    uint64_t lineNum;
+    uint64_t linePos;
+} WGPUCompilationMessage;
+
 typedef struct WGPUComputePassDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
@@ -806,6 +828,11 @@ typedef struct WGPUBlendState {
     WGPUBlendComponent alpha;
 } WGPUBlendState;
 
+typedef struct WGPUCompilationInfo {
+    uint32_t messageCount;
+    WGPUCompilationMessage const * messages;
+} WGPUCompilationInfo;
+
 typedef struct WGPUComputePipelineDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
@@ -924,6 +951,7 @@ extern "C" {
 #endif
 
 typedef void (*WGPUBufferMapCallback)(WGPUBufferMapAsyncStatus status, void * userdata);
+typedef void (*WGPUCompilationInfoCallback)(WGPUCompilationInfoRequestStatus status, WGPUCompilationInfo const * compilationInfo, void * userdata);
 typedef void (*WGPUCreateComputePipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPUComputePipeline pipeline, char const * message, void * userdata);
 typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, char const * message, void * userdata);
 typedef void (*WGPUDeviceLostCallback)(char const * message, void * userdata);
@@ -1057,6 +1085,9 @@ typedef void (*WGPUProcRenderPassEncoderWriteTimestamp)(WGPURenderPassEncoder re
 
 // Procs of RenderPipeline
 typedef WGPUBindGroupLayout (*WGPUProcRenderPipelineGetBindGroupLayout)(WGPURenderPipeline renderPipeline, uint32_t groupIndex);
+
+// Procs of ShaderModule
+typedef void (*WGPUProcShaderModuleGetCompilationInfo)(WGPUShaderModule shaderModule, WGPUCompilationInfoCallback callback, void * userdata);
 
 // Procs of Surface
 typedef void (*WGPUProcSurfaceGetPreferredFormat)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceGetPreferredFormatCallback callback, void * userdata);
@@ -1193,6 +1224,9 @@ WGPU_EXPORT void wgpuRenderPassEncoderWriteTimestamp(WGPURenderPassEncoder rende
 
 // Methods of RenderPipeline
 WGPU_EXPORT WGPUBindGroupLayout wgpuRenderPipelineGetBindGroupLayout(WGPURenderPipeline renderPipeline, uint32_t groupIndex);
+
+// Methods of ShaderModule
+WGPU_EXPORT void wgpuShaderModuleGetCompilationInfo(WGPUShaderModule shaderModule, WGPUCompilationInfoCallback callback, void * userdata);
 
 // Methods of Surface
 WGPU_EXPORT void wgpuSurfaceGetPreferredFormat(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceGetPreferredFormatCallback callback, void * userdata);
