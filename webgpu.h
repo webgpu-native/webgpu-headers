@@ -539,9 +539,9 @@ typedef struct WGPUBindGroupEntry {
 } WGPUBindGroupEntry;
 
 typedef struct WGPUBlendComponent {
+    WGPUBlendOperation operation;
     WGPUBlendFactor srcFactor;
     WGPUBlendFactor dstFactor;
-    WGPUBlendOperation operation;
 } WGPUBlendComponent;
 
 typedef struct WGPUBufferBindingLayout {
