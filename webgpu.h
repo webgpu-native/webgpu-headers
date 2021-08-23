@@ -164,6 +164,13 @@ typedef enum WGPUCompareFunction {
     WGPUCompareFunction_Force32 = 0x7FFFFFFF
 } WGPUCompareFunction;
 
+typedef enum WGPUCompilationMessageType {
+    WGPUCompilationMessageType_Error = 0x00000000,
+    WGPUCompilationMessageType_Warning = 0x00000001,
+    WGPUCompilationMessageType_Info = 0x00000002,
+    WGPUCompilationMessageType_Force32 = 0x7FFFFFFF
+} WGPUCompilationMessageType;
+
 typedef enum WGPUCreatePipelineAsyncStatus {
     WGPUCreatePipelineAsyncStatus_Success = 0x00000000,
     WGPUCreatePipelineAsyncStatus_Error = 0x00000001,
@@ -366,24 +373,25 @@ typedef enum WGPUTextureFormat {
     WGPUTextureFormat_RGBA32Float = 0x00000022,
     WGPUTextureFormat_RGBA32Uint = 0x00000023,
     WGPUTextureFormat_RGBA32Sint = 0x00000024,
-    WGPUTextureFormat_Depth32Float = 0x00000025,
-    WGPUTextureFormat_Depth24Plus = 0x00000026,
-    WGPUTextureFormat_Depth24PlusStencil8 = 0x00000027,
-    WGPUTextureFormat_Stencil8 = 0x00000028,
-    WGPUTextureFormat_BC1RGBAUnorm = 0x00000029,
-    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x0000002A,
-    WGPUTextureFormat_BC2RGBAUnorm = 0x0000002B,
-    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x0000002C,
-    WGPUTextureFormat_BC3RGBAUnorm = 0x0000002D,
-    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x0000002E,
-    WGPUTextureFormat_BC4RUnorm = 0x0000002F,
-    WGPUTextureFormat_BC4RSnorm = 0x00000030,
-    WGPUTextureFormat_BC5RGUnorm = 0x00000031,
-    WGPUTextureFormat_BC5RGSnorm = 0x00000032,
-    WGPUTextureFormat_BC6HRGBUfloat = 0x00000033,
-    WGPUTextureFormat_BC6HRGBFloat = 0x00000034,
-    WGPUTextureFormat_BC7RGBAUnorm = 0x00000035,
-    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000036,
+    WGPUTextureFormat_Stencil8 = 0x00000025,
+    WGPUTextureFormat_Depth16unorm = 0x00000026,
+    WGPUTextureFormat_Depth24Plus = 0x00000027,
+    WGPUTextureFormat_Depth24PlusStencil8 = 0x00000028,
+    WGPUTextureFormat_Depth32Float = 0x00000029,
+    WGPUTextureFormat_BC1RGBAUnorm = 0x0000002A,
+    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x0000002B,
+    WGPUTextureFormat_BC2RGBAUnorm = 0x0000002C,
+    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x0000002D,
+    WGPUTextureFormat_BC3RGBAUnorm = 0x0000002E,
+    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x0000002F,
+    WGPUTextureFormat_BC4RUnorm = 0x00000030,
+    WGPUTextureFormat_BC4RSnorm = 0x00000031,
+    WGPUTextureFormat_BC5RGUnorm = 0x00000032,
+    WGPUTextureFormat_BC5RGSnorm = 0x00000033,
+    WGPUTextureFormat_BC6HRGBUfloat = 0x00000034,
+    WGPUTextureFormat_BC6HRGBFloat = 0x00000035,
+    WGPUTextureFormat_BC7RGBAUnorm = 0x00000036,
+    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000037,
     WGPUTextureFormat_Force32 = 0x7FFFFFFF
 } WGPUTextureFormat;
 
@@ -477,6 +485,7 @@ typedef enum WGPUColorWriteMask {
 typedef WGPUFlags WGPUColorWriteMaskFlags;
 
 typedef enum WGPUMapMode {
+    WGPUMapMode_None = 0x00000000,
     WGPUMapMode_Read = 0x00000001,
     WGPUMapMode_Write = 0x00000002,
     WGPUMapMode_Force32 = 0x7FFFFFFF
@@ -566,6 +575,16 @@ typedef struct WGPUCommandEncoderDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
 } WGPUCommandEncoderDescriptor;
+
+typedef struct WGPUCompilationMessage {
+    WGPUChainedStruct const * nextInChain;
+    char const * message;
+    WGPUCompilationMessageType type;
+    uint64_t lineNum;
+    uint64_t linePos;
+    uint64_t offset;
+    uint64_t length;
+} WGPUCompilationMessage;
 
 typedef struct WGPUComputePassDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -808,6 +827,7 @@ typedef struct WGPUBlendState {
 } WGPUBlendState;
 
 typedef struct WGPUCompilationInfo {
+    WGPUChainedStruct const * nextInChain;
     uint32_t messageCount;
     WGPUCompilationMessage const * messages;
 } WGPUCompilationInfo;
@@ -937,7 +957,6 @@ typedef void (*WGPUErrorCallback)(WGPUErrorType type, char const * message, void
 typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, void * userdata);
 typedef void (*WGPURequestAdapterCallback)(WGPUAdapter result, void * userdata);
 typedef void (*WGPURequestDeviceCallback)(WGPUDevice result, void * userdata);
-typedef void (*WGPUSurfaceGetPreferredFormatCallback)(WGPUTextureFormat format, void * userdata);
 
 typedef void (*WGPUProc)(void);
 
@@ -1066,7 +1085,7 @@ typedef void (*WGPUProcRenderPassEncoderWriteTimestamp)(WGPURenderPassEncoder re
 typedef WGPUBindGroupLayout (*WGPUProcRenderPipelineGetBindGroupLayout)(WGPURenderPipeline renderPipeline, uint32_t groupIndex);
 
 // Procs of Surface
-typedef void (*WGPUProcSurfaceGetPreferredFormat)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceGetPreferredFormatCallback callback, void * userdata);
+typedef WGPUTextureFormat (*WGPUProcSurfaceGetPreferredFormat)(WGPUSurface surface, WGPUAdapter adapter);
 
 // Procs of SwapChain
 typedef WGPUTextureView (*WGPUProcSwapChainGetCurrentTextureView)(WGPUSwapChain swapChain);
@@ -1203,7 +1222,7 @@ WGPU_EXPORT void wgpuRenderPassEncoderWriteTimestamp(WGPURenderPassEncoder rende
 WGPU_EXPORT WGPUBindGroupLayout wgpuRenderPipelineGetBindGroupLayout(WGPURenderPipeline renderPipeline, uint32_t groupIndex);
 
 // Methods of Surface
-WGPU_EXPORT void wgpuSurfaceGetPreferredFormat(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceGetPreferredFormatCallback callback, void * userdata);
+WGPU_EXPORT WGPUTextureFormat wgpuSurfaceGetPreferredFormat(WGPUSurface surface, WGPUAdapter adapter);
 
 // Methods of SwapChain
 WGPU_EXPORT WGPUTextureView wgpuSwapChainGetCurrentTextureView(WGPUSwapChain swapChain);
