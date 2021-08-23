@@ -215,12 +215,6 @@ typedef enum WGPUIndexFormat {
     WGPUIndexFormat_Force32 = 0x7FFFFFFF
 } WGPUIndexFormat;
 
-typedef enum WGPUInputStepMode {
-    WGPUInputStepMode_Vertex = 0x00000000,
-    WGPUInputStepMode_Instance = 0x00000001,
-    WGPUInputStepMode_Force32 = 0x7FFFFFFF
-} WGPUInputStepMode;
-
 typedef enum WGPULoadOp {
     WGPULoadOp_Clear = 0x00000000,
     WGPULoadOp_Load = 0x00000001,
@@ -308,7 +302,7 @@ typedef enum WGPUStorageTextureAccess {
 
 typedef enum WGPUStoreOp {
     WGPUStoreOp_Store = 0x00000000,
-    WGPUStoreOp_Clear = 0x00000001,
+    WGPUStoreOp_Discard = 0x00000001,
     WGPUStoreOp_Force32 = 0x7FFFFFFF
 } WGPUStoreOp;
 
@@ -449,6 +443,12 @@ typedef enum WGPUVertexFormat {
     WGPUVertexFormat_Force32 = 0x7FFFFFFF
 } WGPUVertexFormat;
 
+typedef enum WGPUVertexStepMode {
+    WGPUVertexStepMode_Vertex = 0x00000000,
+    WGPUVertexStepMode_Instance = 0x00000001,
+    WGPUVertexStepMode_Force32 = 0x7FFFFFFF
+} WGPUVertexStepMode;
+
 typedef enum WGPUBufferUsage {
     WGPUBufferUsage_None = 0x00000000,
     WGPUBufferUsage_MapRead = 0x00000001,
@@ -496,8 +496,8 @@ typedef enum WGPUTextureUsage {
     WGPUTextureUsage_None = 0x00000000,
     WGPUTextureUsage_CopySrc = 0x00000001,
     WGPUTextureUsage_CopyDst = 0x00000002,
-    WGPUTextureUsage_Sampled = 0x00000004,
-    WGPUTextureUsage_Storage = 0x00000008,
+    WGPUTextureUsage_TextureBinding = 0x00000004,
+    WGPUTextureUsage_StorageBinding = 0x00000008,
     WGPUTextureUsage_RenderAttachment = 0x00000010,
     WGPUTextureUsage_Force32 = 0x7FFFFFFF
 } WGPUTextureUsage;
@@ -520,6 +520,7 @@ typedef struct WGPUAdapterProperties {
 } WGPUAdapterProperties;
 
 typedef struct WGPUBindGroupEntry {
+    WGPUChainedStruct const * nextInChain;
     uint32_t binding;
     WGPUBuffer buffer;
     uint64_t offset;
@@ -529,9 +530,9 @@ typedef struct WGPUBindGroupEntry {
 } WGPUBindGroupEntry;
 
 typedef struct WGPUBlendComponent {
+    WGPUBlendOperation operation;
     WGPUBlendFactor srcFactor;
     WGPUBlendFactor dstFactor;
-    WGPUBlendOperation operation;
 } WGPUBlendComponent;
 
 typedef struct WGPUBufferBindingLayout {
@@ -806,11 +807,16 @@ typedef struct WGPUBlendState {
     WGPUBlendComponent alpha;
 } WGPUBlendState;
 
+typedef struct WGPUCompilationInfo {
+    uint32_t messageCount;
+    WGPUCompilationMessage const * messages;
+} WGPUCompilationInfo;
+
 typedef struct WGPUComputePipelineDescriptor {
     WGPUChainedStruct const * nextInChain;
     char const * label;
     WGPUPipelineLayout layout;
-    WGPUProgrammableStageDescriptor computeStage;
+    WGPUProgrammableStageDescriptor compute;
 } WGPUComputePipelineDescriptor;
 
 typedef struct WGPUDepthStencilState {
@@ -862,7 +868,7 @@ typedef struct WGPUTextureDescriptor {
 
 typedef struct WGPUVertexBufferLayout {
     uint64_t arrayStride;
-    WGPUInputStepMode stepMode;
+    WGPUVertexStepMode stepMode;
     uint32_t attributeCount;
     WGPUVertexAttribute const * attributes;
 } WGPUVertexBufferLayout;
