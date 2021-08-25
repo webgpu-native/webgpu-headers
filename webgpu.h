@@ -374,7 +374,7 @@ typedef enum WGPUTextureFormat {
     WGPUTextureFormat_RGBA32Uint = 0x00000023,
     WGPUTextureFormat_RGBA32Sint = 0x00000024,
     WGPUTextureFormat_Stencil8 = 0x00000025,
-    WGPUTextureFormat_Depth16unorm = 0x00000026,
+    WGPUTextureFormat_Depth16Unorm = 0x00000026,
     WGPUTextureFormat_Depth24Plus = 0x00000027,
     WGPUTextureFormat_Depth24PlusStencil8 = 0x00000028,
     WGPUTextureFormat_Depth32Float = 0x00000029,
