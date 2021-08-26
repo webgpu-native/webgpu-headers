@@ -98,12 +98,13 @@ typedef enum WGPUAddressMode {
 
 typedef enum WGPUBackendType {
     WGPUBackendType_Null = 0x00000000,
-    WGPUBackendType_D3D11 = 0x00000001,
-    WGPUBackendType_D3D12 = 0x00000002,
-    WGPUBackendType_Metal = 0x00000003,
-    WGPUBackendType_Vulkan = 0x00000004,
-    WGPUBackendType_OpenGL = 0x00000005,
-    WGPUBackendType_OpenGLES = 0x00000006,
+    WGPUBackendType_WebGPU = 0x00000001,
+    WGPUBackendType_D3D11 = 0x00000002,
+    WGPUBackendType_D3D12 = 0x00000003,
+    WGPUBackendType_Metal = 0x00000004,
+    WGPUBackendType_Vulkan = 0x00000005,
+    WGPUBackendType_OpenGL = 0x00000006,
+    WGPUBackendType_OpenGLES = 0x00000007,
     WGPUBackendType_Force32 = 0x7FFFFFFF
 } WGPUBackendType;
 
@@ -187,6 +188,12 @@ typedef enum WGPUCullMode {
     WGPUCullMode_Force32 = 0x7FFFFFFF
 } WGPUCullMode;
 
+typedef enum WGPUDeviceLostReason {
+    WGPUDeviceLostReason_Undefined = 0x00000000,
+    WGPUDeviceLostReason_Destroyed = 0x00000001,
+    WGPUDeviceLostReason_Force32 = 0x7FFFFFFF
+} WGPUDeviceLostReason;
+
 typedef enum WGPUErrorFilter {
     WGPUErrorFilter_None = 0x00000000,
     WGPUErrorFilter_Validation = 0x00000001,
@@ -268,6 +275,21 @@ typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
 } WGPUQueueWorkDoneStatus;
 
+typedef enum WGPURequestAdapterStatus {
+    WGPURequestAdapterStatus_Success = 0x00000000,
+    WGPURequestAdapterStatus_Unavailable = 0x00000001,
+    WGPURequestAdapterStatus_Error = 0x00000002,
+    WGPURequestAdapterStatus_Unknown = 0x00000003,
+    WGPURequestAdapterStatus_Force32 = 0x7FFFFFFF
+} WGPURequestAdapterStatus;
+
+typedef enum WGPURequestDeviceStatus {
+    WGPURequestDeviceStatus_Success = 0x00000000,
+    WGPURequestDeviceStatus_Error = 0x00000001,
+    WGPURequestDeviceStatus_Unknown = 0x00000002,
+    WGPURequestDeviceStatus_Force32 = 0x7FFFFFFF
+} WGPURequestDeviceStatus;
+
 typedef enum WGPUSType {
     WGPUSType_Invalid = 0x00000000,
     WGPUSType_SurfaceDescriptorFromMetalLayer = 0x00000001,
@@ -302,7 +324,6 @@ typedef enum WGPUStencilOperation {
 
 typedef enum WGPUStorageTextureAccess {
     WGPUStorageTextureAccess_Undefined = 0x00000000,
-    WGPUStorageTextureAccess_ReadOnly = 0x00000001,
     WGPUStorageTextureAccess_WriteOnly = 0x00000002,
     WGPUStorageTextureAccess_Force32 = 0x7FFFFFFF
 } WGPUStorageTextureAccess;
@@ -512,7 +533,6 @@ typedef enum WGPUTextureUsage {
 } WGPUTextureUsage;
 typedef WGPUFlags WGPUTextureUsageFlags;
 
-
 typedef struct WGPUChainedStruct {
     struct WGPUChainedStruct const * next;
     WGPUSType sType;
@@ -520,8 +540,8 @@ typedef struct WGPUChainedStruct {
 
 typedef struct WGPUAdapterProperties {
     WGPUChainedStruct const * nextInChain;
-    uint32_t deviceID;
     uint32_t vendorID;
+    uint32_t deviceID;
     char const * name;
     char const * driverDescription;
     WGPUAdapterType adapterType;
@@ -943,8 +963,6 @@ typedef struct WGPURenderPipelineDescriptor {
     WGPUFragmentState const * fragment;
 } WGPURenderPipelineDescriptor;
 
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -952,11 +970,11 @@ extern "C" {
 typedef void (*WGPUBufferMapCallback)(WGPUBufferMapAsyncStatus status, void * userdata);
 typedef void (*WGPUCreateComputePipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPUComputePipeline pipeline, char const * message, void * userdata);
 typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, char const * message, void * userdata);
-typedef void (*WGPUDeviceLostCallback)(char const * message, void * userdata);
+typedef void (*WGPUDeviceLostCallback)(WGPUDeviceLostReason reason, char const * message, void * userdata);
 typedef void (*WGPUErrorCallback)(WGPUErrorType type, char const * message, void * userdata);
 typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, void * userdata);
-typedef void (*WGPURequestAdapterCallback)(WGPUAdapter result, void * userdata);
-typedef void (*WGPURequestDeviceCallback)(WGPUDevice result, void * userdata);
+typedef void (*WGPURequestAdapterCallback)(WGPURequestAdapterStatus status, WGPUAdapter result, void * userdata);
+typedef void (*WGPURequestDeviceCallback)(WGPURequestDeviceStatus status, WGPUDevice result, void * userdata);
 
 typedef void (*WGPUProc)(void);
 
