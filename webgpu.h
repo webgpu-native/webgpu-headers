@@ -611,6 +611,12 @@ typedef struct WGPUComputePassDescriptor {
     char const * label;
 } WGPUComputePassDescriptor;
 
+typedef struct WGPUConstantEntry {
+    WGPUChainedStruct const * nextInChain;
+    char const * key;
+    double value;
+} WGPUConstantEntry;
+
 typedef struct WGPUDeviceDescriptor {
     WGPUChainedStruct const * nextInChain;
 } WGPUDeviceDescriptor;
@@ -662,6 +668,8 @@ typedef struct WGPUProgrammableStageDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     char const * entryPoint;
+    uint32_t constantCount;
+    WGPUConstantEntry const * constants;
 } WGPUProgrammableStageDescriptor;
 
 typedef struct WGPUQuerySetDescriptor {
