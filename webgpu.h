@@ -244,6 +244,12 @@ typedef enum WGPUPipelineStatisticName {
     WGPUPipelineStatisticName_Force32 = 0x7FFFFFFF
 } WGPUPipelineStatisticName;
 
+typedef enum WGPUPowerPreference {
+    WGPUPowerPreference_LowPower = 0x00000000,
+    WGPUPowerPreference_HighPerformance = 0x00000001,
+    WGPUPowerPreference_Force32 = 0x7FFFFFFF 
+} WGPUPowerPreference;
+
 typedef enum WGPUPresentMode {
     WGPUPresentMode_Immediate = 0x00000000,
     WGPUPresentMode_Mailbox = 0x00000001,
@@ -702,6 +708,7 @@ typedef struct WGPURenderPassDepthStencilAttachment {
 typedef struct WGPURequestAdapterOptions {
     WGPUChainedStruct const * nextInChain;
     WGPUSurface compatibleSurface;
+    WGPUPowerPreference powerPreference;
 } WGPURequestAdapterOptions;
 
 typedef struct WGPUSamplerBindingLayout {
