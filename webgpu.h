@@ -247,7 +247,7 @@ typedef enum WGPUPipelineStatisticName {
 typedef enum WGPUPowerPreference {
     WGPUPowerPreference_LowPower = 0x00000000,
     WGPUPowerPreference_HighPerformance = 0x00000001,
-    WGPUPowerPreference_Force32 = 0x7FFFFFFF 
+    WGPUPowerPreference_Force32 = 0x7FFFFFFF
 } WGPUPowerPreference;
 
 typedef enum WGPUPresentMode {
@@ -988,8 +988,8 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
 typedef void (*WGPUDeviceLostCallback)(WGPUDeviceLostReason reason, char const * message, void * userdata);
 typedef void (*WGPUErrorCallback)(WGPUErrorType type, char const * message, void * userdata);
 typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, void * userdata);
-typedef void (*WGPURequestAdapterCallback)(WGPURequestAdapterStatus status, WGPUAdapter result, void * userdata);
-typedef void (*WGPURequestDeviceCallback)(WGPURequestDeviceStatus status, WGPUDevice result, void * userdata);
+typedef void (*WGPURequestAdapterCallback)(WGPURequestAdapterStatus status, WGPUAdapter result, char const * message, void * userdata);
+typedef void (*WGPURequestDeviceCallback)(WGPURequestDeviceStatus status, WGPUDevice result, char const * message, void * userdata);
 
 typedef void (*WGPUProc)(void);
 
