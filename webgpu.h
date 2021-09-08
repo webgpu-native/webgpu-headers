@@ -229,6 +229,37 @@ typedef enum WGPUIndexFormat {
     WGPUIndexFormat_Force32 = 0x7FFFFFFF
 } WGPUIndexFormat;
 
+typedef enum WGPULimitName {
+    WGPULimitName_Undefined = 0x00000000,
+    WGPULimitName_MaxTextureDimension1D = 0x00000001,
+    WGPULimitName_MaxTextureDimension2D = 0x00000002,
+    WGPULimitName_MaxTextureDimension3D = 0x00000003,
+    WGPULimitName_MaxTextureArrayLayers = 0x00000004,
+    WGPULimitName_MaxBindGroups = 0x00000005,
+    WGPULimitName_MaxDynamicUniformBuffersPerPipelineLayout = 0x00000006,
+    WGPULimitName_MaxDynamicStorageBuffersPerPipelineLayout = 0x00000007,
+    WGPULimitName_MaxSampledTexturesPerShaderStage = 0x00000008,
+    WGPULimitName_MaxSamplersPerShaderStage = 0x00000009,
+    WGPULimitName_MaxStorageBuffersPerShaderStage = 0x0000000A,
+    WGPULimitName_MaxStorageTexturesPerShaderStage = 0x0000000B,
+    WGPULimitName_MaxUniformBuffersPerShaderStage = 0x0000000C,
+    WGPULimitName_MaxUniformBufferBindingSize = 0x0000000D,
+    WGPULimitName_MaxStorageBufferBindingSize = 0x0000000E,
+    WGPULimitName_MinUniformBufferOffsetAlignment = 0x0000000F,
+    WGPULimitName_MinStorageBufferOffsetAlignment = 0x00000010,
+    WGPULimitName_MaxVertexBuffers = 0x00000011,
+    WGPULimitName_MaxVertexAttributes = 0x00000012,
+    WGPULimitName_MaxVertexBufferArrayStride = 0x00000013,
+    WGPULimitName_MaxInterStageShaderComponents = 0x00000014,
+    WGPULimitName_MaxComputeWorkgroupStorageSize = 0x00000015,
+    WGPULimitName_MaxComputeInvocationsPerWorkgroup = 0x00000016,
+    WGPULimitName_MaxComputeWorkgroupSizeX = 0x00000017,
+    WGPULimitName_MaxComputeWorkgroupSizeY = 0x00000018,
+    WGPULimitName_MaxComputeWorkgroupSizeZ = 0x00000019,
+    WGPULimitName_MaxComputeWorkgroupsPerDimension = 0x0000001A,
+    WGPULimitName_Force32 = 0x7FFFFFFF
+} WGPULimitName;
+
 typedef enum WGPULoadOp {
     WGPULoadOp_Clear = 0x00000000,
     WGPULoadOp_Load = 0x00000001,
@@ -247,7 +278,7 @@ typedef enum WGPUPipelineStatisticName {
 typedef enum WGPUPowerPreference {
     WGPUPowerPreference_LowPower = 0x00000000,
     WGPUPowerPreference_HighPerformance = 0x00000001,
-    WGPUPowerPreference_Force32 = 0x7FFFFFFF 
+    WGPUPowerPreference_Force32 = 0x7FFFFFFF
 } WGPUPowerPreference;
 
 typedef enum WGPUPresentMode {
@@ -625,6 +656,8 @@ typedef struct WGPUConstantEntry {
 
 typedef struct WGPUDeviceDescriptor {
     WGPUChainedStruct const * nextInChain;
+    uint32_t requiredLimitsCount;
+    WGPULimitEntry const * requiredLimits;
 } WGPUDeviceDescriptor;
 
 typedef struct WGPUExtent3D {
@@ -636,6 +669,11 @@ typedef struct WGPUExtent3D {
 typedef struct WGPUInstanceDescriptor {
     WGPUChainedStruct const * nextInChain;
 } WGPUInstanceDescriptor;
+
+typedef struct WGPULimitEntry {
+    WGPULimitName name;
+    uint64_t value;
+} WGPULimitEntry;
 
 typedef struct WGPUMultisampleState {
     WGPUChainedStruct const * nextInChain;
@@ -1000,6 +1038,8 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procN
 
 // Procs of Adapter
 typedef void (*WGPUProcAdapterGetProperties)(WGPUAdapter adapter, WGPUAdapterProperties * properties);
+typedef bool (*WGPUProcAdapterGetLimitU32)(WGPUAdapter adapter, WGPULimitName name, uint32_t* value);
+typedef bool (*WGPUProcAdapterGetLimitU64)(WGPUAdapter adapter, WGPULimitName name, uint64_t* value);
 typedef void (*WGPUProcAdapterRequestDevice)(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Procs of Buffer
@@ -1137,6 +1177,8 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 
 // Methods of Adapter
 WGPU_EXPORT void wgpuAdapterGetProperties(WGPUAdapter adapter, WGPUAdapterProperties * properties);
+WGPU_EXPORT bool wgpuAdapterGetLimitU32(WGPUAdapter adapter, WGPULimitName name, uint32_t* value);
+WGPU_EXPORT bool wgpuAdapterGetLimitU64(WGPUAdapter adapter, WGPULimitName name, uint64_t* value);
 WGPU_EXPORT void wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Methods of Buffer
