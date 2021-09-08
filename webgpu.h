@@ -247,7 +247,7 @@ typedef enum WGPUPipelineStatisticName {
 typedef enum WGPUPowerPreference {
     WGPUPowerPreference_LowPower = 0x00000000,
     WGPUPowerPreference_HighPerformance = 0x00000001,
-    WGPUPowerPreference_Force32 = 0x7FFFFFFF 
+    WGPUPowerPreference_Force32 = 0x7FFFFFFF
 } WGPUPowerPreference;
 
 typedef enum WGPUPresentMode {
@@ -636,8 +636,8 @@ typedef struct WGPUConstantEntry {
 
 typedef struct WGPUDeviceDescriptor {
     WGPUChainedStruct const * nextInChain;
-    uint32_t nonGuaranteedFeaturesCount;
-    WGPUFeatureName const * nonGuaranteedFeatures;
+    uint32_t requiredFeaturesCount;
+    WGPUFeatureName const * requiredFeatures;
 } WGPUDeviceDescriptor;
 
 typedef struct WGPUExtent3D {
@@ -1013,7 +1013,7 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procN
 
 // Procs of Adapter
 typedef void (*WGPUProcAdapterGetProperties)(WGPUAdapter adapter, WGPUAdapterProperties * properties);
-typedef uint32_t (*WGPUProcAdapterGetFeatures)(WGPUAdapter adapter, WGPUFeatureName * features);
+typedef bool (*WGPUProcAdapterHasFeature)(WGPUAdapter adapter, WGPUFeatureName feature);
 typedef void (*WGPUProcAdapterRequestDevice)(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Procs of Buffer
@@ -1151,7 +1151,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 
 // Methods of Adapter
 WGPU_EXPORT void wgpuAdapterGetProperties(WGPUAdapter adapter, WGPUAdapterProperties * properties);
-WGPU_EXPORT uint32_t wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUFeatureName * features);
+WGPU_EXPORT bool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature);
 WGPU_EXPORT void wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Methods of Buffer
