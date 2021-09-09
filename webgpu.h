@@ -500,6 +500,17 @@ typedef enum WGPUBufferUsage {
 } WGPUBufferUsage;
 typedef WGPUFlags WGPUBufferUsageFlags;
 
+typedef enum WGPUFeatureName {
+  WGPUFeatureName_Undefined = 0x00000000,
+  WGPUFeatureName_DepthClamping = 0x00000001,
+  WGPUFeatureName_Depth24UnormStencil8 = 0x00000002,
+  WGPUFeatureName_Depth32FloatStencil8 = 0x00000003,
+  WGPUFeatureName_PipelineStatisticsQuery = 0x00000004,
+  WGPUFeatureName_TextureCompressionBC = 0x00000005,
+  WGPUFeatureName_TimestampQuery = 0x00000006,
+  WGPUFeatureName_Force32 = 0x7FFFFFFF
+} WGPUFeatureName;
+
 typedef enum WGPUColorWriteMask {
     WGPUColorWriteMask_None = 0x00000000,
     WGPUColorWriteMask_Red = 0x00000001,
@@ -625,6 +636,8 @@ typedef struct WGPUConstantEntry {
 
 typedef struct WGPUDeviceDescriptor {
     WGPUChainedStruct const * nextInChain;
+    uint32_t requiredFeaturesCount;
+    WGPUFeatureName const * requiredFeatures;
 } WGPUDeviceDescriptor;
 
 typedef struct WGPUExtent3D {
@@ -1000,6 +1013,7 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procN
 
 // Procs of Adapter
 typedef void (*WGPUProcAdapterGetProperties)(WGPUAdapter adapter, WGPUAdapterProperties * properties);
+typedef bool (*WGPUProcAdapterHasFeature)(WGPUAdapter adapter, WGPUFeatureName feature);
 typedef void (*WGPUProcAdapterRequestDevice)(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Procs of Buffer
@@ -1137,6 +1151,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 
 // Methods of Adapter
 WGPU_EXPORT void wgpuAdapterGetProperties(WGPUAdapter adapter, WGPUAdapterProperties * properties);
+WGPU_EXPORT bool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature);
 WGPU_EXPORT void wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Methods of Buffer
