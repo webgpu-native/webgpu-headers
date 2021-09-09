@@ -54,6 +54,8 @@
 
 #define WGPU_WHOLE_SIZE (0xffffffffffffffffULL)
 #define WGPU_COPY_STRIDE_UNDEFINED (0xffffffffUL)
+#define WGPU_LIMIT_U32_UNDEFINED (0xffffffffUL)
+#define WGPU_LIMIT_U64_UNDEFINED (0xffffffffffffffffULL)
 
 typedef uint32_t WGPUFlags;
 
@@ -638,6 +640,7 @@ typedef struct WGPUDeviceDescriptor {
     WGPUChainedStruct const * nextInChain;
     uint32_t requiredFeaturesCount;
     WGPUFeatureName const * requiredFeatures;
+    WGPULimits const * requiredLimits;
 } WGPUDeviceDescriptor;
 
 typedef struct WGPUExtent3D {
@@ -649,6 +652,36 @@ typedef struct WGPUExtent3D {
 typedef struct WGPUInstanceDescriptor {
     WGPUChainedStruct const * nextInChain;
 } WGPUInstanceDescriptor;
+
+typedef struct WGPULimits {
+    WGPUChainedStruct const * nextInChain;
+    uint32_t maxTextureDimension1D;
+    uint32_t maxTextureDimension2D;
+    uint32_t maxTextureDimension3D;
+    uint32_t maxTextureArrayLayers;
+    uint32_t maxBindGroups;
+    uint32_t maxDynamicUniformBuffersPerPipelineLayout;
+    uint32_t maxDynamicStorageBuffersPerPipelineLayout;
+    uint32_t maxSampledTexturesPerShaderStage;
+    uint32_t maxSamplersPerShaderStage;
+    uint32_t maxStorageBuffersPerShaderStage;
+    uint32_t maxStorageTexturesPerShaderStage;
+    uint32_t maxUniformBuffersPerShaderStage;
+    uint64_t maxUniformBufferBindingSize;
+    uint64_t maxStorageBufferBindingSize;
+    uint32_t minUniformBufferOffsetAlignment;
+    uint32_t minStorageBufferOffsetAlignment;
+    uint32_t maxVertexBuffers;
+    uint32_t maxVertexAttributes;
+    uint32_t maxVertexBufferArrayStride;
+    uint32_t maxInterStageShaderComponents;
+    uint32_t maxComputeWorkgroupStorageSize;
+    uint32_t maxComputeInvocationsPerWorkgroup;
+    uint32_t maxComputeWorkgroupSizeX;
+    uint32_t maxComputeWorkgroupSizeY;
+    uint32_t maxComputeWorkgroupSizeZ;
+    uint32_t maxComputeWorkgroupsPerDimension;
+} WGPULimits;
 
 typedef struct WGPUMultisampleState {
     WGPUChainedStruct const * nextInChain;
@@ -1014,6 +1047,7 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procN
 // Procs of Adapter
 typedef void (*WGPUProcAdapterGetProperties)(WGPUAdapter adapter, WGPUAdapterProperties * properties);
 typedef bool (*WGPUProcAdapterHasFeature)(WGPUAdapter adapter, WGPUFeatureName feature);
+typedef void (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPULimits * limits);
 typedef void (*WGPUProcAdapterRequestDevice)(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Procs of Buffer
@@ -1152,6 +1186,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 // Methods of Adapter
 WGPU_EXPORT void wgpuAdapterGetProperties(WGPUAdapter adapter, WGPUAdapterProperties * properties);
 WGPU_EXPORT bool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature);
+WGPU_EXPORT void wgpuAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits);
 WGPU_EXPORT void wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Methods of Buffer
