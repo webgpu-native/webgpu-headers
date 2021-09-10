@@ -1186,7 +1186,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 // Methods of Adapter
 WGPU_EXPORT void wgpuAdapterGetProperties(WGPUAdapter adapter, WGPUAdapterProperties * properties);
 WGPU_EXPORT bool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature);
-WGPU_EXPORT void wgpuAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits);
+WGPU_EXPORT bool wgpuAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits);
 WGPU_EXPORT void wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Methods of Buffer
