@@ -1047,7 +1047,7 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procN
 // Procs of Adapter
 typedef void (*WGPUProcAdapterGetProperties)(WGPUAdapter adapter, WGPUAdapterProperties * properties);
 typedef bool (*WGPUProcAdapterHasFeature)(WGPUAdapter adapter, WGPUFeatureName feature);
-typedef void (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPULimits * limits);
+typedef bool (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPULimits * limits);
 typedef void (*WGPUProcAdapterRequestDevice)(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallback callback, void * userdata);
 
 // Procs of Buffer
@@ -1104,6 +1104,7 @@ typedef WGPUShaderModule (*WGPUProcDeviceCreateShaderModule)(WGPUDevice device, 
 typedef WGPUSwapChain (*WGPUProcDeviceCreateSwapChain)(WGPUDevice device, WGPUSurface surface, WGPUSwapChainDescriptor const * descriptor);
 typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 typedef void (*WGPUProcDeviceDestroy)(WGPUDevice device);
+typedef bool (*WGPUDeviceGetLimits)(WGPUDevice device, WGPULimits * limits);
 typedef WGPUQueue (*WGPUProcDeviceGetQueue)(WGPUDevice device);
 typedef bool (*WGPUProcDevicePopErrorScope)(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 typedef void (*WGPUProcDevicePushErrorScope)(WGPUDevice device, WGPUErrorFilter filter);
@@ -1243,6 +1244,7 @@ WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGP
 WGPU_EXPORT WGPUSwapChain wgpuDeviceCreateSwapChain(WGPUDevice device, WGPUSurface surface, WGPUSwapChainDescriptor const * descriptor);
 WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device);
+WGPU_EXPORT bool wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limits);
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device);
 WGPU_EXPORT bool wgpuDevicePopErrorScope(WGPUDevice device, WGPUErrorCallback callback, void * userdata);
 WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter filter);
