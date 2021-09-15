@@ -1010,6 +1010,8 @@ typedef struct WGPUVertexState {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     char const * entryPoint;
+    uint32_t constantCount;
+    WGPUConstantEntry const * constants;
     uint32_t bufferCount;
     WGPUVertexBufferLayout const * buffers;
 } WGPUVertexState;
@@ -1018,6 +1020,8 @@ typedef struct WGPUFragmentState {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     char const * entryPoint;
+    uint32_t constantCount;
+    WGPUConstantEntry const * constants;
     uint32_t targetCount;
     WGPUColorTargetState const * targets;
 } WGPUFragmentState;
