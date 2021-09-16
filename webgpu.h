@@ -557,8 +557,13 @@ typedef struct WGPUChainedStruct {
     WGPUSType sType;
 } WGPUChainedStruct;
 
+typedef struct WGPUChainedStructOut {
+    struct WGPUChainedStructOut * next;
+    WGPUSType sType;
+} WGPUChainedStructOut;
+
 typedef struct WGPUAdapterProperties {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStructOut * nextInChain;
     uint32_t vendorID;
     uint32_t deviceID;
     char const * name;
@@ -820,7 +825,7 @@ typedef struct WGPUStorageTextureBindingLayout {
 } WGPUStorageTextureBindingLayout;
 
 typedef struct WGPUSupportedLimits {
-    WGPUChainedStruct * nextInChain;
+    WGPUChainedStructOut * nextInChain;
     WGPULimits limits;
 } WGPUSupportedLimits;
 
