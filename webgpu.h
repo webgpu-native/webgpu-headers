@@ -641,23 +641,6 @@ typedef struct WGPUConstantEntry {
     double value;
 } WGPUConstantEntry;
 
-typedef struct WGPUDeviceDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    uint32_t requiredFeaturesCount;
-    WGPUFeatureName const * requiredFeatures;
-    WGPURequiredLimits const * requiredLimits;
-} WGPUDeviceDescriptor;
-
-typedef struct WGPUExtent3D {
-    uint32_t width;
-    uint32_t height;
-    uint32_t depthOrArrayLayers;
-} WGPUExtent3D;
-
-typedef struct WGPUInstanceDescriptor {
-    WGPUChainedStruct const * nextInChain;
-} WGPUInstanceDescriptor;
-
 typedef struct WGPULimits {
     uint32_t maxTextureDimension1D;
     uint32_t maxTextureDimension2D;
@@ -686,6 +669,28 @@ typedef struct WGPULimits {
     uint32_t maxComputeWorkgroupSizeZ;
     uint32_t maxComputeWorkgroupsPerDimension;
 } WGPULimits;
+
+typedef struct WGPURequiredLimits {
+    WGPUChainedStruct const * nextInChain;
+    WGPULimits limits;
+} WGPURequiredLimits;
+
+typedef struct WGPUDeviceDescriptor {
+    WGPUChainedStruct const * nextInChain;
+    uint32_t requiredFeaturesCount;
+    WGPUFeatureName const * requiredFeatures;
+    WGPURequiredLimits const * requiredLimits;
+} WGPUDeviceDescriptor;
+
+typedef struct WGPUExtent3D {
+    uint32_t width;
+    uint32_t height;
+    uint32_t depthOrArrayLayers;
+} WGPUExtent3D;
+
+typedef struct WGPUInstanceDescriptor {
+    WGPUChainedStruct const * nextInChain;
+} WGPUInstanceDescriptor;
 
 typedef struct WGPUMultisampleState {
     WGPUChainedStruct const * nextInChain;
@@ -768,11 +773,6 @@ typedef struct WGPURequestAdapterOptions {
     WGPUSurface compatibleSurface;
     WGPUPowerPreference powerPreference;
 } WGPURequestAdapterOptions;
-
-typedef struct WGPURequiredLimits {
-    WGPUChainedStruct const * nextInChain;
-    WGPULimits limits;
-} WGPURequiredLimits;
 
 typedef struct WGPUSamplerBindingLayout {
     WGPUChainedStruct const * nextInChain;
