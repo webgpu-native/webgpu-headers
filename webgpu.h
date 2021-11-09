@@ -53,6 +53,7 @@
 #include <stdbool.h>
 
 #define WGPU_WHOLE_SIZE (0xffffffffffffffffULL)
+#define WGPU_WHOLE_MAP_SIZE SIZE_MAX
 #define WGPU_COPY_STRIDE_UNDEFINED (0xffffffffUL)
 #define WGPU_LIMIT_U32_UNDEFINED (0xffffffffUL)
 #define WGPU_LIMIT_U64_UNDEFINED (0xffffffffffffffffULL)
@@ -222,6 +223,8 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_TimestampQuery = 0x00000004,
     WGPUFeatureName_PipelineStatisticsQuery = 0x00000005,
     WGPUFeatureName_TextureCompressionBC = 0x00000006,
+    WGPUFeatureName_TextureCompressionETC2 = 0x00000007,
+    WGPUFeatureName_TextureCompressionASTC = 0x00000008,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName;
 
@@ -434,6 +437,44 @@ typedef enum WGPUTextureFormat {
     WGPUTextureFormat_BC6HRGBFloat = 0x00000035,
     WGPUTextureFormat_BC7RGBAUnorm = 0x00000036,
     WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000037,
+    WGPUTextureFormat_ETC2RGB8Unorm = 0x00000038,
+    WGPUTextureFormat_ETC2RGB8UnormSrgb = 0x00000039,
+    WGPUTextureFormat_ETC2RGB8A1Unorm = 0x0000003A,
+    WGPUTextureFormat_ETC2RGB8A1UnormSrgb = 0x0000003B,
+    WGPUTextureFormat_ETC2RGBA8Unorm = 0x0000003C,
+    WGPUTextureFormat_ETC2RGBA8UnormSrgb = 0x0000003D,
+    WGPUTextureFormat_EACR11Unorm = 0x0000003E,
+    WGPUTextureFormat_EACR11Snorm = 0x0000003F,
+    WGPUTextureFormat_EACRG11Unorm = 0x00000040,
+    WGPUTextureFormat_EACRG11Snorm = 0x00000041,
+    WGPUTextureFormat_ASTC4x4Unorm = 0x00000042,
+    WGPUTextureFormat_ASTC4x4UnormSrgb = 0x00000043,
+    WGPUTextureFormat_ASTC5x4Unorm = 0x00000044,
+    WGPUTextureFormat_ASTC5x4UnormSrgb = 0x00000045,
+    WGPUTextureFormat_ASTC5x5Unorm = 0x00000046,
+    WGPUTextureFormat_ASTC5x5UnormSrgb = 0x00000047,
+    WGPUTextureFormat_ASTC6x5Unorm = 0x00000048,
+    WGPUTextureFormat_ASTC6x5UnormSrgb = 0x00000049,
+    WGPUTextureFormat_ASTC6x6Unorm = 0x0000004A,
+    WGPUTextureFormat_ASTC6x6UnormSrgb = 0x0000004B,
+    WGPUTextureFormat_ASTC8x5Unorm = 0x0000004C,
+    WGPUTextureFormat_ASTC8x5UnormSrgb = 0x0000004D,
+    WGPUTextureFormat_ASTC8x6Unorm = 0x0000004E,
+    WGPUTextureFormat_ASTC8x6UnormSrgb = 0x0000004F,
+    WGPUTextureFormat_ASTC8x8Unorm = 0x00000050,
+    WGPUTextureFormat_ASTC8x8UnormSrgb = 0x00000051,
+    WGPUTextureFormat_ASTC10x5Unorm = 0x00000052,
+    WGPUTextureFormat_ASTC10x5UnormSrgb = 0x00000053,
+    WGPUTextureFormat_ASTC10x6Unorm = 0x00000054,
+    WGPUTextureFormat_ASTC10x6UnormSrgb = 0x00000055,
+    WGPUTextureFormat_ASTC10x8Unorm = 0x00000056,
+    WGPUTextureFormat_ASTC10x8UnormSrgb = 0x00000057,
+    WGPUTextureFormat_ASTC10x10Unorm = 0x00000058,
+    WGPUTextureFormat_ASTC10x10UnormSrgb = 0x00000059,
+    WGPUTextureFormat_ASTC12x10Unorm = 0x0000005A,
+    WGPUTextureFormat_ASTC12x10UnormSrgb = 0x0000005B,
+    WGPUTextureFormat_ASTC12x12Unorm = 0x0000005C,
+    WGPUTextureFormat_ASTC12x12UnormSrgb = 0x0000005D,
     WGPUTextureFormat_Force32 = 0x7FFFFFFF
 } WGPUTextureFormat;
 
@@ -736,6 +777,8 @@ typedef struct WGPURenderBundleEncoderDescriptor {
     WGPUTextureFormat const * colorFormats;
     WGPUTextureFormat depthStencilFormat;
     uint32_t sampleCount;
+    bool depthReadOnly;
+    bool stencilReadOnly;
 } WGPURenderBundleEncoderDescriptor;
 
 typedef struct WGPURenderPassDepthStencilAttachment {
