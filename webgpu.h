@@ -231,7 +231,7 @@ typedef enum WGPUErrorType {
 
 typedef enum WGPUFeatureName {
     WGPUFeatureName_Undefined = 0x00000000,
-    WGPUFeatureName_DepthClamping = 0x00000001,
+    WGPUFeatureName_DepthClipControl = 0x00000001,
     WGPUFeatureName_Depth24UnormStencil8 = 0x00000002,
     WGPUFeatureName_Depth32FloatStencil8 = 0x00000003,
     WGPUFeatureName_TimestampQuery = 0x00000004,
@@ -239,6 +239,7 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_TextureCompressionBC = 0x00000006,
     WGPUFeatureName_TextureCompressionETC2 = 0x00000007,
     WGPUFeatureName_TextureCompressionASTC = 0x00000008,
+    WGPUFeatureName_IndirectFirstInstance = 0x00000009,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName;
 
@@ -343,7 +344,7 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceDescriptorFromCanvasHTMLSelector = 0x00000004,
     WGPUSType_ShaderModuleSPIRVDescriptor = 0x00000005,
     WGPUSType_ShaderModuleWGSLDescriptor = 0x00000006,
-    WGPUSType_PrimitiveDepthClampingState = 0x00000007,
+    WGPUSType_PrimitiveDepthClipControl = 0x00000007,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
@@ -443,59 +444,61 @@ typedef enum WGPUTextureFormat {
     WGPUTextureFormat_Depth16Unorm = 0x00000026,
     WGPUTextureFormat_Depth24Plus = 0x00000027,
     WGPUTextureFormat_Depth24PlusStencil8 = 0x00000028,
-    WGPUTextureFormat_Depth32Float = 0x00000029,
-    WGPUTextureFormat_BC1RGBAUnorm = 0x0000002A,
-    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x0000002B,
-    WGPUTextureFormat_BC2RGBAUnorm = 0x0000002C,
-    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x0000002D,
-    WGPUTextureFormat_BC3RGBAUnorm = 0x0000002E,
-    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x0000002F,
-    WGPUTextureFormat_BC4RUnorm = 0x00000030,
-    WGPUTextureFormat_BC4RSnorm = 0x00000031,
-    WGPUTextureFormat_BC5RGUnorm = 0x00000032,
-    WGPUTextureFormat_BC5RGSnorm = 0x00000033,
-    WGPUTextureFormat_BC6HRGBUfloat = 0x00000034,
-    WGPUTextureFormat_BC6HRGBFloat = 0x00000035,
-    WGPUTextureFormat_BC7RGBAUnorm = 0x00000036,
-    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000037,
-    WGPUTextureFormat_ETC2RGB8Unorm = 0x00000038,
-    WGPUTextureFormat_ETC2RGB8UnormSrgb = 0x00000039,
-    WGPUTextureFormat_ETC2RGB8A1Unorm = 0x0000003A,
-    WGPUTextureFormat_ETC2RGB8A1UnormSrgb = 0x0000003B,
-    WGPUTextureFormat_ETC2RGBA8Unorm = 0x0000003C,
-    WGPUTextureFormat_ETC2RGBA8UnormSrgb = 0x0000003D,
-    WGPUTextureFormat_EACR11Unorm = 0x0000003E,
-    WGPUTextureFormat_EACR11Snorm = 0x0000003F,
-    WGPUTextureFormat_EACRG11Unorm = 0x00000040,
-    WGPUTextureFormat_EACRG11Snorm = 0x00000041,
-    WGPUTextureFormat_ASTC4x4Unorm = 0x00000042,
-    WGPUTextureFormat_ASTC4x4UnormSrgb = 0x00000043,
-    WGPUTextureFormat_ASTC5x4Unorm = 0x00000044,
-    WGPUTextureFormat_ASTC5x4UnormSrgb = 0x00000045,
-    WGPUTextureFormat_ASTC5x5Unorm = 0x00000046,
-    WGPUTextureFormat_ASTC5x5UnormSrgb = 0x00000047,
-    WGPUTextureFormat_ASTC6x5Unorm = 0x00000048,
-    WGPUTextureFormat_ASTC6x5UnormSrgb = 0x00000049,
-    WGPUTextureFormat_ASTC6x6Unorm = 0x0000004A,
-    WGPUTextureFormat_ASTC6x6UnormSrgb = 0x0000004B,
-    WGPUTextureFormat_ASTC8x5Unorm = 0x0000004C,
-    WGPUTextureFormat_ASTC8x5UnormSrgb = 0x0000004D,
-    WGPUTextureFormat_ASTC8x6Unorm = 0x0000004E,
-    WGPUTextureFormat_ASTC8x6UnormSrgb = 0x0000004F,
-    WGPUTextureFormat_ASTC8x8Unorm = 0x00000050,
-    WGPUTextureFormat_ASTC8x8UnormSrgb = 0x00000051,
-    WGPUTextureFormat_ASTC10x5Unorm = 0x00000052,
-    WGPUTextureFormat_ASTC10x5UnormSrgb = 0x00000053,
-    WGPUTextureFormat_ASTC10x6Unorm = 0x00000054,
-    WGPUTextureFormat_ASTC10x6UnormSrgb = 0x00000055,
-    WGPUTextureFormat_ASTC10x8Unorm = 0x00000056,
-    WGPUTextureFormat_ASTC10x8UnormSrgb = 0x00000057,
-    WGPUTextureFormat_ASTC10x10Unorm = 0x00000058,
-    WGPUTextureFormat_ASTC10x10UnormSrgb = 0x00000059,
-    WGPUTextureFormat_ASTC12x10Unorm = 0x0000005A,
-    WGPUTextureFormat_ASTC12x10UnormSrgb = 0x0000005B,
-    WGPUTextureFormat_ASTC12x12Unorm = 0x0000005C,
-    WGPUTextureFormat_ASTC12x12UnormSrgb = 0x0000005D,
+    WGPUTextureFormat_Depth24UnormStencil8 = 0x00000029,
+    WGPUTextureFormat_Depth32Float = 0x0000002A,
+    WGPUTextureFormat_Depth32FloatStencil8 = 0x0000002B,
+    WGPUTextureFormat_BC1RGBAUnorm = 0x0000002C,
+    WGPUTextureFormat_BC1RGBAUnormSrgb = 0x0000002D,
+    WGPUTextureFormat_BC2RGBAUnorm = 0x0000002E,
+    WGPUTextureFormat_BC2RGBAUnormSrgb = 0x0000002F,
+    WGPUTextureFormat_BC3RGBAUnorm = 0x00000030,
+    WGPUTextureFormat_BC3RGBAUnormSrgb = 0x00000031,
+    WGPUTextureFormat_BC4RUnorm = 0x00000032,
+    WGPUTextureFormat_BC4RSnorm = 0x00000033,
+    WGPUTextureFormat_BC5RGUnorm = 0x00000034,
+    WGPUTextureFormat_BC5RGSnorm = 0x00000035,
+    WGPUTextureFormat_BC6HRGBUfloat = 0x00000036,
+    WGPUTextureFormat_BC6HRGBFloat = 0x00000037,
+    WGPUTextureFormat_BC7RGBAUnorm = 0x00000038,
+    WGPUTextureFormat_BC7RGBAUnormSrgb = 0x00000039,
+    WGPUTextureFormat_ETC2RGB8Unorm = 0x0000003A,
+    WGPUTextureFormat_ETC2RGB8UnormSrgb = 0x0000003B,
+    WGPUTextureFormat_ETC2RGB8A1Unorm = 0x0000003C,
+    WGPUTextureFormat_ETC2RGB8A1UnormSrgb = 0x0000003D,
+    WGPUTextureFormat_ETC2RGBA8Unorm = 0x0000003E,
+    WGPUTextureFormat_ETC2RGBA8UnormSrgb = 0x0000003F,
+    WGPUTextureFormat_EACR11Unorm = 0x00000040,
+    WGPUTextureFormat_EACR11Snorm = 0x00000041,
+    WGPUTextureFormat_EACRG11Unorm = 0x00000042,
+    WGPUTextureFormat_EACRG11Snorm = 0x00000043,
+    WGPUTextureFormat_ASTC4x4Unorm = 0x00000044,
+    WGPUTextureFormat_ASTC4x4UnormSrgb = 0x00000045,
+    WGPUTextureFormat_ASTC5x4Unorm = 0x00000046,
+    WGPUTextureFormat_ASTC5x4UnormSrgb = 0x00000047,
+    WGPUTextureFormat_ASTC5x5Unorm = 0x00000048,
+    WGPUTextureFormat_ASTC5x5UnormSrgb = 0x00000049,
+    WGPUTextureFormat_ASTC6x5Unorm = 0x0000004A,
+    WGPUTextureFormat_ASTC6x5UnormSrgb = 0x0000004B,
+    WGPUTextureFormat_ASTC6x6Unorm = 0x0000004C,
+    WGPUTextureFormat_ASTC6x6UnormSrgb = 0x0000004D,
+    WGPUTextureFormat_ASTC8x5Unorm = 0x0000004E,
+    WGPUTextureFormat_ASTC8x5UnormSrgb = 0x0000004F,
+    WGPUTextureFormat_ASTC8x6Unorm = 0x00000050,
+    WGPUTextureFormat_ASTC8x6UnormSrgb = 0x00000051,
+    WGPUTextureFormat_ASTC8x8Unorm = 0x00000052,
+    WGPUTextureFormat_ASTC8x8UnormSrgb = 0x00000053,
+    WGPUTextureFormat_ASTC10x5Unorm = 0x00000054,
+    WGPUTextureFormat_ASTC10x5UnormSrgb = 0x00000055,
+    WGPUTextureFormat_ASTC10x6Unorm = 0x00000056,
+    WGPUTextureFormat_ASTC10x6UnormSrgb = 0x00000057,
+    WGPUTextureFormat_ASTC10x8Unorm = 0x00000058,
+    WGPUTextureFormat_ASTC10x8UnormSrgb = 0x00000059,
+    WGPUTextureFormat_ASTC10x10Unorm = 0x0000005A,
+    WGPUTextureFormat_ASTC10x10UnormSrgb = 0x0000005B,
+    WGPUTextureFormat_ASTC12x10Unorm = 0x0000005C,
+    WGPUTextureFormat_ASTC12x10UnormSrgb = 0x0000005D,
+    WGPUTextureFormat_ASTC12x12Unorm = 0x0000005E,
+    WGPUTextureFormat_ASTC12x12UnormSrgb = 0x0000005F,
     WGPUTextureFormat_Force32 = 0x7FFFFFFF
 } WGPUTextureFormat;
 
@@ -765,10 +768,10 @@ typedef struct WGPUPipelineLayoutDescriptor {
     WGPUBindGroupLayout const * bindGroupLayouts;
 } WGPUPipelineLayoutDescriptor;
 
-typedef struct WGPUPrimitiveDepthClampingState {
+typedef struct WGPUPrimitiveDepthClipControl {
     WGPUChainedStruct chain;
-    bool clampDepth;
-} WGPUPrimitiveDepthClampingState;
+    bool unclippedDepth;
+} WGPUPrimitiveDepthClipControl;
 
 typedef struct WGPUPrimitiveState {
     WGPUChainedStruct const * nextInChain;
@@ -861,7 +864,7 @@ typedef struct WGPUShaderModuleSPIRVDescriptor {
 
 typedef struct WGPUShaderModuleWGSLDescriptor {
     WGPUChainedStruct chain;
-    char const * source;
+    char const * code;
 } WGPUShaderModuleWGSLDescriptor;
 
 typedef struct WGPUStencilFaceState {
