@@ -344,6 +344,7 @@ typedef enum WGPUSType {
     WGPUSType_ShaderModuleSPIRVDescriptor = 0x00000005,
     WGPUSType_ShaderModuleWGSLDescriptor = 0x00000006,
     WGPUSType_PrimitiveDepthClipControl = 0x00000007,
+    WGPUSType_SurfaceDescriptorFromWaylandSurface = 0x00000008,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
@@ -906,6 +907,12 @@ typedef struct WGPUSurfaceDescriptorFromXlib {
     void * display;
     uint32_t window;
 } WGPUSurfaceDescriptorFromXlib;
+
+typedef struct WGPUSurfaceDescriptorFromWaylandSurface {
+    WGPUChainedStruct chain;
+    void * display;
+    void * surface;
+} WGPUSurfaceDescriptorFromWaylandSurface;
 
 typedef struct WGPUSwapChainDescriptor {
     WGPUChainedStruct const * nextInChain;
