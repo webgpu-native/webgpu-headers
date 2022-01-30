@@ -345,6 +345,7 @@ typedef enum WGPUSType {
     WGPUSType_ShaderModuleWGSLDescriptor = 0x00000006,
     WGPUSType_PrimitiveDepthClipControl = 0x00000007,
     WGPUSType_SurfaceDescriptorFromWaylandSurface = 0x00000008,
+    WGPUSType_SurfaceDescriptorFromAndroidNativeWindow = 0x00000009,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
@@ -913,6 +914,11 @@ typedef struct WGPUSurfaceDescriptorFromWaylandSurface {
     void * display;
     void * surface;
 } WGPUSurfaceDescriptorFromWaylandSurface;
+
+typedef struct WGPUSurfaceDescriptorFromAndroidNativeWindow {
+    WGPUChainedStruct chain;
+    void * window;
+} WGPUSurfaceDescriptorFromAndroidNativeWindow;
 
 typedef struct WGPUSwapChainDescriptor {
     WGPUChainedStruct const * nextInChain;
