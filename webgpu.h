@@ -62,6 +62,32 @@
 
 typedef uint32_t WGPUFlags;
 
+#ifdef EMSCRIPTEN
+// We should not use pointers here to avoid signature_mistmatch
+// errors, because emscripten is 32 bit system, but wgpu returns 
+// 64 bit ids.
+typedef uint64_t WGPUAdapter;
+typedef uint64_t WGPUBindGroup;
+typedef uint64_t WGPUBindGroupLayout;
+typedef uint64_t WGPUBuffer;
+typedef uint64_t WGPUCommandBuffer;
+typedef uint64_t WGPUCommandEncoder;
+typedef uint64_t WGPUComputePassEncoder;
+typedef uint64_t WGPUComputePipeline;
+typedef uint64_t WGPUDevice;
+typedef uint64_t WGPUPipelineLayout;
+typedef uint64_t WGPUQuerySet;
+typedef uint64_t WGPUQueue;
+typedef uint64_t WGPURenderBundle;
+typedef uint64_t WGPURenderBundleEncoder;
+typedef uint64_t WGPURenderPipeline;
+typedef uint64_t WGPUSampler;
+typedef uint64_t WGPUShaderModule;
+typedef uint64_t WGPUSurface;
+typedef uint64_t WGPUSwapChain;
+typedef uint64_t WGPUTexture;
+typedef uint64_t WGPUTextureView;
+#else
 typedef struct WGPUAdapterImpl* WGPUAdapter;
 typedef struct WGPUBindGroupImpl* WGPUBindGroup;
 typedef struct WGPUBindGroupLayoutImpl* WGPUBindGroupLayout;
@@ -71,13 +97,11 @@ typedef struct WGPUCommandEncoderImpl* WGPUCommandEncoder;
 typedef struct WGPUComputePassEncoderImpl* WGPUComputePassEncoder;
 typedef struct WGPUComputePipelineImpl* WGPUComputePipeline;
 typedef struct WGPUDeviceImpl* WGPUDevice;
-typedef struct WGPUInstanceImpl* WGPUInstance;
 typedef struct WGPUPipelineLayoutImpl* WGPUPipelineLayout;
 typedef struct WGPUQuerySetImpl* WGPUQuerySet;
 typedef struct WGPUQueueImpl* WGPUQueue;
 typedef struct WGPURenderBundleImpl* WGPURenderBundle;
 typedef struct WGPURenderBundleEncoderImpl* WGPURenderBundleEncoder;
-typedef struct WGPURenderPassEncoderImpl* WGPURenderPassEncoder;
 typedef struct WGPURenderPipelineImpl* WGPURenderPipeline;
 typedef struct WGPUSamplerImpl* WGPUSampler;
 typedef struct WGPUShaderModuleImpl* WGPUShaderModule;
@@ -85,6 +109,10 @@ typedef struct WGPUSurfaceImpl* WGPUSurface;
 typedef struct WGPUSwapChainImpl* WGPUSwapChain;
 typedef struct WGPUTextureImpl* WGPUTexture;
 typedef struct WGPUTextureViewImpl* WGPUTextureView;
+#endif
+
+typedef struct WGPUInstanceImpl* WGPUInstance;
+typedef struct WGPURenderPassEncoderImpl* WGPURenderPassEncoder;
 
 typedef enum WGPUAdapterType {
     WGPUAdapterType_DiscreteGPU = 0x00000000,
