@@ -239,7 +239,6 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_TextureCompressionETC2 = 0x00000007,
     WGPUFeatureName_TextureCompressionASTC = 0x00000008,
     WGPUFeatureName_IndirectFirstInstance = 0x00000009,
-    WGPUFeatureName_DawnNative = 0x000003EC,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName;
 
@@ -352,6 +351,8 @@ typedef enum WGPUSType {
     WGPUSType_ShaderModuleSPIRVDescriptor = 0x00000005,
     WGPUSType_ShaderModuleWGSLDescriptor = 0x00000006,
     WGPUSType_PrimitiveDepthClipControl = 0x00000007,
+    WGPUSType_SurfaceDescriptorFromWaylandSurface = 0x00000008,
+    WGPUSType_SurfaceDescriptorFromAndroidNativeWindow = 0x00000009,
     WGPUSType_DawnTogglesDeviceDescriptor = 0x000003EA,
     WGPUSType_DawnInstanceDescriptor = 0x000003EC,
     WGPUSType_DawnCacheDeviceDescriptor = 0x000003ED,
@@ -916,6 +917,11 @@ typedef struct WGPUSurfaceDescriptor {
     char const * label;
 } WGPUSurfaceDescriptor;
 
+typedef struct WGPUSurfaceDescriptorFromAndroidNativeWindow {
+    WGPUChainedStruct chain;
+    void * window;
+} WGPUSurfaceDescriptorFromAndroidNativeWindow;
+
 typedef struct WGPUSurfaceDescriptorFromCanvasHTMLSelector {
     WGPUChainedStruct chain;
     char const * selector;
@@ -925,6 +931,12 @@ typedef struct WGPUSurfaceDescriptorFromMetalLayer {
     WGPUChainedStruct chain;
     void * layer;
 } WGPUSurfaceDescriptorFromMetalLayer;
+
+typedef struct WGPUSurfaceDescriptorFromWaylandSurface {
+    WGPUChainedStruct chain;
+    void * display;
+    void * surface;
+} WGPUSurfaceDescriptorFromWaylandSurface;
 
 typedef struct WGPUSurfaceDescriptorFromWindowsHWND {
     WGPUChainedStruct chain;
