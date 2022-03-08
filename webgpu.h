@@ -353,9 +353,6 @@ typedef enum WGPUSType {
     WGPUSType_PrimitiveDepthClipControl = 0x00000007,
     WGPUSType_SurfaceDescriptorFromWaylandSurface = 0x00000008,
     WGPUSType_SurfaceDescriptorFromAndroidNativeWindow = 0x00000009,
-    WGPUSType_DawnTogglesDeviceDescriptor = 0x000003EA,
-    WGPUSType_DawnInstanceDescriptor = 0x000003EC,
-    WGPUSType_DawnCacheDeviceDescriptor = 0x000003ED,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
