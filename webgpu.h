@@ -718,25 +718,6 @@ typedef struct WGPUConstantEntry {
     double value;
 } WGPUConstantEntry;
 
-typedef struct WGPUDawnCacheDeviceDescriptor {
-    WGPUChainedStruct chain;
-    char const * isolationKey;
-} WGPUDawnCacheDeviceDescriptor;
-
-typedef struct WGPUDawnInstanceDescriptor {
-    WGPUChainedStruct chain;
-    uint32_t additionalRuntimeSearchPathsCount;
-    const char* const * additionalRuntimeSearchPaths;
-} WGPUDawnInstanceDescriptor;
-
-typedef struct WGPUDawnTogglesDeviceDescriptor {
-    WGPUChainedStruct chain;
-    uint32_t forceEnabledTogglesCount;
-    const char* const * forceEnabledToggles;
-    uint32_t forceDisabledTogglesCount;
-    const char* const * forceDisabledToggles;
-} WGPUDawnTogglesDeviceDescriptor;
-
 typedef struct WGPUExtent3D {
     uint32_t width;
     uint32_t height;
