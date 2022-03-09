@@ -346,7 +346,7 @@ typedef enum WGPUSType {
     WGPUSType_Invalid = 0x00000000,
     WGPUSType_SurfaceDescriptorFromMetalLayer = 0x00000001,
     WGPUSType_SurfaceDescriptorFromWindowsHWND = 0x00000002,
-    WGPUSType_SurfaceDescriptorFromXlib = 0x00000003,
+    WGPUSType_SurfaceDescriptorFromXlibWindow = 0x00000003,
     WGPUSType_SurfaceDescriptorFromCanvasHTMLSelector = 0x00000004,
     WGPUSType_ShaderModuleSPIRVDescriptor = 0x00000005,
     WGPUSType_ShaderModuleWGSLDescriptor = 0x00000006,
@@ -922,11 +922,11 @@ typedef struct WGPUSurfaceDescriptorFromWindowsHWND {
     void * hwnd;
 } WGPUSurfaceDescriptorFromWindowsHWND;
 
-typedef struct WGPUSurfaceDescriptorFromXlib {
+typedef struct WGPUSurfaceDescriptorFromXlibWindow {
     WGPUChainedStruct chain;
     void * display;
     uint32_t window;
-} WGPUSurfaceDescriptorFromXlib;
+} WGPUSurfaceDescriptorFromXlibWindow;
 
 typedef struct WGPUSwapChainDescriptor {
     WGPUChainedStruct const * nextInChain;
