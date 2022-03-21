@@ -359,7 +359,7 @@ typedef enum WGPUSType {
     WGPUSType_PrimitiveDepthClipControl = 0x00000007,
     WGPUSType_SurfaceDescriptorFromWaylandSurface = 0x00000008,
     WGPUSType_SurfaceDescriptorFromAndroidNativeWindow = 0x00000009,
-    WGPUSType_SurfaceDescriptorFromXcbWindow = 0x00000010,
+    WGPUSType_SurfaceDescriptorFromXcbWindow = 0x0000000A,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType;
 
@@ -872,10 +872,11 @@ typedef struct WGPUSamplerDescriptor {
     uint16_t maxAnisotropy;
 } WGPUSamplerDescriptor;
 
-typedef struct WGPUShaderModuleDescriptor {
+typedef struct WGPUShaderModuleCompilationHint {
     WGPUChainedStruct const * nextInChain;
-    char const * label;
-} WGPUShaderModuleDescriptor;
+    char const * entryPoint;
+    WGPUPipelineLayout layout;
+} WGPUShaderModuleCompilationHint;
 
 typedef struct WGPUShaderModuleSPIRVDescriptor {
     WGPUChainedStruct chain;
@@ -934,17 +935,17 @@ typedef struct WGPUSurfaceDescriptorFromWindowsHWND {
     void * hwnd;
 } WGPUSurfaceDescriptorFromWindowsHWND;
 
-typedef struct WGPUSurfaceDescriptorFromXlibWindow {
-    WGPUChainedStruct chain;
-    void * display;
-    uint32_t window;
-} WGPUSurfaceDescriptorFromXlibWindow;
-
 typedef struct WGPUSurfaceDescriptorFromXcbWindow {
     WGPUChainedStruct chain;
     void * connection;
     uint32_t window;
 } WGPUSurfaceDescriptorFromXcbWindow;
+
+typedef struct WGPUSurfaceDescriptorFromXlibWindow {
+    WGPUChainedStruct chain;
+    void * display;
+    uint32_t window;
+} WGPUSurfaceDescriptorFromXlibWindow;
 
 typedef struct WGPUSwapChainDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -1072,6 +1073,13 @@ typedef struct WGPURequiredLimits {
     WGPUChainedStruct const * nextInChain;
     WGPULimits limits;
 } WGPURequiredLimits;
+
+typedef struct WGPUShaderModuleDescriptor {
+    WGPUChainedStruct const * nextInChain;
+    char const * label;
+    uint32_t hintCount;
+    WGPUShaderModuleCompilationHint const * hints;
+} WGPUShaderModuleDescriptor;
 
 typedef struct WGPUSupportedLimits {
     WGPUChainedStructOut * nextInChain;
