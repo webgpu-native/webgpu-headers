@@ -290,12 +290,6 @@ typedef enum WGPUPowerPreference {
     WGPUPowerPreference_Force32 = 0x7FFFFFFF
 } WGPUPowerPreference;
 
-typedef enum WGPUPredefinedColorSpace {
-    WGPUPredefinedColorSpace_Undefined = 0x00000000,
-    WGPUPredefinedColorSpace_Srgb = 0x00000001,
-    WGPUPredefinedColorSpace_Force32 = 0x7FFFFFFF
-} WGPUPredefinedColorSpace;
-
 typedef enum WGPUPresentMode {
     WGPUPresentMode_Immediate = 0x00000000,
     WGPUPresentMode_Mailbox = 0x00000001,
@@ -577,6 +571,7 @@ typedef enum WGPUVertexFormat {
 typedef enum WGPUVertexStepMode {
     WGPUVertexStepMode_Vertex = 0x00000000,
     WGPUVertexStepMode_Instance = 0x00000001,
+    WGPUVertexStepMode_VertexBufferNotUsed = 0x00000002,
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode;
 
@@ -648,6 +643,8 @@ typedef struct WGPUChainedStructOut {
 typedef struct WGPUAdapterProperties {
     WGPUChainedStructOut * nextInChain;
     uint32_t vendorID;
+    char const * vendorName;
+    char const * architecture;
     uint32_t deviceID;
     char const * name;
     char const * driverDescription;
@@ -1215,6 +1212,8 @@ typedef void (*WGPUProcBindGroupLayoutSetLabel)(WGPUBindGroupLayout bindGroupLay
 typedef void (*WGPUProcBufferDestroy)(WGPUBuffer buffer);
 typedef void const * (*WGPUProcBufferGetConstMappedRange)(WGPUBuffer buffer, size_t offset, size_t size);
 typedef void * (*WGPUProcBufferGetMappedRange)(WGPUBuffer buffer, size_t offset, size_t size);
+typedef uint64_t (*WGPUProcBufferGetSize)(WGPUBuffer buffer);
+typedef WGPUBufferUsage (*WGPUProcBufferGetUsage)(WGPUBuffer buffer);
 typedef void (*WGPUProcBufferMapAsync)(WGPUBuffer buffer, WGPUMapModeFlags mode, size_t offset, size_t size, WGPUBufferMapCallback callback, void * userdata);
 typedef void (*WGPUProcBufferSetLabel)(WGPUBuffer buffer, char const * label);
 typedef void (*WGPUProcBufferUnmap)(WGPUBuffer buffer);
@@ -1292,6 +1291,8 @@ typedef void (*WGPUProcPipelineLayoutSetLabel)(WGPUPipelineLayout pipelineLayout
 
 // Procs of QuerySet
 typedef void (*WGPUProcQuerySetDestroy)(WGPUQuerySet querySet);
+typedef uint32_t (*WGPUProcQuerySetGetCount)(WGPUQuerySet querySet);
+typedef WGPUQueryType (*WGPUProcQuerySetGetType)(WGPUQuerySet querySet);
 typedef void (*WGPUProcQuerySetSetLabel)(WGPUQuerySet querySet, char const * label);
 
 // Procs of Queue
@@ -1361,6 +1362,14 @@ typedef void (*WGPUProcSwapChainPresent)(WGPUSwapChain swapChain);
 // Procs of Texture
 typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor /* nullable */);
 typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture);
+typedef uint32_t (*WGPUProcTextureGetDepthOrArrayLayers)(WGPUTexture texture);
+typedef WGPUTextureDimension (*WGPUProcTextureGetDimension)(WGPUTexture texture);
+typedef WGPUTextureFormat (*WGPUProcTextureGetFormat)(WGPUTexture texture);
+typedef uint32_t (*WGPUProcTextureGetHeight)(WGPUTexture texture);
+typedef uint32_t (*WGPUProcTextureGetMipLevelCount)(WGPUTexture texture);
+typedef uint32_t (*WGPUProcTextureGetSampleCount)(WGPUTexture texture);
+typedef WGPUTextureUsage (*WGPUProcTextureGetUsage)(WGPUTexture texture);
+typedef uint32_t (*WGPUProcTextureGetWidth)(WGPUTexture texture);
 typedef void (*WGPUProcTextureSetLabel)(WGPUTexture texture, char const * label);
 
 // Procs of TextureView
@@ -1390,6 +1399,8 @@ WGPU_EXPORT void wgpuBindGroupLayoutSetLabel(WGPUBindGroupLayout bindGroupLayout
 WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer);
 WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer, size_t offset, size_t size);
 WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer, size_t offset, size_t size);
+WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer);
+WGPU_EXPORT WGPUBufferUsage wgpuBufferGetUsage(WGPUBuffer buffer);
 WGPU_EXPORT void wgpuBufferMapAsync(WGPUBuffer buffer, WGPUMapModeFlags mode, size_t offset, size_t size, WGPUBufferMapCallback callback, void * userdata);
 WGPU_EXPORT void wgpuBufferSetLabel(WGPUBuffer buffer, char const * label);
 WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer);
@@ -1467,6 +1478,8 @@ WGPU_EXPORT void wgpuPipelineLayoutSetLabel(WGPUPipelineLayout pipelineLayout, c
 
 // Methods of QuerySet
 WGPU_EXPORT void wgpuQuerySetDestroy(WGPUQuerySet querySet);
+WGPU_EXPORT uint32_t wgpuQuerySetGetCount(WGPUQuerySet querySet);
+WGPU_EXPORT WGPUQueryType wgpuQuerySetGetType(WGPUQuerySet querySet);
 WGPU_EXPORT void wgpuQuerySetSetLabel(WGPUQuerySet querySet, char const * label);
 
 // Methods of Queue
@@ -1536,6 +1549,14 @@ WGPU_EXPORT void wgpuSwapChainPresent(WGPUSwapChain swapChain);
 // Methods of Texture
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor /* nullable */);
 WGPU_EXPORT void wgpuTextureDestroy(WGPUTexture texture);
+WGPU_EXPORT uint32_t wgpuTextureGetDepthOrArrayLayers(WGPUTexture texture);
+WGPU_EXPORT WGPUTextureDimension wgpuTextureGetDimension(WGPUTexture texture);
+WGPU_EXPORT WGPUTextureFormat wgpuTextureGetFormat(WGPUTexture texture);
+WGPU_EXPORT uint32_t wgpuTextureGetHeight(WGPUTexture texture);
+WGPU_EXPORT uint32_t wgpuTextureGetMipLevelCount(WGPUTexture texture);
+WGPU_EXPORT uint32_t wgpuTextureGetSampleCount(WGPUTexture texture);
+WGPU_EXPORT WGPUTextureUsage wgpuTextureGetUsage(WGPUTexture texture);
+WGPU_EXPORT uint32_t wgpuTextureGetWidth(WGPUTexture texture);
 WGPU_EXPORT void wgpuTextureSetLabel(WGPUTexture texture, char const * label);
 
 // Methods of TextureView
