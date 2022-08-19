@@ -82,7 +82,6 @@ typedef struct WGPURenderPipelineImpl* WGPURenderPipeline;
 typedef struct WGPUSamplerImpl* WGPUSampler;
 typedef struct WGPUShaderModuleImpl* WGPUShaderModule;
 typedef struct WGPUSurfaceImpl* WGPUSurface;
-typedef struct WGPUSwapChainImpl* WGPUSwapChain;
 typedef struct WGPUTextureImpl* WGPUTexture;
 typedef struct WGPUTextureViewImpl* WGPUTextureView;
 
@@ -575,6 +574,15 @@ typedef enum WGPUVertexStepMode {
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode;
 
+typedef enum WGPUSurfaceStatus {
+    WGPUSurfaceStatus_Good = 0x00000000,
+    WGPUSurfaceStatus_Suboptimal = 0x00000001,
+    WGPUSurfaceStatus_Timeout = 0x00000002,
+    WGPUSurfaceStatus_Outdated = 0x00000003,
+    WGPUSurfaceStatus_Lost = 0x00000004,
+    WGPUSurfaceStatus_Force32 = 0x7FFFFFFF
+} WGPUSurfaceStatus;
+
 typedef enum WGPUBufferUsage {
     WGPUBufferUsage_None = 0x00000000,
     WGPUBufferUsage_MapRead = 0x00000001,
@@ -944,15 +952,17 @@ typedef struct WGPUSurfaceDescriptorFromXlibWindow {
     uint32_t window;
 } WGPUSurfaceDescriptorFromXlibWindow;
 
-typedef struct WGPUSwapChainDescriptor {
+typedef struct WGPUSurfaceConfiguration {
     WGPUChainedStruct const * nextInChain;
-    char const * label; // nullable
-    WGPUTextureUsageFlags usage;
+    WGPUDevice device;
     WGPUTextureFormat format;
+    WGPUTextureUsageFlags usage;
+    uint32_t viewFormatsCount;
+    WGPUTextureFormat const * viewFormats;
     uint32_t width;
     uint32_t height;
     WGPUPresentMode presentMode;
-} WGPUSwapChainDescriptor;
+} WGPUSurfaceConfiguration;
 
 typedef struct WGPUTextureBindingLayout {
     WGPUChainedStruct const * nextInChain;
@@ -1268,7 +1278,6 @@ typedef WGPURenderPipeline (*WGPUProcDeviceCreateRenderPipeline)(WGPUDevice devi
 typedef void (*WGPUProcDeviceCreateRenderPipelineAsync)(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor, WGPUCreateRenderPipelineAsyncCallback callback, void * userdata);
 typedef WGPUSampler (*WGPUProcDeviceCreateSampler)(WGPUDevice device, WGPUSamplerDescriptor const * descriptor /* nullable */);
 typedef WGPUShaderModule (*WGPUProcDeviceCreateShaderModule)(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
-typedef WGPUSwapChain (*WGPUProcDeviceCreateSwapChain)(WGPUDevice device, WGPUSurface surface, WGPUSwapChainDescriptor const * descriptor);
 typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 typedef void (*WGPUProcDeviceDestroy)(WGPUDevice device);
 typedef size_t (*WGPUProcDeviceEnumerateFeatures)(WGPUDevice device, WGPUFeatureName * features);
@@ -1354,10 +1363,10 @@ typedef void (*WGPUProcShaderModuleSetLabel)(WGPUShaderModule shaderModule, char
 
 // Procs of Surface
 typedef WGPUTextureFormat (*WGPUProcSurfaceGetPreferredFormat)(WGPUSurface surface, WGPUAdapter adapter);
-
-// Procs of SwapChain
-typedef WGPUTextureView (*WGPUProcSwapChainGetCurrentTextureView)(WGPUSwapChain swapChain);
-typedef void (*WGPUProcSwapChainPresent)(WGPUSwapChain swapChain);
+typedef void (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfiguration const * configuration);
+typedef void (*WGPUProcSurfaceUnconfigure)(WGPUSurface surface);
+typedef WGPUTexture (*WGPUProcSurfaceGetCurrentTexture)(WGPUSurface surface, uint32_t * width, uint32_t * height, WGPUSurfaceStatus * status);
+typedef void (*WGPUProcSurfacePresent)(WGPUSurface surface);
 
 // Procs of Texture
 typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor /* nullable */);
@@ -1455,7 +1464,6 @@ WGPU_EXPORT WGPURenderPipeline wgpuDeviceCreateRenderPipeline(WGPUDevice device,
 WGPU_EXPORT void wgpuDeviceCreateRenderPipelineAsync(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor, WGPUCreateRenderPipelineAsyncCallback callback, void * userdata);
 WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPUSamplerDescriptor const * descriptor /* nullable */);
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor);
-WGPU_EXPORT WGPUSwapChain wgpuDeviceCreateSwapChain(WGPUDevice device, WGPUSurface surface, WGPUSwapChainDescriptor const * descriptor);
 WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor);
 WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device);
 WGPU_EXPORT size_t wgpuDeviceEnumerateFeatures(WGPUDevice device, WGPUFeatureName * features);
@@ -1541,10 +1549,10 @@ WGPU_EXPORT void wgpuShaderModuleSetLabel(WGPUShaderModule shaderModule, char co
 
 // Methods of Surface
 WGPU_EXPORT WGPUTextureFormat wgpuSurfaceGetPreferredFormat(WGPUSurface surface, WGPUAdapter adapter);
-
-// Methods of SwapChain
-WGPU_EXPORT WGPUTextureView wgpuSwapChainGetCurrentTextureView(WGPUSwapChain swapChain);
-WGPU_EXPORT void wgpuSwapChainPresent(WGPUSwapChain swapChain);
+WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfiguration const * configuration);
+WGPU_EXPORT void wgpuSurfaceUnconfigure(WGPUSurface surface);
+WGPU_EXPORT WGPUTexture wgpuSurfaceGetCurrentTexture(WGPUSurface surface, uint32_t * width, uint32_t * height, WGPUSurfaceStatus * status);
+WGPU_EXPORT void wgpuSurfacePresent(WGPUSurface surface);
 
 // Methods of Texture
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor /* nullable */);
