@@ -892,7 +892,7 @@ typedef struct WGPUOrigin3D {
 typedef struct WGPUPipelineLayoutDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE char const * label;
-    uint32_t bindGroupLayoutCount;
+    size_t bindGroupLayoutCount;
     WGPUBindGroupLayout const * bindGroupLayouts;
 } WGPUPipelineLayoutDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -916,7 +916,7 @@ typedef struct WGPUQuerySetDescriptor {
     WGPUQueryType type;
     uint32_t count;
     WGPUPipelineStatisticName const * pipelineStatistics;
-    uint32_t pipelineStatisticsCount;
+    size_t pipelineStatisticsCount;
 } WGPUQuerySetDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUQueueDescriptor {
@@ -932,7 +932,7 @@ typedef struct WGPURenderBundleDescriptor {
 typedef struct WGPURenderBundleEncoderDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE char const * label;
-    uint32_t colorFormatsCount;
+    size_t colorFormatsCount;
     WGPUTextureFormat const * colorFormats;
     WGPUTextureFormat depthStencilFormat;
     uint32_t sampleCount;
@@ -1121,7 +1121,7 @@ typedef struct WGPUBindGroupDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE char const * label;
     WGPUBindGroupLayout layout;
-    uint32_t entryCount;
+    size_t entryCount;
     WGPUBindGroupEntry const * entries;
 } WGPUBindGroupDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1142,14 +1142,14 @@ typedef struct WGPUBlendState {
 
 typedef struct WGPUCompilationInfo {
     WGPUChainedStruct const * nextInChain;
-    uint32_t messageCount;
+    size_t messageCount;
     WGPUCompilationMessage const * messages;
 } WGPUCompilationInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUComputePassDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE char const * label;
-    uint32_t timestampWriteCount;
+    size_t timestampWriteCount;
     WGPUComputePassTimestampWrite const * timestampWrites;
 } WGPUComputePassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1185,7 +1185,7 @@ typedef struct WGPUProgrammableStageDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     char const * entryPoint;
-    uint32_t constantCount;
+    size_t constantCount;
     WGPUConstantEntry const * constants;
 } WGPUProgrammableStageDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1205,7 +1205,7 @@ typedef struct WGPURequiredLimits {
 typedef struct WGPUShaderModuleDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE char const * label;
-    uint32_t hintCount;
+    size_t hintCount;
     WGPUShaderModuleCompilationHint const * hints;
 } WGPUShaderModuleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1223,21 +1223,21 @@ typedef struct WGPUTextureDescriptor {
     WGPUTextureFormat format;
     uint32_t mipLevelCount;
     uint32_t sampleCount;
-    uint32_t viewFormatCount;
+    size_t viewFormatCount;
     WGPUTextureFormat const * viewFormats;
 } WGPUTextureDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUVertexBufferLayout {
     uint64_t arrayStride;
     WGPUVertexStepMode stepMode;
-    uint32_t attributeCount;
+    size_t attributeCount;
     WGPUVertexAttribute const * attributes;
 } WGPUVertexBufferLayout WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUBindGroupLayoutDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE char const * label;
-    uint32_t entryCount;
+    size_t entryCount;
     WGPUBindGroupLayoutEntry const * entries;
 } WGPUBindGroupLayoutDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1258,7 +1258,7 @@ typedef struct WGPUComputePipelineDescriptor {
 typedef struct WGPUDeviceDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE char const * label;
-    uint32_t requiredFeaturesCount;
+    size_t requiredFeaturesCount;
     WGPUFeatureName const * requiredFeatures;
     WGPU_NULLABLE WGPURequiredLimits const * requiredLimits;
     WGPUQueueDescriptor defaultQueue;
@@ -1269,11 +1269,11 @@ typedef struct WGPUDeviceDescriptor {
 typedef struct WGPURenderPassDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE char const * label;
-    uint32_t colorAttachmentCount;
+    size_t colorAttachmentCount;
     WGPURenderPassColorAttachment const * colorAttachments;
     WGPU_NULLABLE WGPURenderPassDepthStencilAttachment const * depthStencilAttachment;
     WGPU_NULLABLE WGPUQuerySet occlusionQuerySet;
-    uint32_t timestampWriteCount;
+    size_t timestampWriteCount;
     WGPURenderPassTimestampWrite const * timestampWrites;
 } WGPURenderPassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1281,9 +1281,9 @@ typedef struct WGPUVertexState {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     char const * entryPoint;
-    uint32_t constantCount;
+    size_t constantCount;
     WGPUConstantEntry const * constants;
-    uint32_t bufferCount;
+    size_t bufferCount;
     WGPUVertexBufferLayout const * buffers;
 } WGPUVertexState WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1291,9 +1291,9 @@ typedef struct WGPUFragmentState {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     char const * entryPoint;
-    uint32_t constantCount;
+    size_t constantCount;
     WGPUConstantEntry const * constants;
-    uint32_t targetCount;
+    size_t targetCount;
     WGPUColorTargetState const * targets;
 } WGPUFragmentState WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1381,7 +1381,7 @@ typedef void (*WGPUProcComputePassEncoderEndPipelineStatisticsQuery)(WGPUCompute
 typedef void (*WGPUProcComputePassEncoderInsertDebugMarker)(WGPUComputePassEncoder computePassEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcComputePassEncoderPopDebugGroup)(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcComputePassEncoderPushDebugGroup)(WGPUComputePassEncoder computePassEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
-typedef void (*WGPUProcComputePassEncoderSetBindGroup)(WGPUComputePassEncoder computePassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcComputePassEncoderSetBindGroup)(WGPUComputePassEncoder computePassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcComputePassEncoderSetLabel)(WGPUComputePassEncoder computePassEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcComputePassEncoderSetPipeline)(WGPUComputePassEncoder computePassEncoder, WGPUComputePipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcComputePassEncoderReference)(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
@@ -1444,7 +1444,7 @@ typedef void (*WGPUProcQuerySetRelease)(WGPUQuerySet querySet) WGPU_FUNCTION_ATT
 // Procs of Queue
 typedef void (*WGPUProcQueueOnSubmittedWorkDone)(WGPUQueue queue, WGPUQueueWorkDoneCallback callback, void * userdata) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcQueueSetLabel)(WGPUQueue queue, char const * label) WGPU_FUNCTION_ATTRIBUTE;
-typedef void (*WGPUProcQueueSubmit)(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcQueueSubmit)(WGPUQueue queue, size_t commandCount, WGPUCommandBuffer const * commands) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcQueueWriteBuffer)(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcQueueWriteTexture)(WGPUQueue queue, WGPUImageCopyTexture const * destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcQueueReference)(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
@@ -1464,7 +1464,7 @@ typedef WGPURenderBundle (*WGPUProcRenderBundleEncoderFinish)(WGPURenderBundleEn
 typedef void (*WGPUProcRenderBundleEncoderInsertDebugMarker)(WGPURenderBundleEncoder renderBundleEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderBundleEncoderPopDebugGroup)(WGPURenderBundleEncoder renderBundleEncoder) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderBundleEncoderPushDebugGroup)(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
-typedef void (*WGPUProcRenderBundleEncoderSetBindGroup)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcRenderBundleEncoderSetBindGroup)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderBundleEncoderSetIndexBuffer)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderBundleEncoderSetLabel)(WGPURenderBundleEncoder renderBundleEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderBundleEncoderSetPipeline)(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
@@ -1482,11 +1482,11 @@ typedef void (*WGPUProcRenderPassEncoderDrawIndirect)(WGPURenderPassEncoder rend
 typedef void (*WGPUProcRenderPassEncoderEnd)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderPassEncoderEndOcclusionQuery)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderPassEncoderEndPipelineStatisticsQuery)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
-typedef void (*WGPUProcRenderPassEncoderExecuteBundles)(WGPURenderPassEncoder renderPassEncoder, uint32_t bundleCount, WGPURenderBundle const * bundles) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcRenderPassEncoderExecuteBundles)(WGPURenderPassEncoder renderPassEncoder, size_t bundleCount, WGPURenderBundle const * bundles) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderPassEncoderInsertDebugMarker)(WGPURenderPassEncoder renderPassEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderPassEncoderPopDebugGroup)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderPassEncoderPushDebugGroup)(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
-typedef void (*WGPUProcRenderPassEncoderSetBindGroup)(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcRenderPassEncoderSetBindGroup)(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderPassEncoderSetBlendConstant)(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderPassEncoderSetIndexBuffer)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcRenderPassEncoderSetLabel)(WGPURenderPassEncoder renderPassEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
@@ -1617,7 +1617,7 @@ WGPU_EXPORT void wgpuComputePassEncoderEndPipelineStatisticsQuery(WGPUComputePas
 WGPU_EXPORT void wgpuComputePassEncoderInsertDebugMarker(WGPUComputePassEncoder computePassEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePassEncoderPopDebugGroup(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePassEncoderPushDebugGroup(WGPUComputePassEncoder computePassEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT void wgpuComputePassEncoderSetBindGroup(WGPUComputePassEncoder computePassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuComputePassEncoderSetBindGroup(WGPUComputePassEncoder computePassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePassEncoderSetLabel(WGPUComputePassEncoder computePassEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePassEncoderSetPipeline(WGPUComputePassEncoder computePassEncoder, WGPUComputePipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePassEncoderReference(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
@@ -1680,7 +1680,7 @@ WGPU_EXPORT void wgpuQuerySetRelease(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIB
 // Methods of Queue
 WGPU_EXPORT void wgpuQueueOnSubmittedWorkDone(WGPUQueue queue, WGPUQueueWorkDoneCallback callback, void * userdata) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueSetLabel(WGPUQueue queue, char const * label) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT void wgpuQueueSubmit(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuQueueSubmit(WGPUQueue queue, size_t commandCount, WGPUCommandBuffer const * commands) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueWriteBuffer(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueWriteTexture(WGPUQueue queue, WGPUImageCopyTexture const * destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueReference(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
@@ -1700,7 +1700,7 @@ WGPU_EXPORT WGPURenderBundle wgpuRenderBundleEncoderFinish(WGPURenderBundleEncod
 WGPU_EXPORT void wgpuRenderBundleEncoderInsertDebugMarker(WGPURenderBundleEncoder renderBundleEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleEncoderPopDebugGroup(WGPURenderBundleEncoder renderBundleEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleEncoderPushDebugGroup(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT void wgpuRenderBundleEncoderSetBindGroup(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuRenderBundleEncoderSetBindGroup(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleEncoderSetIndexBuffer(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleEncoderSetLabel(WGPURenderBundleEncoder renderBundleEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleEncoderSetPipeline(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
@@ -1718,11 +1718,11 @@ WGPU_EXPORT void wgpuRenderPassEncoderDrawIndirect(WGPURenderPassEncoder renderP
 WGPU_EXPORT void wgpuRenderPassEncoderEnd(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderEndOcclusionQuery(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderEndPipelineStatisticsQuery(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT void wgpuRenderPassEncoderExecuteBundles(WGPURenderPassEncoder renderPassEncoder, uint32_t bundleCount, WGPURenderBundle const * bundles) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuRenderPassEncoderExecuteBundles(WGPURenderPassEncoder renderPassEncoder, size_t bundleCount, WGPURenderBundle const * bundles) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderInsertDebugMarker(WGPURenderPassEncoder renderPassEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderPopDebugGroup(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderPushDebugGroup(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT void wgpuRenderPassEncoderSetBindGroup(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuRenderPassEncoderSetBindGroup(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetBlendConstant(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetIndexBuffer(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetLabel(WGPURenderPassEncoder renderPassEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
