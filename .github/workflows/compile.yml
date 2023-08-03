@@ -1,0 +1,11 @@
+name: compile
+on:
+  pull_request:
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          cd "${{ github.workspace }}"
+          make -C tests/compile
