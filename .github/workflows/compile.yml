@@ -1,0 +1,7 @@
+name: compile
+on: [push]
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - run: make -C tests/compile
