@@ -1061,7 +1061,7 @@ typedef struct WGPUSurfaceConfiguration {
     WGPUChainedStruct const * nextInChain;
     WGPUDevice device;
     WGPUTextureFormat format;
-    WGPUTextureUsage usage;
+    WGPUTextureUsageFlags usage;
     size_t viewFormatCount;
     WGPUTextureFormat const * viewFormats;
     WGPUCompositeAlphaMode alphaMode;
