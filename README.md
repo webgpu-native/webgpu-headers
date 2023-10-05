@@ -10,5 +10,5 @@ All of the API is defined in the [webgpu.h](./webgpu.h) header.
 Implementations of this header include:
 
  - [Dawn](https://dawn.googlesource.com/dawn) (C++), Chromium's WebGPU implementation library.
- - [wgpu](https://github.com/gfx-rs/wgpu-native) (Rust), Firefox's WebGPU impelementation library.
+ - [wgpu-native](https://github.com/gfx-rs/wgpu-native), Firefox's Rust WebGPU implementation library
  - [Emscripten](https://github.com/emscripten-core/emscripten/blob/main/src/library_webgpu.js) translates [webgpu.h](./webgpu.h) calls to JavaScript WebGPU calls when compiling to WASM
