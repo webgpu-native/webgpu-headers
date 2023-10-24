@@ -1,3 +1,1 @@
-#include "../../webgpu.h"
-
-int main(void) {}
+#include "main.inl"
