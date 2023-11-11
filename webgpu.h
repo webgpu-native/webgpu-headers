@@ -1096,7 +1096,7 @@ typedef struct WGPUSurfaceDescriptorFromXcbWindow {
 typedef struct WGPUSurfaceDescriptorFromXlibWindow {
     WGPUChainedStruct chain;
     void * display;
-    uint32_t window;
+    uint64_t window;
 } WGPUSurfaceDescriptorFromXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSurfaceTexture {
