@@ -1205,7 +1205,7 @@ typedef struct WGPUImageCopyTexture {
 typedef struct WGPUProgrammableStageDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
-    char const * entryPoint;
+    WGPU_NULLABLE char const * entryPoint;
     size_t constantCount;
     WGPUConstantEntry const * constants;
 } WGPUProgrammableStageDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -1301,7 +1301,7 @@ typedef struct WGPURenderPassDescriptor {
 typedef struct WGPUVertexState {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
-    char const * entryPoint;
+    WGPU_NULLABLE char const * entryPoint;
     size_t constantCount;
     WGPUConstantEntry const * constants;
     size_t bufferCount;
@@ -1311,7 +1311,7 @@ typedef struct WGPUVertexState {
 typedef struct WGPUFragmentState {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
-    char const * entryPoint;
+    WGPU_NULLABLE char const * entryPoint;
     size_t constantCount;
     WGPUConstantEntry const * constants;
     size_t targetCount;
