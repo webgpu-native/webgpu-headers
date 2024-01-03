@@ -1030,11 +1030,11 @@ typedef struct WGPUStorageTextureBindingLayout {
 typedef struct WGPUSurfaceCapabilities {
     WGPUChainedStructOut * nextInChain;
     size_t formatCount;
-    WGPUTextureFormat * formats;
+    WGPUTextureFormat const * formats;
     size_t presentModeCount;
-    WGPUPresentMode * presentModes;
+    WGPUPresentMode const * presentModes;
     size_t alphaModeCount;
-    WGPUCompositeAlphaMode * alphaModes;
+    WGPUCompositeAlphaMode const * alphaModes;
 } WGPUSurfaceCapabilities WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSurfaceConfiguration {
