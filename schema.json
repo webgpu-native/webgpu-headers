@@ -1,0 +1,361 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "type": "object",
+    "properties": {
+        "copyright": {
+            "type": "string"
+        },
+        "suffix": {
+            "type": "string"
+        },
+        "enum_prefix": {
+            "type": "string"
+        },
+        "constants": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "doc": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "value",
+                    "doc"
+                ]
+            }
+        },
+        "enums": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "doc": {
+                        "type": "string"
+                    },
+                    "entries": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "doc": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "doc"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "doc"
+                ]
+            }
+        },
+        "bitflags": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "doc": {
+                        "type": "string"
+                    },
+                    "entries": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "doc": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                },
+                                "value_combination": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "doc"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "doc"
+                ]
+            }
+        },
+        "function_types": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "doc": {
+                        "type": "string"
+                    },
+                    "returns": {
+                        "type": "object",
+                        "properties": {
+                            "doc": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "doc",
+                            "type"
+                        ]
+                    },
+                    "args": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "doc": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "pointer": {
+                                    "type": "string"
+                                },
+                                "optional": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "doc",
+                                "type"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "doc"
+                ]
+            }
+        },
+        "structs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "doc": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "optional": {
+                        "type": "boolean"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "doc": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "optional": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "functions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "doc": {
+                        "type": "string"
+                    },
+                    "returns": {
+                        "type": "object",
+                        "properties": {
+                            "doc": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "doc",
+                            "type"
+                        ]
+                    },
+                    "args": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "doc": {
+                                    "type": "string"
+                                },
+                                "pointer": {
+                                    "type": "string"
+                                },
+                                "optional": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "doc"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "doc"
+                ]
+            }
+        },
+        "objects": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "doc": {
+                        "type": "string"
+                    },
+                    "methods": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "doc": {
+                                    "type": "string"
+                                },
+                                "returns": {
+                                    "type": "object",
+                                    "properties": {
+                                        "doc": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "doc",
+                                        "type"
+                                    ]
+                                },
+                                "args": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "doc": {
+                                                "type": "string"
+                                            },
+                                            "pointer": {
+                                                "type": "string"
+                                            },
+                                            "optional": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "doc"
+                                        ]
+                                    }
+                                }
+                            },
+                            "required": [
+                                "name",
+                                "doc"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required": [
+        "copyright",
+        "enum_prefix",
+        "constants",
+        "enums",
+        "bitflags",
+        "function_types",
+        "structs",
+        "functions",
+        "objects"
+    ]
+}

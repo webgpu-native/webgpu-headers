@@ -1,0 +1,4697 @@
+# yaml-language-server: $schema=schema.json
+
+copyright: |
+  Copyright 2019-2023 WebGPU-Native developers
+
+  SPDX-License-Identifier: BSD-3-Clause
+
+enum_prefix: '0x0000'
+
+constants:
+  - name: array_layer_count_undefined
+    value: uint32_max
+    doc: |
+      TODO
+  - name: copy_stride_undefined
+    value: uint32_max
+    doc: |
+      TODO
+  - name: limit_u32_undefined
+    value: uint32_max
+    doc: |
+      TODO
+  - name: limit_u64_undefined
+    value: uint64_max
+    doc: |
+      TODO
+  - name: mip_level_count_undefined
+    value: uint32_max
+    doc: |
+      TODO
+  - name: query_set_index_undefined
+    value: uint32_max
+    doc: |
+      TODO
+  - name: whole_map_size
+    value: usize_max
+    doc: |
+      TODO
+  - name: whole_size
+    value: uint64_max
+    doc: |
+      TODO
+
+enums:
+  - name: request_adapter_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        doc: |
+          TODO
+      - name: unavailable
+        doc: |
+          TODO
+      - name: error
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
+
+  - name: adapter_type
+    doc: |
+      TODO
+    entries:
+      - name: discrete_GPU
+        doc: |
+          TODO
+      - name: integrated_GPU
+        doc: |
+          TODO
+      - name: CPU
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
+
+  - name: address_mode
+    doc: |
+      TODO
+    entries:
+      - name: repeat
+        doc: |
+          TODO
+      - name: mirror_repeat
+        doc: |
+          TODO
+      - name: clamp_to_edge
+        doc: |
+          TODO
+
+  - name: backend_type
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: "null"
+        doc: |
+          TODO
+      - name: WebGPU
+        doc: |
+          TODO
+      - name: D3D11
+        doc: |
+          TODO
+      - name: D3D12
+        doc: |
+          TODO
+      - name: metal
+        doc: |
+          TODO
+      - name: vulkan
+        doc: |
+          TODO
+      - name: openGL
+        doc: |
+          TODO
+      - name: openGLES
+        doc: |
+          TODO
+
+  - name: buffer_binding_type
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: uniform
+        doc: |
+          TODO
+      - name: storage
+        doc: |
+          TODO
+      - name: read_only_storage
+        doc: |
+          TODO
+
+  - name: sampler_binding_type
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: filtering
+        doc: |
+          TODO
+      - name: non_filtering
+        doc: |
+          TODO
+      - name: comparison
+        doc: |
+          TODO
+
+  - name: texture_sample_type
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: float
+        doc: |
+          TODO
+      - name: unfilterable_float
+        doc: |
+          TODO
+      - name: depth
+        doc: |
+          TODO
+      - name: sint
+        doc: |
+          TODO
+      - name: uint
+        doc: |
+          TODO
+
+  - name: storage_texture_access
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: write_only
+        doc: |
+          TODO
+      - name: read_only
+        doc: |
+          TODO
+      - name: read_write
+        doc: |
+          TODO
+
+  - name: blend_factor
+    doc: |
+      TODO
+    entries:
+      - name: zero
+        doc: |
+          TODO
+      - name: one
+        doc: |
+          TODO
+      - name: src
+        doc: |
+          TODO
+      - name: one_minus_src
+        doc: |
+          TODO
+      - name: src_alpha
+        doc: |
+          TODO
+      - name: one_minus_src_alpha
+        doc: |
+          TODO
+      - name: dst
+        doc: |
+          TODO
+      - name: one_minus_dst
+        doc: |
+          TODO
+      - name: dst_alpha
+        doc: |
+          TODO
+      - name: one_minus_dst_alpha
+        doc: |
+          TODO
+      - name: src_alpha_saturated
+        doc: |
+          TODO
+      - name: constant
+        doc: |
+          TODO
+      - name: one_minus_constant
+        doc: |
+          TODO
+
+  - name: blend_operation
+    doc: |
+      TODO
+    entries:
+      - name: add
+        doc: |
+          TODO
+      - name: subtract
+        doc: |
+          TODO
+      - name: reverse_subtract
+        doc: |
+          TODO
+      - name: min
+        doc: |
+          TODO
+      - name: max
+        doc: |
+          TODO
+
+  - name: buffer_map_async_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        doc: |
+          TODO
+      - name: validation_error
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
+      - name: device_lost
+        doc: |
+          TODO
+      - name: destroyed_before_callback
+        doc: |
+          TODO
+      - name: unmapped_before_callback
+        doc: |
+          TODO
+      - name: mapping_already_pending
+        doc: |
+          TODO
+      - name: offset_out_of_range
+        doc: |
+          TODO
+      - name: size_out_of_range
+        doc: |
+          TODO
+
+  - name: buffer_map_state
+    doc: |
+      TODO
+    entries:
+      - name: unmapped
+        doc: |
+          TODO
+      - name: pending
+        doc: |
+          TODO
+      - name: mapped
+        doc: |
+          TODO
+
+  - name: compare_function
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: never
+        doc: |
+          TODO
+      - name: less
+        doc: |
+          TODO
+      - name: less_equal
+        doc: |
+          TODO
+      - name: greater
+        doc: |
+          TODO
+      - name: greater_equal
+        doc: |
+          TODO
+      - name: equal
+        doc: |
+          TODO
+      - name: not_equal
+        doc: |
+          TODO
+      - name: always
+        doc: |
+          TODO
+
+  - name: compilation_info_request_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        doc: |
+          TODO
+      - name: error
+        doc: |
+          TODO
+      - name: device_lost
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
+
+  - name: compilation_message_type
+    doc: |
+      TODO
+    entries:
+      - name: error
+        doc: |
+          TODO
+      - name: warning
+        doc: |
+          TODO
+      - name: info
+        doc: |
+          TODO
+
+  - name: composite_alpha_mode
+    doc: |
+      TODO
+    entries:
+      - name: auto
+        doc: |
+          TODO
+      - name: opaque
+        doc: |
+          TODO
+      - name: premultiplied
+        doc: |
+          TODO
+      - name: unpremultiplied
+        doc: |
+          TODO
+      - name: inherit
+        doc: |
+          TODO
+
+  - name: create_pipeline_async_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        doc: |
+          TODO
+      - name: validation_error
+        doc: |
+          TODO
+      - name: internal_error
+        doc: |
+          TODO
+      - name: device_lost
+        doc: |
+          TODO
+      - name: device_destroyed
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
+
+  - name: cull_mode
+    doc: |
+      TODO
+    entries:
+      - name: none
+        doc: |
+          TODO
+      - name: front
+        doc: |
+          TODO
+      - name: back
+        doc: |
+          TODO
+
+  - name: device_lost_reason
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: destroyed
+        doc: |
+          TODO
+
+  - name: error_filter
+    doc: |
+      TODO
+    entries:
+      - name: validation
+        doc: |
+          TODO
+      - name: out_of_memory
+        doc: |
+          TODO
+      - name: internal
+        doc: |
+          TODO
+
+  - name: error_type
+    doc: |
+      TODO
+    entries:
+      - name: no_error
+        doc: |
+          TODO
+      - name: validation
+        doc: |
+          TODO
+      - name: out_of_memory
+        doc: |
+          TODO
+      - name: internal
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
+      - name: device_lost
+        doc: |
+          TODO
+
+  - name: feature_name
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: depth_clip_control
+        doc: |
+          TODO
+      - name: depth32_float_stencil8
+        doc: |
+          TODO
+      - name: timestamp_query
+        doc: |
+          TODO
+      - name: texture_compression_BC
+        doc: |
+          TODO
+      - name: texture_compression_ETC2
+        doc: |
+          TODO
+      - name: texture_compression_ASTC
+        doc: |
+          TODO
+      - name: indirect_first_instance
+        doc: |
+          TODO
+      - name: shader_f16
+        doc: |
+          TODO
+      - name: RG11B10_ufloat_renderable
+        doc: |
+          TODO
+      - name: BGRA8_unorm_storage
+        doc: |
+          TODO
+      - name: float32_filterable
+        doc: |
+          TODO
+
+  - name: filter_mode
+    doc: |
+      TODO
+    entries:
+      - name: nearest
+        doc: |
+          TODO
+      - name: linear
+        doc: |
+          TODO
+
+  - name: front_face
+    doc: |
+      TODO
+    entries:
+      - name: CCW
+        doc: |
+          TODO
+      - name: CW
+        doc: |
+          TODO
+
+  - name: index_format
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: uint16
+        doc: |
+          TODO
+      - name: uint32
+        doc: |
+          TODO
+
+  - name: vertex_step_mode
+    doc: |
+      TODO
+    entries:
+      - name: vertex
+        doc: |
+          TODO
+      - name: instance
+        doc: |
+          TODO
+      - name: vertex_buffer_not_used
+        doc: |
+          TODO
+
+  - name: load_op
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: clear
+        doc: |
+          TODO
+      - name: load
+        doc: |
+          TODO
+
+  - name: mipmap_filter_mode
+    doc: |
+      TODO
+    entries:
+      - name: nearest
+        doc: |
+          TODO
+      - name: linear
+        doc: |
+          TODO
+
+  - name: store_op
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: store
+        doc: |
+          TODO
+      - name: discard
+        doc: |
+          TODO
+
+  - name: power_preference
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: low_power
+        doc: |
+          TODO
+      - name: high_performance
+        doc: |
+          TODO
+
+  - name: present_mode
+    doc: |
+      TODO
+    entries:
+      - name: fifo
+        doc: |
+          TODO
+      - name: fifo_relaxed
+        doc: |
+          TODO
+      - name: immediate
+        doc: |
+          TODO
+      - name: mailbox
+        doc: |
+          TODO
+
+  - name: primitive_topology
+    doc: |
+      TODO
+    entries:
+      - name: point_list
+        doc: |
+          TODO
+      - name: line_list
+        doc: |
+          TODO
+      - name: line_strip
+        doc: |
+          TODO
+      - name: triangle_list
+        doc: |
+          TODO
+      - name: triangle_strip
+        doc: |
+          TODO
+
+  - name: query_type
+    doc: |
+      TODO
+    entries:
+      - name: occlusion
+        doc: |
+          TODO
+      - name: timestamp
+        doc: |
+          TODO
+
+  - name: queue_work_done_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        doc: |
+          TODO
+      - name: error
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
+      - name: device_lost
+        doc: |
+          TODO
+
+  - name: request_device_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        doc: |
+          TODO
+      - name: error
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
+
+  - name: stencil_operation
+    doc: |
+      TODO
+    entries:
+      - name: keep
+        doc: |
+          TODO
+      - name: zero
+        doc: |
+          TODO
+      - name: replace
+        doc: |
+          TODO
+      - name: invert
+        doc: |
+          TODO
+      - name: increment_clamp
+        doc: |
+          TODO
+      - name: decrement_clamp
+        doc: |
+          TODO
+      - name: increment_wrap
+        doc: |
+          TODO
+      - name: decrement_wrap
+        doc: |
+          TODO
+
+  - name: s_type
+    doc: |
+      TODO
+    entries:
+      - name: invalid
+        doc: |
+          TODO
+      - name: surface_descriptor_from_metal_layer
+        doc: |
+          TODO
+      - name: surface_descriptor_from_windows_HWND
+        doc: |
+          TODO
+      - name: surface_descriptor_from_xlib_window
+        doc: |
+          TODO
+      - name: surface_descriptor_from_canvas_HTML_selector
+        doc: |
+          TODO
+      - name: shader_module_SPIRV_descriptor
+        doc: |
+          TODO
+      - name: shader_module_WGSL_descriptor
+        doc: |
+          TODO
+      - name: primitive_depth_clip_control
+        doc: |
+          TODO
+      - name: surface_descriptor_from_wayland_surface
+        doc: |
+          TODO
+      - name: surface_descriptor_from_android_native_window
+        doc: |
+          TODO
+      - name: surface_descriptor_from_xcb_window
+        doc: |
+          TODO
+      - name: render_pass_descriptor_max_draw_count
+        doc: |
+          TODO
+
+  - name: surface_get_current_texture_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        doc: |
+          TODO
+      - name: timeout
+        doc: |
+          TODO
+      - name: outdated
+        doc: |
+          TODO
+      - name: lost
+        doc: |
+          TODO
+      - name: out_of_memory
+        doc: |
+          TODO
+      - name: device_lost
+        doc: |
+          TODO
+
+  - name: texture_aspect
+    doc: |
+      TODO
+    entries:
+      - name: all
+        doc: |
+          TODO
+      - name: stencil_only
+        doc: |
+          TODO
+      - name: depth_only
+        doc: |
+          TODO
+
+  - name: texture_dimension
+    doc: |
+      TODO
+    entries:
+      - name: 1D
+        doc: |
+          TODO
+      - name: 2D
+        doc: |
+          TODO
+      - name: 3D
+        doc: |
+          TODO
+
+  - name: texture_format
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: R8_unorm
+        doc: |
+          TODO
+      - name: R8_snorm
+        doc: |
+          TODO
+      - name: R8_uint
+        doc: |
+          TODO
+      - name: R8_sint
+        doc: |
+          TODO
+      - name: R16_uint
+        doc: |
+          TODO
+      - name: R16_sint
+        doc: |
+          TODO
+      - name: R16_float
+        doc: |
+          TODO
+      - name: RG8_unorm
+        doc: |
+          TODO
+      - name: RG8_snorm
+        doc: |
+          TODO
+      - name: RG8_uint
+        doc: |
+          TODO
+      - name: RG8_sint
+        doc: |
+          TODO
+      - name: R32_float
+        doc: |
+          TODO
+      - name: R32_uint
+        doc: |
+          TODO
+      - name: R32_sint
+        doc: |
+          TODO
+      - name: RG16_uint
+        doc: |
+          TODO
+      - name: RG16_sint
+        doc: |
+          TODO
+      - name: RG16_float
+        doc: |
+          TODO
+      - name: RGBA8_unorm
+        doc: |
+          TODO
+      - name: RGBA8_unorm_srgb
+        doc: |
+          TODO
+      - name: RGBA8_snorm
+        doc: |
+          TODO
+      - name: RGBA8_uint
+        doc: |
+          TODO
+      - name: RGBA8_sint
+        doc: |
+          TODO
+      - name: BGRA8_unorm
+        doc: |
+          TODO
+      - name: BGRA8_unorm_srgb
+        doc: |
+          TODO
+      - name: RGB10_A2_uint
+        doc: |
+          TODO
+      - name: RGB10_A2_unorm
+        doc: |
+          TODO
+      - name: RG11_B10_ufloat
+        doc: |
+          TODO
+      - name: RGB9_E5_ufloat
+        doc: |
+          TODO
+      - name: RG32_float
+        doc: |
+          TODO
+      - name: RG32_uint
+        doc: |
+          TODO
+      - name: RG32_sint
+        doc: |
+          TODO
+      - name: RGBA16_uint
+        doc: |
+          TODO
+      - name: RGBA16_sint
+        doc: |
+          TODO
+      - name: RGBA16_float
+        doc: |
+          TODO
+      - name: RGBA32_float
+        doc: |
+          TODO
+      - name: RGBA32_uint
+        doc: |
+          TODO
+      - name: RGBA32_sint
+        doc: |
+          TODO
+      - name: stencil8
+        doc: |
+          TODO
+      - name: depth16_unorm
+        doc: |
+          TODO
+      - name: depth24_plus
+        doc: |
+          TODO
+      - name: depth24_plus_stencil8
+        doc: |
+          TODO
+      - name: depth32_float
+        doc: |
+          TODO
+      - name: depth32_float_stencil8
+        doc: |
+          TODO
+      - name: BC1_RGBA_unorm
+        doc: |
+          TODO
+      - name: BC1_RGBA_unorm_srgb
+        doc: |
+          TODO
+      - name: BC2_RGBA_unorm
+        doc: |
+          TODO
+      - name: BC2_RGBA_unorm_srgb
+        doc: |
+          TODO
+      - name: BC3_RGBA_unorm
+        doc: |
+          TODO
+      - name: BC3_RGBA_unorm_srgb
+        doc: |
+          TODO
+      - name: BC4_R_unorm
+        doc: |
+          TODO
+      - name: BC4_R_snorm
+        doc: |
+          TODO
+      - name: BC5_RG_unorm
+        doc: |
+          TODO
+      - name: BC5_RG_snorm
+        doc: |
+          TODO
+      - name: BC6H_RGB_ufloat
+        doc: |
+          TODO
+      - name: BC6H_RGB_float
+        doc: |
+          TODO
+      - name: BC7_RGBA_unorm
+        doc: |
+          TODO
+      - name: BC7_RGBA_unorm_srgb
+        doc: |
+          TODO
+      - name: ETC2_RGB8_unorm
+        doc: |
+          TODO
+      - name: ETC2_RGB8_unorm_srgb
+        doc: |
+          TODO
+      - name: ETC2_RGB8A1_unorm
+        doc: |
+          TODO
+      - name: ETC2_RGB8A1_unorm_srgb
+        doc: |
+          TODO
+      - name: ETC2_RGBA8_unorm
+        doc: |
+          TODO
+      - name: ETC2_RGBA8_unorm_srgb
+        doc: |
+          TODO
+      - name: EAC_R11_unorm
+        doc: |
+          TODO
+      - name: EAC_R11_snorm
+        doc: |
+          TODO
+      - name: EAC_RG11_unorm
+        doc: |
+          TODO
+      - name: EAC_RG11_snorm
+        doc: |
+          TODO
+      - name: ASTC_4x4_unorm
+        doc: |
+          TODO
+      - name: ASTC_4x4_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_5x4_unorm
+        doc: |
+          TODO
+      - name: ASTC_5x4_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_5x5_unorm
+        doc: |
+          TODO
+      - name: ASTC_5x5_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_6x5_unorm
+        doc: |
+          TODO
+      - name: ASTC_6x5_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_6x6_unorm
+        doc: |
+          TODO
+      - name: ASTC_6x6_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_8x5_unorm
+        doc: |
+          TODO
+      - name: ASTC_8x5_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_8x6_unorm
+        doc: |
+          TODO
+      - name: ASTC_8x6_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_8x8_unorm
+        doc: |
+          TODO
+      - name: ASTC_8x8_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_10x5_unorm
+        doc: |
+          TODO
+      - name: ASTC_10x5_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_10x6_unorm
+        doc: |
+          TODO
+      - name: ASTC_10x6_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_10x8_unorm
+        doc: |
+          TODO
+      - name: ASTC_10x8_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_10x10_unorm
+        doc: |
+          TODO
+      - name: ASTC_10x10_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_12x10_unorm
+        doc: |
+          TODO
+      - name: ASTC_12x10_unorm_srgb
+        doc: |
+          TODO
+      - name: ASTC_12x12_unorm
+        doc: |
+          TODO
+      - name: ASTC_12x12_unorm_srgb
+        doc: |
+          TODO
+
+  - name: texture_view_dimension
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: 1D
+        doc: |
+          TODO
+      - name: 2D
+        doc: |
+          TODO
+      - name: 2D_array
+        doc: |
+          TODO
+      - name: cube
+        doc: |
+          TODO
+      - name: cube_array
+        doc: |
+          TODO
+      - name: 3D
+        doc: |
+          TODO
+
+  - name: vertex_format
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: uint8x2
+        doc: |
+          TODO
+      - name: uint8x4
+        doc: |
+          TODO
+      - name: sint8x2
+        doc: |
+          TODO
+      - name: sint8x4
+        doc: |
+          TODO
+      - name: unorm8x2
+        doc: |
+          TODO
+      - name: unorm8x4
+        doc: |
+          TODO
+      - name: snorm8x2
+        doc: |
+          TODO
+      - name: snorm8x4
+        doc: |
+          TODO
+      - name: uint16x2
+        doc: |
+          TODO
+      - name: uint16x4
+        doc: |
+          TODO
+      - name: sint16x2
+        doc: |
+          TODO
+      - name: sint16x4
+        doc: |
+          TODO
+      - name: unorm16x2
+        doc: |
+          TODO
+      - name: unorm16x4
+        doc: |
+          TODO
+      - name: snorm16x2
+        doc: |
+          TODO
+      - name: snorm16x4
+        doc: |
+          TODO
+      - name: float16x2
+        doc: |
+          TODO
+      - name: float16x4
+        doc: |
+          TODO
+      - name: float32
+        doc: |
+          TODO
+      - name: float32x2
+        doc: |
+          TODO
+      - name: float32x3
+        doc: |
+          TODO
+      - name: float32x4
+        doc: |
+          TODO
+      - name: uint32
+        doc: |
+          TODO
+      - name: uint32x2
+        doc: |
+          TODO
+      - name: uint32x3
+        doc: |
+          TODO
+      - name: uint32x4
+        doc: |
+          TODO
+      - name: sint32
+        doc: |
+          TODO
+      - name: sint32x2
+        doc: |
+          TODO
+      - name: sint32x3
+        doc: |
+          TODO
+      - name: sint32x4
+        doc: |
+          TODO
+
+bitflags:
+  - name: buffer_usage
+    doc: |
+      TODO
+    entries:
+      - name: none
+        doc: |
+          TODO
+      - name: map_read
+        doc: |
+          TODO
+      - name: map_write
+        doc: |
+          TODO
+      - name: copy_src
+        doc: |
+          TODO
+      - name: copy_dst
+        doc: |
+          TODO
+      - name: index
+        doc: |
+          TODO
+      - name: vertex
+        doc: |
+          TODO
+      - name: uniform
+        doc: |
+          TODO
+      - name: storage
+        doc: |
+          TODO
+      - name: indirect
+        doc: |
+          TODO
+      - name: query_resolve
+        doc: |
+          TODO
+
+  - name: color_write_mask
+    doc: |
+      TODO
+    entries:
+      - name: none
+        doc: |
+          TODO
+      - name: red
+        doc: |
+          TODO
+      - name: green
+        doc: |
+          TODO
+      - name: blue
+        doc: |
+          TODO
+      - name: alpha
+        doc: |
+          TODO
+      - name: all
+        value_combination:
+          - none
+          - red
+          - green
+          - blue
+          - alpha
+        doc: |
+          TODO
+
+  - name: map_mode
+    doc: |
+      TODO
+    entries:
+      - name: none
+        doc: |
+          TODO
+      - name: read
+        doc: |
+          TODO
+      - name: write
+        doc: |
+          TODO
+
+  - name: shader_stage
+    doc: |
+      TODO
+    entries:
+      - name: none
+        doc: |
+          TODO
+      - name: vertex
+        doc: |
+          TODO
+      - name: fragment
+        doc: |
+          TODO
+      - name: compute
+        doc: |
+          TODO
+
+  - name: texture_usage
+    doc: |
+      TODO
+    entries:
+      - name: none
+        doc: |
+          TODO
+      - name: copy_src
+        doc: |
+          TODO
+      - name: copy_dst
+        doc: |
+          TODO
+      - name: texture_binding
+        doc: |
+          TODO
+      - name: storage_binding
+        doc: |
+          TODO
+      - name: render_attachment
+        doc: |
+          TODO
+
+function_types:
+  - name: device_lost_callback
+    doc: |
+      TODO
+    args:
+      - name: reason
+        doc: |
+          TODO
+        type: enum.device_lost_reason
+      - name: message
+        doc: |
+          TODO
+        type: string
+      - name: userdata
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
+  - name: error_callback
+    doc: |
+      TODO
+    args:
+      - name: type
+        doc: |
+          TODO
+        type: enum.error_type
+      - name: message
+        doc: |
+          TODO
+        type: string
+      - name: userdata
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
+structs:
+  - name: request_adapter_options
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: compatible_surface
+        doc: |
+          TODO
+        type: object.surface
+        optional: true
+      - name: power_preference
+        doc: |
+          TODO
+        type: enum.power_preference
+      - name: backend_type
+        doc: |
+          TODO
+        type: enum.backend_type
+      - name: force_fallback_adapter
+        doc: |
+          TODO
+        type: bool
+
+  - name: adapter_properties
+    doc: |
+      TODO
+    type: base_out
+    members:
+      - name: vendor_ID
+        doc: |
+          TODO
+        type: uint32
+      - name: vendor_name
+        doc: |
+          TODO
+        type: string
+      - name: architecture
+        doc: |
+          TODO
+        type: string
+      - name: device_ID
+        doc: |
+          TODO
+        type: uint32
+      - name: name
+        doc: |
+          TODO
+        type: string
+      - name: driver_description
+        doc: |
+          TODO
+        type: string
+      - name: adapter_type
+        doc: |
+          TODO
+        type: enum.adapter_type
+      - name: backend_type
+        doc: |
+          TODO
+        type: enum.backend_type
+
+  - name: device_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: required_features
+        doc: |
+          TODO
+        type: array<enum.feature_name>
+        pointer: immutable
+      - name: required_limits
+        doc: |
+          TODO
+        type: struct.required_limits
+        pointer: immutable
+        optional: true
+      - name: default_queue
+        doc: |
+          TODO
+        type: struct.queue_descriptor
+      - name: device_lost_callback
+        doc: |
+          TODO
+        type: function_type.device_lost_callback
+      - name: device_lost_userdata
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
+  - name: bind_group_entry
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: binding
+        doc: |
+          TODO
+        type: uint32
+      - name: buffer
+        doc: |
+          TODO
+        type: object.buffer
+        optional: true
+      - name: offset
+        doc: |
+          TODO
+        type: uint64
+      - name: size
+        doc: |
+          TODO
+        type: uint64
+      - name: sampler
+        doc: |
+          TODO
+        type: object.sampler
+        optional: true
+      - name: texture_view
+        doc: |
+          TODO
+        type: object.texture_view
+        optional: true
+
+  - name: bind_group_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: layout
+        doc: |
+          TODO
+        type: object.bind_group_layout
+      - name: entries
+        doc: |
+          TODO
+        type: array<struct.bind_group_entry>
+        pointer: immutable
+
+  - name: buffer_binding_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: type
+        doc: |
+          TODO
+        type: enum.buffer_binding_type
+      - name: has_dynamic_offset
+        doc: |
+          TODO
+        type: bool
+      - name: min_binding_size
+        doc: |
+          TODO
+        type: uint64
+
+  - name: sampler_binding_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: type
+        doc: |
+          TODO
+        type: enum.sampler_binding_type
+
+  - name: texture_binding_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: sample_type
+        doc: |
+          TODO
+        type: enum.texture_sample_type
+      - name: view_dimension
+        doc: |
+          TODO
+        type: enum.texture_view_dimension
+      - name: multisampled
+        doc: |
+          TODO
+        type: bool
+
+  - name: surface_capabilities
+    doc: |
+      TODO
+    type: base_out
+    free_members: true
+    members:
+      - name: formats
+        doc: |
+          TODO
+        type: array<enum.texture_format>
+        pointer: mutable
+      - name: present_modes
+        doc: |
+          TODO
+        type: array<enum.present_mode>
+        pointer: mutable
+      - name: alpha_modes
+        doc: |
+          TODO
+        type: array<enum.composite_alpha_mode>
+        pointer: mutable
+
+  - name: surface_configuration
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: device
+        doc: |
+          TODO
+        type: object.device
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: usage
+        doc: |
+          TODO
+        type: bitflag.texture_usage
+      - name: view_formats
+        doc: |
+          TODO
+        type: array<enum.texture_format>
+        pointer: immutable
+      - name: alpha_mode
+        doc: |
+          TODO
+        type: enum.composite_alpha_mode
+      - name: width
+        doc: |
+          TODO
+        type: uint32
+      - name: height
+        doc: |
+          TODO
+        type: uint32
+      - name: present_mode
+        doc: |
+          TODO
+        type: enum.present_mode
+
+  - name: storage_texture_binding_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: access
+        doc: |
+          TODO
+        type: enum.storage_texture_access
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: view_dimension
+        doc: |
+          TODO
+        type: enum.texture_view_dimension
+
+  - name: bind_group_layout_entry
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: binding
+        doc: |
+          TODO
+        type: uint32
+      - name: visibility
+        doc: |
+          TODO
+        type: bitflag.shader_stage
+      - name: buffer
+        doc: |
+          TODO
+        type: struct.buffer_binding_layout
+      - name: sampler
+        doc: |
+          TODO
+        type: struct.sampler_binding_layout
+      - name: texture
+        doc: |
+          TODO
+        type: struct.texture_binding_layout
+      - name: storage_texture
+        doc: |
+          TODO
+        type: struct.storage_texture_binding_layout
+
+  - name: bind_group_layout_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: entries
+        doc: |
+          TODO
+        type: array<struct.bind_group_layout_entry>
+        pointer: immutable
+
+  - name: blend_component
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: operation
+        doc: |
+          TODO
+        type: enum.blend_operation
+      - name: src_factor
+        doc: |
+          TODO
+        type: enum.blend_factor
+      - name: dst_factor
+        doc: |
+          TODO
+        type: enum.blend_factor
+
+  - name: buffer_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: usage
+        doc: |
+          TODO
+        type: bitflag.buffer_usage
+      - name: size
+        doc: |
+          TODO
+        type: uint64
+      - name: mapped_at_creation
+        doc: |
+          TODO
+        type: bool
+
+  - name: color
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: r
+        doc: |
+          TODO
+        type: float64
+      - name: g
+        doc: |
+          TODO
+        type: float64
+      - name: b
+        doc: |
+          TODO
+        type: float64
+      - name: a
+        doc: |
+          TODO
+        type: float64
+
+  - name: constant_entry
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: key
+        doc: |
+          TODO
+        type: string
+      - name: value
+        doc: |
+          TODO
+        type: float64
+
+  - name: command_buffer_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+
+  - name: command_encoder_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+
+  - name: compilation_info
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: messages
+        doc: |
+          TODO
+        type: array<struct.compilation_message>
+        pointer: immutable
+
+  - name: compilation_message
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: message
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: type
+        doc: |
+          TODO
+        type: enum.compilation_message_type
+      - name: line_num
+        doc: |
+          TODO
+        type: uint64
+      - name: line_pos
+        doc: |
+          TODO
+        type: uint64
+      - name: offset
+        doc: |
+          TODO
+        type: uint64
+      - name: length
+        doc: |
+          TODO
+        type: uint64
+      - name: utf16_line_pos
+        doc: |
+          TODO
+        type: uint64
+      - name: utf16_offset
+        doc: |
+          TODO
+        type: uint64
+      - name: utf16_length
+        doc: |
+          TODO
+        type: uint64
+
+  - name: compute_pass_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: timestamp_writes
+        doc: |
+          TODO
+        type: struct.compute_pass_timestamp_writes
+        pointer: immutable
+        optional: true
+
+  - name: compute_pass_timestamp_writes
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: query_set
+        doc: |
+          TODO
+        type: object.query_set
+      - name: beginning_of_pass_write_index
+        doc: |
+          TODO
+        type: uint32
+      - name: end_of_pass_write_index
+        doc: |
+          TODO
+        type: uint32
+
+  - name: compute_pipeline_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: layout
+        doc: |
+          TODO
+        type: object.pipeline_layout
+        optional: true
+      - name: compute
+        doc: |
+          TODO
+        type: struct.programmable_stage_descriptor
+
+  - name: limits
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: max_texture_dimension_1D
+        doc: |
+          TODO
+        type: uint32
+      - name: max_texture_dimension_2D
+        doc: |
+          TODO
+        type: uint32
+      - name: max_texture_dimension_3D
+        doc: |
+          TODO
+        type: uint32
+      - name: max_texture_array_layers
+        doc: |
+          TODO
+        type: uint32
+      - name: max_bind_groups
+        doc: |
+          TODO
+        type: uint32
+      - name: max_bind_groups_plus_vertex_buffers
+        doc: |
+          TODO
+        type: uint32
+      - name: max_bindings_per_bind_group
+        doc: |
+          TODO
+        type: uint32
+      - name: max_dynamic_uniform_buffers_per_pipeline_layout
+        doc: |
+          TODO
+        type: uint32
+      - name: max_dynamic_storage_buffers_per_pipeline_layout
+        doc: |
+          TODO
+        type: uint32
+      - name: max_sampled_textures_per_shader_stage
+        doc: |
+          TODO
+        type: uint32
+      - name: max_samplers_per_shader_stage
+        doc: |
+          TODO
+        type: uint32
+      - name: max_storage_buffers_per_shader_stage
+        doc: |
+          TODO
+        type: uint32
+      - name: max_storage_textures_per_shader_stage
+        doc: |
+          TODO
+        type: uint32
+      - name: max_uniform_buffers_per_shader_stage
+        doc: |
+          TODO
+        type: uint32
+      - name: max_uniform_buffer_binding_size
+        doc: |
+          TODO
+        type: uint64
+      - name: max_storage_buffer_binding_size
+        doc: |
+          TODO
+        type: uint64
+      - name: min_uniform_buffer_offset_alignment
+        doc: |
+          TODO
+        type: uint32
+      - name: min_storage_buffer_offset_alignment
+        doc: |
+          TODO
+        type: uint32
+      - name: max_vertex_buffers
+        doc: |
+          TODO
+        type: uint32
+      - name: max_buffer_size
+        doc: |
+          TODO
+        type: uint64
+      - name: max_vertex_attributes
+        doc: |
+          TODO
+        type: uint32
+      - name: max_vertex_buffer_array_stride
+        doc: |
+          TODO
+        type: uint32
+      - name: max_inter_stage_shader_components
+        doc: |
+          TODO
+        type: uint32
+      - name: max_inter_stage_shader_variables
+        doc: |
+          TODO
+        type: uint32
+      - name: max_color_attachments
+        doc: |
+          TODO
+        type: uint32
+      - name: max_color_attachment_bytes_per_sample
+        doc: |
+          TODO
+        type: uint32
+      - name: max_compute_workgroup_storage_size
+        doc: |
+          TODO
+        type: uint32
+      - name: max_compute_invocations_per_workgroup
+        doc: |
+          TODO
+        type: uint32
+      - name: max_compute_workgroup_size_x
+        doc: |
+          TODO
+        type: uint32
+      - name: max_compute_workgroup_size_y
+        doc: |
+          TODO
+        type: uint32
+      - name: max_compute_workgroup_size_z
+        doc: |
+          TODO
+        type: uint32
+      - name: max_compute_workgroups_per_dimension
+        doc: |
+          TODO
+        type: uint32
+
+  - name: required_limits
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: limits
+        doc: |
+          TODO
+        type: struct.limits
+
+  - name: supported_limits
+    doc: |
+      TODO
+    type: base_out
+    members:
+      - name: limits
+        doc: |
+          TODO
+        type: struct.limits
+
+  - name: extent_3D
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: width
+        doc: |
+          TODO
+        type: uint32
+      - name: height
+        doc: |
+          TODO
+        type: uint32
+      - name: depth_or_array_layers
+        doc: |
+          TODO
+        type: uint32
+
+  - name: image_copy_buffer
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: layout
+        doc: |
+          TODO
+        type: struct.texture_data_layout
+      - name: buffer
+        doc: |
+          TODO
+        type: object.buffer
+
+  - name: image_copy_texture
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: texture
+        doc: |
+          TODO
+        type: object.texture
+      - name: mip_level
+        doc: |
+          TODO
+        type: uint32
+      - name: origin
+        doc: |
+          TODO
+        type: struct.origin_3D
+      - name: aspect
+        doc: |
+          TODO
+        type: enum.texture_aspect
+
+  - name: instance_descriptor
+    doc: |
+      TODO
+    type: base_in
+
+  - name: vertex_attribute
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: format
+        doc: |
+          TODO
+        type: enum.vertex_format
+      - name: offset
+        doc: |
+          TODO
+        type: uint64
+      - name: shader_location
+        doc: |
+          TODO
+        type: uint32
+
+  - name: vertex_buffer_layout
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: array_stride
+        doc: |
+          TODO
+        type: uint64
+      - name: step_mode
+        doc: |
+          TODO
+        type: enum.vertex_step_mode
+      - name: attributes
+        doc: |
+          TODO
+        type: array<struct.vertex_attribute>
+        pointer: immutable
+
+  - name: origin_3D
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: x
+        doc: |
+          TODO
+        type: uint32
+      - name: y
+        doc: |
+          TODO
+        type: uint32
+      - name: z
+        doc: |
+          TODO
+        type: uint32
+
+  - name: pipeline_layout_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: bind_group_layouts
+        doc: |
+          TODO
+        type: array<object.bind_group_layout>
+        pointer: immutable
+
+  - name: programmable_stage_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
+
+  - name: query_set_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: type
+        doc: |
+          TODO
+        type: enum.query_type
+      - name: count
+        doc: |
+          TODO
+        type: uint32
+
+  - name: queue_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+
+  - name: render_bundle_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+
+  - name: render_bundle_encoder_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: color_formats
+        doc: |
+          TODO
+        type: array<enum.texture_format>
+        pointer: immutable
+      - name: depth_stencil_format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: sample_count
+        doc: |
+          TODO
+        type: uint32
+      - name: depth_read_only
+        doc: |
+          TODO
+        type: bool
+      - name: stencil_read_only
+        doc: |
+          TODO
+        type: bool
+
+  - name: render_pass_color_attachment
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: view
+        doc: |
+          TODO
+        type: object.texture_view
+        optional: true
+      - name: resolve_target
+        doc: |
+          TODO
+        type: object.texture_view
+        optional: true
+      - name: load_op
+        doc: |
+          TODO
+        type: enum.load_op
+      - name: store_op
+        doc: |
+          TODO
+        type: enum.store_op
+      - name: clear_value
+        doc: |
+          TODO
+        type: struct.color
+
+  - name: render_pass_depth_stencil_attachment
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: view
+        doc: |
+          TODO
+        type: object.texture_view
+      - name: depth_load_op
+        doc: |
+          TODO
+        type: enum.load_op
+      - name: depth_store_op
+        doc: |
+          TODO
+        type: enum.store_op
+      - name: depth_clear_value
+        doc: |
+          TODO
+        type: float32
+      - name: depth_read_only
+        doc: |
+          TODO
+        type: bool
+      - name: stencil_load_op
+        doc: |
+          TODO
+        type: enum.load_op
+      - name: stencil_store_op
+        doc: |
+          TODO
+        type: enum.store_op
+      - name: stencil_clear_value
+        doc: |
+          TODO
+        type: uint32
+      - name: stencil_read_only
+        doc: |
+          TODO
+        type: bool
+
+  - name: render_pass_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: color_attachments
+        doc: |
+          TODO
+        type: array<struct.render_pass_color_attachment>
+        pointer: immutable
+      - name: depth_stencil_attachment
+        doc: |
+          TODO
+        type: struct.render_pass_depth_stencil_attachment
+        pointer: immutable
+        optional: true
+      - name: occlusion_query_set
+        doc: |
+          TODO
+        type: object.query_set
+        optional: true
+      - name: timestamp_writes
+        doc: |
+          TODO
+        type: struct.render_pass_timestamp_writes
+        pointer: immutable
+        optional: true
+
+  - name: render_pass_descriptor_max_draw_count
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - render_pass_descriptor
+    members:
+      - name: max_draw_count
+        doc: |
+          TODO
+        type: uint64
+
+  - name: render_pass_timestamp_writes
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: query_set
+        doc: |
+          TODO
+        type: object.query_set
+      - name: beginning_of_pass_write_index
+        doc: |
+          TODO
+        type: uint32
+      - name: end_of_pass_write_index
+        doc: |
+          TODO
+        type: uint32
+
+  - name: vertex_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
+      - name: buffers
+        doc: |
+          TODO
+        type: array<struct.vertex_buffer_layout>
+        pointer: immutable
+
+  - name: primitive_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: topology
+        doc: |
+          TODO
+        type: enum.primitive_topology
+      - name: strip_index_format
+        doc: |
+          TODO
+        type: enum.index_format
+      - name: front_face
+        doc: |
+          TODO
+        type: enum.front_face
+      - name: cull_mode
+        doc: |
+          TODO
+        type: enum.cull_mode
+
+  - name: primitive_depth_clip_control
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - primitive_state
+    members:
+      - name: unclipped_depth
+        doc: |
+          TODO
+        type: bool
+
+  - name: depth_stencil_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: depth_write_enabled
+        doc: |
+          TODO
+        type: bool
+      - name: depth_compare
+        doc: |
+          TODO
+        type: enum.compare_function
+      - name: stencil_front
+        doc: |
+          TODO
+        type: struct.stencil_face_state
+      - name: stencil_back
+        doc: |
+          TODO
+        type: struct.stencil_face_state
+      - name: stencil_read_mask
+        doc: |
+          TODO
+        type: uint32
+      - name: stencil_write_mask
+        doc: |
+          TODO
+        type: uint32
+      - name: depth_bias
+        doc: |
+          TODO
+        type: int32
+      - name: depth_bias_slope_scale
+        doc: |
+          TODO
+        type: float32
+      - name: depth_bias_clamp
+        doc: |
+          TODO
+        type: float32
+
+  - name: multisample_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: count
+        doc: |
+          TODO
+        type: uint32
+      - name: mask
+        doc: |
+          TODO
+        type: uint32
+      - name: alpha_to_coverage_enabled
+        doc: |
+          TODO
+        type: bool
+
+  - name: fragment_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
+      - name: targets
+        doc: |
+          TODO
+        type: array<struct.color_target_state>
+        pointer: immutable
+
+  - name: color_target_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: blend
+        doc: |
+          TODO
+        type: struct.blend_state
+        pointer: immutable
+        optional: true
+      - name: write_mask
+        doc: |
+          TODO
+        type: bitflag.color_write_mask
+
+  - name: blend_state
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: color
+        doc: |
+          TODO
+        type: struct.blend_component
+      - name: alpha
+        doc: |
+          TODO
+        type: struct.blend_component
+
+  - name: render_pipeline_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: layout
+        doc: |
+          TODO
+        type: object.pipeline_layout
+        optional: true
+      - name: vertex
+        doc: |
+          TODO
+        type: struct.vertex_state
+      - name: primitive
+        doc: |
+          TODO
+        type: struct.primitive_state
+      - name: depth_stencil
+        doc: |
+          TODO
+        type: struct.depth_stencil_state
+        pointer: immutable
+        optional: true
+      - name: multisample
+        doc: |
+          TODO
+        type: struct.multisample_state
+      - name: fragment
+        doc: |
+          TODO
+        type: struct.fragment_state
+        pointer: immutable
+        optional: true
+
+  - name: sampler_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: address_mode_u
+        doc: |
+          TODO
+        type: enum.address_mode
+      - name: address_mode_v
+        doc: |
+          TODO
+        type: enum.address_mode
+      - name: address_mode_w
+        doc: |
+          TODO
+        type: enum.address_mode
+      - name: mag_filter
+        doc: |
+          TODO
+        type: enum.filter_mode
+      - name: min_filter
+        doc: |
+          TODO
+        type: enum.filter_mode
+      - name: mipmap_filter
+        doc: |
+          TODO
+        type: enum.mipmap_filter_mode
+      - name: lod_min_clamp
+        doc: |
+          TODO
+        type: float32
+      - name: lod_max_clamp
+        doc: |
+          TODO
+        type: float32
+      - name: compare
+        doc: |
+          TODO
+        type: enum.compare_function
+      - name: max_anisotropy
+        doc: |
+          TODO
+        type: uint16
+
+  - name: shader_module_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: hints
+        doc: |
+          TODO
+        type: array<struct.shader_module_compilation_hint>
+        pointer: immutable
+
+  - name: shader_module_compilation_hint
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: entry_point
+        doc: |
+          TODO
+        type: string
+      - name: layout
+        doc: |
+          TODO
+        type: object.pipeline_layout
+
+  - name: shader_module_SPIRV_descriptor
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - shader_module_descriptor
+    members:
+      - name: code_size
+        doc: |
+          TODO
+        type: uint32
+      - name: code
+        doc: |
+          TODO
+        type: uint32
+        pointer: immutable
+
+  - name: shader_module_WGSL_descriptor
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - shader_module_descriptor
+    members:
+      - name: code
+        doc: |
+          TODO
+        type: string
+
+  - name: stencil_face_state
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: compare
+        doc: |
+          TODO
+        type: enum.compare_function
+      - name: fail_op
+        doc: |
+          TODO
+        type: enum.stencil_operation
+      - name: depth_fail_op
+        doc: |
+          TODO
+        type: enum.stencil_operation
+      - name: pass_op
+        doc: |
+          TODO
+        type: enum.stencil_operation
+
+  - name: surface_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+
+  - name: surface_descriptor_from_android_native_window
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: window
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
+  - name: surface_descriptor_from_canvas_HTML_selector
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: selector
+        doc: |
+          TODO
+        type: string
+
+  - name: surface_descriptor_from_metal_layer
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: layer
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
+  - name: surface_descriptor_from_windows_HWND
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: hinstance
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+      - name: hwnd
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
+  - name: surface_descriptor_from_xcb_window
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: connection
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+      - name: window
+        doc: |
+          TODO
+        type: uint32
+
+  - name: surface_descriptor_from_xlib_window
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: display
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+      - name: window
+        doc: |
+          TODO
+        type: uint64
+
+  - name: surface_descriptor_from_wayland_surface
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: display
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+      - name: surface
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
+  - name: surface_texture
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: texture
+        doc: |
+          TODO
+        type: object.texture
+      - name: suboptimal
+        doc: |
+          TODO
+        type: bool
+      - name: status
+        doc: |
+          TODO
+        type: enum.surface_get_current_texture_status
+
+  - name: texture_data_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: offset
+        doc: |
+          TODO
+        type: uint64
+      - name: bytes_per_row
+        doc: |
+          TODO
+        type: uint32
+      - name: rows_per_image
+        doc: |
+          TODO
+        type: uint32
+
+  - name: texture_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: usage
+        doc: |
+          TODO
+        type: bitflag.texture_usage
+      - name: dimension
+        doc: |
+          TODO
+        type: enum.texture_dimension
+      - name: size
+        doc: |
+          TODO
+        type: struct.extent_3D
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: mip_level_count
+        doc: |
+          TODO
+        type: uint32
+      - name: sample_count
+        doc: |
+          TODO
+        type: uint32
+      - name: view_formats
+        doc: |
+          TODO
+        type: array<enum.texture_format>
+        pointer: immutable
+
+  - name: texture_view_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: dimension
+        doc: |
+          TODO
+        type: enum.texture_view_dimension
+      - name: base_mip_level
+        doc: |
+          TODO
+        type: uint32
+      - name: mip_level_count
+        doc: |
+          TODO
+        type: uint32
+      - name: base_array_layer
+        doc: |
+          TODO
+        type: uint32
+      - name: array_layer_count
+        doc: |
+          TODO
+        type: uint32
+      - name: aspect
+        doc: |
+          TODO
+        type: enum.texture_aspect
+
+functions:
+  - name: create_instance
+    doc: |
+      TODO
+    returns:
+      doc: |
+        TODO
+      type: object.instance
+    args:
+      - name: descriptor
+        doc: |
+          TODO
+        type: struct.instance_descriptor
+        pointer: immutable
+        optional: true
+
+objects:
+  - name: adapter
+    doc: |
+      TODO
+    methods:
+      - name: get_limits
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: bool
+        args:
+          - name: limits
+            doc: |
+              TODO
+            type: struct.supported_limits
+            pointer: mutable
+      - name: get_properties
+        doc: |
+          TODO
+        args:
+          - name: properties
+            doc: |
+              TODO
+            type: struct.adapter_properties
+            pointer: mutable
+      - name: has_feature
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: bool
+        args:
+          - name: feature
+            doc: |
+              TODO
+            type: enum.feature_name
+      - name: enumerate_features
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: usize
+        args:
+          - name: features
+            doc: |
+              TODO
+            type: enum.feature_name
+            pointer: mutable
+      - name: request_device
+        doc: |
+          TODO
+        returns_async:
+          - name: status
+            doc: |
+              TODO
+            type: enum.request_device_status
+          - name: device
+            doc: |
+              TODO
+            type: object.device
+          - name: message
+            doc: |
+              TODO
+            type: string
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.device_descriptor
+            pointer: immutable
+            optional: true
+
+  - name: bind_group
+    doc: |
+      TODO
+    methods:
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: bind_group_layout
+    doc: |
+      TODO
+    methods:
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: buffer
+    doc: |
+      TODO
+    methods:
+      - name: map_async
+        doc: |
+          TODO
+        returns_async:
+          - name: status
+            doc: |
+              TODO
+            type: enum.buffer_map_async_status
+        args:
+          - name: mode
+            doc: |
+              TODO
+            type: bitflag.map_mode
+          - name: offset
+            doc: |
+              TODO
+            type: usize
+          - name: size
+            doc: |
+              TODO
+            type: usize
+      - name: get_mapped_range
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: c_void
+          pointer: mutable
+        args:
+          - name: offset
+            doc: |
+              TODO
+            type: usize
+          - name: size
+            doc: |
+              TODO
+            type: usize
+      - name: get_const_mapped_range
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: c_void
+          pointer: immutable
+        args:
+          - name: offset
+            doc: |
+              TODO
+            type: usize
+          - name: size
+            doc: |
+              TODO
+            type: usize
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+      - name: get_usage
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: bitflag.buffer_usage
+      - name: get_size
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: uint64
+      - name: get_map_state
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: enum.buffer_map_state
+      - name: unmap
+        doc: |
+          TODO
+      - name: destroy
+        doc: |
+          TODO
+
+  - name: command_buffer
+    doc: |
+      TODO
+    methods:
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: command_encoder
+    doc: |
+      TODO
+    methods:
+      - name: finish
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.command_buffer
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.command_buffer_descriptor
+            pointer: immutable
+            optional: true
+      - name: begin_compute_pass
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.compute_pass_encoder
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.compute_pass_descriptor
+            pointer: immutable
+            optional: true
+      - name: begin_render_pass
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.render_pass_encoder
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.render_pass_descriptor
+            pointer: immutable
+      - name: copy_buffer_to_buffer
+        doc: |
+          TODO
+        args:
+          - name: source
+            doc: |
+              TODO
+            type: object.buffer
+          - name: source_offset
+            doc: |
+              TODO
+            type: uint64
+          - name: destination
+            doc: |
+              TODO
+            type: object.buffer
+          - name: destination_offset
+            doc: |
+              TODO
+            type: uint64
+          - name: size
+            doc: |
+              TODO
+            type: uint64
+      - name: copy_buffer_to_texture
+        doc: |
+          TODO
+        args:
+          - name: source
+            doc: |
+              TODO
+            type: struct.image_copy_buffer
+            pointer: immutable
+          - name: destination
+            doc: |
+              TODO
+            type: struct.image_copy_texture
+            pointer: immutable
+          - name: copy_size
+            doc: |
+              TODO
+            type: struct.extent_3D
+            pointer: immutable
+      - name: copy_texture_to_buffer
+        doc: |
+          TODO
+        args:
+          - name: source
+            doc: |
+              TODO
+            type: struct.image_copy_texture
+            pointer: immutable
+          - name: destination
+            doc: |
+              TODO
+            type: struct.image_copy_buffer
+            pointer: immutable
+          - name: copy_size
+            doc: |
+              TODO
+            type: struct.extent_3D
+            pointer: immutable
+      - name: copy_texture_to_texture
+        doc: |
+          TODO
+        args:
+          - name: source
+            doc: |
+              TODO
+            type: struct.image_copy_texture
+            pointer: immutable
+          - name: destination
+            doc: |
+              TODO
+            type: struct.image_copy_texture
+            pointer: immutable
+          - name: copy_size
+            doc: |
+              TODO
+            type: struct.extent_3D
+            pointer: immutable
+      - name: clear_buffer
+        doc: |
+          TODO
+        args:
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: size
+            doc: |
+              TODO
+            type: uint64
+      - name: insert_debug_marker
+        doc: |
+          TODO
+        args:
+          - name: marker_label
+            doc: |
+              TODO
+            type: string
+      - name: pop_debug_group
+        doc: |
+          TODO
+      - name: push_debug_group
+        doc: |
+          TODO
+        args:
+          - name: group_label
+            doc: |
+              TODO
+            type: string
+      - name: resolve_query_set
+        doc: |
+          TODO
+        args:
+          - name: query_set
+            doc: |
+              TODO
+            type: object.query_set
+          - name: first_query
+            doc: |
+              TODO
+            type: uint32
+          - name: query_count
+            doc: |
+              TODO
+            type: uint32
+          - name: destination
+            doc: |
+              TODO
+            type: object.buffer
+          - name: destination_offset
+            doc: |
+              TODO
+            type: uint64
+      - name: write_timestamp
+        doc: |
+          TODO
+        args:
+          - name: query_set
+            doc: |
+              TODO
+            type: object.query_set
+          - name: query_index
+            doc: |
+              TODO
+            type: uint32
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: compute_pass_encoder
+    doc: |
+      TODO
+    methods:
+      - name: insert_debug_marker
+        doc: |
+          TODO
+        args:
+          - name: marker_label
+            doc: |
+              TODO
+            type: string
+      - name: pop_debug_group
+        doc: |
+          TODO
+      - name: push_debug_group
+        doc: |
+          TODO
+        args:
+          - name: group_label
+            doc: |
+              TODO
+            type: string
+      - name: set_pipeline
+        doc: |
+          TODO
+        args:
+          - name: pipeline
+            doc: |
+              TODO
+            type: object.compute_pipeline
+      - name: set_bind_group
+        doc: |
+          TODO
+        args:
+          - name: group_index
+            doc: |
+              TODO
+            type: uint32
+          - name: group
+            doc: |
+              TODO
+            type: object.bind_group
+            optional: true
+          - name: dynamic_offsets
+            doc: |
+              TODO
+            type: array<uint32>
+            pointer: immutable
+      - name: dispatch_workgroups
+        doc: |
+          TODO
+        args:
+          - name: workgroupCountX
+            doc: |
+              TODO
+            type: uint32
+          - name: workgroupCountY
+            doc: |
+              TODO
+            type: uint32
+          - name: workgroupCountZ
+            doc: |
+              TODO
+            type: uint32
+      - name: dispatch_workgroups_indirect
+        doc: |
+          TODO
+        args:
+          - name: indirect_buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: indirect_offset
+            doc: |
+              TODO
+            type: uint64
+      - name: end
+        doc: |
+          TODO
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: compute_pipeline
+    doc: |
+      TODO
+    methods:
+      - name: get_bind_group_layout
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.bind_group_layout
+        args:
+          - name: group_index
+            doc: |
+              TODO
+            type: uint32
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: device
+    doc: |
+      TODO
+    methods:
+      - name: create_bind_group
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.bind_group
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.bind_group_descriptor
+            pointer: immutable
+      - name: create_bind_group_layout
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.bind_group_layout
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.bind_group_layout_descriptor
+            pointer: immutable
+      - name: create_buffer
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.buffer
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.buffer_descriptor
+            pointer: immutable
+      - name: create_command_encoder
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.command_encoder
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.command_encoder_descriptor
+            pointer: immutable
+            optional: true
+      - name: create_compute_pipeline
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.compute_pipeline
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.compute_pipeline_descriptor
+            pointer: immutable
+      - name: create_compute_pipeline_async
+        doc: |
+          TODO
+        returns_async:
+          - name: status
+            doc: |
+              TODO
+            type: enum.create_pipeline_async_status
+          - name: pipeline
+            doc: |
+              TODO
+            type: object.compute_pipeline
+          - name: message
+            doc: |
+              TODO
+            type: string
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.compute_pipeline_descriptor
+            pointer: immutable
+      - name: create_pipeline_layout
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.pipeline_layout
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.pipeline_layout_descriptor
+            pointer: immutable
+      - name: create_query_set
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.query_set
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.query_set_descriptor
+            pointer: immutable
+      - name: create_render_pipeline_async
+        doc: |
+          TODO
+        returns_async:
+          - name: status
+            doc: |
+              TODO
+            type: enum.create_pipeline_async_status
+          - name: pipeline
+            doc: |
+              TODO
+            type: object.render_pipeline
+          - name: message
+            doc: |
+              TODO
+            type: string
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.render_pipeline_descriptor
+            pointer: immutable
+      - name: create_render_bundle_encoder
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.render_bundle_encoder
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.render_bundle_encoder_descriptor
+            pointer: immutable
+      - name: create_render_pipeline
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.render_pipeline
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.render_pipeline_descriptor
+            pointer: immutable
+      - name: create_sampler
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.sampler
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.sampler_descriptor
+            pointer: immutable
+            optional: true
+      - name: create_shader_module
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.shader_module
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.shader_module_descriptor
+            pointer: immutable
+      - name: create_texture
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.texture
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.texture_descriptor
+            pointer: immutable
+      - name: destroy
+        doc: |
+          TODO
+      - name: get_limits
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: bool
+        args:
+          - name: limits
+            doc: |
+              TODO
+            type: struct.supported_limits
+            pointer: mutable
+      - name: has_feature
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: bool
+        args:
+          - name: feature
+            doc: |
+              TODO
+            type: enum.feature_name
+      - name: enumerate_features
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: usize
+        args:
+          - name: features
+            doc: |
+              TODO
+            type: enum.feature_name
+            pointer: mutable
+      - name: get_queue
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.queue
+      - name: set_uncaptured_error_callback
+        doc: |
+          TODO
+        args:
+          - name: callback
+            doc: |
+              TODO
+            type: function_type.error_callback
+          - name: userdata
+            doc: |
+              TODO
+            type: c_void
+            pointer: mutable
+      - name: push_error_scope
+        doc: |
+          TODO
+        args:
+          - name: filter
+            doc: |
+              TODO
+            type: enum.error_filter
+      - name: pop_error_scope
+        doc: |
+          TODO
+        args:
+          - name: callback
+            doc: |
+              TODO
+            type: function_type.error_callback
+          - name: userdata
+            doc: |
+              TODO
+            type: c_void
+            pointer: mutable
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: instance
+    doc: |
+      TODO
+    methods:
+      - name: create_surface
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.surface
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.surface_descriptor
+            pointer: immutable
+      - name: process_events
+        doc: |
+          TODO
+      - name: request_adapter
+        doc: |
+          TODO
+        returns_async:
+          - name: status
+            doc: |
+              TODO
+            type: enum.request_adapter_status
+          - name: adapter
+            doc: |
+              TODO
+            type: object.adapter
+          - name: message
+            doc: |
+              TODO
+            type: string
+        args:
+          - name: options
+            doc: |
+              TODO
+            type: struct.request_adapter_options
+            pointer: immutable
+            optional: true
+
+  - name: pipeline_layout
+    doc: |
+      TODO
+    methods:
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: query_set
+    doc: |
+      TODO
+    methods:
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+      - name: get_type
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: enum.query_type
+      - name: get_count
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: uint32
+      - name: destroy
+        doc: |
+          TODO
+
+  - name: queue
+    doc: |
+      TODO
+    methods:
+      - name: submit
+        doc: |
+          TODO
+        args:
+          - name: commands
+            doc: |
+              TODO
+            type: array<object.command_buffer>
+            pointer: immutable
+      - name: on_submitted_work_done
+        doc: |
+          TODO
+        returns_async:
+          - name: status
+            doc: |
+              TODO
+            type: enum.queue_work_done_status
+      - name: write_buffer
+        doc: |
+          TODO
+        args:
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: buffer_offset
+            doc: |
+              TODO
+            type: uint64
+          - name: data
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+          - name: size
+            doc: |
+              TODO
+            type: usize
+      - name: write_texture
+        doc: |
+          TODO
+        args:
+          - name: destination
+            doc: |
+              TODO
+            type: struct.image_copy_texture
+            pointer: immutable
+          - name: data
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+          - name: data_size
+            doc: |
+              TODO
+            type: usize
+          - name: data_layout
+            doc: |
+              TODO
+            type: struct.texture_data_layout
+            pointer: immutable
+          - name: write_size
+            doc: |
+              TODO
+            type: struct.extent_3D
+            pointer: immutable
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: render_bundle
+    doc: |
+      TODO
+    methods:
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: render_bundle_encoder
+    doc: |
+      TODO
+    methods:
+      - name: set_pipeline
+        doc: |
+          TODO
+        args:
+          - name: pipeline
+            doc: |
+              TODO
+            type: object.render_pipeline
+      - name: set_bind_group
+        doc: |
+          TODO
+        args:
+          - name: group_index
+            doc: |
+              TODO
+            type: uint32
+          - name: group
+            doc: |
+              TODO
+            type: object.bind_group
+            optional: true
+          - name: dynamic_offsets
+            doc: |
+              TODO
+            type: array<uint32>
+            pointer: immutable
+      - name: draw
+        doc: |
+          TODO
+        args:
+          - name: vertex_count
+            doc: |
+              TODO
+            type: uint32
+          - name: instance_count
+            doc: |
+              TODO
+            type: uint32
+          - name: first_vertex
+            doc: |
+              TODO
+            type: uint32
+          - name: first_instance
+            doc: |
+              TODO
+            type: uint32
+      - name: draw_indexed
+        doc: |
+          TODO
+        args:
+          - name: index_count
+            doc: |
+              TODO
+            type: uint32
+          - name: instance_count
+            doc: |
+              TODO
+            type: uint32
+          - name: first_index
+            doc: |
+              TODO
+            type: uint32
+          - name: base_vertex
+            doc: |
+              TODO
+            type: int32
+          - name: first_instance
+            doc: |
+              TODO
+            type: uint32
+      - name: draw_indirect
+        doc: |
+          TODO
+        args:
+          - name: indirect_buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: indirect_offset
+            doc: |
+              TODO
+            type: uint64
+      - name: draw_indexed_indirect
+        doc: |
+          TODO
+        args:
+          - name: indirect_buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: indirect_offset
+            doc: |
+              TODO
+            type: uint64
+      - name: insert_debug_marker
+        doc: |
+          TODO
+        args:
+          - name: marker_label
+            doc: |
+              TODO
+            type: string
+      - name: pop_debug_group
+        doc: |
+          TODO
+      - name: push_debug_group
+        doc: |
+          TODO
+        args:
+          - name: group_label
+            doc: |
+              TODO
+            type: string
+      - name: set_vertex_buffer
+        doc: |
+          TODO
+        args:
+          - name: slot
+            doc: |
+              TODO
+            type: uint32
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+            optional: true
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: size
+            doc: |
+              TODO
+            type: uint64
+      - name: set_index_buffer
+        doc: |
+          TODO
+        args:
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: format
+            doc: |
+              TODO
+            type: enum.index_format
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: size
+            doc: |
+              TODO
+            type: uint64
+      - name: finish
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.render_bundle
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.render_bundle_descriptor
+            pointer: immutable
+            optional: true
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: render_pass_encoder
+    doc: |
+      TODO
+    methods:
+      - name: set_pipeline
+        doc: |
+          TODO
+        args:
+          - name: pipeline
+            doc: |
+              TODO
+            type: object.render_pipeline
+      - name: set_bind_group
+        doc: |
+          TODO
+        args:
+          - name: group_index
+            doc: |
+              TODO
+            type: uint32
+          - name: group
+            doc: |
+              TODO
+            type: object.bind_group
+            optional: true
+          - name: dynamic_offsets
+            doc: |
+              TODO
+            type: array<uint32>
+            pointer: immutable
+      - name: draw
+        doc: |
+          TODO
+        args:
+          - name: vertex_count
+            doc: |
+              TODO
+            type: uint32
+          - name: instance_count
+            doc: |
+              TODO
+            type: uint32
+          - name: first_vertex
+            doc: |
+              TODO
+            type: uint32
+          - name: first_instance
+            doc: |
+              TODO
+            type: uint32
+      - name: draw_indexed
+        doc: |
+          TODO
+        args:
+          - name: index_count
+            doc: |
+              TODO
+            type: uint32
+          - name: instance_count
+            doc: |
+              TODO
+            type: uint32
+          - name: first_index
+            doc: |
+              TODO
+            type: uint32
+          - name: base_vertex
+            doc: |
+              TODO
+            type: int32
+          - name: first_instance
+            doc: |
+              TODO
+            type: uint32
+      - name: draw_indirect
+        doc: |
+          TODO
+        args:
+          - name: indirect_buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: indirect_offset
+            doc: |
+              TODO
+            type: uint64
+      - name: draw_indexed_indirect
+        doc: |
+          TODO
+        args:
+          - name: indirect_buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: indirect_offset
+            doc: |
+              TODO
+            type: uint64
+      - name: execute_bundles
+        doc: |
+          TODO
+        args:
+          - name: bundles
+            doc: |
+              TODO
+            type: array<object.render_bundle>
+            pointer: immutable
+      - name: insert_debug_marker
+        doc: |
+          TODO
+        args:
+          - name: marker_label
+            doc: |
+              TODO
+            type: string
+      - name: pop_debug_group
+        doc: |
+          TODO
+      - name: push_debug_group
+        doc: |
+          TODO
+        args:
+          - name: group_label
+            doc: |
+              TODO
+            type: string
+      - name: set_stencil_reference
+        doc: |
+          TODO
+        args:
+          - name: reference
+            doc: |
+              TODO
+            type: uint32
+      - name: set_blend_constant
+        doc: |
+          TODO
+        args:
+          - name: color
+            doc: |
+              TODO
+            type: struct.color
+            pointer: immutable
+      - name: set_viewport
+        doc: |
+          TODO
+        args:
+          - name: x
+            doc: |
+              TODO
+            type: float32
+          - name: y
+            doc: |
+              TODO
+            type: float32
+          - name: width
+            doc: |
+              TODO
+            type: float32
+          - name: height
+            doc: |
+              TODO
+            type: float32
+          - name: min_depth
+            doc: |
+              TODO
+            type: float32
+          - name: max_depth
+            doc: |
+              TODO
+            type: float32
+      - name: set_scissor_rect
+        doc: |
+          TODO
+        args:
+          - name: x
+            doc: |
+              TODO
+            type: uint32
+          - name: y
+            doc: |
+              TODO
+            type: uint32
+          - name: width
+            doc: |
+              TODO
+            type: uint32
+          - name: height
+            doc: |
+              TODO
+            type: uint32
+      - name: set_vertex_buffer
+        doc: |
+          TODO
+        args:
+          - name: slot
+            doc: |
+              TODO
+            type: uint32
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+            optional: true
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: size
+            doc: |
+              TODO
+            type: uint64
+      - name: set_index_buffer
+        doc: |
+          TODO
+        args:
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: format
+            doc: |
+              TODO
+            type: enum.index_format
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: size
+            doc: |
+              TODO
+            type: uint64
+      - name: begin_occlusion_query
+        doc: |
+          TODO
+        args:
+          - name: query_index
+            doc: |
+              TODO
+            type: uint32
+      - name: end_occlusion_query
+        doc: |
+          TODO
+      - name: end
+        doc: |
+          TODO
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: render_pipeline
+    doc: |
+      TODO
+    methods:
+      - name: get_bind_group_layout
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.bind_group_layout
+        args:
+          - name: group_index
+            doc: |
+              TODO
+            type: uint32
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: sampler
+    doc: |
+      TODO
+    methods:
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: shader_module
+    doc: |
+      TODO
+    methods:
+      - name: get_compilation_info
+        doc: |
+          TODO
+        returns_async:
+          - name: status
+            doc: |
+              TODO
+            type: enum.compilation_info_request_status
+          - name: compilation_info
+            doc: |
+              TODO
+            type: struct.compilation_info
+            pointer: immutable
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+
+  - name: surface
+    doc: |
+      TODO
+    methods:
+      - name: configure
+        doc: |
+          TODO
+        args:
+          - name: config
+            doc: |
+              TODO
+            type: struct.surface_configuration
+            pointer: immutable
+      - name: get_capabilities
+        doc: |
+          TODO
+        args:
+          - name: adapter
+            doc: |
+              TODO
+            type: object.adapter
+          - name: capabilities
+            doc: |
+              TODO
+            type: struct.surface_capabilities
+            pointer: mutable
+      - name: get_current_texture
+        doc: |
+          TODO
+        args:
+          - name: surface_texture
+            doc: |
+              TODO
+            type: struct.surface_texture
+            pointer: mutable
+      - name: get_preferred_format
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: enum.texture_format
+        args:
+          - name: adapter
+            doc: |
+              TODO
+            type: object.adapter
+      - name: present
+        doc: |
+          TODO
+      - name: unconfigure
+        doc: |
+          TODO
+
+  - name: texture
+    doc: |
+      TODO
+    methods:
+      - name: create_view
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: object.texture_view
+        args:
+          - name: descriptor
+            doc: |
+              TODO
+            type: struct.texture_view_descriptor
+            pointer: immutable
+            optional: true
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
+      - name: get_width
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: uint32
+      - name: get_height
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: uint32
+      - name: get_depth_or_array_layers
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: uint32
+      - name: get_mip_level_count
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: uint32
+      - name: get_sample_count
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: uint32
+      - name: get_dimension
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: enum.texture_dimension
+      - name: get_format
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: enum.texture_format
+      - name: get_usage
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: bitflag.texture_usage
+      - name: destroy
+        doc: |
+          TODO
+
+  - name: texture_view
+    doc: |
+      TODO
+    methods:
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
