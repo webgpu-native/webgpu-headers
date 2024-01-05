@@ -10,20 +10,27 @@ import (
 	"text/template"
 )
 
-func GenCHeader(yml *Yml, dst io.Writer) error {
+type Data struct {
+	Name string
+	*Yml
+}
+
+func GenCHeader(data *Data, dst io.Writer) error {
 	t := template.
 		New("").
 		Funcs(template.FuncMap{
-			"SComment":     func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent) },
-			"MComment":     func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent) },
+			"SComment":     func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, true) },
+			"MComment":     func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, true) },
+			"SCommentN":    func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, false) },
+			"MCommentN":    func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, false) },
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,
 			"CamelCase":    CamelCase,
 			"CType":        CType,
 			"CValue":       CValue,
 			"BitFlagValue": func(index int) uint64 { return uint64(math.Pow(2, float64(index-1))) },
-			"ParseUint": func(s string) uint64 {
-				v, err := strconv.ParseUint(s, 10, 64)
+			"ParseUint": func(s string, bitSize int) uint64 {
+				v, err := strconv.ParseUint(s, 10, bitSize)
 				if err != nil {
 					panic(err)
 				}
@@ -56,7 +63,7 @@ func GenCHeader(yml *Yml, dst io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("GenCHeader: failed to parse template: %w", err)
 	}
-	if err := t.Execute(dst, yml); err != nil {
+	if err := t.Execute(dst, data); err != nil {
 		return fmt.Errorf("GenCHeader: failed to execute template: %w", err)
 	}
 	return nil

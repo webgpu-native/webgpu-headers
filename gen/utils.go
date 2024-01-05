@@ -22,13 +22,16 @@ const (
 	CommentTypeMultiLine
 )
 
-func Comment(in string, mode CommentType, indent int) string {
+func Comment(in string, mode CommentType, indent int, newline bool) string {
 	if in == "" || strings.TrimSpace(in) == "TODO" {
 		return ""
 	}
 
 	const space = ' '
 	var out strings.Builder
+	if newline {
+		out.WriteString("\n")
+	}
 	if mode == CommentTypeMultiLine {
 		for i := 0; i < indent; i++ {
 			out.WriteRune(space)
@@ -58,7 +61,6 @@ func Comment(in string, mode CommentType, indent int) string {
 		}
 		out.WriteString(" */")
 	}
-	out.WriteString("\n")
 	return out.String()
 }
 
