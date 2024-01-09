@@ -1598,17 +1598,17 @@ structs:
         doc: |
           TODO
         type: array<enum.texture_format>
-        pointer: mutable
+        pointer: immutable
       - name: present_modes
         doc: |
           TODO
         type: array<enum.present_mode>
-        pointer: mutable
+        pointer: immutable
       - name: alpha_modes
         doc: |
           TODO
         type: array<enum.composite_alpha_mode>
-        pointer: mutable
+        pointer: immutable
 
   - name: surface_configuration
     doc: |
@@ -4594,6 +4594,14 @@ objects:
       - name: unconfigure
         doc: |
           TODO
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string
 
   - name: texture
     doc: |

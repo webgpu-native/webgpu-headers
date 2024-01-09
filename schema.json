@@ -221,6 +221,17 @@
                             "standalone"
                         ]
                     },
+                    "extends": {
+                        "type": "array",
+                        "description": "Optional property, list of names of the structs that this extension structure extends",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "free_members": {
+                        "type": "boolean",
+                        "description": "Optional property, to indicate if a free members function be emitted for the struct"
+                    },
                     "members": {
                         "type": "array",
                         "description": "Optional property, list of struct members",
@@ -307,6 +318,10 @@
                                 "doc": {
                                     "type": "string"
                                 },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Argument type"
+                                },
                                 "pointer": {
                                     "type": "string",
                                     "description": "Optional property, specifies if a function argument type is a pointer",
@@ -366,12 +381,52 @@
                                         "type": {
                                             "type": "string",
                                             "description": "Return type of the function"
+                                        },
+                                        "pointer": {
+                                            "type": "string",
+                                            "description": "Optional property, specifies if a method return type is a pointer",
+                                            "enum": [
+                                                "immutable",
+                                                "mutable"
+                                            ]
                                         }
                                     },
                                     "required": [
                                         "doc",
                                         "type"
                                     ]
+                                },
+                                "returns_async": {
+                                    "type": "array",
+                                    "description": "List of async callback arguments",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "description": "Name of the async callback argument"
+                                            },
+                                            "doc": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Argument type"
+                                            },
+                                            "pointer": {
+                                                "type": "string",
+                                                "description": "Optional property, specifies if an argument type is a pointer",
+                                                "enum": [
+                                                    "immutable",
+                                                    "mutable"
+                                                ]
+                                            },
+                                            "optional": {
+                                                "type": "boolean",
+                                                "description": "Optional property, to indicate if an argument is optional"
+                                            }
+                                        }
+                                    }
                                 },
                                 "args": {
                                     "type": "array",
@@ -384,6 +439,10 @@
                                             },
                                             "doc": {
                                                 "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "description": "Argument type"
                                             },
                                             "pointer": {
                                                 "type": "string",
