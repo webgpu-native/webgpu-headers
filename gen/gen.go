@@ -78,7 +78,26 @@ func CValue(s string) string {
 	case "uint64_max":
 		return "0xffffffffffffffffULL"
 	default:
-		return s
+		var num string
+		var base int
+		if strings.HasPrefix(s, "0x") {
+			base = 16
+			num = strings.TrimPrefix(s, "0x")
+		} else {
+			base = 10
+			num = s
+		}
+		v, err := strconv.ParseUint(num, base, 64)
+		if err != nil {
+			panic(fmt.Errorf("CValue: failed to parse \"%s\": %w", s, err))
+		}
+		var suffix string
+		if v <= math.MaxUint32 {
+			suffix = "UL"
+		} else {
+			suffix = "ULL"
+		}
+		return "0x" + strconv.FormatUint(v, 16) + suffix
 	}
 }
 
