@@ -100,7 +100,7 @@ type Object struct {
 	Doc     string     `yaml:"doc"`
 	Methods []Function `yaml:"methods"`
 
-	Fake bool `yaml:"-"`
+	IsStruct bool `yaml:"-"`
 }
 
 var arrayTypeRegexp = regexp.MustCompile(`array<([a-z0-9._]+)>`)

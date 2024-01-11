@@ -31,7 +31,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	MustValidateYaml(schemaPath, yamlPath)
+	if err := ValidateYaml(schemaPath, yamlPath); err != nil {
+		panic(err)
+	}
 
 	src, err := os.ReadFile(yamlPath)
 	if err != nil {
@@ -83,9 +85,9 @@ func SortAndTransform(yml *Yml) {
 	for _, s := range yml.Structs {
 		if s.FreeMembers {
 			yml.Objects = append(yml.Objects, Object{
-				Fake:    true,
-				Name:    s.Name,
-				Methods: []Function{{Name: "free_members"}},
+				IsStruct: true,
+				Name:     s.Name,
+				Methods:  []Function{{Name: "free_members"}},
 			})
 		}
 	}

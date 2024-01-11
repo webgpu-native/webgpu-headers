@@ -72,16 +72,15 @@ func PascalCase(s string) string {
 	var out strings.Builder
 	out.Grow(len(s))
 	nextUpper := true
-	for i := 0; i < len(s); i++ {
-		c := s[i]
+	for _, c := range s {
 		if nextUpper {
-			out.WriteRune(unicode.ToUpper(rune(c)))
+			out.WriteRune(unicode.ToUpper(c))
 			nextUpper = false
 		} else {
 			if c == '_' {
 				nextUpper = true
 			} else {
-				out.WriteRune(rune(c))
+				out.WriteRune(c)
 			}
 		}
 	}
@@ -92,16 +91,15 @@ func CamelCase(s string) string {
 	var out strings.Builder
 	out.Grow(len(s))
 	nextUpper := false
-	for i := 0; i < len(s); i++ {
-		c := s[i]
+	for _, c := range s {
 		if nextUpper {
-			out.WriteRune(unicode.ToUpper(rune(c)))
+			out.WriteRune(unicode.ToUpper(c))
 			nextUpper = false
 		} else {
 			if c == '_' {
 				nextUpper = true
 			} else {
-				out.WriteRune(rune(c))
+				out.WriteRune(c)
 			}
 		}
 	}

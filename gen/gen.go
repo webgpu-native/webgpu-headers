@@ -29,12 +29,17 @@ func GenCHeader(data *Data, dst io.Writer) error {
 			"CType":        CType,
 			"CValue":       CValue,
 			"BitFlagValue": func(index int) uint64 { return uint64(math.Pow(2, float64(index-1))) },
-			"ParseUint": func(s string, bitSize int) uint64 {
-				v, err := strconv.ParseUint(s, 10, bitSize)
-				if err != nil {
-					panic(err)
+			"ParseUint": func(s string, bitSize int) (uint64, error) {
+				var num string
+				var base int
+				if strings.HasPrefix(s, "0x") {
+					base = 16
+					num = strings.TrimPrefix(s, "0x")
+				} else {
+					base = 10
+					num = s
 				}
-				return v
+				return strconv.ParseUint(num, base, bitSize)
 			},
 			"IsArray": func(typ string) bool {
 				return arrayTypeRegexp.Match([]byte(typ))
@@ -47,9 +52,7 @@ func GenCHeader(data *Data, dst io.Writer) error {
 				return ""
 			},
 			"Singularize": Singularize,
-			"IsLast": func(i int, s interface{}) bool {
-				return i == reflect.ValueOf(s).Len()-1
-			},
+			"IsLast":      func(i int, s any) bool { return i == reflect.ValueOf(s).Len()-1 },
 			"FunctionReturns": func(f Function) string {
 				if f.Returns != nil {
 					return CType(f.Returns.Type, f.Returns.Pointer)
@@ -69,14 +72,14 @@ func GenCHeader(data *Data, dst io.Writer) error {
 	return nil
 }
 
-func CValue(s string) string {
+func CValue(s string) (string, error) {
 	switch s {
 	case "usize_max":
-		return "SIZE_MAX"
+		return "SIZE_MAX", nil
 	case "uint32_max":
-		return "0xffffffffUL"
+		return "0xffffffffUL", nil
 	case "uint64_max":
-		return "0xffffffffffffffffULL"
+		return "0xffffffffffffffffULL", nil
 	default:
 		var num string
 		var base int
@@ -89,7 +92,7 @@ func CValue(s string) string {
 		}
 		v, err := strconv.ParseUint(num, base, 64)
 		if err != nil {
-			panic(fmt.Errorf("CValue: failed to parse \"%s\": %w", s, err))
+			return "", fmt.Errorf("CValue: failed to parse \"%s\": %w", s, err)
 		}
 		var suffix string
 		if v <= math.MaxUint32 {
@@ -97,7 +100,7 @@ func CValue(s string) string {
 		} else {
 			suffix = "ULL"
 		}
-		return "0x" + strconv.FormatUint(v, 16) + suffix
+		return "0x" + strconv.FormatUint(v, 16) + suffix, nil
 	}
 }
 
@@ -160,12 +163,12 @@ func CType(typ string, pointerType PointerType) string {
 }
 
 func FunctionArgs(f Function, o *Object) string {
-	var sb strings.Builder
+	sb := &strings.Builder{}
 	if o != nil {
 		if len(f.Args) > 0 {
-			fmt.Fprintf(&sb, "WGPU%s %s, ", PascalCase(o.Name), CamelCase(o.Name))
+			fmt.Fprintf(sb, "WGPU%s %s, ", PascalCase(o.Name), CamelCase(o.Name))
 		} else {
-			fmt.Fprintf(&sb, "WGPU%s %s", PascalCase(o.Name), CamelCase(o.Name))
+			fmt.Fprintf(sb, "WGPU%s %s", PascalCase(o.Name), CamelCase(o.Name))
 		}
 	}
 	for i, arg := range f.Args {
@@ -174,10 +177,10 @@ func FunctionArgs(f Function, o *Object) string {
 		}
 		matches := arrayTypeRegexp.FindStringSubmatch(arg.Type)
 		if len(matches) == 2 {
-			fmt.Fprintf(&sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
-			fmt.Fprintf(&sb, "%s %s", CType(matches[1], arg.Pointer), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
+			fmt.Fprintf(sb, "%s %s", CType(matches[1], arg.Pointer), CamelCase(arg.Name))
 		} else {
-			fmt.Fprintf(&sb, "%s %s", CType(arg.Type, arg.Pointer), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s %s", CType(arg.Type, arg.Pointer), CamelCase(arg.Name))
 		}
 		if i != len(f.Args)-1 {
 			sb.WriteString(", ")
@@ -190,13 +193,13 @@ func FunctionArgs(f Function, o *Object) string {
 		} else {
 			name = PascalCase(f.Name)
 		}
-		fmt.Fprintf(&sb, ", WGPU%sCallback callback, WGPU_NULLABLE void * userdata", name)
+		fmt.Fprintf(sb, ", WGPU%sCallback callback, WGPU_NULLABLE void * userdata", name)
 	}
 	return sb.String()
 }
 
 func CallbackArgs(f Function) string {
-	var sb strings.Builder
+	sb := &strings.Builder{}
 	for _, arg := range f.ReturnsAsync {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
@@ -207,10 +210,10 @@ func CallbackArgs(f Function) string {
 		}
 		matches := arrayTypeRegexp.FindStringSubmatch(arg.Type)
 		if len(matches) == 2 {
-			fmt.Fprintf(&sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
-			fmt.Fprintf(&sb, "%s%s %s, ", structPrefix, CType(matches[1], arg.Pointer), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
+			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, CType(matches[1], arg.Pointer), CamelCase(arg.Name))
 		} else {
-			fmt.Fprintf(&sb, "%s%s %s, ", structPrefix, CType(arg.Type, arg.Pointer), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, CType(arg.Type, arg.Pointer), CamelCase(arg.Name))
 		}
 	}
 	sb.WriteString("WGPU_NULLABLE void * userdata")

@@ -60,7 +60,7 @@
                                 },
                                 "value": {
                                     "type": "string",
-                                    "description": "Optional property, a 16-bit unsigned integer in string"
+                                    "description": "Optional property, a 16-bit unsigned integer in decimal or hexadecimal syntax, in string"
                                 }
                             },
                             "required": [
@@ -102,7 +102,7 @@
                                 },
                                 "value": {
                                     "type": "string",
-                                    "description": "Optional property, a 64-bit unsigned integer in string"
+                                    "description": "Optional property, a 64-bit unsigned integer in decimal or hexadecimal syntax, in string"
                                 },
                                 "value_combination": {
                                     "type": "array",
