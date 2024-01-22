@@ -762,6 +762,7 @@ enums:
         doc: |
           TODO
       - name: render_pass_descriptor_max_draw_count
+        value: 0x000F
         doc: |
           TODO
 

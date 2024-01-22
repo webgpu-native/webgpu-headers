@@ -425,7 +425,7 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceDescriptorFromWaylandSurface = 0x00000008,
     WGPUSType_SurfaceDescriptorFromAndroidNativeWindow = 0x00000009,
     WGPUSType_SurfaceDescriptorFromXcbWindow = 0x0000000A,
-    WGPUSType_RenderPassDescriptorMaxDrawCount = 0x0000000B,
+    WGPUSType_RenderPassDescriptorMaxDrawCount = 0x0000000F,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
