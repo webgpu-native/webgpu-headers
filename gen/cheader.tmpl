@@ -118,7 +118,7 @@ typedef WGPUFlags WGPU{{.Name | PascalCase}}Flags WGPU_ENUM_ATTRIBUTE;
 
 {{- if eq .Name "webgpu"}}
 typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
-{{- end}}
+{{  end}}
 
 {{- range .FunctionTypes}}
 {{-   MComment .Doc 0}}
@@ -126,7 +126,7 @@ typedef {{FunctionReturns .}} (*WGPU{{.Name | PascalCase}})({{FunctionArgs . nil
 {{- end}}
 
 {{- if .Objects}}
-{{-   range $object := .Objects}}
+{{    range $object := .Objects}}
 {{-     range $method := .Methods}}
 {{-       if .ReturnsAsync}}
 {{-         MComment .Doc 0}}
