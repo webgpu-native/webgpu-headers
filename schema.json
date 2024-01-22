@@ -1,6 +1,153 @@
 {
     "$schema": "https://json-schema.org/draft-07/schema",
     "type": "object",
+    "definitions": {
+        "Name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9]([a-zA-Z0-9_]*[a-zA-Z0-9])?$"
+        },
+        "Value64": {
+            "oneOf": [
+                {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 18446744073709551615
+                },
+                {
+                    "type": "string",
+                    "enum": [
+                        "usize_max",
+                        "uint32_max",
+                        "uint64_max"
+                    ]
+                }
+            ]
+        },
+        "Value16": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535
+        },
+        "Type": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "c_void",
+                        "bool",
+                        "string",
+                        "uint16",
+                        "uint32",
+                        "uint64",
+                        "usize",
+                        "int16",
+                        "int32",
+                        "float32",
+                        "float64",
+                        "array<bool>",
+                        "array<string>",
+                        "array<uint16>",
+                        "array<uint32>",
+                        "array<uint64>",
+                        "array<usize>",
+                        "array<int16>",
+                        "array<int32>",
+                        "array<float32>",
+                        "array<float64>"
+                    ]
+                },
+                {
+                    "type": "string",
+                    "pattern": "^(array<)?(enum\\.|bitflag\\.|struct\\.|function_type\\.|object\\.)([a-zA-Z0-9]([a-zA-Z0-9_]*[a-zA-Z0-9])?)(>)?$"
+                }
+            ]
+        },
+        "Pointer": {
+            "type": "string",
+            "enum": [
+                "immutable",
+                "mutable"
+            ]
+        },
+        "ParameterType": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/Name",
+                    "description": "Parameter name"
+                },
+                "doc": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "Parameter type"
+                },
+                "pointer": {
+                    "$ref": "#/definitions/Pointer",
+                    "description": "Optional property, specifies if a parameter type is a pointer"
+                },
+                "optional": {
+                    "type": "boolean",
+                    "description": "Optional property, to indicate if a parameter is optional"
+                }
+            },
+            "required": [
+                "name",
+                "doc",
+                "type"
+            ]
+        },
+        "Function": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/Name",
+                    "description": "Name of the function"
+                },
+                "doc": {
+                    "type": "string"
+                },
+                "returns": {
+                    "type": "object",
+                    "properties": {
+                        "doc": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "$ref": "#/definitions/Type",
+                            "description": "Return type of the function"
+                        },
+                        "pointer": {
+                            "$ref": "#/definitions/Pointer",
+                            "description": "Optional property, specifies if a method return type is a pointer"
+                        }
+                    },
+                    "required": [
+                        "doc",
+                        "type"
+                    ]
+                },
+                "returns_async": {
+                    "type": "array",
+                    "description": "List of async callback arguments",
+                    "items": {
+                        "$ref": "#/definitions/ParameterType"
+                    }
+                },
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ParameterType"
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "doc"
+            ]
+        }
+    },
     "properties": {
         "copyright": {
             "type": "string",
@@ -8,6 +155,7 @@
         },
         "enum_prefix": {
             "type": "string",
+            "pattern": "^0x[0-9]{4}$",
             "description": "The dedicated enum prefix for the implementation specific header to avoid collisions"
         },
         "constants": {
@@ -16,12 +164,12 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
+                        "$ref": "#/definitions/Name",
                         "description": "Name of the constant variable/define"
                     },
                     "value": {
-                        "type": "string",
-                        "description": "An unsigned integer in decimal or hexadecimal syntax, in string"
+                        "$ref": "#/definitions/Value64",
+                        "description": "An enum of predefined max constants or a 64-bit unsigned integer"
                     },
                     "doc": {
                         "type": "string"
@@ -40,7 +188,7 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
+                        "$ref": "#/definitions/Name",
                         "description": "Name of the enum"
                     },
                     "doc": {
@@ -52,15 +200,15 @@
                             "type": "object",
                             "properties": {
                                 "name": {
-                                    "type": "string",
+                                    "$ref": "#/definitions/Name",
                                     "description": "Name of the enum entry"
                                 },
                                 "doc": {
                                     "type": "string"
                                 },
                                 "value": {
-                                    "type": "string",
-                                    "description": "Optional property, a 16-bit unsigned integer in decimal or hexadecimal syntax, in string"
+                                    "$ref": "#/definitions/Value16",
+                                    "description": "Optional property, a 16-bit unsigned integer"
                                 }
                             },
                             "required": [
@@ -82,7 +230,7 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
+                        "$ref": "#/definitions/Name",
                         "description": "Name of the bitflag"
                     },
                     "doc": {
@@ -94,21 +242,21 @@
                             "type": "object",
                             "properties": {
                                 "name": {
-                                    "type": "string",
+                                    "$ref": "#/definitions/Name",
                                     "description": "Name of the bitflag entry"
                                 },
                                 "doc": {
                                     "type": "string"
                                 },
                                 "value": {
-                                    "type": "string",
-                                    "description": "Optional property, a 64-bit unsigned integer in decimal or hexadecimal syntax, in string"
+                                    "$ref": "#/definitions/Value64",
+                                    "description": "Optional property, a 64-bit unsigned integer"
                                 },
                                 "value_combination": {
                                     "type": "array",
                                     "description": "Optional property, an array listing the names of bitflag entries to be OR-ed",
                                     "items": {
-                                        "type": "string"
+                                        "$ref": "#/definitions/Name"
                                     }
                                 }
                             },
@@ -128,74 +276,7 @@
         "function_types": {
             "type": "array",
             "items": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the function typedef"
-                    },
-                    "doc": {
-                        "type": "string"
-                    },
-                    "returns": {
-                        "type": "object",
-                        "description": "Optional property, describing the return type of the function",
-                        "properties": {
-                            "doc": {
-                                "type": "string"
-                            },
-                            "type": {
-                                "type": "string",
-                                "description": "Return type of the function"
-                            }
-                        },
-                        "required": [
-                            "doc",
-                            "type"
-                        ]
-                    },
-                    "args": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "description": "Optional property, list of arguments to the function",
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "description": "Argument name"
-                                },
-                                "doc": {
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Argument type"
-                                },
-                                "pointer": {
-                                    "type": "string",
-                                    "description": "Optional property, specifies if a function argument type is a pointer",
-                                    "enum": [
-                                        "immutable",
-                                        "mutable"
-                                    ]
-                                },
-                                "optional": {
-                                    "type": "boolean",
-                                    "description": "Optional property, to indicate if a function argument is optional"
-                                }
-                            },
-                            "required": [
-                                "name",
-                                "doc",
-                                "type"
-                            ]
-                        }
-                    }
-                },
-                "required": [
-                    "name",
-                    "doc"
-                ]
+                "$ref": "#/definitions/Function"
             }
         },
         "structs": {
@@ -204,7 +285,7 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
+                        "$ref": "#/definitions/Name",
                         "description": "Name of the structure"
                     },
                     "doc": {
@@ -236,37 +317,7 @@
                         "type": "array",
                         "description": "Optional property, list of struct members",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "description": "Name of the struct member"
-                                },
-                                "doc": {
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Type of the struct member"
-                                },
-                                "pointer": {
-                                    "type": "string",
-                                    "description": "Optional property, specifies if a struct member type is a pointer",
-                                    "enum": [
-                                        "immutable",
-                                        "mutable"
-                                    ]
-                                },
-                                "optional": {
-                                    "type": "boolean",
-                                    "description": "Optional property, to indicate if a struct member is optional"
-                                }
-                            },
-                            "required": [
-                                "name",
-                                "doc",
-                                "type"
-                            ]
+                            "$ref": "#/definitions/ParameterType"
                         }
                     }
                 },
@@ -280,72 +331,7 @@
         "functions": {
             "type": "array",
             "items": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the function"
-                    },
-                    "doc": {
-                        "type": "string"
-                    },
-                    "returns": {
-                        "type": "object",
-                        "description": "Optional property, describing the return type of the function",
-                        "properties": {
-                            "doc": {
-                                "type": "string"
-                            },
-                            "type": {
-                                "type": "string",
-                                "description": "Return type of the function"
-                            }
-                        },
-                        "required": [
-                            "doc",
-                            "type"
-                        ]
-                    },
-                    "args": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "description": "Name of the function argument"
-                                },
-                                "doc": {
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "type": "string",
-                                    "description": "Argument type"
-                                },
-                                "pointer": {
-                                    "type": "string",
-                                    "description": "Optional property, specifies if a function argument type is a pointer",
-                                    "enum": [
-                                        "immutable",
-                                        "mutable"
-                                    ]
-                                },
-                                "optional": {
-                                    "type": "boolean",
-                                    "description": "Optional property, to indicate if a function argument is optional"
-                                }
-                            },
-                            "required": [
-                                "name",
-                                "doc"
-                            ]
-                        }
-                    }
-                },
-                "required": [
-                    "name",
-                    "doc"
-                ]
+                "$ref": "#/definitions/Function"
             }
         },
         "objects": {
@@ -354,7 +340,7 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": "string",
+                        "$ref": "#/definitions/Name",
                         "description": "Name of the object"
                     },
                     "doc": {
@@ -363,111 +349,7 @@
                     "methods": {
                         "type": "array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "description": "Name of the method for an object"
-                                },
-                                "doc": {
-                                    "type": "string"
-                                },
-                                "returns": {
-                                    "type": "object",
-                                    "properties": {
-                                        "doc": {
-                                            "type": "string"
-                                        },
-                                        "type": {
-                                            "type": "string",
-                                            "description": "Return type of the function"
-                                        },
-                                        "pointer": {
-                                            "type": "string",
-                                            "description": "Optional property, specifies if a method return type is a pointer",
-                                            "enum": [
-                                                "immutable",
-                                                "mutable"
-                                            ]
-                                        }
-                                    },
-                                    "required": [
-                                        "doc",
-                                        "type"
-                                    ]
-                                },
-                                "returns_async": {
-                                    "type": "array",
-                                    "description": "List of async callback arguments",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "description": "Name of the async callback argument"
-                                            },
-                                            "doc": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "type": "string",
-                                                "description": "Argument type"
-                                            },
-                                            "pointer": {
-                                                "type": "string",
-                                                "description": "Optional property, specifies if an argument type is a pointer",
-                                                "enum": [
-                                                    "immutable",
-                                                    "mutable"
-                                                ]
-                                            },
-                                            "optional": {
-                                                "type": "boolean",
-                                                "description": "Optional property, to indicate if an argument is optional"
-                                            }
-                                        }
-                                    }
-                                },
-                                "args": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "description": "Name of the method argument"
-                                            },
-                                            "doc": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "type": "string",
-                                                "description": "Argument type"
-                                            },
-                                            "pointer": {
-                                                "type": "string",
-                                                "description": "Optional property, specifies if a method argument type is a pointer",
-                                                "enum": [
-                                                    "immutable",
-                                                    "mutable"
-                                                ]
-                                            },
-                                            "optional": {
-                                                "type": "boolean",
-                                                "description": "Optional property, to indicate if a method argument is optional"
-                                            }
-                                        },
-                                        "required": [
-                                            "name",
-                                            "doc"
-                                        ]
-                                    }
-                                }
-                            },
-                            "required": [
-                                "name",
-                                "doc"
-                            ]
+                            "$ref": "#/definitions/Function"
                         }
                     }
                 }
