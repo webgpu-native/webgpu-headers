@@ -1,0 +1,232 @@
+{{- MCommentN .Copyright 0}}
+
+#ifndef {{.Name | ConstantCase}}_H_
+#define {{.Name | ConstantCase}}_H_
+
+#if defined(WGPU_SHARED_LIBRARY)
+#    if defined(_WIN32)
+#        if defined(WGPU_IMPLEMENTATION)
+#            define WGPU_EXPORT __declspec(dllexport)
+#        else
+#            define WGPU_EXPORT __declspec(dllimport)
+#        endif
+#    else  // defined(_WIN32)
+#        if defined(WGPU_IMPLEMENTATION)
+#            define WGPU_EXPORT __attribute__((visibility("default")))
+#        else
+#            define WGPU_EXPORT
+#        endif
+#    endif  // defined(_WIN32)
+#else       // defined(WGPU_SHARED_LIBRARY)
+#    define WGPU_EXPORT
+#endif  // defined(WGPU_SHARED_LIBRARY)
+
+#if !defined(WGPU_OBJECT_ATTRIBUTE)
+#define WGPU_OBJECT_ATTRIBUTE
+#endif
+#if !defined(WGPU_ENUM_ATTRIBUTE)
+#define WGPU_ENUM_ATTRIBUTE
+#endif
+#if !defined(WGPU_STRUCTURE_ATTRIBUTE)
+#define WGPU_STRUCTURE_ATTRIBUTE
+#endif
+#if !defined(WGPU_FUNCTION_ATTRIBUTE)
+#define WGPU_FUNCTION_ATTRIBUTE
+#endif
+#if !defined(WGPU_NULLABLE)
+#define WGPU_NULLABLE
+#endif{{"\n" -}}
+
+{{if eq .Name "webgpu"}}
+#include <stdint.h>
+#include <stddef.h>
+{{else}}
+#include "webgpu.h"
+{{end}}
+
+{{- if .Constants}}
+{{-   range .Constants}}
+{{- MComment .Doc 0}}
+#define WGPU_{{.Name | ConstantCase}} ({{.Value | CValue}})
+{{-   end}}
+{{  end}}
+
+{{- if eq .Name "webgpu"}}
+typedef uint32_t WGPUFlags;
+typedef uint32_t WGPUBool;
+{{  end}}
+
+{{- if .Objects}}
+{{-   range .Objects}}
+{{-     if not .IsStruct}}
+typedef struct WGPU{{.Name | PascalCase}}Impl* WGPU{{.Name | PascalCase}} WGPU_OBJECT_ATTRIBUTE;
+{{-     end}}
+{{-   end}}
+{{  end}}
+
+{{- if .Structs}}
+// Structure forward declarations
+{{-   range .Structs}}
+struct WGPU{{.Name | PascalCase}};
+{{-   end}}
+{{  end}}
+
+{{- range $entry := .Enums}}
+{{-   MComment .Doc 0}}
+typedef enum WGPU{{.Name | PascalCase}} {
+{{-   range $entryIndex, $_ := .Entries}}
+{{-     MComment .Doc 4}}
+{{-     $entryValue := 0}}
+{{-     if eq .Value ""}}
+{{-       $entryValue = $entryIndex}}
+{{-     else}}
+{{-       $entryValue = ParseUint .Value 16}}
+{{-     end}}
+    WGPU{{$entry.Name | PascalCase}}_{{.Name | PascalCase}} = {{printf "%s%.4X," $.EnumPrefix $entryValue}}
+{{-   end}}
+    WGPU{{.Name | PascalCase}}_Force32 = 0x7FFFFFFF
+} WGPU{{.Name | PascalCase}} WGPU_ENUM_ATTRIBUTE;
+{{  end}}
+
+{{- range $entry := .Bitflags}}
+{{-   MComment .Doc 0}}
+typedef enum WGPU{{.Name | PascalCase}} {
+{{-   range $entryIndex, $_ := .Entries}}
+{{-     MComment .Doc 4}}
+{{-     $entryValue := ""}}
+{{-     $valueCombination := .ValueCombination}}
+{{-     range $valueIndex, $v := .ValueCombination}}
+{{-       $v = printf "WGPU%s_%s" ($entry.Name | PascalCase) ($v | PascalCase)}}
+{{-       if IsLast $valueIndex $valueCombination}}
+{{-         $entryValue = print $entryValue $v}}
+{{-       else}}
+{{-         $entryValue = print $entryValue $v " | "}}
+{{-       end}}
+{{-     else}}
+{{-       if eq .Value ""}}
+{{-         $entryValue = printf "0x%.8X" (BitFlagValue $entryIndex)}}
+{{-       else}}
+{{-         $entryValue = printf "0x%.8X" (ParseUint .Value 64)}}
+{{-       end}}
+{{-     end}}
+    WGPU{{$entry.Name | PascalCase}}_{{.Name | PascalCase}} = {{$entryValue}},
+{{-   end}}
+    WGPU{{.Name | PascalCase}}_Force32 = 0x7FFFFFFF
+} WGPU{{.Name | PascalCase}} WGPU_ENUM_ATTRIBUTE;
+typedef WGPUFlags WGPU{{.Name | PascalCase}}Flags WGPU_ENUM_ATTRIBUTE;
+{{  end}}
+
+{{- if eq .Name "webgpu"}}
+typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
+{{  end}}
+
+{{- range .FunctionTypes}}
+{{-   MComment .Doc 0}}
+typedef {{FunctionReturns .}} (*WGPU{{.Name | PascalCase}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
+{{- end}}
+
+{{- if .Objects}}
+{{    range $object := .Objects}}
+{{-     range $method := .Methods}}
+{{-       if .ReturnsAsync}}
+{{-         MComment .Doc 0}}
+typedef void (*WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Callback)({{CallbackArgs .}}) WGPU_FUNCTION_ATTRIBUTE;
+{{-       end}}
+{{-     end}}
+{{-   end}}
+{{  end}}
+
+{{- if eq .Name "webgpu"}}
+typedef struct WGPUChainedStruct {
+    struct WGPUChainedStruct const * next;
+    WGPUSType sType;
+} WGPUChainedStruct WGPU_STRUCTURE_ATTRIBUTE;
+
+typedef struct WGPUChainedStructOut {
+    struct WGPUChainedStructOut * next;
+    WGPUSType sType;
+} WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
+{{  end}}
+
+{{- range .Structs}}
+{{-   MComment .Doc 0}}
+typedef struct WGPU{{.Name | PascalCase}} {
+{{-   if eq .Type "base_in" }}
+    WGPUChainedStruct const * nextInChain;
+{{-   else if eq .Type "base_out" }}
+    WGPUChainedStructOut * nextInChain;
+{{-   else if eq .Type "extension_in"}}
+    WGPUChainedStruct chain;
+{{-   else if eq .Type "extension_out"}}
+    WGPUChainedStructOut chain;
+{{-   end}}
+{{-   range .Members}}
+{{-     if IsArray .Type}}
+    size_t {{.Name | CamelCase | Singularize}}Count;
+{{-       MComment .Doc 4}}
+    {{ArrayType .Type .Pointer}} {{.Name | CamelCase}};
+{{-     else}}
+{{-       MComment .Doc 4}}
+    {{if .Optional}}WGPU_NULLABLE {{end}}{{CType .Type .Pointer}} {{.Name | CamelCase}};
+{{-     end}}
+{{-   end}}
+} WGPU{{.Name | PascalCase}} WGPU_STRUCTURE_ATTRIBUTE;
+{{  end}}{{"\n" -}}
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#if !defined(WGPU_SKIP_PROCS){{"\n" -}}
+
+{{- range .Functions}}
+{{-   MComment .Doc 0}}
+typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
+{{- end}}
+{{- if eq .Name "webgpu"}}
+typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
+{{  end}}
+
+{{- range $object := .Objects}}
+// Procs of {{$object.Name | PascalCase}}
+{{-   range $object.Methods}}
+{{-     MComment .Doc 0}}
+typedef {{FunctionReturns .}} (*WGPUProc{{$object.Name | PascalCase}}{{.Name | PascalCase}})({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
+{{-   end}}
+{{-   if not .IsStruct}}
+typedef void (*WGPUProc{{.Name | PascalCase}}Reference)(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProc{{.Name | PascalCase}}Release)(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
+{{-   end}}
+{{  end}}{{"\n" -}}
+
+#endif  // !defined(WGPU_SKIP_PROCS)
+
+#if !defined(WGPU_SKIP_DECLARATIONS){{"\n" -}}
+
+{{- range .Functions}}
+{{-   MComment .Doc 0}}
+WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
+{{- end}}
+{{- if eq .Name "webgpu"}}
+WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
+{{  end}}
+
+{{- range $object := .Objects}}
+// Methods of {{$object.Name | PascalCase}}
+{{-   range $object.Methods}}
+{{-     MComment .Doc 0}}
+WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
+{{-   end}}
+{{-   if not .IsStruct}}
+WGPU_EXPORT void wgpu{{.Name | PascalCase}}Reference(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpu{{.Name | PascalCase}}Release(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
+{{-   end}}
+{{  end}}{{"\n" -}}
+
+#endif  // !defined(WGPU_SKIP_DECLARATIONS)
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
+#endif // {{.Name | ConstantCase}}_H_
