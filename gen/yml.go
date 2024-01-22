@@ -103,7 +103,7 @@ type Object struct {
 	IsStruct bool `yaml:"-"`
 }
 
-var arrayTypeRegexp = regexp.MustCompile(`array<([a-z0-9._]+)>`)
+var arrayTypeRegexp = regexp.MustCompile(`array<([a-zA-Z0-9._]+)>`)
 
 func SortStructs(structs []Struct) {
 	type node struct {
