@@ -4712,7 +4712,7 @@ objects:
           doc: |
             TODO
           type: enum.texture_dimension
-      - name: get_forma
+      - name: get_format
         doc: |
           TODO
         returns:
