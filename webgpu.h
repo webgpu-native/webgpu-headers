@@ -154,15 +154,6 @@ struct WGPUVertexState;
 struct WGPUFragmentState;
 struct WGPURenderPipelineDescriptor;
 
-typedef enum WGPUWGSLFeatureName {
-    WGPUWGSLFeatureName_Undefined = 0x00000000,
-    WGPUWGSLFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
-    WGPUWGSLFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
-    WGPUWGSLFeatureName_UnrestrictedPointerParameters = 0x00000003,
-    WGPUWGSLFeatureName_PointerCompositeAccess = 0x00000004,
-    WGPUWGSLFeatureName_Force32 = 0x7FFFFFFF
-} WGPUWGSLFeatureName WGPU_ENUM_ATTRIBUTE;
-
 typedef enum WGPUAdapterType {
     WGPUAdapterType_DiscreteGPU = 0x00000000,
     WGPUAdapterType_IntegratedGPU = 0x00000001,
@@ -660,6 +651,15 @@ typedef enum WGPUVertexStepMode {
     WGPUVertexStepMode_VertexBufferNotUsed = 0x00000002,
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
+
+typedef enum WGPUWGSLFeatureName {
+    WGPUWGSLFeatureName_Undefined = 0x00000000,
+    WGPUWGSLFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
+    WGPUWGSLFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
+    WGPUWGSLFeatureName_UnrestrictedPointerParameters = 0x00000003,
+    WGPUWGSLFeatureName_PointerCompositeAccess = 0x00000004,
+    WGPUWGSLFeatureName_Force32 = 0x7FFFFFFF
+} WGPUWGSLFeatureName WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUBufferUsage {
     WGPUBufferUsage_None = 0x00000000,
