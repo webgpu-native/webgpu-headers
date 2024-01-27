@@ -2,7 +2,7 @@ name: gen-check
 on:
   pull_request:
 jobs:
-  compile:
+  gen-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
