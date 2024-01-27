@@ -110,6 +110,7 @@
                 },
                 "returns": {
                     "type": "object",
+                    "description": "Optional property, return type of the function",
                     "properties": {
                         "doc": {
                             "type": "string"
@@ -130,13 +131,14 @@
                 },
                 "returns_async": {
                     "type": "array",
-                    "description": "List of async callback arguments",
+                    "description": "Optional property, list of async callback arguments",
                     "items": {
                         "$ref": "#/definitions/ParameterType"
                     }
                 },
                 "args": {
                     "type": "array",
+                    "description": "Optional property, list of function arguments",
                     "items": {
                         "$ref": "#/definitions/ParameterType"
                     }

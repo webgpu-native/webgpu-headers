@@ -14,6 +14,10 @@ constants:
     value: uint32_max
     doc: |
       TODO
+  - name: depth_slice_undefined
+    value: uint32_max
+    doc: |
+      TODO
   - name: limit_u32_undefined
     value: uint32_max
     doc: |
@@ -1234,6 +1238,26 @@ enums:
         doc: |
           TODO
 
+  - name: WGSL_feature_name
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: readonly_and_readwrite_storage_textures
+        doc: |
+          TODO
+      - name: packed4x8_integer_dot_product
+        doc: |
+          TODO
+      - name: unrestricted_pointer_parameters
+        doc: |
+          TODO
+      - name: pointer_composite_access
+        doc: |
+          TODO
+
 bitflags:
   - name: buffer_usage
     doc: |
@@ -2309,6 +2333,10 @@ structs:
           TODO
         type: object.texture_view
         optional: true
+      - name: depth_slice
+        doc: |
+          TODO
+        type: uint32
       - name: resolve_target
         doc: |
           TODO
@@ -3880,6 +3908,18 @@ objects:
               TODO
             type: struct.surface_descriptor
             pointer: immutable
+      - name: has_WGSL_language_feature
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: bool
+        args:
+          - name: feature
+            doc: |
+              TODO
+            type: enum.WGSL_feature_name
       - name: process_events
         doc: |
           TODO
