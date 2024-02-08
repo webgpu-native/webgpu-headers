@@ -1441,6 +1441,28 @@ structs:
           TODO
         type: bool
 
+  - name: adapter_info
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: vendor
+        doc: |
+          TODO
+        type: string
+      - name: architecture
+        doc: |
+          TODO
+        type: string
+      - name: device
+        doc: |
+          TODO
+        type: string
+      - name: description
+        doc: |
+          TODO
+        type: string
+
   - name: adapter_properties
     doc: |
       TODO
@@ -3116,6 +3138,14 @@ objects:
               TODO
             type: enum.feature_name
             pointer: mutable
+      - name: request_adapter_info
+        doc: |
+          TODO
+        returns_async:
+          - name: adapter_info
+            doc: |
+              TODO
+            type: struct.adapter_info
       - name: request_device
         doc: |
           TODO
