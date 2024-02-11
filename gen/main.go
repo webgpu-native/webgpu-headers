@@ -16,53 +16,56 @@ import (
 var tmpl string
 
 var (
-	schemaPath string
-	headerPath string
-	yamlPath   string
+	schemaPath  string
+	headerPaths StringListFlag
+	yamlPaths   StringListFlag
 )
 
 func main() {
-	flag.StringVar(&yamlPath, "yaml", "", "path of the yaml spec")
 	flag.StringVar(&schemaPath, "schema", "", "path of the json schema")
-	flag.StringVar(&headerPath, "header", "", "output path of the header")
+	flag.Var(&yamlPaths, "yaml", "path of the yaml spec")
+	flag.Var(&headerPaths, "header", "output path of the header")
 	flag.Parse()
-	if schemaPath == "" || headerPath == "" || yamlPath == "" {
+	if schemaPath == "" || len(headerPaths) == 0 || len(yamlPaths) == 0 || len(headerPaths) != len(yamlPaths) {
 		flag.Usage()
 		os.Exit(1)
 	}
 
-	if err := ValidateYaml(schemaPath, yamlPath); err != nil {
+	if err := ValidateYamls(schemaPath, yamlPaths); err != nil {
 		panic(err)
 	}
 
-	src, err := os.ReadFile(yamlPath)
-	if err != nil {
-		panic(err)
-	}
+	for i, yamlPath := range yamlPaths {
+		src, err := os.ReadFile(yamlPath)
+		if err != nil {
+			panic(err)
+		}
 
-	var yml Yml
-	if err := yaml.Unmarshal(src, &yml); err != nil {
-		panic(err)
-	}
+		var yml Yml
+		if err := yaml.Unmarshal(src, &yml); err != nil {
+			panic(err)
+		}
 
-	SortAndTransform(&yml)
+		SortAndTransform(&yml)
 
-	dst, err := os.Create(headerPath)
-	if err != nil {
-		panic(err)
-	}
+		headerPath := headerPaths[i]
+		dst, err := os.Create(headerPath)
+		if err != nil {
+			panic(err)
+		}
 
-	fileName := filepath.Base(yamlPath)
-	fileNameSplit := strings.Split(fileName, ".")
-	if len(fileNameSplit) != 2 {
-		panic("got invalid file name: " + fileName)
-	}
+		fileName := filepath.Base(yamlPath)
+		fileNameSplit := strings.Split(fileName, ".")
+		if len(fileNameSplit) != 2 {
+			panic("got invalid file name: " + fileName)
+		}
 
-	var data Data
-	data.Yml = &yml
-	data.Name = fileNameSplit[0]
-	if err := GenCHeader(&data, dst); err != nil {
-		panic(err)
+		var data Data
+		data.Yml = &yml
+		data.Name = fileNameSplit[0]
+		if err := GenCHeader(&data, dst); err != nil {
+			panic(err)
+		}
 	}
 }
 
