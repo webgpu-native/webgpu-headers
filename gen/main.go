@@ -31,6 +31,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	if len(yamlPaths) > 1 && filepath.Base(yamlPaths[0]) != "webgpu.yml" {
+		panic(`"webgpu.yml" must be the first sequence in the order`)
+	}
+
 	if err := ValidateYamls(schemaPath, yamlPaths); err != nil {
 		panic(err)
 	}
