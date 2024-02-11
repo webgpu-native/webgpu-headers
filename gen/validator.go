@@ -12,6 +12,7 @@ import (
 )
 
 func ValidateYamls(schemaPath string, yamlPaths []string) error {
+	// Validation through json schema
 	for _, yamlPath := range yamlPaths {
 		yamlFile, err := os.ReadFile(yamlPath)
 		if err != nil {
@@ -28,6 +29,7 @@ func ValidateYamls(schemaPath string, yamlPaths []string) error {
 		}
 	}
 
+	// Validation of possible duplication of entries across multiple yaml files
 	if err := mergeAndValidateDuplicates(yamlPaths); err != nil {
 		panic(err)
 	}

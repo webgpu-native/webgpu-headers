@@ -31,14 +31,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Order matters for validation steps, so enforce it.
 	if len(yamlPaths) > 1 && filepath.Base(yamlPaths[0]) != "webgpu.yml" {
 		panic(`"webgpu.yml" must be the first sequence in the order`)
 	}
 
+	// Validate the yaml files (jsonschema, duplications)
 	if err := ValidateYamls(schemaPath, yamlPaths); err != nil {
 		panic(err)
 	}
 
+	// Generate the header files
 	for i, yamlPath := range yamlPaths {
 		src, err := os.ReadFile(yamlPath)
 		if err != nil {
@@ -84,6 +87,7 @@ func SortAndTransform(yml *Yml) {
 
 	// Sort enums
 	slices.SortStableFunc(yml.Enums, func(a, b Enum) int {
+		// We want to generate extended enum declarations before the normal ones.
 		if a.Extended && !b.Extended {
 			return -1
 		} else if !a.Extended && b.Extended {
