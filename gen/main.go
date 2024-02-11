@@ -98,6 +98,12 @@ func SortAndTransform(yml *Yml) {
 
 	// Sort bitflags
 	slices.SortStableFunc(yml.Bitflags, func(a, b Bitflag) int {
+		// We want to generate extended bitflag declarations before the normal ones.
+		if a.Extended && !b.Extended {
+			return -1
+		} else if !a.Extended && b.Extended {
+			return 1
+		}
 		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
 	})
 

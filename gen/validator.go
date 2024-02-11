@@ -89,6 +89,9 @@ func mergeAndValidateDuplicates(yamlPaths []string) (errs error) {
 					if slices.ContainsFunc(prevBf.Entries, func(e BitflagEntry) bool { return e.Name == entry.Name }) {
 						errs = errors.Join(errs, fmt.Errorf("merge: bitflags.%s.%s in %s was already found previously while parsing, duplicates are not allowed", bf.Name, entry.Name, yamlPath))
 					}
+					if entry.Value == "" && len(entry.ValueCombination) == 0 {
+						errs = errors.Join(errs, fmt.Errorf("merge: bitflags.%s.%s in %s was extended but doesn't have a value or value_combination, extended bitflag entries must have an explicit value", bf.Name, entry.Name, yamlPath))
+					}
 					prevBf.Entries = append(prevBf.Entries, entry)
 				}
 				bitflags[bf.Name] = prevBf
