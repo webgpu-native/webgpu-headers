@@ -18,8 +18,6 @@ type Yml struct {
 	Structs       []Struct   `yaml:"structs"`
 	Functions     []Function `yaml:"functions"`
 	Objects       []Object   `yaml:"objects"`
-
-	Copyrights []string `yaml:"-"`
 }
 
 type Constant struct {
@@ -29,16 +27,15 @@ type Constant struct {
 }
 
 type Enum struct {
-	Name    string      `yaml:"name"`
-	Doc     string      `yaml:"doc"`
-	Entries []EnumEntry `yaml:"entries"`
+	Name     string      `yaml:"name"`
+	Doc      string      `yaml:"doc"`
+	Entries  []EnumEntry `yaml:"entries"`
+	Extended bool        `yaml:"extended"`
 }
 type EnumEntry struct {
 	Name  string `yaml:"name"`
 	Doc   string `yaml:"doc"`
 	Value string `yaml:"value"`
-
-	ValuePrefix string `yaml:"-"`
 }
 
 type Bitflag struct {

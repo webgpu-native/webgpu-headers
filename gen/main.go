@@ -72,14 +72,22 @@ func main() {
 func SortAndTransform(yml *Yml) {
 	// Sort structs
 	SortStructs(yml.Structs)
+
 	// Sort constants
 	slices.SortStableFunc(yml.Constants, func(a, b Constant) int {
 		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
 	})
+
 	// Sort enums
 	slices.SortStableFunc(yml.Enums, func(a, b Enum) int {
+		if a.Extended && !b.Extended {
+			return -1
+		} else if !a.Extended && b.Extended {
+			return 1
+		}
 		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
 	})
+
 	// Sort bitflags
 	slices.SortStableFunc(yml.Bitflags, func(a, b Bitflag) int {
 		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
@@ -99,6 +107,7 @@ func SortAndTransform(yml *Yml) {
 	slices.SortStableFunc(yml.Objects, func(a, b Object) int {
 		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
 	})
+
 	// Sort methods
 	for _, obj := range yml.Objects {
 		slices.SortStableFunc(obj.Methods, func(a, b Function) int {

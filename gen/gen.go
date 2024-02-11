@@ -28,19 +28,8 @@ func GenCHeader(data *Data, dst io.Writer) error {
 			"CamelCase":    CamelCase,
 			"CType":        CType,
 			"CValue":       CValue,
-			"BitFlagValue": func(index int) uint64 { return uint64(math.Pow(2, float64(index-1))) },
-			"ParseUint": func(s string, bitSize int) (uint64, error) {
-				var num string
-				var base int
-				if strings.HasPrefix(s, "0x") {
-					base = 16
-					num = strings.TrimPrefix(s, "0x")
-				} else {
-					base = 10
-					num = s
-				}
-				return strconv.ParseUint(num, base, bitSize)
-			},
+			"EnumValue":    EnumValue,
+			"BitflagValue": BitflagValue,
 			"IsArray": func(typ string) bool {
 				return arrayTypeRegexp.Match([]byte(typ))
 			},
@@ -218,4 +207,62 @@ func CallbackArgs(f Function) string {
 	}
 	sb.WriteString("WGPU_NULLABLE void * userdata")
 	return sb.String()
+}
+
+func EnumValue(prefix string, e Enum, entryIndex int) (string, error) {
+	var entryValue uint16
+	entry := e.Entries[entryIndex]
+	if entry.Value == "" {
+		entryValue = uint16(entryIndex)
+	} else {
+		var num string
+		var base int
+		if strings.HasPrefix(entry.Value, "0x") {
+			base = 16
+			num = strings.TrimPrefix(entry.Value, "0x")
+		} else {
+			base = 10
+			num = entry.Value
+		}
+		value, err := strconv.ParseUint(num, base, 16)
+		if err != nil {
+			return "", err
+		}
+		entryValue = uint16(value)
+	}
+	return fmt.Sprintf("%s%.4X", prefix, entryValue), nil
+}
+
+func BitflagValue(b Bitflag, entryIndex int) (string, error) {
+	entry := b.Entries[entryIndex]
+	var entryValue string
+	if len(entry.ValueCombination) > 0 {
+		for valueIndex, v := range entry.ValueCombination {
+			entryValue += "WGPU" + PascalCase(b.Name) + "_" + PascalCase(v)
+			if valueIndex != len(entry.ValueCombination)-1 {
+				entryValue += " | "
+			}
+		}
+	} else {
+		if entry.Value == "" {
+			value := uint64(math.Pow(2, float64(entryIndex-1)))
+			entryValue = fmt.Sprintf("0x%.8X", value)
+		} else {
+			var num string
+			var base int
+			if strings.HasPrefix(entry.Value, "0x") {
+				base = 16
+				num = strings.TrimPrefix(entry.Value, "0x")
+			} else {
+				base = 10
+				num = entry.Value
+			}
+			value, err := strconv.ParseUint(num, base, 64)
+			if err != nil {
+				return "", err
+			}
+			entryValue = fmt.Sprintf("0x%.8X", value)
+		}
+	}
+	return entryValue, nil
 }

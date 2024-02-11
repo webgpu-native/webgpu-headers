@@ -37,7 +37,17 @@
 #define WGPU_NULLABLE
 #endif{{"\n" -}}
 
-{{if eq .Name "webgpu"}}
+{{- if ne .Name "webgpu"}}
+#if !defined(__WGPU_EXTEND_ENUM)
+#ifdef __cplusplus
+#define __WGPU_EXTEND_ENUM(E, N, V) static const E N = E(V)
+#else
+#define __WGPU_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
+#endif
+#endif // !defined(__WGPU_EXTEND_ENUM)
+{{ end}}
+
+{{- if eq .Name "webgpu"}}
 #include <stdint.h>
 #include <stddef.h>
 {{else}}
@@ -46,7 +56,7 @@
 
 {{- if .Constants}}
 {{-   range .Constants}}
-{{- MComment .Doc 0}}
+{{-     MComment .Doc 0}}
 #define WGPU_{{.Name | ConstantCase}} ({{.Value | CValue}})
 {{-   end}}
 {{  end}}
@@ -71,49 +81,33 @@ struct WGPU{{.Name | PascalCase}};
 {{-   end}}
 {{  end}}
 
-{{- range $entry := .Enums}}
-{{-   MComment .Doc 0}}
-typedef enum WGPU{{.Name | PascalCase}} {
-{{-   range $entryIndex, $_ := .Entries}}
-{{-     MComment .Doc 4}}
-{{-     $entryValue := 0}}
-{{-     if eq .Value ""}}
-{{-       $entryValue = $entryIndex}}
-{{-     else}}
-{{-       $entryValue = ParseUint .Value 16}}
+{{- range $enum := .Enums}}
+{{-   if .Extended}}
+{{-     range $entryIndex, $_ := .Entries}}
+__WGPU_EXTEND_ENUM(WGPU{{ $enum.Name | PascalCase }}, WGPU{{ $enum.Name | PascalCase}}_{{.Name | PascalCase}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
 {{-     end}}
-    WGPU{{$entry.Name | PascalCase}}_{{.Name | PascalCase}} = {{printf "%s%.4X," $.EnumPrefix $entryValue}}
+{{-   else}}
+{{-     MComment .Doc 0}}
+typedef enum WGPU{{.Name | PascalCase}} {
+{{-     range $entryIndex, $_ := .Entries}}
+{{-       MComment .Doc 4}}
+    WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}} = {{EnumValue $.EnumPrefix $enum $entryIndex}},
+{{-     end}}
+    WGPU{{$enum.Name | PascalCase}}_Force32 = 0x7FFFFFFF
+} WGPU{{$enum.Name | PascalCase}} WGPU_ENUM_ATTRIBUTE;
 {{-   end}}
-    WGPU{{.Name | PascalCase}}_Force32 = 0x7FFFFFFF
-} WGPU{{.Name | PascalCase}} WGPU_ENUM_ATTRIBUTE;
 {{  end}}
 
-{{- range $entry := .Bitflags}}
+{{- range $bitflag := .Bitflags}}
 {{-   MComment .Doc 0}}
 typedef enum WGPU{{.Name | PascalCase}} {
 {{-   range $entryIndex, $_ := .Entries}}
 {{-     MComment .Doc 4}}
-{{-     $entryValue := ""}}
-{{-     $valueCombination := .ValueCombination}}
-{{-     range $valueIndex, $v := .ValueCombination}}
-{{-       $v = printf "WGPU%s_%s" ($entry.Name | PascalCase) ($v | PascalCase)}}
-{{-       if IsLast $valueIndex $valueCombination}}
-{{-         $entryValue = print $entryValue $v}}
-{{-       else}}
-{{-         $entryValue = print $entryValue $v " | "}}
-{{-       end}}
-{{-     else}}
-{{-       if eq .Value ""}}
-{{-         $entryValue = printf "0x%.8X" (BitFlagValue $entryIndex)}}
-{{-       else}}
-{{-         $entryValue = printf "0x%.8X" (ParseUint .Value 64)}}
-{{-       end}}
-{{-     end}}
-    WGPU{{$entry.Name | PascalCase}}_{{.Name | PascalCase}} = {{$entryValue}},
+    WGPU{{$bitflag.Name | PascalCase}}_{{.Name | PascalCase}} = {{BitflagValue $bitflag $entryIndex}},
 {{-   end}}
-    WGPU{{.Name | PascalCase}}_Force32 = 0x7FFFFFFF
-} WGPU{{.Name | PascalCase}} WGPU_ENUM_ATTRIBUTE;
-typedef WGPUFlags WGPU{{.Name | PascalCase}}Flags WGPU_ENUM_ATTRIBUTE;
+    WGPU{{$bitflag.Name | PascalCase}}_Force32 = 0x7FFFFFFF
+} WGPU{{$bitflag.Name | PascalCase}} WGPU_ENUM_ATTRIBUTE;
+typedef WGPUFlags WGPU{{$bitflag.Name | PascalCase}}Flags WGPU_ENUM_ATTRIBUTE;
 {{  end}}
 
 {{- if eq .Name "webgpu"}}

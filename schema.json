@@ -196,6 +196,10 @@
                     "doc": {
                         "type": "string"
                     },
+                    "extended": {
+                        "type": "boolean",
+                        "description": "Optional property, an indicator that this enum is an extension of an already present enum"
+                    },
                     "entries": {
                         "type": "array",
                         "items": {
