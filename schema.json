@@ -242,6 +242,10 @@
                     "doc": {
                         "type": "string"
                     },
+                    "extended": {
+                        "type": "boolean",
+                        "description": "Optional property, an indicator that this bitflag is an extension of an already present bitflag"
+                    },
                     "entries": {
                         "type": "array",
                         "items": {
@@ -351,6 +355,10 @@
                     },
                     "doc": {
                         "type": "string"
+                    },
+                    "extended": {
+                        "type": "boolean",
+                        "description": "Optional property, an indicator that this object is an extension of an already present object"
                     },
                     "methods": {
                         "type": "array",

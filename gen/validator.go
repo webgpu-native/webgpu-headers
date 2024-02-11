@@ -82,6 +82,9 @@ func mergeAndValidateDuplicates(yamlPaths []string) (errs error) {
 		}
 		for _, bf := range data.Bitflags {
 			if prevBf, ok := bitflags[bf.Name]; ok {
+				if !bf.Extended {
+					errs = errors.Join(errs, fmt.Errorf("merge: bitflags.%s in %s is being extended but isn't marked as one", bf.Name, yamlPath))
+				}
 				for _, entry := range bf.Entries {
 					if slices.ContainsFunc(prevBf.Entries, func(e BitflagEntry) bool { return e.Name == entry.Name }) {
 						errs = errors.Join(errs, fmt.Errorf("merge: bitflags.%s.%s in %s was already found previously while parsing, duplicates are not allowed", bf.Name, entry.Name, yamlPath))
@@ -113,6 +116,9 @@ func mergeAndValidateDuplicates(yamlPaths []string) (errs error) {
 		}
 		for _, o := range data.Objects {
 			if prevObj, ok := objects[o.Name]; ok {
+				if !o.Extended {
+					errs = errors.Join(errs, fmt.Errorf("merge: objects.%s in %s is being extended but isn't marked as one", o.Name, yamlPath))
+				}
 				for _, method := range o.Methods {
 					if slices.ContainsFunc(prevObj.Methods, func(f Function) bool { return f.Name == method.Name }) {
 						errs = errors.Join(errs, fmt.Errorf("merge: objects.%s.%s in %s was already found previously while parsing, duplicates are not allowed", o.Name, method.Name, yamlPath))

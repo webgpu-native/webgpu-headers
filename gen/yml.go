@@ -39,9 +39,10 @@ type EnumEntry struct {
 }
 
 type Bitflag struct {
-	Name    string         `yaml:"name"`
-	Doc     string         `yaml:"doc"`
-	Entries []BitflagEntry `yaml:"entries"`
+	Name     string         `yaml:"name"`
+	Doc      string         `yaml:"doc"`
+	Entries  []BitflagEntry `yaml:"entries"`
+	Extended bool           `yaml:"extended"`
 }
 type BitflagEntry struct {
 	Name             string   `yaml:"name"`
@@ -93,9 +94,10 @@ const (
 )
 
 type Object struct {
-	Name    string     `yaml:"name"`
-	Doc     string     `yaml:"doc"`
-	Methods []Function `yaml:"methods"`
+	Name     string     `yaml:"name"`
+	Doc      string     `yaml:"doc"`
+	Methods  []Function `yaml:"methods"`
+	Extended bool       `yaml:"extended"`
 
 	IsStruct bool `yaml:"-"`
 }

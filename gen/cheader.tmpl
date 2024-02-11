@@ -187,7 +187,7 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procN
 {{-     MComment .Doc 0}}
 typedef {{FunctionReturns .}} (*WGPUProc{{$object.Name | PascalCase}}{{.Name | PascalCase}})({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
-{{-   if not .IsStruct}}
+{{-   if not (or .IsStruct .Extended)}}
 typedef void (*WGPUProc{{.Name | PascalCase}}Reference)(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProc{{.Name | PascalCase}}Release)(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
@@ -211,7 +211,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 {{-     MComment .Doc 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
-{{-   if not .IsStruct}}
+{{-   if not (or .IsStruct .Extended)}}
 WGPU_EXPORT void wgpu{{.Name | PascalCase}}Reference(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpu{{.Name | PascalCase}}Release(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
