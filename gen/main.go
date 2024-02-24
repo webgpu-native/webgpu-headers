@@ -19,12 +19,14 @@ var (
 	schemaPath  string
 	headerPaths StringListFlag
 	yamlPaths   StringListFlag
+	extSuffix   bool
 )
 
 func main() {
 	flag.StringVar(&schemaPath, "schema", "", "path of the json schema")
 	flag.Var(&yamlPaths, "yaml", "path of the yaml spec")
 	flag.Var(&headerPaths, "header", "output path of the header")
+	flag.BoolVar(&extSuffix, "extsuffix", true, "append suffix to extension identifiers")
 	flag.Parse()
 	if schemaPath == "" || len(headerPaths) == 0 || len(yamlPaths) == 0 || len(headerPaths) != len(yamlPaths) {
 		flag.Usage()
@@ -67,10 +69,16 @@ func main() {
 			panic("got invalid file name: " + fileName)
 		}
 
-		var data Data
-		data.Yml = &yml
-		data.Name = fileNameSplit[0]
-		if err := GenCHeader(&data, dst); err != nil {
+		suffix := ""
+		if fileNameSplit[0] != "webgpu" && extSuffix {
+			suffix = strings.ToUpper(fileNameSplit[0])
+		}
+		d := &Data{
+			Yml:       &yml,
+			Name:      fileNameSplit[0],
+			ExtSuffix: suffix,
+		}
+		if err := d.GenCHeader(dst); err != nil {
 			panic(err)
 		}
 	}

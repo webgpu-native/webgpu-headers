@@ -90,6 +90,11 @@
                 "optional": {
                     "type": "boolean",
                     "description": "Optional property, to indicate if a parameter is optional"
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Optional property, specifying the external namespace where this type is defined",
+                    "pattern": "^[a-z]+$"
                 }
             },
             "required": [
@@ -359,6 +364,11 @@
                     "extended": {
                         "type": "boolean",
                         "description": "Optional property, an indicator that this object is an extension of an already present object"
+                    },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional property, specifying the external namespace where this object is defined",
+                        "pattern": "^[a-z]+$"
                     },
                     "methods": {
                         "type": "array",

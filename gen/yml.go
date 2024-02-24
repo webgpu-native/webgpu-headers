@@ -51,41 +51,6 @@ type BitflagEntry struct {
 	ValueCombination []string `yaml:"value_combination"`
 }
 
-type Function struct {
-	Name         string           `yaml:"name"`
-	Doc          string           `yaml:"doc"`
-	ReturnsAsync []FunctionArg    `yaml:"returns_async"`
-	Returns      *FunctionReturns `yaml:"returns"`
-	Args         []FunctionArg    `yaml:"args"`
-}
-type FunctionReturns struct {
-	Doc     string      `yaml:"doc"`
-	Type    string      `yaml:"type"`
-	Pointer PointerType `yaml:"pointer"`
-}
-type FunctionArg struct {
-	Name     string      `yaml:"name"`
-	Doc      string      `yaml:"doc"`
-	Type     string      `yaml:"type"`
-	Pointer  PointerType `yaml:"pointer"`
-	Optional bool        `yaml:"optional"`
-}
-
-type Struct struct {
-	Name        string         `yaml:"name"`
-	Type        string         `yaml:"type"`
-	Doc         string         `yaml:"doc"`
-	FreeMembers bool           `yaml:"free_members"`
-	Members     []StructMember `yaml:"members"`
-}
-type StructMember struct {
-	Name     string      `yaml:"name"`
-	Type     string      `yaml:"type"`
-	Pointer  PointerType `yaml:"pointer"`
-	Optional bool        `yaml:"optional"`
-	Doc      string      `yaml:"doc"`
-}
-
 type PointerType string
 
 const (
@@ -93,11 +58,37 @@ const (
 	PointerTypeImmutable PointerType = "immutable"
 )
 
+type ParameterType struct {
+	Name      string      `yaml:"name"`
+	Doc       string      `yaml:"doc"`
+	Type      string      `yaml:"type"`
+	Pointer   PointerType `yaml:"pointer"`
+	Optional  bool        `yaml:"optional"`
+	Namespace string      `yaml:"namespace"`
+}
+
+type Function struct {
+	Name         string          `yaml:"name"`
+	Doc          string          `yaml:"doc"`
+	ReturnsAsync []ParameterType `yaml:"returns_async"`
+	Returns      *ParameterType  `yaml:"returns"`
+	Args         []ParameterType `yaml:"args"`
+}
+
+type Struct struct {
+	Name        string          `yaml:"name"`
+	Type        string          `yaml:"type"`
+	Doc         string          `yaml:"doc"`
+	FreeMembers bool            `yaml:"free_members"`
+	Members     []ParameterType `yaml:"members"`
+}
+
 type Object struct {
-	Name     string     `yaml:"name"`
-	Doc      string     `yaml:"doc"`
-	Methods  []Function `yaml:"methods"`
-	Extended bool       `yaml:"extended"`
+	Name      string     `yaml:"name"`
+	Doc       string     `yaml:"doc"`
+	Methods   []Function `yaml:"methods"`
+	Extended  bool       `yaml:"extended"`
+	Namespace string     `yaml:"namespace"`
 
 	IsStruct bool `yaml:"-"`
 }
