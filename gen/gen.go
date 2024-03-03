@@ -172,9 +172,6 @@ func (g *Generator) FunctionArgs(f Function, o *Object) string {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
 		}
-		if arg.Name == "instance_enumerate_adapters_result" {
-			fmt.Printf("%+v", arg)
-		}
 		var typeSuffix string
 		if arg.Namespace == "" {
 			typeSuffix = ConstantCase(g.ExtSuffix)
