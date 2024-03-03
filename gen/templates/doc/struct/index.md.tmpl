@@ -1,0 +1,7 @@
+# Structures
+
+{{- if .Structs}}
+{{    range .Structs}}
+ - [`WGPU{{.Name | PascalCase}}`]({{.Name | PascalCase}}.md)
+{{-   end}}
+{{  end}}

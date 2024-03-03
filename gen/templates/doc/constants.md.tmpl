@@ -1,0 +1,15 @@
+# Constants
+
+{{- if .Constants}}
+{{-   range .Constants}}
+
+### `WGPU_{{.Name | ConstantCase}}` { #WGPU_{{.Name | ConstantCase}} }
+
+```C
+WGPU_{{.Name | ConstantCase}} = {{.Value | CValue}}
+```
+
+{{.Doc}}
+
+{{-   end}}
+{{  end}}

@@ -1,0 +1,19 @@
+# Callback types
+
+{{- if .Objects}}
+{{    range $object := .Objects}}
+{{-     range $method := .Methods}}
+{{-       if .ReturnsAsync}}
+
+### `WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Callback` { #WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Callback }
+
+```C
+typedef void (*WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Callback)({{CallbackArgs .}})`
+```
+
+{{.Doc}}
+
+{{-       end}}
+{{-     end}}
+{{-   end}}
+{{  end}}

@@ -1,0 +1,36 @@
+{{ $object := . }}
+
+# {{.Name | PascalCase}} { #WGPU{{.Name | PascalCase}} }
+
+{{.Doc}}
+
+{{  range $method := .Methods}}
+
+<br/><!-- poor man's styling, just for the demo before we use a non default theme -->
+***
+
+## {{.Name | PascalCase}} { #wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}} }
+
+```C
+{{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}({{MethodArgs . $object}})
+```
+
+{{.Doc}}
+
+{{  if .Args}}
+
+**Arguments:**
+
+{{    range .Args}}
+ - `{{.Name | CamelCase}}` (`{{CType .Type .Pointer}}`{{if .Optional}}, **nullable**{{end}}):
+
+{{.Doc}}
+{{    end}}
+{{  end}}
+
+{{    if .Returns}}
+
+**Returns:** `{{FunctionReturns .}}` {{.Returns.Doc}}
+
+{{    end}}
+{{  end}}

@@ -1,0 +1,50 @@
+{{ $entry := . }}
+
+# {{.Name | PascalCase}} { #WGPU{{.Name | PascalCase}} }
+
+```C
+struct WGPU{{.Name | PascalCase}} {
+{{-   if eq .Type "base_in" }}
+    WGPUChainedStruct const * nextInChain;
+{{-   else if eq .Type "base_out" }}
+    WGPUChainedStructOut * nextInChain;
+{{-   else if eq .Type "extension_in"}}
+    WGPUChainedStruct chain;
+{{-   else if eq .Type "extension_out"}}
+    WGPUChainedStructOut chain;
+{{-   end}}
+{{-   range .Members}}
+{{-     if IsArray .Type}}
+    size_t {{.Name | CamelCase | Singularize}}Count;
+    {{ArrayType .Type .Pointer}} {{.Name | CamelCase}};
+{{-     else}}
+    {{if .Optional}}WGPU_NULLABLE {{end}}{{CType .Type .Pointer}} {{.Name | CamelCase}};
+{{-     end}}
+{{-   end}}
+};
+```
+
+{{.Doc}}
+
+**Members:**
+
+{{  range $member := .Members}}
+ - `{{.Name | CamelCase}}` (`{{CType .Type .Pointer}}`{{if .Optional}}, **nullable**{{end}}):
+
+{{.Doc}}
+{{  end}}
+
+{{  if .FreeMembers}}
+
+<br/><!-- poor man's styling, just for the demo before we use a non default theme -->
+***
+
+## FreeMembers { #wgpu{{$entry.Name | PascalCase}}FreeMembers }
+
+```C
+void wgpu{{$entry.Name | PascalCase}}FreeMembers(WGPU{{$entry.Name | PascalCase}} {{$entry.Name | CamelCase}})
+```
+
+Free all pointer members.
+
+{{  end}}

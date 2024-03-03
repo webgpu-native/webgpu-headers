@@ -1,0 +1,89 @@
+# API Index
+
+**NB** This is a comprehensive index of all the entities defined by the WebGPU native API. For a more didactic entry point, please refer the [API overview](overview.md).
+
+{{- if .Objects}}
+
+## Objects
+
+{{    range .Objects}}
+{{-     if not .IsStruct}}
+ - [`WGPU{{.Name | PascalCase}}`](object/{{.Name | PascalCase}}.md)
+{{-     end}}
+{{-   end}}
+{{- end}}
+
+
+{{- if .Structs}}
+
+## Structures
+
+{{    range .Structs}}
+ - [`WGPU{{.Name | PascalCase}}`](struct/{{.Name | PascalCase}}.md)
+{{-   end}}
+{{  end}}
+
+
+## Functions
+
+**Global functions:**
+
+{{  range .Functions}}
+ - `wgpu{{.Name | PascalCase}}`(#TODO)
+{{- end}}
+
+{{  range $object := .Objects}}
+**Methods of {{$object.Name | PascalCase}}:**
+
+{{    range $object.Methods}}
+ - [`wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}`]({{if $object.IsStruct}}struct{{else}}object{{end}}/{{$object.Name | PascalCase}}.md#wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}})
+{{-   end}}
+{{-   if not .IsStruct}}
+ - [`wgpu{{$object.Name | PascalCase}}Reference`](object/{{$object.Name | PascalCase}}.md#wgpu{{$object.Name | PascalCase}}Reference)
+ - [`wgpu{{$object.Name | PascalCase}}Release`](object/{{$object.Name | PascalCase}}.md#wgpu{{$object.Name | PascalCase}}Release)
+{{-   end}}
+{{  end}}
+
+
+{{- if .Objects}}
+
+## Callback types
+
+{{-   range $object := .Objects}}
+{{-     range $method := .Methods}}
+{{-       if .ReturnsAsync}}
+ - [`WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Callback`](callbacks.md#WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Callback)
+{{-       end}}
+{{-     end}}
+{{-   end}}
+{{  end}}
+
+
+{{- if .Enums}}
+
+## Enumerations
+
+{{  range $entry := .Enums}}
+ - [`WGPU{{.Name | PascalCase}}`](enum/{{.Name | PascalCase}}.md)
+{{- end}}
+{{  end}}
+
+
+{{- if .Constants}}
+
+## Constants
+
+{{-   range .Constants}}
+ - [`WGPU_{{.Name | ConstantCase}}`](constants.md#WGPU_{{.Name | ConstantCase}})
+{{-   end}}
+{{  end}}
+
+{{- if eq .Name "webgpu"}}
+
+## Typedefs
+
+ - [`typedef uint32_t WGPUFlags`](typedefs.md#WGPUFlags)
+ - [`typedef uint32_t WGPUBool`](typedefs.md#WGPUBool)
+
+{{  end}}
+

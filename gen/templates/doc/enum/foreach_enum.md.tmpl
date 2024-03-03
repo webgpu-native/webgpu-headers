@@ -1,0 +1,21 @@
+{{ $entry := . }}
+
+# {{.Name | PascalCase}}
+
+**NB** All enumerations also have an extra values ending with `_Force32` that is here to ensure that all compilers use the same underlying representation for the enum values. This value must never be used.
+
+{{.Doc}}
+```C
+enum WGPU{{.Name | PascalCase}} {
+{{-   range $entryIndex, $_ := .Entries}}
+        {{.Doc}}
+{{-     $entryValue := 0}}
+{{-     if eq .Value ""}}
+{{-       $entryValue = $entryIndex}}
+{{-     else}}
+{{-       $entryValue = ParseUint .Value 16}}
+{{-     end}}
+    WGPU{{$entry.Name | PascalCase}}_{{.Name | PascalCase}} = {{$entryValue | EnumValue}},
+{{-   end}}
+}
+```

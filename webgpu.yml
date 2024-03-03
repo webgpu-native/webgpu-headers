@@ -3089,14 +3089,15 @@ functions:
 objects:
   - name: adapter
     doc: |
-      TODO
+      This is a test.
     methods:
       - name: get_limits
         doc: |
-          TODO
+          Get the limits that the adapter supports. This is used to drive the
+          choice of required limits in {device_descriptor.required_limits}.
         returns:
           doc: |
-            TODO
+            True iff limits were successfully retrieved.
           type: bool
         args:
           - name: limits
