@@ -160,6 +160,10 @@
             "type": "string",
             "description": "The license string to include at the top of the generated header"
         },
+        "name": {
+            "$ref": "#/definitions/Name",
+            "description": "The name/namespace of the specification"
+        },
         "enum_prefix": {
             "type": "string",
             "pattern": "^0x[0-9]{4}$",
@@ -382,6 +386,7 @@
     },
     "required": [
         "copyright",
+        "name",
         "enum_prefix",
         "constants",
         "enums",

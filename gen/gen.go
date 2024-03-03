@@ -10,13 +10,13 @@ import (
 	"text/template"
 )
 
-type Data struct {
-	Name      string
-	ExtSuffix string
+type Generator struct {
+	ExtSuffix  string
+	HeaderName string
 	*Yml
 }
 
-func (d *Data) GenCHeader(dst io.Writer) error {
+func (g *Generator) Gen(dst io.Writer) error {
 	t := template.
 		New("").
 		Funcs(template.FuncMap{
@@ -27,17 +27,17 @@ func (d *Data) GenCHeader(dst io.Writer) error {
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,
 			"CamelCase":    CamelCase,
-			"CType":        d.CType,
-			"CValue":       d.CValue,
-			"EnumValue":    d.EnumValue,
-			"BitflagValue": d.BitflagValue,
+			"CType":        g.CType,
+			"CValue":       g.CValue,
+			"EnumValue":    g.EnumValue,
+			"BitflagValue": g.BitflagValue,
 			"IsArray": func(typ string) bool {
 				return arrayTypeRegexp.Match([]byte(typ))
 			},
 			"ArrayType": func(typ string, pointer PointerType) string {
 				matches := arrayTypeRegexp.FindStringSubmatch(typ)
 				if len(matches) == 2 {
-					return d.CType(matches[1], pointer, "")
+					return g.CType(matches[1], pointer, "")
 				}
 				return ""
 			},
@@ -45,25 +45,25 @@ func (d *Data) GenCHeader(dst io.Writer) error {
 			"IsLast":      func(i int, s any) bool { return i == reflect.ValueOf(s).Len()-1 },
 			"FunctionReturns": func(f Function) string {
 				if f.Returns != nil {
-					return d.CType(f.Returns.Type, f.Returns.Pointer, "")
+					return g.CType(f.Returns.Type, f.Returns.Pointer, "")
 				}
 				return "void"
 			},
-			"FunctionArgs": d.FunctionArgs,
-			"CallbackArgs": d.CallbackArgs,
-			"StructMember": d.StructMember,
+			"FunctionArgs": g.FunctionArgs,
+			"CallbackArgs": g.CallbackArgs,
+			"StructMember": g.StructMember,
 		})
 	t, err := t.Parse(tmpl)
 	if err != nil {
 		return fmt.Errorf("GenCHeader: failed to parse template: %w", err)
 	}
-	if err := t.Execute(dst, d); err != nil {
+	if err := t.Execute(dst, g); err != nil {
 		return fmt.Errorf("GenCHeader: failed to execute template: %w", err)
 	}
 	return nil
 }
 
-func (d *Data) CValue(s string) (string, error) {
+func (g *Generator) CValue(s string) (string, error) {
 	switch s {
 	case "usize_max":
 		return "SIZE_MAX", nil
@@ -95,7 +95,7 @@ func (d *Data) CValue(s string) (string, error) {
 	}
 }
 
-func (d *Data) CType(typ string, pointerType PointerType, suffix string) string {
+func (g *Generator) CType(typ string, pointerType PointerType, suffix string) string {
 	appendModifiers := func(s string, pointerType PointerType) string {
 		var sb strings.Builder
 		sb.WriteString(s)
@@ -153,12 +153,12 @@ func (d *Data) CType(typ string, pointerType PointerType, suffix string) string 
 	}
 }
 
-func (d *Data) FunctionArgs(f Function, o *Object) string {
+func (g *Generator) FunctionArgs(f Function, o *Object) string {
 	sb := &strings.Builder{}
 	if o != nil {
 		var typeSuffix string
 		if o.Namespace == "" {
-			typeSuffix = ConstantCase(d.ExtSuffix)
+			typeSuffix = ConstantCase(g.ExtSuffix)
 		} else if o.Namespace != "webgpu" {
 			typeSuffix = ConstantCase(o.Namespace)
 		}
@@ -177,16 +177,16 @@ func (d *Data) FunctionArgs(f Function, o *Object) string {
 		}
 		var typeSuffix string
 		if arg.Namespace == "" {
-			typeSuffix = ConstantCase(d.ExtSuffix)
+			typeSuffix = ConstantCase(g.ExtSuffix)
 		} else if arg.Namespace != "webgpu" {
 			typeSuffix = ConstantCase(arg.Namespace)
 		}
 		matches := arrayTypeRegexp.FindStringSubmatch(arg.Type)
 		if len(matches) == 2 {
 			fmt.Fprintf(sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
-			fmt.Fprintf(sb, "%s %s", d.CType(matches[1], arg.Pointer, typeSuffix), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s %s", g.CType(matches[1], arg.Pointer, typeSuffix), CamelCase(arg.Name))
 		} else {
-			fmt.Fprintf(sb, "%s %s", d.CType(arg.Type, arg.Pointer, typeSuffix), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s %s", g.CType(arg.Type, arg.Pointer, typeSuffix), CamelCase(arg.Name))
 		}
 		if i != len(f.Args)-1 {
 			sb.WriteString(", ")
@@ -204,7 +204,7 @@ func (d *Data) FunctionArgs(f Function, o *Object) string {
 	return sb.String()
 }
 
-func (d *Data) CallbackArgs(f Function) string {
+func (g *Generator) CallbackArgs(f Function) string {
 	sb := &strings.Builder{}
 	for _, arg := range f.ReturnsAsync {
 		if arg.Optional {
@@ -212,7 +212,7 @@ func (d *Data) CallbackArgs(f Function) string {
 		}
 		var typeSuffix string
 		if arg.Namespace == "" {
-			typeSuffix = ConstantCase(d.ExtSuffix)
+			typeSuffix = ConstantCase(g.ExtSuffix)
 		} else if arg.Namespace != "webgpu" {
 			typeSuffix = ConstantCase(arg.Namespace)
 		}
@@ -223,16 +223,16 @@ func (d *Data) CallbackArgs(f Function) string {
 		matches := arrayTypeRegexp.FindStringSubmatch(arg.Type)
 		if len(matches) == 2 {
 			fmt.Fprintf(sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
-			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, d.CType(matches[1], arg.Pointer, typeSuffix), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, g.CType(matches[1], arg.Pointer, typeSuffix), CamelCase(arg.Name))
 		} else {
-			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, d.CType(arg.Type, arg.Pointer, typeSuffix), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, g.CType(arg.Type, arg.Pointer, typeSuffix), CamelCase(arg.Name))
 		}
 	}
 	sb.WriteString("WGPU_NULLABLE void * userdata")
 	return sb.String()
 }
 
-func (d *Data) EnumValue(prefix string, e Enum, entryIndex int) (string, error) {
+func (g *Generator) EnumValue(prefix string, e Enum, entryIndex int) (string, error) {
 	var entryValue uint16
 	entry := e.Entries[entryIndex]
 	if entry.Value == "" {
@@ -256,14 +256,14 @@ func (d *Data) EnumValue(prefix string, e Enum, entryIndex int) (string, error) 
 	return fmt.Sprintf("%s%.4X", prefix, entryValue), nil
 }
 
-func (d *Data) BitflagValue(b Bitflag, entryIndex int) (string, error) {
+func (g *Generator) BitflagValue(b Bitflag, entryIndex int) (string, error) {
 	entry := b.Entries[entryIndex]
 	var entryValue string
 	if len(entry.ValueCombination) > 0 {
 		for valueIndex, v := range entry.ValueCombination {
 			entryValue += "WGPU" + PascalCase(b.Name) + "_" + PascalCase(v)
-			if d.ExtSuffix != "" {
-				entryValue += "_" + d.ExtSuffix
+			if g.ExtSuffix != "" {
+				entryValue += "_" + g.ExtSuffix
 			}
 			if valueIndex != len(entry.ValueCombination)-1 {
 				entryValue += " | "
@@ -293,7 +293,7 @@ func (d *Data) BitflagValue(b Bitflag, entryIndex int) (string, error) {
 	return entryValue, nil
 }
 
-func (d *Data) StructMember(s Struct, memberIndex int) (string, error) {
+func (g *Generator) StructMember(s Struct, memberIndex int) (string, error) {
 	member := s.Members[memberIndex]
 	sb := &strings.Builder{}
 	if member.Optional {
@@ -301,16 +301,16 @@ func (d *Data) StructMember(s Struct, memberIndex int) (string, error) {
 	}
 	var typeSuffix string
 	if member.Namespace == "" {
-		typeSuffix = ConstantCase(d.ExtSuffix)
+		typeSuffix = ConstantCase(g.ExtSuffix)
 	} else if member.Namespace != "webgpu" {
 		typeSuffix = ConstantCase(member.Namespace)
 	}
 	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
 	if len(matches) == 2 {
 		fmt.Fprintf(sb, "size_t %sCount;\n", CamelCase(Singularize(member.Name)))
-		fmt.Fprintf(sb, "    %s %s;", d.CType(matches[1], member.Pointer, typeSuffix), CamelCase(member.Name))
+		fmt.Fprintf(sb, "    %s %s;", g.CType(matches[1], member.Pointer, typeSuffix), CamelCase(member.Name))
 	} else {
-		fmt.Fprintf(sb, "%s %s;", d.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
+		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
 	}
 	return sb.String(), nil
 }

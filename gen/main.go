@@ -45,7 +45,19 @@ func main() {
 
 	// Generate the header files
 	for i, yamlPath := range yamlPaths {
+		headerPath := headerPaths[i]
+		headerFileName := filepath.Base(headerPath)
+		headerFileNameSplit := strings.Split(headerFileName, ".")
+		if len(headerFileNameSplit) != 2 {
+			panic("got invalid header file name: " + headerFileName)
+		}
+
 		src, err := os.ReadFile(yamlPath)
+		if err != nil {
+			panic(err)
+		}
+
+		dst, err := os.Create(headerPath)
 		if err != nil {
 			panic(err)
 		}
@@ -57,28 +69,16 @@ func main() {
 
 		SortAndTransform(&yml)
 
-		headerPath := headerPaths[i]
-		dst, err := os.Create(headerPath)
-		if err != nil {
-			panic(err)
-		}
-
-		fileName := filepath.Base(yamlPath)
-		fileNameSplit := strings.Split(fileName, ".")
-		if len(fileNameSplit) != 2 {
-			panic("got invalid file name: " + fileName)
-		}
-
 		suffix := ""
-		if fileNameSplit[0] != "webgpu" && extSuffix {
-			suffix = strings.ToUpper(fileNameSplit[0])
+		if yml.Name != "webgpu" && extSuffix {
+			suffix = strings.ToUpper(yml.Name)
 		}
-		d := &Data{
-			Yml:       &yml,
-			Name:      fileNameSplit[0],
-			ExtSuffix: suffix,
+		g := &Generator{
+			Yml:        &yml,
+			HeaderName: headerFileNameSplit[0],
+			ExtSuffix:  suffix,
 		}
-		if err := d.GenCHeader(dst); err != nil {
+		if err := g.Gen(dst); err != nil {
 			panic(err)
 		}
 	}

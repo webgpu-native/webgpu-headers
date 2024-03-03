@@ -1,7 +1,7 @@
 {{- MCommentN .Copyright 0}}
 
-#ifndef {{.Name | ConstantCase}}_H_
-#define {{.Name | ConstantCase}}_H_
+#ifndef {{.HeaderName | ConstantCase}}_H_
+#define {{.HeaderName | ConstantCase}}_H_
 
 #if defined(WGPU_SHARED_LIBRARY)
 #    if defined(_WIN32)
@@ -222,4 +222,4 @@ WGPU_EXPORT void wgpu{{.Name | PascalCase}}Release{{$.ExtSuffix}}(WGPU{{.Name | 
 } // extern "C"
 #endif
 
-#endif // {{.Name | ConstantCase}}_H_
+#endif // {{.HeaderName | ConstantCase}}_H_
