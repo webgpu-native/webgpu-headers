@@ -21,7 +21,7 @@ Here are some details about the structure of this repository.
 
  - `webgpu.h` is the one and only header file that defines the WebGPU C API. Only this needs to be integrated in a C project that links against a WebGPU implementation.
 
- - `webgpu.yml` is the main machine-readable source of truth for the C API and its documentation (in [YAML](https://yaml.org/) format). It is used to generate the official `webgpu.h` header present in this repository, (will be used) to generate the official documentation, and may be used by any other third party to designe tools and wrappers around WebGPU.
+ - `webgpu.yml` is the main machine-readable source of truth for the C API and its documentation (in [YAML](https://yaml.org/) format). It is used to generate the official `webgpu.h` header present in this repository, (will be used) to generate the official documentation, and may be used by any other third party to design tools and wrappers around WebGPU-Native.
 
  - `schema.json` is the [JSON schema](https://json-schema.org/) that formally specifies the structure of `webgpu.yml`.
 
