@@ -90,6 +90,11 @@
                 "optional": {
                     "type": "boolean",
                     "description": "Optional property, to indicate if a parameter is optional"
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Optional property, specifying the external namespace where this type is defined",
+                    "pattern": "^[a-z]+$"
                 }
             },
             "required": [
@@ -155,6 +160,10 @@
             "type": "string",
             "description": "The license string to include at the top of the generated header"
         },
+        "name": {
+            "$ref": "#/definitions/Name",
+            "description": "The name/namespace of the specification"
+        },
         "enum_prefix": {
             "type": "string",
             "pattern": "^0x[0-9]{4}$",
@@ -195,6 +204,10 @@
                     },
                     "doc": {
                         "type": "string"
+                    },
+                    "extended": {
+                        "type": "boolean",
+                        "description": "Optional property, an indicator that this enum is an extension of an already present enum"
                     },
                     "entries": {
                         "type": "array",
@@ -237,6 +250,10 @@
                     },
                     "doc": {
                         "type": "string"
+                    },
+                    "extended": {
+                        "type": "boolean",
+                        "description": "Optional property, an indicator that this bitflag is an extension of an already present bitflag"
                     },
                     "entries": {
                         "type": "array",
@@ -348,6 +365,15 @@
                     "doc": {
                         "type": "string"
                     },
+                    "extended": {
+                        "type": "boolean",
+                        "description": "Optional property, an indicator that this object is an extension of an already present object"
+                    },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional property, specifying the external namespace where this object is defined",
+                        "pattern": "^[a-z]+$"
+                    },
                     "methods": {
                         "type": "array",
                         "items": {
@@ -360,6 +386,7 @@
     },
     "required": [
         "copyright",
+        "name",
         "enum_prefix",
         "constants",
         "enums",

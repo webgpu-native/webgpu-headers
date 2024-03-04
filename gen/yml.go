@@ -9,6 +9,7 @@ import (
 
 type Yml struct {
 	Copyright  string `yaml:"copyright"`
+	Name       string `yaml:"name"`
 	EnumPrefix string `yaml:"enum_prefix"`
 
 	Constants     []Constant `yaml:"constants"`
@@ -18,8 +19,6 @@ type Yml struct {
 	Structs       []Struct   `yaml:"structs"`
 	Functions     []Function `yaml:"functions"`
 	Objects       []Object   `yaml:"objects"`
-
-	Copyrights []string `yaml:"-"`
 }
 
 type Constant struct {
@@ -29,63 +28,28 @@ type Constant struct {
 }
 
 type Enum struct {
-	Name    string      `yaml:"name"`
-	Doc     string      `yaml:"doc"`
-	Entries []EnumEntry `yaml:"entries"`
+	Name     string      `yaml:"name"`
+	Doc      string      `yaml:"doc"`
+	Entries  []EnumEntry `yaml:"entries"`
+	Extended bool        `yaml:"extended"`
 }
 type EnumEntry struct {
 	Name  string `yaml:"name"`
 	Doc   string `yaml:"doc"`
 	Value string `yaml:"value"`
-
-	ValuePrefix string `yaml:"-"`
 }
 
 type Bitflag struct {
-	Name    string         `yaml:"name"`
-	Doc     string         `yaml:"doc"`
-	Entries []BitflagEntry `yaml:"entries"`
+	Name     string         `yaml:"name"`
+	Doc      string         `yaml:"doc"`
+	Entries  []BitflagEntry `yaml:"entries"`
+	Extended bool           `yaml:"extended"`
 }
 type BitflagEntry struct {
 	Name             string   `yaml:"name"`
 	Doc              string   `yaml:"doc"`
 	Value            string   `yaml:"value"`
 	ValueCombination []string `yaml:"value_combination"`
-}
-
-type Function struct {
-	Name         string           `yaml:"name"`
-	Doc          string           `yaml:"doc"`
-	ReturnsAsync []FunctionArg    `yaml:"returns_async"`
-	Returns      *FunctionReturns `yaml:"returns"`
-	Args         []FunctionArg    `yaml:"args"`
-}
-type FunctionReturns struct {
-	Doc     string      `yaml:"doc"`
-	Type    string      `yaml:"type"`
-	Pointer PointerType `yaml:"pointer"`
-}
-type FunctionArg struct {
-	Name     string      `yaml:"name"`
-	Doc      string      `yaml:"doc"`
-	Type     string      `yaml:"type"`
-	Pointer  PointerType `yaml:"pointer"`
-	Optional bool        `yaml:"optional"`
-}
-
-type Struct struct {
-	Name        string         `yaml:"name"`
-	Type        string         `yaml:"type"`
-	Doc         string         `yaml:"doc"`
-	FreeMembers bool           `yaml:"free_members"`
-	Members     []StructMember `yaml:"members"`
-}
-type StructMember struct {
-	Name     string      `yaml:"name"`
-	Type     string      `yaml:"type"`
-	Pointer  PointerType `yaml:"pointer"`
-	Optional bool        `yaml:"optional"`
-	Doc      string      `yaml:"doc"`
 }
 
 type PointerType string
@@ -95,10 +59,37 @@ const (
 	PointerTypeImmutable PointerType = "immutable"
 )
 
+type ParameterType struct {
+	Name      string      `yaml:"name"`
+	Doc       string      `yaml:"doc"`
+	Type      string      `yaml:"type"`
+	Pointer   PointerType `yaml:"pointer"`
+	Optional  bool        `yaml:"optional"`
+	Namespace string      `yaml:"namespace"`
+}
+
+type Function struct {
+	Name         string          `yaml:"name"`
+	Doc          string          `yaml:"doc"`
+	ReturnsAsync []ParameterType `yaml:"returns_async"`
+	Returns      *ParameterType  `yaml:"returns"`
+	Args         []ParameterType `yaml:"args"`
+}
+
+type Struct struct {
+	Name        string          `yaml:"name"`
+	Type        string          `yaml:"type"`
+	Doc         string          `yaml:"doc"`
+	FreeMembers bool            `yaml:"free_members"`
+	Members     []ParameterType `yaml:"members"`
+}
+
 type Object struct {
-	Name    string     `yaml:"name"`
-	Doc     string     `yaml:"doc"`
-	Methods []Function `yaml:"methods"`
+	Name      string     `yaml:"name"`
+	Doc       string     `yaml:"doc"`
+	Methods   []Function `yaml:"methods"`
+	Extended  bool       `yaml:"extended"`
+	Namespace string     `yaml:"namespace"`
 
 	IsStruct bool `yaml:"-"`
 }
