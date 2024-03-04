@@ -65,6 +65,10 @@
 typedef uint32_t WGPUFlags;
 typedef uint32_t WGPUBool;
 {{  end}}
+{{- range .Typedefs}}
+{{-   MComment .Doc 0}}
+typedef {{CType .Type "" ""}} WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
+{{  end}}
 
 {{- if .Objects}}
 {{-   range .Objects}}

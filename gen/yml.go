@@ -13,6 +13,7 @@ type Yml struct {
 	EnumPrefix string `yaml:"enum_prefix"`
 
 	Constants     []Constant `yaml:"constants"`
+	Typedefs      []Typedef  `yaml:"typedefs"`
 	Enums         []Enum     `yaml:"enums"`
 	Bitflags      []Bitflag  `yaml:"bitflags"`
 	FunctionTypes []Function `yaml:"function_types"`
@@ -25,6 +26,12 @@ type Constant struct {
 	Name  string `yaml:"name"`
 	Value string `yaml:"value"`
 	Doc   string `yaml:"doc"`
+}
+
+type Typedef struct {
+	Name string `yaml:"name"`
+	Doc  string `yaml:"doc"`
+	Type string `yaml:"type"`
 }
 
 type Enum struct {

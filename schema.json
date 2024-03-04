@@ -28,37 +28,43 @@
             "minimum": 0,
             "maximum": 65535
         },
+        "PrimitiveType": {
+            "type": "string",
+            "enum": [
+                "c_void",
+                "bool",
+                "string",
+                "uint16",
+                "uint32",
+                "uint64",
+                "usize",
+                "int16",
+                "int32",
+                "float32",
+                "float64",
+                "array<bool>",
+                "array<string>",
+                "array<uint16>",
+                "array<uint32>",
+                "array<uint64>",
+                "array<usize>",
+                "array<int16>",
+                "array<int32>",
+                "array<float32>",
+                "array<float64>"
+            ]
+        },
+        "ComplexType": {
+            "type": "string",
+            "pattern": "^(array<)?(typedef\\.|enum\\.|bitflag\\.|struct\\.|function_type\\.|object\\.)([a-zA-Z0-9]([a-zA-Z0-9_]*[a-zA-Z0-9])?)(>)?$"
+        },
         "Type": {
             "oneOf": [
                 {
-                    "type": "string",
-                    "enum": [
-                        "c_void",
-                        "bool",
-                        "string",
-                        "uint16",
-                        "uint32",
-                        "uint64",
-                        "usize",
-                        "int16",
-                        "int32",
-                        "float32",
-                        "float64",
-                        "array<bool>",
-                        "array<string>",
-                        "array<uint16>",
-                        "array<uint32>",
-                        "array<uint64>",
-                        "array<usize>",
-                        "array<int16>",
-                        "array<int32>",
-                        "array<float32>",
-                        "array<float64>"
-                    ]
+                    "$ref": "#/definitions/PrimitiveType"
                 },
                 {
-                    "type": "string",
-                    "pattern": "^(array<)?(enum\\.|bitflag\\.|struct\\.|function_type\\.|object\\.)([a-zA-Z0-9]([a-zA-Z0-9_]*[a-zA-Z0-9])?)(>)?$"
+                    "$ref": "#/definitions/ComplexType"
                 }
             ]
         },
@@ -168,6 +174,29 @@
             "type": "string",
             "pattern": "^0x[0-9]{4}$",
             "description": "The dedicated enum prefix for the implementation specific header to avoid collisions"
+        },
+        "typedefs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "description": "An alias of a primitive type",
+                "properties": {
+                    "name": {
+                        "$ref": "#/definitions/Name"
+                    },
+                    "doc": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "$ref": "#/definitions/PrimitiveType"
+                    }
+                },
+                "required": [
+                    "name",
+                    "doc",
+                    "type"
+                ]
+            }
         },
         "constants": {
             "type": "array",
@@ -389,6 +418,7 @@
         "name",
         "enum_prefix",
         "constants",
+        "typedefs",
         "enums",
         "bitflags",
         "function_types",

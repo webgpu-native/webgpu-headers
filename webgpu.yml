@@ -44,6 +44,8 @@ constants:
     doc: |
       TODO
 
+typedefs: []
+
 enums:
   - name: request_adapter_status
     doc: |
