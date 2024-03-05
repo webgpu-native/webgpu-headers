@@ -136,6 +136,9 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 	case strings.HasPrefix(typ, "enum."):
 		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "enum.")) + suffix
 		return appendModifiers(ctype, pointerType)
+	case strings.HasPrefix(typ, "typedef."):
+		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "typedef.")) + suffix
+		return appendModifiers(ctype, pointerType)
 	case strings.HasPrefix(typ, "bitflag."):
 		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "bitflag.")) + "Flags" + suffix
 		return appendModifiers(ctype, pointerType)
