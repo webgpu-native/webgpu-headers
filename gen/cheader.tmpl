@@ -1,5 +1,16 @@
 {{- MCommentN .Copyright 0}}
 
+/** @file */
+
+/**
+ * \mainpage
+ * 
+ * **NB** *This documentation is a Work In Progress.*
+ *
+ * This is the home of WebGPU Native specification. We define here the standard
+ * `webgpu.h` header that all implementations of WebGPU should implement.
+ */
+
 #ifndef {{.HeaderName | ConstantCase}}_H_
 #define {{.HeaderName | ConstantCase}}_H_
 
@@ -54,12 +65,28 @@
 #include "webgpu.h"
 {{end}}
 
+/**
+ * \defgroup Constants
+ * \brief Constants.
+ * 
+ * @{
+ */
+
 {{- if .Constants}}
 {{-   range .Constants}}
 {{-     MComment .Doc 0}}
 #define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} ({{.Value | CValue}})
 {{-   end}}
 {{  end}}
+
+/** @} */
+
+/**
+ * \defgroup Typedefs
+ * \brief Utility typedefs.
+ * 
+ * @{
+ */
 
 {{- if eq .Name "webgpu"}}
 typedef uint32_t WGPUFlags;
@@ -70,13 +97,25 @@ typedef uint32_t WGPUBool;
 typedef {{CType .Type "" ""}} WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
 {{  end}}
 
+/** @} */
+
+/**
+ * \defgroup Objects
+ * \brief Blind handles to WebGPU objects.
+ * 
+ * @{
+ */
+
 {{- if .Objects}}
 {{-   range .Objects}}
 {{-     if not .IsStruct}}
+{{-   MComment .Doc 0}}
 typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}Impl* WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_OBJECT_ATTRIBUTE;
 {{-     end}}
 {{-   end}}
 {{  end}}
+
+/** @} */
 
 {{- if .Structs}}
 // Structure forward declarations
@@ -84,6 +123,13 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}Impl* WGPU{{.Name | Pasc
 struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
 {{-   end}}
 {{  end}}
+
+/**
+ * \defgroup Enumerations
+ * \brief Enums.
+ * 
+ * @{
+ */
 
 {{- range $enum := .Enums}}
 {{-   if .Extended}}
@@ -101,6 +147,15 @@ typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 } WGPU{{$enum.Name | PascalCase}}{{$.ExtSuffix}} WGPU_ENUM_ATTRIBUTE;
 {{-   end}}
 {{  end}}
+
+/** @} */
+
+/**
+ * \defgroup Bitflags
+ * \brief Enum used as bit flags.
+ * 
+ * @{
+ */
 
 {{- range $bitflag := .Bitflags}}
 {{-   if .Extended}}
@@ -120,6 +175,8 @@ typedef WGPUFlags WGPU{{$bitflag.Name | PascalCase}}Flags{{$.ExtSuffix}} WGPU_EN
 {{-   end}}
 {{  end}}
 
+/** @} */
+
 {{- if eq .Name "webgpu"}}
 typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
@@ -128,6 +185,13 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 {{-   MComment .Doc 0}}
 typedef {{FunctionReturns .}} (*WGPU{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
+
+/**
+ * \defgroup Callbacks
+ * \brief Callbacks through which asynchronous functions return.
+ * 
+ * @{
+ */
 
 {{- if .Objects}}
 {{    range $object := .Objects}}
@@ -140,7 +204,16 @@ typedef void (*WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Cal
 {{-   end}}
 {{  end}}
 
+/** @} */
+
 {{- if eq .Name "webgpu"}}
+/**
+ * \defgroup ChainedStructures Chained Structures
+ * \brief Structures used to extend descriptors.
+ * 
+ * @{
+ */
+
 typedef struct WGPUChainedStruct {
     struct WGPUChainedStruct const * next;
     WGPUSType sType;
@@ -150,7 +223,16 @@ typedef struct WGPUChainedStructOut {
     struct WGPUChainedStructOut * next;
     WGPUSType sType;
 } WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
+
+/** @} */
 {{  end}}
+
+/**
+ * \defgroup Structures
+ * \brief Descriptors and other transparent structures.
+ * 
+ * @{
+ */
 
 {{- range $struct := .Structs}}
 {{-   MComment .Doc 0}}
@@ -170,11 +252,20 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
 {{  end}}{{"\n" -}}
 
+/** @} */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #if !defined(WGPU_SKIP_PROCS){{"\n" -}}
+
+/**
+ * \defgroup GlobalFunctions Global Functions
+ * \brief Functions that are not specific to an object.
+ * 
+ * @{
+ */
 
 {{- range .Functions}}
 {{-   MComment .Doc 0}}
@@ -183,6 +274,15 @@ typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}}{{$.ExtSuffix}})({
 {{- if eq .Name "webgpu"}}
 typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
+
+/** @} */
+
+/**
+ * \defgroup Methods
+ * \brief Functions that are relative to a specific object.
+ * 
+ * @{
+ */
 
 {{- range $object := .Objects}}
 // Procs of {{$object.Name | PascalCase}}
@@ -195,6 +295,8 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Reference{{$.ExtSuffix}})(WGPU{{.Na
 typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{  end}}{{"\n" -}}
+
+/** @} */
 
 #endif  // !defined(WGPU_SKIP_PROCS)
 

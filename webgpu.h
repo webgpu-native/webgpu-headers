@@ -4,6 +4,17 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+/** @file */
+
+/**
+ * \mainpage
+ * 
+ * **NB** *This documentation is a Work In Progress.*
+ *
+ * This is the home of WebGPU Native specification. We define here the standard
+ * `webgpu.h` header that all implementations of WebGPU should implement.
+ */
+
 #ifndef WEBGPU_H_
 #define WEBGPU_H_
 
@@ -44,6 +55,13 @@
 #include <stdint.h>
 #include <stddef.h>
 
+
+/**
+ * \defgroup Constants
+ * \brief Constants.
+ * 
+ * @{
+ */
 #define WGPU_ARRAY_LAYER_COUNT_UNDEFINED (0xffffffffUL)
 #define WGPU_COPY_STRIDE_UNDEFINED (0xffffffffUL)
 #define WGPU_DEPTH_SLICE_UNDEFINED (0xffffffffUL)
@@ -54,9 +72,30 @@
 #define WGPU_WHOLE_MAP_SIZE (SIZE_MAX)
 #define WGPU_WHOLE_SIZE (0xffffffffffffffffULL)
 
+
+/** @} */
+
+/**
+ * \defgroup Typedefs
+ * \brief Utility typedefs.
+ * 
+ * @{
+ */
 typedef uint32_t WGPUFlags;
 typedef uint32_t WGPUBool;
 
+
+/** @} */
+
+/**
+ * \defgroup Objects
+ * \brief Blind handles to WebGPU objects.
+ * 
+ * @{
+ */
+/**
+ * This is the Adapter.
+ */
 typedef struct WGPUAdapterImpl* WGPUAdapter WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUBindGroupImpl* WGPUBindGroup WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUBindGroupLayoutImpl* WGPUBindGroupLayout WGPU_OBJECT_ATTRIBUTE;
@@ -80,6 +119,8 @@ typedef struct WGPUSurfaceImpl* WGPUSurface WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUTextureImpl* WGPUTexture WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUTextureViewImpl* WGPUTextureView WGPU_OBJECT_ATTRIBUTE;
 
+
+/** @} */
 // Structure forward declarations
 struct WGPUAdapterInfo;
 struct WGPUAdapterProperties;
@@ -155,6 +196,13 @@ struct WGPUVertexState;
 struct WGPUFragmentState;
 struct WGPURenderPipelineDescriptor;
 
+
+/**
+ * \defgroup Enumerations
+ * \brief Enums.
+ * 
+ * @{
+ */
 typedef enum WGPUAdapterType {
     WGPUAdapterType_DiscreteGPU = 0x00000000,
     WGPUAdapterType_IntegratedGPU = 0x00000001,
@@ -662,6 +710,15 @@ typedef enum WGPUWGSLFeatureName {
     WGPUWGSLFeatureName_Force32 = 0x7FFFFFFF
 } WGPUWGSLFeatureName WGPU_ENUM_ATTRIBUTE;
 
+
+/** @} */
+
+/**
+ * \defgroup Bitflags
+ * \brief Enum used as bit flags.
+ * 
+ * @{
+ */
 typedef enum WGPUBufferUsage {
     WGPUBufferUsage_None = 0x00000000,
     WGPUBufferUsage_MapRead = 0x00000001,
@@ -717,10 +774,19 @@ typedef enum WGPUTextureUsage {
 } WGPUTextureUsage WGPU_ENUM_ATTRIBUTE;
 typedef WGPUFlags WGPUTextureUsageFlags WGPU_ENUM_ATTRIBUTE;
 
+
+/** @} */
 typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 
 typedef void (*WGPUDeviceLostCallback)(WGPUDeviceLostReason reason, char const * message, void * userdata) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUErrorCallback)(WGPUErrorType type, char const * message, void * userdata) WGPU_FUNCTION_ATTRIBUTE;
+
+/**
+ * \defgroup Callbacks
+ * \brief Callbacks through which asynchronous functions return.
+ * 
+ * @{
+ */
 
 typedef void (*WGPUAdapterRequestAdapterInfoCallback)(struct WGPUAdapterInfo adapterInfo, WGPU_NULLABLE void * userdata) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUAdapterRequestDeviceCallback)(WGPURequestDeviceStatus status, WGPUDevice device, char const * message, WGPU_NULLABLE void * userdata) WGPU_FUNCTION_ATTRIBUTE;
@@ -730,6 +796,15 @@ typedef void (*WGPUDeviceCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAs
 typedef void (*WGPUInstanceRequestAdapterCallback)(WGPURequestAdapterStatus status, WGPUAdapter adapter, char const * message, WGPU_NULLABLE void * userdata) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUQueueOnSubmittedWorkDoneCallback)(WGPUQueueWorkDoneStatus status, WGPU_NULLABLE void * userdata) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUShaderModuleGetCompilationInfoCallback)(WGPUCompilationInfoRequestStatus status, struct WGPUCompilationInfo const * compilationInfo, WGPU_NULLABLE void * userdata) WGPU_FUNCTION_ATTRIBUTE;
+
+
+/** @} */
+/**
+ * \defgroup ChainedStructures Chained Structures
+ * \brief Structures used to extend descriptors.
+ * 
+ * @{
+ */
 
 typedef struct WGPUChainedStruct {
     struct WGPUChainedStruct const * next;
@@ -741,6 +816,15 @@ typedef struct WGPUChainedStructOut {
     WGPUSType sType;
 } WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
 
+/** @} */
+
+
+/**
+ * \defgroup Structures
+ * \brief Descriptors and other transparent structures.
+ * 
+ * @{
+ */
 typedef struct WGPUAdapterInfo {
     char const * vendor;
     char const * architecture;
@@ -1317,15 +1401,31 @@ typedef struct WGPURenderPipelineDescriptor {
     WGPU_NULLABLE WGPUFragmentState const * fragment;
 } WGPURenderPipelineDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
+/** @} */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #if !defined(WGPU_SKIP_PROCS)
-
+/**
+ * \defgroup GlobalFunctions Global Functions
+ * \brief Functions that are not specific to an object.
+ * 
+ * @{
+ */
 typedef WGPUInstance (*WGPUProcCreateInstance)(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 
+
+/** @} */
+
+/**
+ * \defgroup Methods
+ * \brief Functions that are relative to a specific object.
+ * 
+ * @{
+ */
 // Procs of Adapter
 typedef size_t (*WGPUProcAdapterEnumerateFeatures)(WGPUAdapter adapter, WGPUFeatureName * features) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUBool (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
@@ -1554,6 +1654,8 @@ typedef void (*WGPUProcTextureRelease)(WGPUTexture texture) WGPU_FUNCTION_ATTRIB
 typedef void (*WGPUProcTextureViewSetLabel)(WGPUTextureView textureView, char const * label) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcTextureViewReference)(WGPUTextureView textureView) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView) WGPU_FUNCTION_ATTRIBUTE;
+
+/** @} */
 
 #endif  // !defined(WGPU_SKIP_PROCS)
 
