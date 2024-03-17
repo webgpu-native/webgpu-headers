@@ -9,3 +9,6 @@ gen-check: gen
 		git diff -- webgpu.h;                                                               \
 		exit 1;                                                                             \
 	}
+
+doc: webgpu.h Doxyfile
+	doxygen Doxyfile
