@@ -24,6 +24,14 @@ func (g *Generator) Gen(dst io.Writer) error {
 			"MComment":     func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, true) },
 			"SCommentN":    func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, false) },
 			"MCommentN":    func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, false) },
+			"MCommentEnum": func(v string, indent int, prefix string, e Enum, entryIndex int) string {
+				value, _ := g.EnumValue(prefix, e, entryIndex)
+				return Comment("`" + value + "` " + v, CommentTypeMultiLine, indent, true)
+			},
+			"MCommentBitflag": func(v string, indent int, b Bitflag, entryIndex int) string {
+				value, _ := g.BitflagValue(b, entryIndex)
+				return Comment("`" + value + "` " + v, CommentTypeMultiLine, indent, true)
+			},
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,
 			"CamelCase":    CamelCase,

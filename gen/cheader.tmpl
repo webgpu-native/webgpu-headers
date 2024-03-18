@@ -140,7 +140,7 @@ __WGPU_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCas
 {{-     MComment .Doc 0}}
 typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-     range $entryIndex, $_ := .Entries}}
-{{-       MComment .Doc 4}}
+{{-       MCommentEnum .Doc 4 $.EnumPrefix $enum $entryIndex }}
     WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{EnumValue $.EnumPrefix $enum $entryIndex}},
 {{-     end}}
     WGPU{{$enum.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF
@@ -166,7 +166,7 @@ __WGPU_EXTEND_ENUM(WGPU{{$bitflag.Name | PascalCase}}, WGPU{{$bitflag.Name | Pas
 {{-     MComment .Doc 0}}
 typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-     range $entryIndex, $_ := .Entries}}
-{{-       MComment .Doc 4}}
+{{-       MCommentBitflag .Doc 4 $bitflag $entryIndex }}
     WGPU{{$bitflag.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{BitflagValue $bitflag $entryIndex}},
 {{-     end}}
     WGPU{{$bitflag.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF
@@ -260,13 +260,6 @@ extern "C" {
 
 #if !defined(WGPU_SKIP_PROCS){{"\n" -}}
 
-/**
- * \defgroup GlobalFunctions Global Functions
- * \brief Functions that are not specific to an object.
- * 
- * @{
- */
-
 {{- range .Functions}}
 {{-   MComment .Doc 0}}
 typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
@@ -274,15 +267,6 @@ typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}}{{$.ExtSuffix}})({
 {{- if eq .Name "webgpu"}}
 typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
-
-/** @} */
-
-/**
- * \defgroup Methods
- * \brief Functions that are relative to a specific object.
- * 
- * @{
- */
 
 {{- range $object := .Objects}}
 // Procs of {{$object.Name | PascalCase}}
@@ -296,11 +280,16 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
 {{-   end}}
 {{  end}}{{"\n" -}}
 
-/** @} */
-
 #endif  // !defined(WGPU_SKIP_PROCS)
 
 #if !defined(WGPU_SKIP_DECLARATIONS){{"\n" -}}
+
+/**
+ * \defgroup GlobalFunctions Global Functions
+ * \brief Functions that are not specific to an object.
+ * 
+ * @{
+ */
 
 {{- range .Functions}}
 {{-   MComment .Doc 0}}
@@ -310,8 +299,23 @@ WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{Fu
 WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
+/** @} */
+
+/**
+ * \defgroup Methods
+ * \brief Functions that are relative to a specific object.
+ * 
+ * @{
+ */
+
 {{- range $object := .Objects}}
-// Methods of {{$object.Name | PascalCase}}
+
+/**
+ * \defgroup {{$object.Name | PascalCase}}Methods {{$object.Name | PascalCase}} methods
+ * \brief Functions whose first argument has type {{$object.Name | PascalCase}}.
+ * 
+ * @{
+ */
 {{-   range $object.Methods}}
 {{-     MComment .Doc 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
@@ -320,7 +324,11 @@ WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | Pas
 WGPU_EXPORT void wgpu{{.Name | PascalCase}}Reference{{$.ExtSuffix}}(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpu{{.Name | PascalCase}}Release{{$.ExtSuffix}}(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
+/** @} */
+
 {{  end}}{{"\n" -}}
+
+/** @} */
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
 
