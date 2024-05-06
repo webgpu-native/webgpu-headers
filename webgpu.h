@@ -11,8 +11,8 @@
  * 
  * **NB** *This documentation is a Work In Progress.*
  *
- * This is the home of WebGPU Native specification. We define here the standard
- * `webgpu.h` header that all implementations of WebGPU should implement.
+ * This is the home of WebGPU C API specification. We define here the standard
+ * `webgpu.h` header that all implementations should provide.
  */
 
 #ifndef WEBGPU_H_
@@ -89,7 +89,7 @@ typedef uint32_t WGPUBool;
 
 /**
  * \defgroup Objects
- * \brief Blind handles to WebGPU objects.
+ * \brief Opaque, non-dispatchable handles to WebGPU objects.
  * 
  * @{
  */
