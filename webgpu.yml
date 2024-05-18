@@ -435,10 +435,12 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: unknown
+        value: 0x0001
         doc: |
           TODO
       - name: destroyed
+        value: 0x0002
         doc: |
           TODO
 
