@@ -1449,7 +1449,8 @@ structs:
   - name: adapter_info
     doc: |
       TODO
-    type: standalone
+    type: base_out
+    free_members: true
     members:
       - name: vendor
         doc: |
@@ -1467,6 +1468,22 @@ structs:
         doc: |
           TODO
         type: string
+      - name: backend_type
+        doc: |
+          TODO
+        type: enum.backend_type
+      - name: adapter_type
+        doc: |
+          TODO
+        type: enum.adapter_type
+      - name: vendor_ID
+        doc: |
+          TODO
+        type: uint32
+      - name: device_ID
+        doc: |
+          TODO
+        type: uint32
 
   - name: adapter_properties
     doc: |
@@ -3143,14 +3160,15 @@ objects:
               TODO
             type: enum.feature_name
             pointer: mutable
-      - name: request_adapter_info
+      - name: get_info
         doc: |
           TODO
-        returns_async:
-          - name: adapter_info
+        args:
+          - name: info
             doc: |
               TODO
             type: struct.adapter_info
+            pointer: mutable
       - name: request_device
         doc: |
           TODO
