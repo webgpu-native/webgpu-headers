@@ -1422,21 +1422,6 @@ function_types:
         type: c_void
         pointer: mutable
 
-  - name: uncaptured_error_callback_info
-    doc: |
-      TODO
-    type: base_in
-    args:
-      - name: callback
-        doc: |
-          TODO
-        type: function_type.error_callback
-      - name: userdata
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
-
 structs:
   - name: request_adapter_options
     doc: |
@@ -3110,6 +3095,21 @@ structs:
         doc: |
           TODO
         type: enum.texture_aspect
+
+  - name: uncaptured_error_callback_info
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: callback
+        doc: |
+          TODO
+        type: function_type.error_callback
+      - name: userdata
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
 
 functions:
   - name: create_instance
