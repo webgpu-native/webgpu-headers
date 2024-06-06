@@ -1557,6 +1557,10 @@ structs:
           TODO
         type: c_void
         pointer: mutable
+      - name: uncaptured_error_callback_info
+        doc: |
+          TODO
+        type: function_type.uncaptured_error_callback_info
 
   - name: bind_group_entry
     doc: |
@@ -3092,6 +3096,21 @@ structs:
           TODO
         type: enum.texture_aspect
 
+  - name: uncaptured_error_callback_info
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: callback
+        doc: |
+          TODO
+        type: function_type.error_callback
+      - name: userdata
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
 functions:
   - name: create_instance
     doc: |
@@ -3901,19 +3920,6 @@ objects:
           doc: |
             TODO
           type: object.queue
-      - name: set_uncaptured_error_callback
-        doc: |
-          TODO
-        args:
-          - name: callback
-            doc: |
-              TODO
-            type: function_type.error_callback
-          - name: userdata
-            doc: |
-              TODO
-            type: c_void
-            pointer: mutable
       - name: push_error_scope
         doc: |
           TODO
