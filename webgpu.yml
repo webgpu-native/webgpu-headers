@@ -4676,18 +4676,6 @@ objects:
               TODO
             type: struct.surface_texture
             pointer: mutable
-      - name: get_preferred_format
-        doc: |
-          TODO
-        returns:
-          doc: |
-            TODO
-          type: enum.texture_format
-        args:
-          - name: adapter
-            doc: |
-              TODO
-            type: object.adapter
       - name: present
         doc: |
           TODO
