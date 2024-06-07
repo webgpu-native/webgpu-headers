@@ -1028,6 +1028,7 @@ typedef struct WGPUStorageTextureBindingLayout {
 
 typedef struct WGPUSurfaceCapabilities {
     WGPUChainedStructOut * nextInChain;
+    WGPUTextureUsageFlags usages;
     size_t formatCount;
     WGPUTextureFormat const * formats;
     size_t presentModeCount;
