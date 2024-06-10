@@ -108,33 +108,11 @@ IGNORE_PREFIX          = WGPU,wgpu
 
 GENERATE_HTML          = YES
 
-# We use the doxygen-awesome theme [1] with most of its optional component
-# to get a better look and feel in the HTML documentation.
-# [1]: https://github.com/jothepro/doxygen-awesome-css
+# Sidebar-based page layout (see https://www.doxygen.nl/manual/customize.html)
 
-HTML_HEADER            = doc/theme/header.html
-
-# These extra CSS stylesheets also come from the doxygen-awesome theme.
-
-HTML_EXTRA_STYLESHEET  = doc/theme/doxygen-awesome.css \
-                         doc/theme/doxygen-awesome-sidebar-only.css \
-                         doc/theme/doxygen-awesome-sidebar-only-darkmode-toggle.css
-
-# And these extra JavaScript components are from the doxygen-awesome theme
-# as well.
-
-HTML_EXTRA_FILES       = doc/theme/doxygen-awesome-darkmode-toggle.js \
-                         doc/theme/doxygen-awesome-fragment-copy-button.js \
-                         doc/theme/doxygen-awesome-paragraph-link.js \
-                         doc/theme/doxygen-awesome-interactive-toc.js
-
-# This must be set to LIGHT for the doxygen-awesome theme to work correctly.
-
-HTML_COLORSTYLE = LIGHT
-
-# The tree view is used by doxygen-awesome for the left menu.
-
+DISABLE_INDEX          = YES
 GENERATE_TREEVIEW      = YES
+FULL_SIDEBAR           = YES
 
 # Enum values look weird in Doxygen output in general, but a bit less weird
 # when only allowing 1 value per line.
