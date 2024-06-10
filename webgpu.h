@@ -9,7 +9,7 @@
 /**
  * \mainpage
  * 
- * **NB** *This documentation is a Work In Progress.*
+ * **Important:** *This documentation is a Work In Progress.*
  *
  * This is the home of WebGPU C API specification. We define here the standard
  * `webgpu.h` header that all implementations should provide.

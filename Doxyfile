@@ -7,9 +7,9 @@
 
 PROJECT_NAME           = "WebGPU Headers"
 
-# This is the version of webgpu.h, putting "v0.1.0" as a mock value for now.
+# This is the version of webgpu.h. Currently we don't have release versions.
 
-PROJECT_NUMBER         = v0.1.0
+PROJECT_NUMBER         =
 
 # This appears at the top of each page and should give viewer a quick idea
 # about the purpose of the project. Keep the description short.
@@ -108,7 +108,7 @@ IGNORE_PREFIX          = WGPU,wgpu
 
 GENERATE_HTML          = YES
 
-# Sidebar-based page layout (see https://www.doxygen.nl/manual/customize.html)
+# Sidebar-based page layout (https://www.doxygen.nl/manual/customize.html)
 
 DISABLE_INDEX          = YES
 GENERATE_TREEVIEW      = YES
