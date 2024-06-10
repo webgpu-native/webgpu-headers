@@ -1667,6 +1667,10 @@ structs:
     type: base_out
     free_members: true
     members:
+      - name: usages
+        doc: |
+          TODO
+        type: bitflag.texture_usage
       - name: formats
         doc: |
           TODO
