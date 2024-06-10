@@ -435,10 +435,12 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: unknown
+        value: 0x0001
         doc: |
           TODO
       - name: destroyed
+        value: 0x0002
         doc: |
           TODO
 
@@ -1447,7 +1449,8 @@ structs:
   - name: adapter_info
     doc: |
       TODO
-    type: standalone
+    type: base_out
+    free_members: true
     members:
       - name: vendor
         doc: |
@@ -1465,6 +1468,22 @@ structs:
         doc: |
           TODO
         type: string
+      - name: backend_type
+        doc: |
+          TODO
+        type: enum.backend_type
+      - name: adapter_type
+        doc: |
+          TODO
+        type: enum.adapter_type
+      - name: vendor_ID
+        doc: |
+          TODO
+        type: uint32
+      - name: device_ID
+        doc: |
+          TODO
+        type: uint32
 
   - name: adapter_properties
     doc: |
@@ -1538,6 +1557,10 @@ structs:
           TODO
         type: c_void
         pointer: mutable
+      - name: uncaptured_error_callback_info
+        doc: |
+          TODO
+        type: function_type.uncaptured_error_callback_info
 
   - name: bind_group_entry
     doc: |
@@ -1644,6 +1667,10 @@ structs:
     type: base_out
     free_members: true
     members:
+      - name: usages
+        doc: |
+          TODO
+        type: bitflag.texture_usage
       - name: formats
         doc: |
           TODO
@@ -3073,6 +3100,21 @@ structs:
           TODO
         type: enum.texture_aspect
 
+  - name: uncaptured_error_callback_info
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: callback
+        doc: |
+          TODO
+        type: function_type.error_callback
+      - name: userdata
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+
 functions:
   - name: create_instance
     doc: |
@@ -3141,14 +3183,15 @@ objects:
               TODO
             type: enum.feature_name
             pointer: mutable
-      - name: request_adapter_info
+      - name: get_info
         doc: |
           TODO
-        returns_async:
-          - name: adapter_info
+        args:
+          - name: info
             doc: |
               TODO
             type: struct.adapter_info
+            pointer: mutable
       - name: request_device
         doc: |
           TODO
@@ -3881,19 +3924,6 @@ objects:
           doc: |
             TODO
           type: object.queue
-      - name: set_uncaptured_error_callback
-        doc: |
-          TODO
-        args:
-          - name: callback
-            doc: |
-              TODO
-            type: function_type.error_callback
-          - name: userdata
-            doc: |
-              TODO
-            type: c_void
-            pointer: mutable
       - name: push_error_scope
         doc: |
           TODO
@@ -4650,18 +4680,6 @@ objects:
               TODO
             type: struct.surface_texture
             pointer: mutable
-      - name: get_preferred_format
-        doc: |
-          TODO
-        returns:
-          doc: |
-            TODO
-          type: enum.texture_format
-        args:
-          - name: adapter
-            doc: |
-              TODO
-            type: object.adapter
       - name: present
         doc: |
           TODO
