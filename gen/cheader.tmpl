@@ -1,5 +1,16 @@
 {{- MCommentN .Copyright 0}}
 
+/** @file */
+
+/**
+ * \mainpage
+ * 
+ * **Important:** *This documentation is a Work In Progress.*
+ *
+ * This is the home of WebGPU C API specification. We define here the standard
+ * `webgpu.h` header that all implementations should provide.
+ */
+
 #ifndef {{.HeaderName | ConstantCase}}_H_
 #define {{.HeaderName | ConstantCase}}_H_
 
@@ -54,12 +65,28 @@
 #include "webgpu.h"
 {{end}}
 
+/**
+ * \defgroup Constants
+ * \brief Constants.
+ * 
+ * @{
+ */
+
 {{- if .Constants}}
 {{-   range .Constants}}
 {{-     MComment .Doc 0}}
 #define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} ({{.Value | CValue}})
 {{-   end}}
 {{  end}}
+
+/** @} */
+
+/**
+ * \defgroup Typedefs
+ * \brief Utility typedefs.
+ * 
+ * @{
+ */
 
 {{- if eq .Name "webgpu"}}
 typedef uint32_t WGPUFlags;
@@ -70,13 +97,25 @@ typedef uint32_t WGPUBool;
 typedef {{CType .Type "" ""}} WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
 {{  end}}
 
+/** @} */
+
+/**
+ * \defgroup Objects
+ * \brief Opaque, non-dispatchable handles to WebGPU objects.
+ * 
+ * @{
+ */
+
 {{- if .Objects}}
 {{-   range .Objects}}
 {{-     if not .IsStruct}}
+{{-   MComment .Doc 0}}
 typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}Impl* WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_OBJECT_ATTRIBUTE;
 {{-     end}}
 {{-   end}}
 {{  end}}
+
+/** @} */
 
 {{- if .Structs}}
 // Structure forward declarations
@@ -84,6 +123,13 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}Impl* WGPU{{.Name | Pasc
 struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
 {{-   end}}
 {{  end}}
+
+/**
+ * \defgroup Enumerations
+ * \brief Enums.
+ * 
+ * @{
+ */
 
 {{- range $enum := .Enums}}
 {{-   if .Extended}}
@@ -94,13 +140,22 @@ __WGPU_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCas
 {{-     MComment .Doc 0}}
 typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-     range $entryIndex, $_ := .Entries}}
-{{-       MComment .Doc 4}}
+{{-       MCommentEnum .Doc 4 $.EnumPrefix $enum $entryIndex }}
     WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{EnumValue $.EnumPrefix $enum $entryIndex}},
 {{-     end}}
     WGPU{{$enum.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF
 } WGPU{{$enum.Name | PascalCase}}{{$.ExtSuffix}} WGPU_ENUM_ATTRIBUTE;
 {{-   end}}
 {{  end}}
+
+/** @} */
+
+/**
+ * \defgroup Bitflags
+ * \brief Enum used as bit flags.
+ * 
+ * @{
+ */
 
 {{- range $bitflag := .Bitflags}}
 {{-   if .Extended}}
@@ -111,7 +166,7 @@ __WGPU_EXTEND_ENUM(WGPU{{$bitflag.Name | PascalCase}}, WGPU{{$bitflag.Name | Pas
 {{-     MComment .Doc 0}}
 typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-     range $entryIndex, $_ := .Entries}}
-{{-       MComment .Doc 4}}
+{{-       MCommentBitflag .Doc 4 $bitflag $entryIndex }}
     WGPU{{$bitflag.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{BitflagValue $bitflag $entryIndex}},
 {{-     end}}
     WGPU{{$bitflag.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF
@@ -119,6 +174,8 @@ typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 typedef WGPUFlags WGPU{{$bitflag.Name | PascalCase}}Flags{{$.ExtSuffix}} WGPU_ENUM_ATTRIBUTE;
 {{-   end}}
 {{  end}}
+
+/** @} */
 
 {{- if eq .Name "webgpu"}}
 typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
@@ -128,6 +185,13 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 {{-   MComment .Doc 0}}
 typedef {{FunctionReturns .}} (*WGPU{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
+
+/**
+ * \defgroup Callbacks
+ * \brief Callbacks through which asynchronous functions return.
+ * 
+ * @{
+ */
 
 {{- if .Objects}}
 {{    range $object := .Objects}}
@@ -140,7 +204,16 @@ typedef void (*WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Cal
 {{-   end}}
 {{  end}}
 
+/** @} */
+
 {{- if eq .Name "webgpu"}}
+/**
+ * \defgroup ChainedStructures Chained Structures
+ * \brief Structures used to extend descriptors.
+ * 
+ * @{
+ */
+
 typedef struct WGPUChainedStruct {
     struct WGPUChainedStruct const * next;
     WGPUSType sType;
@@ -150,7 +223,16 @@ typedef struct WGPUChainedStructOut {
     struct WGPUChainedStructOut * next;
     WGPUSType sType;
 } WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
+
+/** @} */
 {{  end}}
+
+/**
+ * \defgroup Structures
+ * \brief Descriptors and other transparent structures.
+ * 
+ * @{
+ */
 
 {{- range $struct := .Structs}}
 {{-   MComment .Doc 0}}
@@ -169,6 +251,8 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
 {{  end}}{{"\n" -}}
+
+/** @} */
 
 #ifdef __cplusplus
 extern "C" {
@@ -200,6 +284,13 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
 
 #if !defined(WGPU_SKIP_DECLARATIONS){{"\n" -}}
 
+/**
+ * \defgroup GlobalFunctions Global Functions
+ * \brief Functions that are not specific to an object.
+ * 
+ * @{
+ */
+
 {{- range .Functions}}
 {{-   MComment .Doc 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
@@ -208,8 +299,23 @@ WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{Fu
 WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
+/** @} */
+
+/**
+ * \defgroup Methods
+ * \brief Functions that are relative to a specific object.
+ * 
+ * @{
+ */
+
 {{- range $object := .Objects}}
-// Methods of {{$object.Name | PascalCase}}
+
+/**
+ * \defgroup {{$object.Name | PascalCase}}Methods {{$object.Name | PascalCase}} methods
+ * \brief Functions whose first argument has type {{$object.Name | PascalCase}}.
+ * 
+ * @{
+ */
 {{-   range $object.Methods}}
 {{-     MComment .Doc 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
@@ -218,7 +324,11 @@ WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | Pas
 WGPU_EXPORT void wgpu{{.Name | PascalCase}}Reference{{$.ExtSuffix}}(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpu{{.Name | PascalCase}}Release{{$.ExtSuffix}}(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
+/** @} */
+
 {{  end}}{{"\n" -}}
+
+/** @} */
 
 #endif  // !defined(WGPU_SKIP_DECLARATIONS)
 
