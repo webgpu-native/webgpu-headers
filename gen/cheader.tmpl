@@ -311,8 +311,8 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 {{- range $object := .Objects}}
 
 /**
- * \defgroup {{$object.Name | PascalCase}}Methods {{$object.Name | PascalCase}} methods
- * \brief Functions whose first argument has type {{$object.Name | PascalCase}}.
+ * \defgroup WGPU{{$object.Name | PascalCase}}Methods WGPU{{$object.Name | PascalCase}} methods
+ * \brief Functions whose first argument has type WGPU{{$object.Name | PascalCase}}.
  * 
  * @{
  */
