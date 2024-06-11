@@ -1675,8 +1675,8 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
  */
 
 /**
- * \defgroup AdapterMethods Adapter methods
- * \brief Functions whose first argument has type Adapter.
+ * \defgroup WGPUAdapterMethods WGPUAdapter methods
+ * \brief Functions whose first argument has type WGPUAdapter.
  * 
  * @{
  */
@@ -1693,8 +1693,8 @@ WGPU_EXPORT void wgpuAdapterRelease(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE
 
 
 /**
- * \defgroup AdapterInfoMethods AdapterInfo methods
- * \brief Functions whose first argument has type AdapterInfo.
+ * \defgroup WGPUAdapterInfoMethods WGPUAdapterInfo methods
+ * \brief Functions whose first argument has type WGPUAdapterInfo.
  * 
  * @{
  */
@@ -1704,8 +1704,8 @@ WGPU_EXPORT void wgpuAdapterInfoFreeMembers(WGPUAdapterInfo adapterInfo) WGPU_FU
 
 
 /**
- * \defgroup BindGroupMethods BindGroup methods
- * \brief Functions whose first argument has type BindGroup.
+ * \defgroup WGPUBindGroupMethods WGPUBindGroup methods
+ * \brief Functions whose first argument has type WGPUBindGroup.
  * 
  * @{
  */
@@ -1717,8 +1717,8 @@ WGPU_EXPORT void wgpuBindGroupRelease(WGPUBindGroup bindGroup) WGPU_FUNCTION_ATT
 
 
 /**
- * \defgroup BindGroupLayoutMethods BindGroupLayout methods
- * \brief Functions whose first argument has type BindGroupLayout.
+ * \defgroup WGPUBindGroupLayoutMethods WGPUBindGroupLayout methods
+ * \brief Functions whose first argument has type WGPUBindGroupLayout.
  * 
  * @{
  */
@@ -1730,8 +1730,8 @@ WGPU_EXPORT void wgpuBindGroupLayoutRelease(WGPUBindGroupLayout bindGroupLayout)
 
 
 /**
- * \defgroup BufferMethods Buffer methods
- * \brief Functions whose first argument has type Buffer.
+ * \defgroup WGPUBufferMethods WGPUBuffer methods
+ * \brief Functions whose first argument has type WGPUBuffer.
  * 
  * @{
  */
@@ -1751,8 +1751,8 @@ WGPU_EXPORT void wgpuBufferRelease(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 
 
 /**
- * \defgroup CommandBufferMethods CommandBuffer methods
- * \brief Functions whose first argument has type CommandBuffer.
+ * \defgroup WGPUCommandBufferMethods WGPUCommandBuffer methods
+ * \brief Functions whose first argument has type WGPUCommandBuffer.
  * 
  * @{
  */
@@ -1764,8 +1764,8 @@ WGPU_EXPORT void wgpuCommandBufferRelease(WGPUCommandBuffer commandBuffer) WGPU_
 
 
 /**
- * \defgroup CommandEncoderMethods CommandEncoder methods
- * \brief Functions whose first argument has type CommandEncoder.
+ * \defgroup WGPUCommandEncoderMethods WGPUCommandEncoder methods
+ * \brief Functions whose first argument has type WGPUCommandEncoder.
  * 
  * @{
  */
@@ -1790,8 +1790,8 @@ WGPU_EXPORT void wgpuCommandEncoderRelease(WGPUCommandEncoder commandEncoder) WG
 
 
 /**
- * \defgroup ComputePassEncoderMethods ComputePassEncoder methods
- * \brief Functions whose first argument has type ComputePassEncoder.
+ * \defgroup WGPUComputePassEncoderMethods WGPUComputePassEncoder methods
+ * \brief Functions whose first argument has type WGPUComputePassEncoder.
  * 
  * @{
  */
@@ -1811,8 +1811,8 @@ WGPU_EXPORT void wgpuComputePassEncoderRelease(WGPUComputePassEncoder computePas
 
 
 /**
- * \defgroup ComputePipelineMethods ComputePipeline methods
- * \brief Functions whose first argument has type ComputePipeline.
+ * \defgroup WGPUComputePipelineMethods WGPUComputePipeline methods
+ * \brief Functions whose first argument has type WGPUComputePipeline.
  * 
  * @{
  */
@@ -1825,8 +1825,8 @@ WGPU_EXPORT void wgpuComputePipelineRelease(WGPUComputePipeline computePipeline)
 
 
 /**
- * \defgroup DeviceMethods Device methods
- * \brief Functions whose first argument has type Device.
+ * \defgroup WGPUDeviceMethods WGPUDevice methods
+ * \brief Functions whose first argument has type WGPUDevice.
  * 
  * @{
  */
@@ -1859,8 +1859,8 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 
 
 /**
- * \defgroup InstanceMethods Instance methods
- * \brief Functions whose first argument has type Instance.
+ * \defgroup WGPUInstanceMethods WGPUInstance methods
+ * \brief Functions whose first argument has type WGPUInstance.
  * 
  * @{
  */
@@ -1875,8 +1875,8 @@ WGPU_EXPORT void wgpuInstanceRelease(WGPUInstance instance) WGPU_FUNCTION_ATTRIB
 
 
 /**
- * \defgroup PipelineLayoutMethods PipelineLayout methods
- * \brief Functions whose first argument has type PipelineLayout.
+ * \defgroup WGPUPipelineLayoutMethods WGPUPipelineLayout methods
+ * \brief Functions whose first argument has type WGPUPipelineLayout.
  * 
  * @{
  */
@@ -1888,8 +1888,8 @@ WGPU_EXPORT void wgpuPipelineLayoutRelease(WGPUPipelineLayout pipelineLayout) WG
 
 
 /**
- * \defgroup QuerySetMethods QuerySet methods
- * \brief Functions whose first argument has type QuerySet.
+ * \defgroup WGPUQuerySetMethods WGPUQuerySet methods
+ * \brief Functions whose first argument has type WGPUQuerySet.
  * 
  * @{
  */
@@ -1904,8 +1904,8 @@ WGPU_EXPORT void wgpuQuerySetRelease(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIB
 
 
 /**
- * \defgroup QueueMethods Queue methods
- * \brief Functions whose first argument has type Queue.
+ * \defgroup WGPUQueueMethods WGPUQueue methods
+ * \brief Functions whose first argument has type WGPUQueue.
  * 
  * @{
  */
@@ -1921,8 +1921,8 @@ WGPU_EXPORT void wgpuQueueRelease(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
 
 
 /**
- * \defgroup RenderBundleMethods RenderBundle methods
- * \brief Functions whose first argument has type RenderBundle.
+ * \defgroup WGPURenderBundleMethods WGPURenderBundle methods
+ * \brief Functions whose first argument has type WGPURenderBundle.
  * 
  * @{
  */
@@ -1934,8 +1934,8 @@ WGPU_EXPORT void wgpuRenderBundleRelease(WGPURenderBundle renderBundle) WGPU_FUN
 
 
 /**
- * \defgroup RenderBundleEncoderMethods RenderBundleEncoder methods
- * \brief Functions whose first argument has type RenderBundleEncoder.
+ * \defgroup WGPURenderBundleEncoderMethods WGPURenderBundleEncoder methods
+ * \brief Functions whose first argument has type WGPURenderBundleEncoder.
  * 
  * @{
  */
@@ -1959,8 +1959,8 @@ WGPU_EXPORT void wgpuRenderBundleEncoderRelease(WGPURenderBundleEncoder renderBu
 
 
 /**
- * \defgroup RenderPassEncoderMethods RenderPassEncoder methods
- * \brief Functions whose first argument has type RenderPassEncoder.
+ * \defgroup WGPURenderPassEncoderMethods WGPURenderPassEncoder methods
+ * \brief Functions whose first argument has type WGPURenderPassEncoder.
  * 
  * @{
  */
@@ -1991,8 +1991,8 @@ WGPU_EXPORT void wgpuRenderPassEncoderRelease(WGPURenderPassEncoder renderPassEn
 
 
 /**
- * \defgroup RenderPipelineMethods RenderPipeline methods
- * \brief Functions whose first argument has type RenderPipeline.
+ * \defgroup WGPURenderPipelineMethods WGPURenderPipeline methods
+ * \brief Functions whose first argument has type WGPURenderPipeline.
  * 
  * @{
  */
@@ -2005,8 +2005,8 @@ WGPU_EXPORT void wgpuRenderPipelineRelease(WGPURenderPipeline renderPipeline) WG
 
 
 /**
- * \defgroup SamplerMethods Sampler methods
- * \brief Functions whose first argument has type Sampler.
+ * \defgroup WGPUSamplerMethods WGPUSampler methods
+ * \brief Functions whose first argument has type WGPUSampler.
  * 
  * @{
  */
@@ -2018,8 +2018,8 @@ WGPU_EXPORT void wgpuSamplerRelease(WGPUSampler sampler) WGPU_FUNCTION_ATTRIBUTE
 
 
 /**
- * \defgroup ShaderModuleMethods ShaderModule methods
- * \brief Functions whose first argument has type ShaderModule.
+ * \defgroup WGPUShaderModuleMethods WGPUShaderModule methods
+ * \brief Functions whose first argument has type WGPUShaderModule.
  * 
  * @{
  */
@@ -2032,8 +2032,8 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
 
 
 /**
- * \defgroup SurfaceMethods Surface methods
- * \brief Functions whose first argument has type Surface.
+ * \defgroup WGPUSurfaceMethods WGPUSurface methods
+ * \brief Functions whose first argument has type WGPUSurface.
  * 
  * @{
  */
@@ -2050,8 +2050,8 @@ WGPU_EXPORT void wgpuSurfaceRelease(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE
 
 
 /**
- * \defgroup SurfaceCapabilitiesMethods SurfaceCapabilities methods
- * \brief Functions whose first argument has type SurfaceCapabilities.
+ * \defgroup WGPUSurfaceCapabilitiesMethods WGPUSurfaceCapabilities methods
+ * \brief Functions whose first argument has type WGPUSurfaceCapabilities.
  * 
  * @{
  */
@@ -2061,8 +2061,8 @@ WGPU_EXPORT void wgpuSurfaceCapabilitiesFreeMembers(WGPUSurfaceCapabilities surf
 
 
 /**
- * \defgroup TextureMethods Texture methods
- * \brief Functions whose first argument has type Texture.
+ * \defgroup WGPUTextureMethods WGPUTexture methods
+ * \brief Functions whose first argument has type WGPUTexture.
  * 
  * @{
  */
@@ -2084,8 +2084,8 @@ WGPU_EXPORT void wgpuTextureRelease(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE
 
 
 /**
- * \defgroup TextureViewMethods TextureView methods
- * \brief Functions whose first argument has type TextureView.
+ * \defgroup WGPUTextureViewMethods WGPUTextureView methods
+ * \brief Functions whose first argument has type WGPUTextureView.
  * 
  * @{
  */
