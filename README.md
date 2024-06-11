@@ -1,16 +1,21 @@
-# WebGPU headers
+# WebGPU Headers
 
-This repository contains C headers equivalent to the [WebGPU](https://gpuweb.github.io/gpuweb/) API and (soon) documentation on the native specificities of the headers.
+This repository contains C headers equivalent to the [WebGPU](https://gpuweb.github.io/gpuweb/) API and documentation on the native specificities of the headers.
+
+**This header is NOT STABLE yet, and the documentation is very much a work in progress!**
+
+All of the API is defined in the [webgpu.h](./webgpu.h) header file.
+**[Read the documentation here!](https://webgpu-native.github.io/webgpu-headers/)**
+
+## Why?
 
 While WebGPU is a JavaScript API made for the Web, it is a good tradeoff of ergonomic, efficient and portable graphics API.
 Almost all of its concepts are not specific to the Web platform and the headers replicate them exactly, while adding capabilities to interact with native concepts (like windows).
 
-All of the API is defined in the [webgpu.h](./webgpu.h) header.
-
 Implementations of this header include:
 
- - [Dawn](https://dawn.googlesource.com/dawn), Chromium's C++ WebGPU implementation library
- - [wgpu-native](https://github.com/gfx-rs/wgpu-native), Firefox's Rust WebGPU implementation library
+ - [Dawn](https://dawn.googlesource.com/dawn), the C++ WebGPU implementation used in Chromium
+ - [wgpu-native](https://github.com/gfx-rs/wgpu-native), C bindings to [wgpu](https://github.com/gfx-rs/wgpu), the Rust WebGPU implementation used in Firefox
  - [Emscripten](https://github.com/emscripten-core/emscripten/blob/main/src/library_webgpu.js) translates [webgpu.h](./webgpu.h) calls to JavaScript WebGPU calls when compiling to WASM
 
 ## Details
