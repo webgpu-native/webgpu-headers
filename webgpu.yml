@@ -1485,44 +1485,6 @@ structs:
           TODO
         type: uint32
 
-  - name: adapter_properties
-    doc: |
-      TODO
-    type: base_out
-    members:
-      - name: vendor_ID
-        doc: |
-          TODO
-        type: uint32
-      - name: vendor_name
-        doc: |
-          TODO
-        type: string
-      - name: architecture
-        doc: |
-          TODO
-        type: string
-      - name: device_ID
-        doc: |
-          TODO
-        type: uint32
-      - name: name
-        doc: |
-          TODO
-        type: string
-      - name: driver_description
-        doc: |
-          TODO
-        type: string
-      - name: adapter_type
-        doc: |
-          TODO
-        type: enum.adapter_type
-      - name: backend_type
-        doc: |
-          TODO
-        type: enum.backend_type
-
   - name: device_descriptor
     doc: |
       TODO
@@ -3148,15 +3110,6 @@ objects:
             doc: |
               TODO
             type: struct.supported_limits
-            pointer: mutable
-      - name: get_properties
-        doc: |
-          TODO
-        args:
-          - name: properties
-            doc: |
-              TODO
-            type: struct.adapter_properties
             pointer: mutable
       - name: has_feature
         doc: |
