@@ -12,7 +12,7 @@ gen-check: fix gen
 		git diff -- webgpu.h;                                                               \
 		exit 1;                                                                             \
 	}
-	@git diff --quite -- webgpu.yml || {                          \
+	@git diff --quiet -- webgpu.yml || {                          \
 		echo "error: Please re-run 'make fix' to format the yml"; \
 		git diff -- webgpu.yml;                                   \
 		exit 1;                                                   \
