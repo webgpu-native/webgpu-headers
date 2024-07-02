@@ -58,6 +58,10 @@
             "type": "string",
             "pattern": "^(array<)?(typedef\\.|enum\\.|bitflag\\.|struct\\.|function_type\\.|object\\.)([a-zA-Z0-9]([a-zA-Z0-9_]*[a-zA-Z0-9])?)(>)?$"
         },
+        "CallbackType": {
+            "type": "string",
+            "pattern": "^(callback\\.)([a-zA-Z0-9]([a-zA-Z0-9_]*[a-zA-Z0-9])?)$"
+        },
         "Type": {
             "oneOf": [
                 {
@@ -65,6 +69,9 @@
                 },
                 {
                     "$ref": "#/definitions/ComplexType"
+                },
+                {
+                    "$ref": "#/definitions/CallbackType"
                 }
             ]
         },
@@ -73,6 +80,41 @@
             "enum": [
                 "immutable",
                 "mutable"
+            ]
+        },
+        "CallbackStyle": {
+            "type": "string",
+            "enum": [
+                "callback_mode",
+                "immediate"
+            ]
+        },
+        "Callback": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/Name",
+                    "description": "Callback name"
+                },
+                "doc": {
+                    "type": "string"
+                },
+                "style": {
+                    "$ref": "#/definitions/CallbackStyle",
+                    "description": "Callback style"
+                },
+                "args": {
+                    "type": "array",
+                    "description": "Optional property, list of callback arguments",
+                    "items": {
+                        "$ref": "#/definitions/ParameterType"
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "doc",
+                "style"
             ]
         },
         "ParameterType": {
@@ -140,12 +182,9 @@
                         "type"
                     ]
                 },
-                "returns_async": {
-                    "type": "array",
-                    "description": "Optional property, list of async callback arguments",
-                    "items": {
-                        "$ref": "#/definitions/ParameterType"
-                    }
+                "callback": {
+                    "$ref": "#/definitions/CallbackType",
+                    "description": "Optional property, callback type for async functon"
                 },
                 "args": {
                     "type": "array",
@@ -321,12 +360,6 @@
                 ]
             }
         },
-        "function_types": {
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/Function"
-            }
-        },
         "structs": {
             "type": "array",
             "items": {
@@ -376,6 +409,12 @@
                 ]
             }
         },
+        "callbacks": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Callback"
+            }
+        },
         "functions": {
             "type": "array",
             "items": {
@@ -421,7 +460,7 @@
         "typedefs",
         "enums",
         "bitflags",
-        "function_types",
+        "callbacks",
         "structs",
         "functions",
         "objects"
