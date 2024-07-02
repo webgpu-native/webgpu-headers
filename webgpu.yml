@@ -2,10 +2,8 @@ copyright: |
   Copyright 2019-2023 WebGPU-Native developers
 
   SPDX-License-Identifier: BSD-3-Clause
-
 name: webgpu
 enum_prefix: '0x0000'
-
 constants:
   - name: array_layer_count_undefined
     value: uint32_max
@@ -43,27 +41,8 @@ constants:
     value: uint64_max
     doc: |
       TODO
-
 typedefs: []
-
 enums:
-  - name: request_adapter_status
-    doc: |
-      TODO
-    entries:
-      - name: success
-        doc: |
-          TODO
-      - name: unavailable
-        doc: |
-          TODO
-      - name: error
-        doc: |
-          TODO
-      - name: unknown
-        doc: |
-          TODO
-
   - name: adapter_type
     doc: |
       TODO
@@ -80,7 +59,6 @@ enums:
       - name: unknown
         doc: |
           TODO
-
   - name: address_mode
     doc: |
       TODO
@@ -94,7 +72,6 @@ enums:
       - name: clamp_to_edge
         doc: |
           TODO
-
   - name: backend_type
     doc: |
       TODO
@@ -126,81 +103,6 @@ enums:
       - name: openGLES
         doc: |
           TODO
-
-  - name: buffer_binding_type
-    doc: |
-      TODO
-    entries:
-      - name: undefined
-        doc: |
-          TODO
-      - name: uniform
-        doc: |
-          TODO
-      - name: storage
-        doc: |
-          TODO
-      - name: read_only_storage
-        doc: |
-          TODO
-
-  - name: sampler_binding_type
-    doc: |
-      TODO
-    entries:
-      - name: undefined
-        doc: |
-          TODO
-      - name: filtering
-        doc: |
-          TODO
-      - name: non_filtering
-        doc: |
-          TODO
-      - name: comparison
-        doc: |
-          TODO
-
-  - name: texture_sample_type
-    doc: |
-      TODO
-    entries:
-      - name: undefined
-        doc: |
-          TODO
-      - name: float
-        doc: |
-          TODO
-      - name: unfilterable_float
-        doc: |
-          TODO
-      - name: depth
-        doc: |
-          TODO
-      - name: sint
-        doc: |
-          TODO
-      - name: uint
-        doc: |
-          TODO
-
-  - name: storage_texture_access
-    doc: |
-      TODO
-    entries:
-      - name: undefined
-        doc: |
-          TODO
-      - name: write_only
-        doc: |
-          TODO
-      - name: read_only
-        doc: |
-          TODO
-      - name: read_write
-        doc: |
-          TODO
-
   - name: blend_factor
     doc: |
       TODO
@@ -244,7 +146,6 @@ enums:
       - name: one_minus_constant
         doc: |
           TODO
-
   - name: blend_operation
     doc: |
       TODO
@@ -264,7 +165,22 @@ enums:
       - name: max
         doc: |
           TODO
-
+  - name: buffer_binding_type
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: uniform
+        doc: |
+          TODO
+      - name: storage
+        doc: |
+          TODO
+      - name: read_only_storage
+        doc: |
+          TODO
   - name: buffer_map_async_status
     doc: |
       TODO
@@ -296,7 +212,6 @@ enums:
       - name: size_out_of_range
         doc: |
           TODO
-
   - name: buffer_map_state
     doc: |
       TODO
@@ -310,7 +225,6 @@ enums:
       - name: mapped
         doc: |
           TODO
-
   - name: compare_function
     doc: |
       TODO
@@ -342,7 +256,6 @@ enums:
       - name: always
         doc: |
           TODO
-
   - name: compilation_info_request_status
     doc: |
       TODO
@@ -359,7 +272,6 @@ enums:
       - name: unknown
         doc: |
           TODO
-
   - name: compilation_message_type
     doc: |
       TODO
@@ -373,7 +285,6 @@ enums:
       - name: info
         doc: |
           TODO
-
   - name: composite_alpha_mode
     doc: |
       TODO
@@ -393,7 +304,6 @@ enums:
       - name: inherit
         doc: |
           TODO
-
   - name: create_pipeline_async_status
     doc: |
       TODO
@@ -416,7 +326,6 @@ enums:
       - name: unknown
         doc: |
           TODO
-
   - name: cull_mode
     doc: |
       TODO
@@ -430,7 +339,6 @@ enums:
       - name: back
         doc: |
           TODO
-
   - name: device_lost_reason
     doc: |
       TODO
@@ -443,7 +351,6 @@ enums:
         value: 0x0002
         doc: |
           TODO
-
   - name: error_filter
     doc: |
       TODO
@@ -457,7 +364,6 @@ enums:
       - name: internal
         doc: |
           TODO
-
   - name: error_type
     doc: |
       TODO
@@ -480,7 +386,6 @@ enums:
       - name: device_lost
         doc: |
           TODO
-
   - name: feature_name
     doc: |
       TODO
@@ -521,7 +426,6 @@ enums:
       - name: float32_filterable
         doc: |
           TODO
-
   - name: filter_mode
     doc: |
       TODO
@@ -532,7 +436,6 @@ enums:
       - name: linear
         doc: |
           TODO
-
   - name: front_face
     doc: |
       TODO
@@ -543,7 +446,6 @@ enums:
       - name: CW
         doc: |
           TODO
-
   - name: index_format
     doc: |
       TODO
@@ -557,21 +459,6 @@ enums:
       - name: uint32
         doc: |
           TODO
-
-  - name: vertex_step_mode
-    doc: |
-      TODO
-    entries:
-      - name: vertex
-        doc: |
-          TODO
-      - name: instance
-        doc: |
-          TODO
-      - name: vertex_buffer_not_used
-        doc: |
-          TODO
-
   - name: load_op
     doc: |
       TODO
@@ -585,7 +472,6 @@ enums:
       - name: load
         doc: |
           TODO
-
   - name: mipmap_filter_mode
     doc: |
       TODO
@@ -596,21 +482,6 @@ enums:
       - name: linear
         doc: |
           TODO
-
-  - name: store_op
-    doc: |
-      TODO
-    entries:
-      - name: undefined
-        doc: |
-          TODO
-      - name: store
-        doc: |
-          TODO
-      - name: discard
-        doc: |
-          TODO
-
   - name: power_preference
     doc: |
       TODO
@@ -624,7 +495,6 @@ enums:
       - name: high_performance
         doc: |
           TODO
-
   - name: present_mode
     doc: |
       TODO
@@ -641,7 +511,6 @@ enums:
       - name: mailbox
         doc: |
           TODO
-
   - name: primitive_topology
     doc: |
       TODO
@@ -661,7 +530,6 @@ enums:
       - name: triangle_strip
         doc: |
           TODO
-
   - name: query_type
     doc: |
       TODO
@@ -672,7 +540,6 @@ enums:
       - name: timestamp
         doc: |
           TODO
-
   - name: queue_work_done_status
     doc: |
       TODO
@@ -689,7 +556,22 @@ enums:
       - name: device_lost
         doc: |
           TODO
-
+  - name: request_adapter_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        doc: |
+          TODO
+      - name: unavailable
+        doc: |
+          TODO
+      - name: error
+        doc: |
+          TODO
+      - name: unknown
+        doc: |
+          TODO
   - name: request_device_status
     doc: |
       TODO
@@ -703,36 +585,6 @@ enums:
       - name: unknown
         doc: |
           TODO
-
-  - name: stencil_operation
-    doc: |
-      TODO
-    entries:
-      - name: keep
-        doc: |
-          TODO
-      - name: zero
-        doc: |
-          TODO
-      - name: replace
-        doc: |
-          TODO
-      - name: invert
-        doc: |
-          TODO
-      - name: increment_clamp
-        doc: |
-          TODO
-      - name: decrement_clamp
-        doc: |
-          TODO
-      - name: increment_wrap
-        doc: |
-          TODO
-      - name: decrement_wrap
-        doc: |
-          TODO
-
   - name: s_type
     doc: |
       TODO
@@ -774,7 +626,79 @@ enums:
         value: 0x000F
         doc: |
           TODO
-
+  - name: sampler_binding_type
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: filtering
+        doc: |
+          TODO
+      - name: non_filtering
+        doc: |
+          TODO
+      - name: comparison
+        doc: |
+          TODO
+  - name: stencil_operation
+    doc: |
+      TODO
+    entries:
+      - name: keep
+        doc: |
+          TODO
+      - name: zero
+        doc: |
+          TODO
+      - name: replace
+        doc: |
+          TODO
+      - name: invert
+        doc: |
+          TODO
+      - name: increment_clamp
+        doc: |
+          TODO
+      - name: decrement_clamp
+        doc: |
+          TODO
+      - name: increment_wrap
+        doc: |
+          TODO
+      - name: decrement_wrap
+        doc: |
+          TODO
+  - name: storage_texture_access
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: write_only
+        doc: |
+          TODO
+      - name: read_only
+        doc: |
+          TODO
+      - name: read_write
+        doc: |
+          TODO
+  - name: store_op
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: store
+        doc: |
+          TODO
+      - name: discard
+        doc: |
+          TODO
   - name: surface_get_current_texture_status
     doc: |
       TODO
@@ -797,7 +721,6 @@ enums:
       - name: device_lost
         doc: |
           TODO
-
   - name: texture_aspect
     doc: |
       TODO
@@ -811,7 +734,6 @@ enums:
       - name: depth_only
         doc: |
           TODO
-
   - name: texture_dimension
     doc: |
       TODO
@@ -825,7 +747,6 @@ enums:
       - name: 3D
         doc: |
           TODO
-
   - name: texture_format
     doc: |
       TODO
@@ -1118,7 +1039,28 @@ enums:
       - name: ASTC_12x12_unorm_srgb
         doc: |
           TODO
-
+  - name: texture_sample_type
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: |
+          TODO
+      - name: float
+        doc: |
+          TODO
+      - name: unfilterable_float
+        doc: |
+          TODO
+      - name: depth
+        doc: |
+          TODO
+      - name: sint
+        doc: |
+          TODO
+      - name: uint
+        doc: |
+          TODO
   - name: texture_view_dimension
     doc: |
       TODO
@@ -1144,7 +1086,6 @@ enums:
       - name: 3D
         doc: |
           TODO
-
   - name: vertex_format
     doc: |
       TODO
@@ -1242,7 +1183,19 @@ enums:
       - name: sint32x4
         doc: |
           TODO
-
+  - name: vertex_step_mode
+    doc: |
+      TODO
+    entries:
+      - name: vertex
+        doc: |
+          TODO
+      - name: instance
+        doc: |
+          TODO
+      - name: vertex_buffer_not_used
+        doc: |
+          TODO
   - name: WGSL_feature_name
     doc: |
       TODO
@@ -1262,7 +1215,6 @@ enums:
       - name: pointer_composite_access
         doc: |
           TODO
-
 bitflags:
   - name: buffer_usage
     doc: |
@@ -1301,7 +1253,6 @@ bitflags:
       - name: query_resolve
         doc: |
           TODO
-
   - name: color_write_mask
     doc: |
       TODO
@@ -1330,7 +1281,6 @@ bitflags:
           - alpha
         doc: |
           TODO
-
   - name: map_mode
     doc: |
       TODO
@@ -1344,7 +1294,6 @@ bitflags:
       - name: write
         doc: |
           TODO
-
   - name: shader_stage
     doc: |
       TODO
@@ -1361,7 +1310,6 @@ bitflags:
       - name: compute
         doc: |
           TODO
-
   - name: texture_usage
     doc: |
       TODO
@@ -1384,7 +1332,6 @@ bitflags:
       - name: render_attachment
         doc: |
           TODO
-
 function_types:
   - name: device_lost_callback
     doc: |
@@ -1403,7 +1350,6 @@ function_types:
           TODO
         type: c_void
         pointer: mutable
-
   - name: error_callback
     doc: |
       TODO
@@ -1421,31 +1367,7 @@ function_types:
           TODO
         type: c_void
         pointer: mutable
-
 structs:
-  - name: request_adapter_options
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: compatible_surface
-        doc: |
-          TODO
-        type: object.surface
-        optional: true
-      - name: power_preference
-        doc: |
-          TODO
-        type: enum.power_preference
-      - name: backend_type
-        doc: |
-          TODO
-        type: enum.backend_type
-      - name: force_fallback_adapter
-        doc: |
-          TODO
-        type: bool
-
   - name: adapter_info
     doc: |
       TODO
@@ -1484,8 +1406,7 @@ structs:
         doc: |
           TODO
         type: uint32
-
-  - name: device_descriptor
+  - name: bind_group_descriptor
     doc: |
       TODO
     type: base_in
@@ -1495,35 +1416,15 @@ structs:
           TODO
         type: string
         optional: true
-      - name: required_features
+      - name: layout
         doc: |
           TODO
-        type: array<enum.feature_name>
+        type: object.bind_group_layout
+      - name: entries
+        doc: |
+          TODO
+        type: array<struct.bind_group_entry>
         pointer: immutable
-      - name: required_limits
-        doc: |
-          TODO
-        type: struct.required_limits
-        pointer: immutable
-        optional: true
-      - name: default_queue
-        doc: |
-          TODO
-        type: struct.queue_descriptor
-      - name: device_lost_callback
-        doc: |
-          TODO
-        type: function_type.device_lost_callback
-      - name: device_lost_userdata
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
-      - name: uncaptured_error_callback_info
-        doc: |
-          TODO
-        type: function_type.uncaptured_error_callback_info
-
   - name: bind_group_entry
     doc: |
       TODO
@@ -1556,8 +1457,7 @@ structs:
           TODO
         type: object.texture_view
         optional: true
-
-  - name: bind_group_descriptor
+  - name: bind_group_layout_descriptor
     doc: |
       TODO
     type: base_in
@@ -1567,145 +1467,11 @@ structs:
           TODO
         type: string
         optional: true
-      - name: layout
-        doc: |
-          TODO
-        type: object.bind_group_layout
       - name: entries
         doc: |
           TODO
-        type: array<struct.bind_group_entry>
+        type: array<struct.bind_group_layout_entry>
         pointer: immutable
-
-  - name: buffer_binding_layout
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: type
-        doc: |
-          TODO
-        type: enum.buffer_binding_type
-      - name: has_dynamic_offset
-        doc: |
-          TODO
-        type: bool
-      - name: min_binding_size
-        doc: |
-          TODO
-        type: uint64
-
-  - name: sampler_binding_layout
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: type
-        doc: |
-          TODO
-        type: enum.sampler_binding_type
-
-  - name: texture_binding_layout
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: sample_type
-        doc: |
-          TODO
-        type: enum.texture_sample_type
-      - name: view_dimension
-        doc: |
-          TODO
-        type: enum.texture_view_dimension
-      - name: multisampled
-        doc: |
-          TODO
-        type: bool
-
-  - name: surface_capabilities
-    doc: |
-      TODO
-    type: base_out
-    free_members: true
-    members:
-      - name: usages
-        doc: |
-          TODO
-        type: bitflag.texture_usage
-      - name: formats
-        doc: |
-          TODO
-        type: array<enum.texture_format>
-        pointer: immutable
-      - name: present_modes
-        doc: |
-          TODO
-        type: array<enum.present_mode>
-        pointer: immutable
-      - name: alpha_modes
-        doc: |
-          TODO
-        type: array<enum.composite_alpha_mode>
-        pointer: immutable
-
-  - name: surface_configuration
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: device
-        doc: |
-          TODO
-        type: object.device
-      - name: format
-        doc: |
-          TODO
-        type: enum.texture_format
-      - name: usage
-        doc: |
-          TODO
-        type: bitflag.texture_usage
-      - name: view_formats
-        doc: |
-          TODO
-        type: array<enum.texture_format>
-        pointer: immutable
-      - name: alpha_mode
-        doc: |
-          TODO
-        type: enum.composite_alpha_mode
-      - name: width
-        doc: |
-          TODO
-        type: uint32
-      - name: height
-        doc: |
-          TODO
-        type: uint32
-      - name: present_mode
-        doc: |
-          TODO
-        type: enum.present_mode
-
-  - name: storage_texture_binding_layout
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: access
-        doc: |
-          TODO
-        type: enum.storage_texture_access
-      - name: format
-        doc: |
-          TODO
-        type: enum.texture_format
-      - name: view_dimension
-        doc: |
-          TODO
-        type: enum.texture_view_dimension
-
   - name: bind_group_layout_entry
     doc: |
       TODO
@@ -1735,23 +1501,6 @@ structs:
         doc: |
           TODO
         type: struct.storage_texture_binding_layout
-
-  - name: bind_group_layout_descriptor
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: label
-        doc: |
-          TODO
-        type: string
-        optional: true
-      - name: entries
-        doc: |
-          TODO
-        type: array<struct.bind_group_layout_entry>
-        pointer: immutable
-
   - name: blend_component
     doc: |
       TODO
@@ -1769,7 +1518,36 @@ structs:
         doc: |
           TODO
         type: enum.blend_factor
-
+  - name: blend_state
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: color
+        doc: |
+          TODO
+        type: struct.blend_component
+      - name: alpha
+        doc: |
+          TODO
+        type: struct.blend_component
+  - name: buffer_binding_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: type
+        doc: |
+          TODO
+        type: enum.buffer_binding_type
+      - name: has_dynamic_offset
+        doc: |
+          TODO
+        type: bool
+      - name: min_binding_size
+        doc: |
+          TODO
+        type: uint64
   - name: buffer_descriptor
     doc: |
       TODO
@@ -1792,7 +1570,6 @@ structs:
         doc: |
           TODO
         type: bool
-
   - name: color
     doc: |
       TODO
@@ -1814,21 +1591,25 @@ structs:
         doc: |
           TODO
         type: float64
-
-  - name: constant_entry
+  - name: color_target_state
     doc: |
       TODO
     type: base_in
     members:
-      - name: key
+      - name: format
         doc: |
           TODO
-        type: string
-      - name: value
+        type: enum.texture_format
+      - name: blend
         doc: |
           TODO
-        type: float64
-
+        type: struct.blend_state
+        pointer: immutable
+        optional: true
+      - name: write_mask
+        doc: |
+          TODO
+        type: bitflag.color_write_mask
   - name: command_buffer_descriptor
     doc: |
       TODO
@@ -1839,7 +1620,6 @@ structs:
           TODO
         type: string
         optional: true
-
   - name: command_encoder_descriptor
     doc: |
       TODO
@@ -1850,7 +1630,6 @@ structs:
           TODO
         type: string
         optional: true
-
   - name: compilation_info
     doc: |
       TODO
@@ -1861,7 +1640,6 @@ structs:
           TODO
         type: array<struct.compilation_message>
         pointer: immutable
-
   - name: compilation_message
     doc: |
       TODO
@@ -1904,7 +1682,6 @@ structs:
         doc: |
           TODO
         type: uint64
-
   - name: compute_pass_descriptor
     doc: |
       TODO
@@ -1921,7 +1698,6 @@ structs:
         type: struct.compute_pass_timestamp_writes
         pointer: immutable
         optional: true
-
   - name: compute_pass_timestamp_writes
     doc: |
       TODO
@@ -1939,7 +1715,6 @@ structs:
         doc: |
           TODO
         type: uint32
-
   - name: compute_pipeline_descriptor
     doc: |
       TODO
@@ -1959,7 +1734,181 @@ structs:
         doc: |
           TODO
         type: struct.programmable_stage_descriptor
-
+  - name: constant_entry
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: key
+        doc: |
+          TODO
+        type: string
+      - name: value
+        doc: |
+          TODO
+        type: float64
+  - name: depth_stencil_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: depth_write_enabled
+        doc: |
+          TODO
+        type: bool
+      - name: depth_compare
+        doc: |
+          TODO
+        type: enum.compare_function
+      - name: stencil_front
+        doc: |
+          TODO
+        type: struct.stencil_face_state
+      - name: stencil_back
+        doc: |
+          TODO
+        type: struct.stencil_face_state
+      - name: stencil_read_mask
+        doc: |
+          TODO
+        type: uint32
+      - name: stencil_write_mask
+        doc: |
+          TODO
+        type: uint32
+      - name: depth_bias
+        doc: |
+          TODO
+        type: int32
+      - name: depth_bias_slope_scale
+        doc: |
+          TODO
+        type: float32
+      - name: depth_bias_clamp
+        doc: |
+          TODO
+        type: float32
+  - name: device_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: label
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: required_features
+        doc: |
+          TODO
+        type: array<enum.feature_name>
+        pointer: immutable
+      - name: required_limits
+        doc: |
+          TODO
+        type: struct.required_limits
+        pointer: immutable
+        optional: true
+      - name: default_queue
+        doc: |
+          TODO
+        type: struct.queue_descriptor
+      - name: device_lost_callback
+        doc: |
+          TODO
+        type: function_type.device_lost_callback
+      - name: device_lost_userdata
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+      - name: uncaptured_error_callback_info
+        doc: |
+          TODO
+        type: function_type.uncaptured_error_callback_info
+  - name: extent_3D
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: width
+        doc: |
+          TODO
+        type: uint32
+      - name: height
+        doc: |
+          TODO
+        type: uint32
+      - name: depth_or_array_layers
+        doc: |
+          TODO
+        type: uint32
+  - name: fragment_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
+      - name: targets
+        doc: |
+          TODO
+        type: array<struct.color_target_state>
+        pointer: immutable
+  - name: image_copy_buffer
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: layout
+        doc: |
+          TODO
+        type: struct.texture_data_layout
+      - name: buffer
+        doc: |
+          TODO
+        type: object.buffer
+  - name: image_copy_texture
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: texture
+        doc: |
+          TODO
+        type: object.texture
+      - name: mip_level
+        doc: |
+          TODO
+        type: uint32
+      - name: origin
+        doc: |
+          TODO
+        type: struct.origin_3D
+      - name: aspect
+        doc: |
+          TODO
+        type: enum.texture_aspect
+  - name: instance_descriptor
+    doc: |
+      TODO
+    type: base_in
   - name: limits
     doc: |
       TODO
@@ -2093,123 +2042,23 @@ structs:
         doc: |
           TODO
         type: uint32
-
-  - name: required_limits
+  - name: multisample_state
     doc: |
       TODO
     type: base_in
     members:
-      - name: limits
-        doc: |
-          TODO
-        type: struct.limits
-
-  - name: supported_limits
-    doc: |
-      TODO
-    type: base_out
-    members:
-      - name: limits
-        doc: |
-          TODO
-        type: struct.limits
-
-  - name: extent_3D
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: width
+      - name: count
         doc: |
           TODO
         type: uint32
-      - name: height
+      - name: mask
         doc: |
           TODO
         type: uint32
-      - name: depth_or_array_layers
+      - name: alpha_to_coverage_enabled
         doc: |
           TODO
-        type: uint32
-
-  - name: image_copy_buffer
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: layout
-        doc: |
-          TODO
-        type: struct.texture_data_layout
-      - name: buffer
-        doc: |
-          TODO
-        type: object.buffer
-
-  - name: image_copy_texture
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: texture
-        doc: |
-          TODO
-        type: object.texture
-      - name: mip_level
-        doc: |
-          TODO
-        type: uint32
-      - name: origin
-        doc: |
-          TODO
-        type: struct.origin_3D
-      - name: aspect
-        doc: |
-          TODO
-        type: enum.texture_aspect
-
-  - name: instance_descriptor
-    doc: |
-      TODO
-    type: base_in
-
-  - name: vertex_attribute
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: format
-        doc: |
-          TODO
-        type: enum.vertex_format
-      - name: offset
-        doc: |
-          TODO
-        type: uint64
-      - name: shader_location
-        doc: |
-          TODO
-        type: uint32
-
-  - name: vertex_buffer_layout
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: array_stride
-        doc: |
-          TODO
-        type: uint64
-      - name: step_mode
-        doc: |
-          TODO
-        type: enum.vertex_step_mode
-      - name: attributes
-        doc: |
-          TODO
-        type: array<struct.vertex_attribute>
-        pointer: immutable
-
+        type: bool
   - name: origin_3D
     doc: |
       TODO
@@ -2227,7 +2076,6 @@ structs:
         doc: |
           TODO
         type: uint32
-
   - name: pipeline_layout_descriptor
     doc: |
       TODO
@@ -2243,7 +2091,38 @@ structs:
           TODO
         type: array<object.bind_group_layout>
         pointer: immutable
-
+  - name: primitive_depth_clip_control
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - primitive_state
+    members:
+      - name: unclipped_depth
+        doc: |
+          TODO
+        type: bool
+  - name: primitive_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: topology
+        doc: |
+          TODO
+        type: enum.primitive_topology
+      - name: strip_index_format
+        doc: |
+          TODO
+        type: enum.index_format
+      - name: front_face
+        doc: |
+          TODO
+        type: enum.front_face
+      - name: cull_mode
+        doc: |
+          TODO
+        type: enum.cull_mode
   - name: programmable_stage_descriptor
     doc: |
       TODO
@@ -2263,7 +2142,6 @@ structs:
           TODO
         type: array<struct.constant_entry>
         pointer: immutable
-
   - name: query_set_descriptor
     doc: |
       TODO
@@ -2282,7 +2160,6 @@ structs:
         doc: |
           TODO
         type: uint32
-
   - name: queue_descriptor
     doc: |
       TODO
@@ -2293,7 +2170,6 @@ structs:
           TODO
         type: string
         optional: true
-
   - name: render_bundle_descriptor
     doc: |
       TODO
@@ -2304,7 +2180,6 @@ structs:
           TODO
         type: string
         optional: true
-
   - name: render_bundle_encoder_descriptor
     doc: |
       TODO
@@ -2336,7 +2211,6 @@ structs:
         doc: |
           TODO
         type: bool
-
   - name: render_pass_color_attachment
     doc: |
       TODO
@@ -2368,7 +2242,6 @@ structs:
         doc: |
           TODO
         type: struct.color
-
   - name: render_pass_depth_stencil_attachment
     doc: |
       TODO
@@ -2410,7 +2283,6 @@ structs:
         doc: |
           TODO
         type: bool
-
   - name: render_pass_descriptor
     doc: |
       TODO
@@ -2443,7 +2315,6 @@ structs:
         type: struct.render_pass_timestamp_writes
         pointer: immutable
         optional: true
-
   - name: render_pass_descriptor_max_draw_count
     doc: |
       TODO
@@ -2455,7 +2326,6 @@ structs:
         doc: |
           TODO
         type: uint64
-
   - name: render_pass_timestamp_writes
     doc: |
       TODO
@@ -2473,189 +2343,6 @@ structs:
         doc: |
           TODO
         type: uint32
-
-  - name: vertex_state
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: module
-        doc: |
-          TODO
-        type: object.shader_module
-      - name: entry_point
-        doc: |
-          TODO
-        type: string
-        optional: true
-      - name: constants
-        doc: |
-          TODO
-        type: array<struct.constant_entry>
-        pointer: immutable
-      - name: buffers
-        doc: |
-          TODO
-        type: array<struct.vertex_buffer_layout>
-        pointer: immutable
-
-  - name: primitive_state
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: topology
-        doc: |
-          TODO
-        type: enum.primitive_topology
-      - name: strip_index_format
-        doc: |
-          TODO
-        type: enum.index_format
-      - name: front_face
-        doc: |
-          TODO
-        type: enum.front_face
-      - name: cull_mode
-        doc: |
-          TODO
-        type: enum.cull_mode
-
-  - name: primitive_depth_clip_control
-    doc: |
-      TODO
-    type: extension_in
-    extends:
-      - primitive_state
-    members:
-      - name: unclipped_depth
-        doc: |
-          TODO
-        type: bool
-
-  - name: depth_stencil_state
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: format
-        doc: |
-          TODO
-        type: enum.texture_format
-      - name: depth_write_enabled
-        doc: |
-          TODO
-        type: bool
-      - name: depth_compare
-        doc: |
-          TODO
-        type: enum.compare_function
-      - name: stencil_front
-        doc: |
-          TODO
-        type: struct.stencil_face_state
-      - name: stencil_back
-        doc: |
-          TODO
-        type: struct.stencil_face_state
-      - name: stencil_read_mask
-        doc: |
-          TODO
-        type: uint32
-      - name: stencil_write_mask
-        doc: |
-          TODO
-        type: uint32
-      - name: depth_bias
-        doc: |
-          TODO
-        type: int32
-      - name: depth_bias_slope_scale
-        doc: |
-          TODO
-        type: float32
-      - name: depth_bias_clamp
-        doc: |
-          TODO
-        type: float32
-
-  - name: multisample_state
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: count
-        doc: |
-          TODO
-        type: uint32
-      - name: mask
-        doc: |
-          TODO
-        type: uint32
-      - name: alpha_to_coverage_enabled
-        doc: |
-          TODO
-        type: bool
-
-  - name: fragment_state
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: module
-        doc: |
-          TODO
-        type: object.shader_module
-      - name: entry_point
-        doc: |
-          TODO
-        type: string
-        optional: true
-      - name: constants
-        doc: |
-          TODO
-        type: array<struct.constant_entry>
-        pointer: immutable
-      - name: targets
-        doc: |
-          TODO
-        type: array<struct.color_target_state>
-        pointer: immutable
-
-  - name: color_target_state
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: format
-        doc: |
-          TODO
-        type: enum.texture_format
-      - name: blend
-        doc: |
-          TODO
-        type: struct.blend_state
-        pointer: immutable
-        optional: true
-      - name: write_mask
-        doc: |
-          TODO
-        type: bitflag.color_write_mask
-
-  - name: blend_state
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: color
-        doc: |
-          TODO
-        type: struct.blend_component
-      - name: alpha
-        doc: |
-          TODO
-        type: struct.blend_component
-
   - name: render_pipeline_descriptor
     doc: |
       TODO
@@ -2695,7 +2382,46 @@ structs:
         type: struct.fragment_state
         pointer: immutable
         optional: true
-
+  - name: request_adapter_options
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: compatible_surface
+        doc: |
+          TODO
+        type: object.surface
+        optional: true
+      - name: power_preference
+        doc: |
+          TODO
+        type: enum.power_preference
+      - name: backend_type
+        doc: |
+          TODO
+        type: enum.backend_type
+      - name: force_fallback_adapter
+        doc: |
+          TODO
+        type: bool
+  - name: required_limits
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: limits
+        doc: |
+          TODO
+        type: struct.limits
+  - name: sampler_binding_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: type
+        doc: |
+          TODO
+        type: enum.sampler_binding_type
   - name: sampler_descriptor
     doc: |
       TODO
@@ -2746,7 +2472,19 @@ structs:
         doc: |
           TODO
         type: uint16
-
+  - name: shader_module_compilation_hint
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: entry_point
+        doc: |
+          TODO
+        type: string
+      - name: layout
+        doc: |
+          TODO
+        type: object.pipeline_layout
   - name: shader_module_descriptor
     doc: |
       TODO
@@ -2762,21 +2500,6 @@ structs:
           TODO
         type: array<struct.shader_module_compilation_hint>
         pointer: immutable
-
-  - name: shader_module_compilation_hint
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: entry_point
-        doc: |
-          TODO
-        type: string
-      - name: layout
-        doc: |
-          TODO
-        type: object.pipeline_layout
-
   - name: shader_module_SPIRV_descriptor
     doc: |
       TODO
@@ -2793,7 +2516,6 @@ structs:
           TODO
         type: uint32
         pointer: immutable
-
   - name: shader_module_WGSL_descriptor
     doc: |
       TODO
@@ -2805,7 +2527,6 @@ structs:
         doc: |
           TODO
         type: string
-
   - name: stencil_face_state
     doc: |
       TODO
@@ -2827,7 +2548,95 @@ structs:
         doc: |
           TODO
         type: enum.stencil_operation
-
+  - name: storage_texture_binding_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: access
+        doc: |
+          TODO
+        type: enum.storage_texture_access
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: view_dimension
+        doc: |
+          TODO
+        type: enum.texture_view_dimension
+  - name: supported_limits
+    doc: |
+      TODO
+    type: base_out
+    members:
+      - name: limits
+        doc: |
+          TODO
+        type: struct.limits
+  - name: surface_capabilities
+    doc: |
+      TODO
+    type: base_out
+    free_members: true
+    members:
+      - name: usages
+        doc: |
+          TODO
+        type: bitflag.texture_usage
+      - name: formats
+        doc: |
+          TODO
+        type: array<enum.texture_format>
+        pointer: immutable
+      - name: present_modes
+        doc: |
+          TODO
+        type: array<enum.present_mode>
+        pointer: immutable
+      - name: alpha_modes
+        doc: |
+          TODO
+        type: array<enum.composite_alpha_mode>
+        pointer: immutable
+  - name: surface_configuration
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: device
+        doc: |
+          TODO
+        type: object.device
+      - name: format
+        doc: |
+          TODO
+        type: enum.texture_format
+      - name: usage
+        doc: |
+          TODO
+        type: bitflag.texture_usage
+      - name: view_formats
+        doc: |
+          TODO
+        type: array<enum.texture_format>
+        pointer: immutable
+      - name: alpha_mode
+        doc: |
+          TODO
+        type: enum.composite_alpha_mode
+      - name: width
+        doc: |
+          TODO
+        type: uint32
+      - name: height
+        doc: |
+          TODO
+        type: uint32
+      - name: present_mode
+        doc: |
+          TODO
+        type: enum.present_mode
   - name: surface_descriptor
     doc: |
       TODO
@@ -2838,7 +2647,6 @@ structs:
           TODO
         type: string
         optional: true
-
   - name: surface_descriptor_from_android_native_window
     doc: |
       TODO
@@ -2851,7 +2659,6 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-
   - name: surface_descriptor_from_canvas_HTML_selector
     doc: |
       TODO
@@ -2863,7 +2670,6 @@ structs:
         doc: |
           TODO
         type: string
-
   - name: surface_descriptor_from_metal_layer
     doc: |
       TODO
@@ -2876,59 +2682,6 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-
-  - name: surface_descriptor_from_windows_HWND
-    doc: |
-      TODO
-    type: extension_in
-    extends:
-      - surface_descriptor
-    members:
-      - name: hinstance
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
-      - name: hwnd
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
-
-  - name: surface_descriptor_from_xcb_window
-    doc: |
-      TODO
-    type: extension_in
-    extends:
-      - surface_descriptor
-    members:
-      - name: connection
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
-      - name: window
-        doc: |
-          TODO
-        type: uint32
-
-  - name: surface_descriptor_from_xlib_window
-    doc: |
-      TODO
-    type: extension_in
-    extends:
-      - surface_descriptor
-    members:
-      - name: display
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
-      - name: window
-        doc: |
-          TODO
-        type: uint64
-
   - name: surface_descriptor_from_wayland_surface
     doc: |
       TODO
@@ -2946,7 +2699,55 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-
+  - name: surface_descriptor_from_windows_HWND
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: hinstance
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+      - name: hwnd
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+  - name: surface_descriptor_from_xcb_window
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: connection
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+      - name: window
+        doc: |
+          TODO
+        type: uint32
+  - name: surface_descriptor_from_xlib_window
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - surface_descriptor
+    members:
+      - name: display
+        doc: |
+          TODO
+        type: c_void
+        pointer: mutable
+      - name: window
+        doc: |
+          TODO
+        type: uint64
   - name: surface_texture
     doc: |
       TODO
@@ -2964,7 +2765,23 @@ structs:
         doc: |
           TODO
         type: enum.surface_get_current_texture_status
-
+  - name: texture_binding_layout
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: sample_type
+        doc: |
+          TODO
+        type: enum.texture_sample_type
+      - name: view_dimension
+        doc: |
+          TODO
+        type: enum.texture_view_dimension
+      - name: multisampled
+        doc: |
+          TODO
+        type: bool
   - name: texture_data_layout
     doc: |
       TODO
@@ -2982,7 +2799,6 @@ structs:
         doc: |
           TODO
         type: uint32
-
   - name: texture_descriptor
     doc: |
       TODO
@@ -3022,7 +2838,6 @@ structs:
           TODO
         type: array<enum.texture_format>
         pointer: immutable
-
   - name: texture_view_descriptor
     doc: |
       TODO
@@ -3061,7 +2876,6 @@ structs:
         doc: |
           TODO
         type: enum.texture_aspect
-
   - name: uncaptured_error_callback_info
     doc: |
       TODO
@@ -3076,7 +2890,65 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-
+  - name: vertex_attribute
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: format
+        doc: |
+          TODO
+        type: enum.vertex_format
+      - name: offset
+        doc: |
+          TODO
+        type: uint64
+      - name: shader_location
+        doc: |
+          TODO
+        type: uint32
+  - name: vertex_buffer_layout
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: array_stride
+        doc: |
+          TODO
+        type: uint64
+      - name: step_mode
+        doc: |
+          TODO
+        type: enum.vertex_step_mode
+      - name: attributes
+        doc: |
+          TODO
+        type: array<struct.vertex_attribute>
+        pointer: immutable
+  - name: vertex_state
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: string
+        optional: true
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
+      - name: buffers
+        doc: |
+          TODO
+        type: array<struct.vertex_buffer_layout>
+        pointer: immutable
 functions:
   - name: create_instance
     doc: |
@@ -3092,7 +2964,6 @@ functions:
         type: struct.instance_descriptor
         pointer: immutable
         optional: true
-
 objects:
   - name: adapter
     doc: |
@@ -3168,7 +3039,6 @@ objects:
             type: struct.device_descriptor
             pointer: immutable
             optional: true
-
   - name: bind_group
     doc: |
       TODO
@@ -3181,7 +3051,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: bind_group_layout
     doc: |
       TODO
@@ -3194,7 +3063,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: buffer
     doc: |
       TODO
@@ -3289,7 +3157,6 @@ objects:
       - name: destroy
         doc: |
           TODO
-
   - name: command_buffer
     doc: |
       TODO
@@ -3302,7 +3169,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: command_encoder
     doc: |
       TODO
@@ -3508,7 +3374,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: compute_pass_encoder
     doc: |
       TODO
@@ -3597,7 +3462,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: compute_pipeline
     doc: |
       TODO
@@ -3622,7 +3486,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: device
     doc: |
       TODO
@@ -3906,7 +3769,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: instance
     doc: |
       TODO
@@ -3962,7 +3824,6 @@ objects:
             type: struct.request_adapter_options
             pointer: immutable
             optional: true
-
   - name: pipeline_layout
     doc: |
       TODO
@@ -3975,7 +3836,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: query_set
     doc: |
       TODO
@@ -4005,7 +3865,6 @@ objects:
       - name: destroy
         doc: |
           TODO
-
   - name: queue
     doc: |
       TODO
@@ -4084,7 +3943,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: render_bundle
     doc: |
       TODO
@@ -4097,7 +3955,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: render_bundle_encoder
     doc: |
       TODO
@@ -4278,7 +4135,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: render_pass_encoder
     doc: |
       TODO
@@ -4533,7 +4389,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: render_pipeline
     doc: |
       TODO
@@ -4558,7 +4413,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: sampler
     doc: |
       TODO
@@ -4571,7 +4425,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: shader_module
     doc: |
       TODO
@@ -4597,7 +4450,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: surface
     doc: |
       TODO
@@ -4647,7 +4499,6 @@ objects:
             doc: |
               TODO
             type: string
-
   - name: texture
     doc: |
       TODO
@@ -4733,7 +4584,6 @@ objects:
       - name: destroy
         doc: |
           TODO
-
   - name: texture_view
     doc: |
       TODO
