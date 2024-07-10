@@ -610,9 +610,6 @@ enums:
       - name: shader_module_WGSL_descriptor
         doc: |
           TODO
-      - name: primitive_depth_clip_control
-        doc: |
-          TODO
       - name: surface_descriptor_from_wayland_surface
         doc: |
           TODO
@@ -2091,17 +2088,6 @@ structs:
           TODO
         type: array<object.bind_group_layout>
         pointer: immutable
-  - name: primitive_depth_clip_control
-    doc: |
-      TODO
-    type: extension_in
-    extends:
-      - primitive_state
-    members:
-      - name: unclipped_depth
-        doc: |
-          TODO
-        type: bool
   - name: primitive_state
     doc: |
       TODO
@@ -2123,6 +2109,10 @@ structs:
         doc: |
           TODO
         type: enum.cull_mode
+      - name: unclipped_depth
+        doc: |
+          TODO
+        type: bool
   - name: programmable_stage_descriptor
     doc: |
       TODO
