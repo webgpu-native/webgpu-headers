@@ -2385,7 +2385,7 @@ structs:
         type: struct.render_pass_timestamp_writes
         pointer: immutable
         optional: true
-  - name: render_pass_descriptor_max_draw_count
+  - name: render_pass_max_draw_count
     doc: |
       TODO
     type: extension_in
@@ -2570,7 +2570,7 @@ structs:
           TODO
         type: array<struct.shader_module_compilation_hint>
         pointer: immutable
-  - name: shader_module_SPIRV_descriptor
+  - name: shader_module_SPIRV
     doc: |
       TODO
     type: extension_in
@@ -2586,7 +2586,7 @@ structs:
           TODO
         type: uint32
         pointer: immutable
-  - name: shader_module_WGSL_descriptor
+  - name: shader_module_WGSL
     doc: |
       TODO
     type: extension_in
@@ -2717,7 +2717,7 @@ structs:
           TODO
         type: string
         optional: true
-  - name: surface_descriptor_from_android_native_window
+  - name: surface_from_android_native_window
     doc: |
       TODO
     type: extension_in
@@ -2729,7 +2729,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_descriptor_from_canvas_HTML_selector
+  - name: surface_from_canvas_HTML_selector
     doc: |
       TODO
     type: extension_in
@@ -2740,7 +2740,7 @@ structs:
         doc: |
           TODO
         type: string
-  - name: surface_descriptor_from_metal_layer
+  - name: surface_from_metal_layer
     doc: |
       TODO
     type: extension_in
@@ -2752,7 +2752,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_descriptor_from_wayland_surface
+  - name: surface_from_wayland_surface
     doc: |
       TODO
     type: extension_in
@@ -2769,7 +2769,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_descriptor_from_windows_HWND
+  - name: surface_from_windows_HWND
     doc: |
       TODO
     type: extension_in
@@ -2786,7 +2786,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_descriptor_from_xcb_window
+  - name: surface_from_xcb_window
     doc: |
       TODO
     type: extension_in
@@ -2802,7 +2802,7 @@ structs:
         doc: |
           TODO
         type: uint32
-  - name: surface_descriptor_from_xlib_window
+  - name: surface_from_xlib_window
     doc: |
       TODO
     type: extension_in

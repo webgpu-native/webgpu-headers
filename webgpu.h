@@ -144,26 +144,26 @@ struct WGPUQueueDescriptor;
 struct WGPURenderBundleDescriptor;
 struct WGPURenderBundleEncoderDescriptor;
 struct WGPURenderPassDepthStencilAttachment;
-struct WGPURenderPassDescriptorMaxDrawCount;
+struct WGPURenderPassMaxDrawCount;
 struct WGPURenderPassTimestampWrites;
 struct WGPURequestAdapterOptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
 struct WGPUShaderModuleCompilationHint;
-struct WGPUShaderModuleSPIRVDescriptor;
-struct WGPUShaderModuleWGSLDescriptor;
+struct WGPUShaderModuleSPIRV;
+struct WGPUShaderModuleWGSL;
 struct WGPUStencilFaceState;
 struct WGPUStorageTextureBindingLayout;
 struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceConfiguration;
 struct WGPUSurfaceDescriptor;
-struct WGPUSurfaceDescriptorFromAndroidNativeWindow;
-struct WGPUSurfaceDescriptorFromCanvasHTMLSelector;
-struct WGPUSurfaceDescriptorFromMetalLayer;
-struct WGPUSurfaceDescriptorFromWaylandSurface;
-struct WGPUSurfaceDescriptorFromWindowsHWND;
-struct WGPUSurfaceDescriptorFromXcbWindow;
-struct WGPUSurfaceDescriptorFromXlibWindow;
+struct WGPUSurfaceFromAndroidNativeWindow;
+struct WGPUSurfaceFromCanvasHTMLSelector;
+struct WGPUSurfaceFromMetalLayer;
+struct WGPUSurfaceFromWaylandSurface;
+struct WGPUSurfaceFromWindowsHWND;
+struct WGPUSurfaceFromXcbWindow;
+struct WGPUSurfaceFromXlibWindow;
 struct WGPUSurfaceTexture;
 struct WGPUTextureBindingLayout;
 struct WGPUTextureDataLayout;
@@ -1147,10 +1147,10 @@ typedef struct WGPURenderPassDepthStencilAttachment {
     WGPUBool stencilReadOnly;
 } WGPURenderPassDepthStencilAttachment WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPURenderPassDescriptorMaxDrawCount {
+typedef struct WGPURenderPassMaxDrawCount {
     WGPUChainedStruct chain;
     uint64_t maxDrawCount;
-} WGPURenderPassDescriptorMaxDrawCount WGPU_STRUCTURE_ATTRIBUTE;
+} WGPURenderPassMaxDrawCount WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassTimestampWrites {
     WGPUQuerySet querySet;
@@ -1192,16 +1192,16 @@ typedef struct WGPUShaderModuleCompilationHint {
     WGPUPipelineLayout layout;
 } WGPUShaderModuleCompilationHint WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUShaderModuleSPIRVDescriptor {
+typedef struct WGPUShaderModuleSPIRV {
     WGPUChainedStruct chain;
     uint32_t codeSize;
     uint32_t const * code;
-} WGPUShaderModuleSPIRVDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUShaderModuleSPIRV WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUShaderModuleWGSLDescriptor {
+typedef struct WGPUShaderModuleWGSL {
     WGPUChainedStruct chain;
     char const * code;
-} WGPUShaderModuleWGSLDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUShaderModuleWGSL WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUStencilFaceState {
     WGPUCompareFunction compare;
@@ -1246,44 +1246,44 @@ typedef struct WGPUSurfaceDescriptor {
     WGPU_NULLABLE char const * label;
 } WGPUSurfaceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceDescriptorFromAndroidNativeWindow {
+typedef struct WGPUSurfaceFromAndroidNativeWindow {
     WGPUChainedStruct chain;
     void * window;
-} WGPUSurfaceDescriptorFromAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceFromAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceDescriptorFromCanvasHTMLSelector {
+typedef struct WGPUSurfaceFromCanvasHTMLSelector {
     WGPUChainedStruct chain;
     char const * selector;
-} WGPUSurfaceDescriptorFromCanvasHTMLSelector WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceFromCanvasHTMLSelector WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceDescriptorFromMetalLayer {
+typedef struct WGPUSurfaceFromMetalLayer {
     WGPUChainedStruct chain;
     void * layer;
-} WGPUSurfaceDescriptorFromMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceFromMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceDescriptorFromWaylandSurface {
+typedef struct WGPUSurfaceFromWaylandSurface {
     WGPUChainedStruct chain;
     void * display;
     void * surface;
-} WGPUSurfaceDescriptorFromWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceFromWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceDescriptorFromWindowsHWND {
+typedef struct WGPUSurfaceFromWindowsHWND {
     WGPUChainedStruct chain;
     void * hinstance;
     void * hwnd;
-} WGPUSurfaceDescriptorFromWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceFromWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceDescriptorFromXcbWindow {
+typedef struct WGPUSurfaceFromXcbWindow {
     WGPUChainedStruct chain;
     void * connection;
     uint32_t window;
-} WGPUSurfaceDescriptorFromXcbWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceFromXcbWindow WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceDescriptorFromXlibWindow {
+typedef struct WGPUSurfaceFromXlibWindow {
     WGPUChainedStruct chain;
     void * display;
     uint64_t window;
-} WGPUSurfaceDescriptorFromXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceFromXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSurfaceTexture {
     WGPUTexture texture;
