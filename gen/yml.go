@@ -16,8 +16,8 @@ type Yml struct {
 	Typedefs      []Typedef  `yaml:"typedefs"`
 	Enums         []Enum     `yaml:"enums"`
 	Bitflags      []Bitflag  `yaml:"bitflags"`
-	FunctionTypes []Function `yaml:"function_types"`
 	Structs       []Struct   `yaml:"structs"`
+	Callbacks     []Callback `yaml:"callbacks"`
 	Functions     []Function `yaml:"functions"`
 	Objects       []Object   `yaml:"objects"`
 }
@@ -75,11 +75,18 @@ type ParameterType struct {
 	Namespace string      `yaml:"namespace"`
 }
 
+type Callback struct {
+	Name string          `yaml:"name"`
+	Doc  string          `yaml:"doc"`
+	Style string         `yaml:"type"`
+	Args []ParameterType `yaml:"args"`
+}
+
 type Function struct {
 	Name         string          `yaml:"name"`
 	Doc          string          `yaml:"doc"`
-	ReturnsAsync []ParameterType `yaml:"returns_async"`
 	Returns      *ParameterType  `yaml:"returns"`
+	Callback     *string         `yaml:"callback"`
 	Args         []ParameterType `yaml:"args"`
 }
 

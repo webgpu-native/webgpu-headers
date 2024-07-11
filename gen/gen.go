@@ -58,6 +58,9 @@ func (g *Generator) Gen(dst io.Writer) error {
 			"Singularize": Singularize,
 			"IsLast":      func(i int, s any) bool { return i == reflect.ValueOf(s).Len()-1 },
 			"FunctionReturns": func(f Function) string {
+				if f.Callback != nil {
+					return "WGPUFuture"
+				}
 				if f.Returns != nil {
 					return g.CType(f.Returns.Type, f.Returns.Pointer, "")
 				}
@@ -162,6 +165,9 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 	case strings.HasPrefix(typ, "function_type."):
 		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "function_type.")) + suffix
 		return appendModifiers(ctype, pointerType)
+	case strings.HasPrefix(typ, "callback."):
+		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "callback.")) + "Callback" + suffix
+		return appendModifiers(ctype, pointerType)
 	case strings.HasPrefix(typ, "object."):
 		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "object.")) + suffix
 		return appendModifiers(ctype, pointerType)
@@ -206,21 +212,15 @@ func (g *Generator) FunctionArgs(f Function, o *Object) string {
 			sb.WriteString(", ")
 		}
 	}
-	if len(f.ReturnsAsync) > 0 {
-		var name string
-		if o != nil {
-			name = PascalCase(o.Name) + PascalCase(f.Name)
-		} else {
-			name = PascalCase(f.Name)
-		}
-		fmt.Fprintf(sb, ", WGPU%sCallback callback, WGPU_NULLABLE void * userdata", name)
+	if f.Callback != nil {
+		fmt.Fprintf(sb, ", %s callbackInfo", g.CType(*f.Callback, "", "Info"))
 	}
 	return sb.String()
 }
 
-func (g *Generator) CallbackArgs(f Function) string {
+func (g *Generator) CallbackArgs(f Callback) string {
 	sb := &strings.Builder{}
-	for _, arg := range f.ReturnsAsync {
+	for _, arg := range f.Args {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
 		}
@@ -242,7 +242,7 @@ func (g *Generator) CallbackArgs(f Function) string {
 			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, g.CType(arg.Type, arg.Pointer, typeSuffix), CamelCase(arg.Name))
 		}
 	}
-	sb.WriteString("WGPU_NULLABLE void * userdata")
+	sb.WriteString("WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2")
 	return sb.String()
 }
 
@@ -324,7 +324,11 @@ func (g *Generator) StructMember(s Struct, memberIndex int) (string, error) {
 		fmt.Fprintf(sb, "size_t %sCount;\n", CamelCase(Singularize(member.Name)))
 		fmt.Fprintf(sb, "    %s %s;", g.CType(matches[1], member.Pointer, typeSuffix), CamelCase(member.Name))
 	} else {
-		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
+		if strings.HasPrefix(member.Type, "callback.") {
+			fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, "", "Info"), CamelCase(member.Name))
+		} else {
+			fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
+		}
 	}
 	return sb.String(), nil
 }
