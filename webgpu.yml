@@ -693,34 +693,34 @@ enums:
       - name: invalid
         doc: |
           TODO
-      - name: surface_descriptor_from_metal_layer
+      - name: surface_from_metal_layer
         doc: |
           TODO
-      - name: surface_descriptor_from_windows_HWND
+      - name: surface_from_windows_HWND
         doc: |
           TODO
-      - name: surface_descriptor_from_xlib_window
+      - name: surface_from_xlib_window
         doc: |
           TODO
-      - name: surface_descriptor_from_canvas_HTML_selector
+      - name: surface_from_canvas_HTML_selector
         doc: |
           TODO
-      - name: shader_module_SPIRV_descriptor
+      - name: shader_module_SPIRV
         doc: |
           TODO
-      - name: shader_module_WGSL_descriptor
+      - name: shader_module_WGSL
         doc: |
           TODO
       - name: primitive_depth_clip_control
         doc: |
           TODO
-      - name: surface_descriptor_from_wayland_surface
+      - name: surface_from_wayland_surface
         doc: |
           TODO
-      - name: surface_descriptor_from_android_native_window
+      - name: surface_from_android_native_window
         doc: |
           TODO
-      - name: surface_descriptor_from_xcb_window
+      - name: surface_from_xcb_window
         doc: |
           TODO
       - name: render_pass_descriptor_max_draw_count

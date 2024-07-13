@@ -503,16 +503,16 @@ typedef enum WGPURequestDeviceStatus {
 
 typedef enum WGPUSType {
     WGPUSType_Invalid = 0x00000000,
-    WGPUSType_SurfaceDescriptorFromMetalLayer = 0x00000001,
-    WGPUSType_SurfaceDescriptorFromWindowsHWND = 0x00000002,
-    WGPUSType_SurfaceDescriptorFromXlibWindow = 0x00000003,
-    WGPUSType_SurfaceDescriptorFromCanvasHTMLSelector = 0x00000004,
-    WGPUSType_ShaderModuleSPIRVDescriptor = 0x00000005,
-    WGPUSType_ShaderModuleWGSLDescriptor = 0x00000006,
+    WGPUSType_SurfaceFromMetalLayer = 0x00000001,
+    WGPUSType_SurfaceFromWindowsHWND = 0x00000002,
+    WGPUSType_SurfaceFromXlibWindow = 0x00000003,
+    WGPUSType_SurfaceFromCanvasHTMLSelector = 0x00000004,
+    WGPUSType_ShaderModuleSPIRV = 0x00000005,
+    WGPUSType_ShaderModuleWGSL = 0x00000006,
     WGPUSType_PrimitiveDepthClipControl = 0x00000007,
-    WGPUSType_SurfaceDescriptorFromWaylandSurface = 0x00000008,
-    WGPUSType_SurfaceDescriptorFromAndroidNativeWindow = 0x00000009,
-    WGPUSType_SurfaceDescriptorFromXcbWindow = 0x0000000A,
+    WGPUSType_SurfaceFromWaylandSurface = 0x00000008,
+    WGPUSType_SurfaceFromAndroidNativeWindow = 0x00000009,
+    WGPUSType_SurfaceFromXcbWindow = 0x0000000A,
     WGPUSType_RenderPassDescriptorMaxDrawCount = 0x0000000F,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
