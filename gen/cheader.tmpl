@@ -124,6 +124,13 @@ struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
 {{-   end}}
 {{  end}}
 
+{{- if .Callbacks}}
+// Callback info structure forward declarations
+{{-   range .Callbacks}}
+struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
+{{-   end}}
+{{  end}}
+
 /**
  * \defgroup Enumerations
  * \brief Enums.
@@ -181,11 +188,6 @@ typedef WGPUFlags WGPU{{$bitflag.Name | PascalCase}}Flags{{$.ExtSuffix}} WGPU_EN
 typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
-{{- range .FunctionTypes}}
-{{-   MComment .Doc 0}}
-typedef {{FunctionReturns .}} (*WGPU{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
-{{- end}}
-
 /**
  * \defgroup Callbacks
  * \brief Callbacks through which asynchronous functions return.
@@ -193,16 +195,10 @@ typedef {{FunctionReturns .}} (*WGPU{{.Name | PascalCase}}{{$.ExtSuffix}})({{Fun
  * @{
  */
 
-{{- if .Objects}}
-{{    range $object := .Objects}}
-{{-     range $method := .Methods}}
-{{-       if .ReturnsAsync}}
-{{-         MComment .Doc 0}}
-typedef void (*WGPU{{$object.Name | PascalCase}}{{$method.Name | PascalCase}}Callback{{$.ExtSuffix}})({{CallbackArgs .}}) WGPU_FUNCTION_ATTRIBUTE;
-{{-       end}}
-{{-     end}}
-{{-   end}}
-{{  end}}
+{{- range .Callbacks}}
+{{-   MComment .Doc 0}}
+typedef void (*WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}})({{CallbackArgs .}}) WGPU_FUNCTION_ATTRIBUTE;
+{{- end}}
 
 /** @} */
 
@@ -234,6 +230,29 @@ typedef struct WGPUChainedStructOut {
  * @{
  */
 
+ /**
+ * \defgroup WGPUCallbackInfo
+ * \brief Callback info structures that are used in asynchronous functions.
+ * 
+ * @{
+ */
+
+{{- range .Callbacks}}
+{{-   MComment .Doc 0}}
+typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
+    WGPUChainedStruct const * nextInChain;
+{{-   if eq .Style "callback_mode" }}
+    WGPUCallbackMode mode;
+{{-   end}}
+    WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}} callback;
+    WGPU_NULLABLE void* userdata1;
+    WGPU_NULLABLE void* userdata2;
+} WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
+{{  end}}{{"\n" -}}
+
+ /** @} */
+
+{{- "\n"}}
 {{- range $struct := .Structs}}
 {{-   MComment .Doc 0}}
 typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
