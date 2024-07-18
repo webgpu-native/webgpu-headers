@@ -137,7 +137,6 @@ struct WGPULimits;
 struct WGPUMultisampleState;
 struct WGPUOrigin3D;
 struct WGPUPipelineLayoutDescriptor;
-struct WGPUPrimitiveDepthClipControl;
 struct WGPUPrimitiveState;
 struct WGPUQuerySetDescriptor;
 struct WGPUQueueDescriptor;
@@ -509,10 +508,9 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceFromCanvasHTMLSelector = 0x00000004,
     WGPUSType_ShaderModuleSPIRV = 0x00000005,
     WGPUSType_ShaderModuleWGSL = 0x00000006,
-    WGPUSType_PrimitiveDepthClipControl = 0x00000007,
-    WGPUSType_SurfaceFromWaylandSurface = 0x00000008,
-    WGPUSType_SurfaceFromAndroidNativeWindow = 0x00000009,
-    WGPUSType_SurfaceFromXcbWindow = 0x0000000A,
+    WGPUSType_SurfaceFromWaylandSurface = 0x00000007,
+    WGPUSType_SurfaceFromAndroidNativeWindow = 0x00000008,
+    WGPUSType_SurfaceFromXcbWindow = 0x00000009,
     WGPUSType_RenderPassDescriptorMaxDrawCount = 0x0000000F,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
@@ -1094,17 +1092,13 @@ typedef struct WGPUPipelineLayoutDescriptor {
     WGPUBindGroupLayout const * bindGroupLayouts;
 } WGPUPipelineLayoutDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUPrimitiveDepthClipControl {
-    WGPUChainedStruct chain;
-    WGPUBool unclippedDepth;
-} WGPUPrimitiveDepthClipControl WGPU_STRUCTURE_ATTRIBUTE;
-
 typedef struct WGPUPrimitiveState {
     WGPUChainedStruct const * nextInChain;
     WGPUPrimitiveTopology topology;
     WGPUIndexFormat stripIndexFormat;
     WGPUFrontFace frontFace;
     WGPUCullMode cullMode;
+    WGPUBool unclippedDepth;
 } WGPUPrimitiveState WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUQuerySetDescriptor {
