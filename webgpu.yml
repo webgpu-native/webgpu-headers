@@ -552,13 +552,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
-        doc: |
-          TODO
       - name: "false"
         doc: |
           TODO
       - name: "true"
+        doc: |
+          TODO
+      - name: undefined
         doc: |
           TODO
   - name: pop_error_scope_status
