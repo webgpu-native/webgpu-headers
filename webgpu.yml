@@ -548,6 +548,19 @@ enums:
       - name: linear
         doc: |
           TODO
+  - name: optional_bool
+    doc: |
+      TODO
+    entries:
+      - name: "false"
+        doc: |
+          TODO
+      - name: "true"
+        doc: |
+          TODO
+      - name: undefined
+        doc: |
+          TODO
   - name: pop_error_scope_status
     doc: |
       TODO
@@ -1822,7 +1835,7 @@ structs:
       - name: depth_write_enabled
         doc: |
           TODO
-        type: bool
+        type: enum.optional_bool
       - name: depth_compare
         doc: |
           TODO

@@ -438,6 +438,13 @@ typedef enum WGPUMipmapFilterMode {
     WGPUMipmapFilterMode_Force32 = 0x7FFFFFFF
 } WGPUMipmapFilterMode WGPU_ENUM_ATTRIBUTE;
 
+typedef enum WGPUOptionalBool {
+    WGPUOptionalBool_False = 0x00000000,
+    WGPUOptionalBool_True = 0x00000001,
+    WGPUOptionalBool_Undefined = 0x00000002,
+    WGPUOptionalBool_Force32 = 0x7FFFFFFF
+} WGPUOptionalBool WGPU_ENUM_ATTRIBUTE;
+
 typedef enum WGPUPopErrorScopeStatus {
     WGPUPopErrorScopeStatus_Success = 0x00000001,
     WGPUPopErrorScopeStatus_InstanceDropped = 0x00000002,
@@ -1355,7 +1362,7 @@ typedef struct WGPUComputePassDescriptor {
 typedef struct WGPUDepthStencilState {
     WGPUChainedStruct const * nextInChain;
     WGPUTextureFormat format;
-    WGPUBool depthWriteEnabled;
+    WGPUOptionalBool depthWriteEnabled;
     WGPUCompareFunction depthCompare;
     WGPUStencilFaceState stencilFront;
     WGPUStencilFaceState stencilBack;
