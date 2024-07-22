@@ -225,6 +225,22 @@ enums:
       - name: mapped
         doc: |
           TODO
+  - name: callback_mode
+    doc: |
+      TODO
+    entries:
+      - name: wait_any_only
+        value: 0x0001
+        doc: |
+          TODO
+      - name: allow_process_events
+        value: 0x0002
+        doc: |
+          TODO
+      - name: allow_spontaneous
+        value: 0x0003
+        doc: |
+          TODO
   - name: compare_function
     doc: |
       TODO
@@ -261,15 +277,23 @@ enums:
       TODO
     entries:
       - name: success
+        value: 0x0001
+        doc: |
+          TODO
+      - name: instance_dropped
+        value: 0x0002
         doc: |
           TODO
       - name: error
+        value: 0x0003
         doc: |
           TODO
       - name: device_lost
+        value: 0x0004
         doc: |
           TODO
       - name: unknown
+        value: 0x0005
         doc: |
           TODO
   - name: compilation_message_type
@@ -309,21 +333,31 @@ enums:
       TODO
     entries:
       - name: success
+        value: 0x0001
+        doc: |
+          TODO
+      - name: instance_dropped
+        value: 0x0002
         doc: |
           TODO
       - name: validation_error
+        value: 0x0003
         doc: |
           TODO
       - name: internal_error
+        value: 0x0004
         doc: |
           TODO
       - name: device_lost
+        value: 0x0005
         doc: |
           TODO
       - name: device_destroyed
+        value: 0x0006
         doc: |
           TODO
       - name: unknown
+        value: 0x0007
         doc: |
           TODO
   - name: cull_mode
@@ -349,6 +383,14 @@ enums:
           TODO
       - name: destroyed
         value: 0x0002
+        doc: |
+          TODO
+      - name: instance_dropped
+        value: 0x0003
+        doc: |
+          TODO
+      - name: failed_creation
+        value: 0x0004
         doc: |
           TODO
   - name: error_filter
@@ -472,6 +514,30 @@ enums:
       - name: load
         doc: |
           TODO
+  - name: map_async_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        value: 0x0001
+        doc: |
+          TODO
+      - name: instance_dropped
+        value: 0x0002
+        doc: |
+          TODO
+      - name: error
+        value: 0x0003
+        doc: |
+          TODO
+      - name: aborted
+        value: 0x0004
+        doc: |
+          TODO
+      - name: unknown
+        value: 0x0005
+        doc: |
+          TODO
   - name: mipmap_filter_mode
     doc: |
       TODO
@@ -493,6 +559,18 @@ enums:
         doc: |
           TODO
       - name: "true"
+        doc: |
+          TODO
+  - name: pop_error_scope_status
+    doc: |
+      TODO
+    entries:
+      - name: success
+        value: 0x0001
+        doc: |
+          TODO
+      - name: instance_dropped
+        value: 0x0002
         doc: |
           TODO
   - name: power_preference
@@ -558,15 +636,23 @@ enums:
       TODO
     entries:
       - name: success
+        value: 0x0001
+        doc: |
+          TODO
+      - name: instance_dropped
+        value: 0x0002
         doc: |
           TODO
       - name: error
+        value: 0x0003
         doc: |
           TODO
       - name: unknown
+        value: 0x0004
         doc: |
           TODO
       - name: device_lost
+        value: 0x0005
         doc: |
           TODO
   - name: request_adapter_status
@@ -574,15 +660,23 @@ enums:
       TODO
     entries:
       - name: success
+        value: 0x0001
+        doc: |
+          TODO
+      - name: instance_dropped
+        value: 0x0002
         doc: |
           TODO
       - name: unavailable
+        value: 0x0003
         doc: |
           TODO
       - name: error
+        value: 0x0004
         doc: |
           TODO
       - name: unknown
+        value: 0x0005
         doc: |
           TODO
   - name: request_device_status
@@ -590,12 +684,19 @@ enums:
       TODO
     entries:
       - name: success
+        value: 0x0001
+        doc: |
+          TODO
+      - name: instance_dropped
+        value: 0x0002
         doc: |
           TODO
       - name: error
+        value: 0x0003
         doc: |
           TODO
       - name: unknown
+        value: 0x0004
         doc: |
           TODO
   - name: s_type
@@ -605,34 +706,31 @@ enums:
       - name: invalid
         doc: |
           TODO
-      - name: surface_descriptor_from_metal_layer
+      - name: surface_from_metal_layer
         doc: |
           TODO
-      - name: surface_descriptor_from_windows_HWND
+      - name: surface_from_windows_HWND
         doc: |
           TODO
-      - name: surface_descriptor_from_xlib_window
+      - name: surface_from_xlib_window
         doc: |
           TODO
-      - name: surface_descriptor_from_canvas_HTML_selector
+      - name: surface_from_canvas_HTML_selector
         doc: |
           TODO
-      - name: shader_module_SPIRV_descriptor
+      - name: shader_module_SPIRV
         doc: |
           TODO
-      - name: shader_module_WGSL_descriptor
+      - name: shader_module_WGSL
         doc: |
           TODO
-      - name: primitive_depth_clip_control
+      - name: surface_from_wayland_surface
         doc: |
           TODO
-      - name: surface_descriptor_from_wayland_surface
+      - name: surface_from_android_native_window
         doc: |
           TODO
-      - name: surface_descriptor_from_android_native_window
-        doc: |
-          TODO
-      - name: surface_descriptor_from_xcb_window
+      - name: surface_from_xcb_window
         doc: |
           TODO
       - name: render_pass_descriptor_max_draw_count
@@ -1345,41 +1443,6 @@ bitflags:
       - name: render_attachment
         doc: |
           TODO
-function_types:
-  - name: device_lost_callback
-    doc: |
-      TODO
-    args:
-      - name: reason
-        doc: |
-          TODO
-        type: enum.device_lost_reason
-      - name: message
-        doc: |
-          TODO
-        type: string
-      - name: userdata
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
-  - name: error_callback
-    doc: |
-      TODO
-    args:
-      - name: type
-        doc: |
-          TODO
-        type: enum.error_type
-      - name: message
-        doc: |
-          TODO
-        type: string
-      - name: userdata
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
 structs:
   - name: adapter_info
     doc: |
@@ -1830,19 +1893,14 @@ structs:
         doc: |
           TODO
         type: struct.queue_descriptor
-      - name: device_lost_callback
+      - name: device_lost_callback_info
         doc: |
           TODO
-        type: function_type.device_lost_callback
-      - name: device_lost_userdata
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
+        type: callback.device_lost
       - name: uncaptured_error_callback_info
         doc: |
           TODO
-        type: function_type.uncaptured_error_callback_info
+        type: callback.uncaptured_error
   - name: extent_3D
     doc: |
       TODO
@@ -1884,6 +1942,15 @@ structs:
           TODO
         type: array<struct.color_target_state>
         pointer: immutable
+  - name: future
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: id
+        doc: |
+          TODO
+        type: uint64
   - name: image_copy_buffer
     doc: |
       TODO
@@ -2104,17 +2171,6 @@ structs:
           TODO
         type: array<object.bind_group_layout>
         pointer: immutable
-  - name: primitive_depth_clip_control
-    doc: |
-      TODO
-    type: extension_in
-    extends:
-      - primitive_state
-    members:
-      - name: unclipped_depth
-        doc: |
-          TODO
-        type: bool
   - name: primitive_state
     doc: |
       TODO
@@ -2136,6 +2192,10 @@ structs:
         doc: |
           TODO
         type: enum.cull_mode
+      - name: unclipped_depth
+        doc: |
+          TODO
+        type: bool
   - name: programmable_stage_descriptor
     doc: |
       TODO
@@ -2328,7 +2388,7 @@ structs:
         type: struct.render_pass_timestamp_writes
         pointer: immutable
         optional: true
-  - name: render_pass_descriptor_max_draw_count
+  - name: render_pass_max_draw_count
     doc: |
       TODO
     type: extension_in
@@ -2513,7 +2573,7 @@ structs:
           TODO
         type: array<struct.shader_module_compilation_hint>
         pointer: immutable
-  - name: shader_module_SPIRV_descriptor
+  - name: shader_module_SPIRV
     doc: |
       TODO
     type: extension_in
@@ -2529,7 +2589,7 @@ structs:
           TODO
         type: uint32
         pointer: immutable
-  - name: shader_module_WGSL_descriptor
+  - name: shader_module_WGSL
     doc: |
       TODO
     type: extension_in
@@ -2660,7 +2720,7 @@ structs:
           TODO
         type: string
         optional: true
-  - name: surface_descriptor_from_android_native_window
+  - name: surface_from_android_native_window
     doc: |
       TODO
     type: extension_in
@@ -2672,7 +2732,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_descriptor_from_canvas_HTML_selector
+  - name: surface_from_canvas_HTML_selector
     doc: |
       TODO
     type: extension_in
@@ -2683,7 +2743,7 @@ structs:
         doc: |
           TODO
         type: string
-  - name: surface_descriptor_from_metal_layer
+  - name: surface_from_metal_layer
     doc: |
       TODO
     type: extension_in
@@ -2695,7 +2755,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_descriptor_from_wayland_surface
+  - name: surface_from_wayland_surface
     doc: |
       TODO
     type: extension_in
@@ -2712,7 +2772,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_descriptor_from_windows_HWND
+  - name: surface_from_windows_HWND
     doc: |
       TODO
     type: extension_in
@@ -2729,7 +2789,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_descriptor_from_xcb_window
+  - name: surface_from_xcb_window
     doc: |
       TODO
     type: extension_in
@@ -2745,7 +2805,7 @@ structs:
         doc: |
           TODO
         type: uint32
-  - name: surface_descriptor_from_xlib_window
+  - name: surface_from_xlib_window
     doc: |
       TODO
     type: extension_in
@@ -2889,20 +2949,6 @@ structs:
         doc: |
           TODO
         type: enum.texture_aspect
-  - name: uncaptured_error_callback_info
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: callback
-        doc: |
-          TODO
-        type: function_type.error_callback
-      - name: userdata
-        doc: |
-          TODO
-        type: c_void
-        pointer: mutable
   - name: vertex_attribute
     doc: |
       TODO
@@ -2962,6 +3008,163 @@ structs:
           TODO
         type: array<struct.vertex_buffer_layout>
         pointer: immutable
+callbacks:
+  - name: buffer_map
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: status
+        doc: |
+          TODO
+        type: enum.map_async_status
+      - name: message
+        doc: |
+          TODO
+        type: string
+  - name: compilation_info
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: status
+        doc: |
+          TODO
+        type: enum.compilation_info_request_status
+      - name: compilation_info
+        doc: |
+          TODO
+        type: struct.compilation_info
+        pointer: immutable
+  - name: create_compute_pipeline_async
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: status
+        doc: |
+          TODO
+        type: enum.create_pipeline_async_status
+      - name: pipeline
+        doc: |
+          TODO
+        type: object.compute_pipeline
+      - name: message
+        doc: |
+          TODO
+        type: string
+  - name: create_render_pipeline_async
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: status
+        doc: |
+          TODO
+        type: enum.create_pipeline_async_status
+      - name: pipeline
+        doc: |
+          TODO
+        type: object.render_pipeline
+      - name: message
+        doc: |
+          TODO
+        type: string
+  - name: device_lost
+    doc: TODO
+    style: callback_mode
+    args:
+      - name: device
+        doc: |
+          TODO
+        type: object.device
+        pointer: immutable
+      - name: reason
+        doc: |
+          TODO
+        type: enum.device_lost_reason
+      - name: message
+        doc: |
+          TODO
+        type: string
+  - name: pop_error_scope
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: status
+        doc: |
+          TODO
+        type: enum.pop_error_scope_status
+      - name: type
+        doc: |
+          TODO
+        type: enum.error_type
+      - name: message
+        doc: |
+          TODO
+        type: string
+  - name: queue_work_done
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: status
+        doc: |
+          TODO
+        type: enum.queue_work_done_status
+  - name: request_adapter
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: status
+        doc: |
+          TODO
+        type: enum.request_adapter_status
+      - name: adapter
+        doc: |
+          TODO
+        type: object.adapter
+      - name: message
+        doc: |
+          TODO
+        type: string
+  - name: request_device
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: status
+        doc: |
+          TODO
+        type: enum.request_device_status
+      - name: device
+        doc: |
+          TODO
+        type: object.device
+      - name: message
+        doc: |
+          TODO
+        type: string
+  - name: uncaptured_error
+    doc: |
+      TODO
+    style: immediate
+    args:
+      - name: device
+        doc: |
+          TODO
+        type: object.device
+        pointer: immutable
+      - name: type
+        doc: |
+          TODO
+        type: enum.error_type
+      - name: message
+        doc: |
+          TODO
+        type: string
 functions:
   - name: create_instance
     doc: |
@@ -3032,19 +3235,7 @@ objects:
       - name: request_device
         doc: |
           TODO
-        returns_async:
-          - name: status
-            doc: |
-              TODO
-            type: enum.request_device_status
-          - name: device
-            doc: |
-              TODO
-            type: object.device
-          - name: message
-            doc: |
-              TODO
-            type: string
+        callback: callback.request_device
         args:
           - name: descriptor
             doc: |
@@ -3083,11 +3274,7 @@ objects:
       - name: map_async
         doc: |
           TODO
-        returns_async:
-          - name: status
-            doc: |
-              TODO
-            type: enum.buffer_map_async_status
+        callback: callback.buffer_map
         args:
           - name: mode
             doc: |
@@ -3572,19 +3759,7 @@ objects:
       - name: create_compute_pipeline_async
         doc: |
           TODO
-        returns_async:
-          - name: status
-            doc: |
-              TODO
-            type: enum.create_pipeline_async_status
-          - name: pipeline
-            doc: |
-              TODO
-            type: object.compute_pipeline
-          - name: message
-            doc: |
-              TODO
-            type: string
+        callback: callback.create_compute_pipeline_async
         args:
           - name: descriptor
             doc: |
@@ -3620,19 +3795,7 @@ objects:
       - name: create_render_pipeline_async
         doc: |
           TODO
-        returns_async:
-          - name: status
-            doc: |
-              TODO
-            type: enum.create_pipeline_async_status
-          - name: pipeline
-            doc: |
-              TODO
-            type: object.render_pipeline
-          - name: message
-            doc: |
-              TODO
-            type: string
+        callback: callback.create_render_pipeline_async
         args:
           - name: descriptor
             doc: |
@@ -3764,16 +3927,7 @@ objects:
       - name: pop_error_scope
         doc: |
           TODO
-        args:
-          - name: callback
-            doc: |
-              TODO
-            type: function_type.error_callback
-          - name: userdata
-            doc: |
-              TODO
-            type: c_void
-            pointer: mutable
+        callback: callback.pop_error_scope
       - name: set_label
         doc: |
           TODO
@@ -3817,19 +3971,7 @@ objects:
       - name: request_adapter
         doc: |
           TODO
-        returns_async:
-          - name: status
-            doc: |
-              TODO
-            type: enum.request_adapter_status
-          - name: adapter
-            doc: |
-              TODO
-            type: object.adapter
-          - name: message
-            doc: |
-              TODO
-            type: string
+        callback: callback.request_adapter
         args:
           - name: options
             doc: |
@@ -3894,11 +4036,7 @@ objects:
       - name: on_submitted_work_done
         doc: |
           TODO
-        returns_async:
-          - name: status
-            doc: |
-              TODO
-            type: enum.queue_work_done_status
+        callback: callback.queue_work_done
       - name: write_buffer
         doc: |
           TODO
@@ -4445,16 +4583,7 @@ objects:
       - name: get_compilation_info
         doc: |
           TODO
-        returns_async:
-          - name: status
-            doc: |
-              TODO
-            type: enum.compilation_info_request_status
-          - name: compilation_info
-            doc: |
-              TODO
-            type: struct.compilation_info
-            pointer: immutable
+        callback: callback.compilation_info
       - name: set_label
         doc: |
           TODO

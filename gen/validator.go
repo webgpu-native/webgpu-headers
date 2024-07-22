@@ -42,8 +42,8 @@ func mergeAndValidateDuplicates(yamlPaths []string) (errs error) {
 	constants := make(map[string]Constant)
 	enums := make(map[string]Enum)
 	bitflags := make(map[string]Bitflag)
-	functionTypes := make(map[string]Function)
 	structs := make(map[string]Struct)
+	callbacks := make(map[string]Callback)
 	functions := make(map[string]Function)
 	objects := make(map[string]Object)
 
@@ -99,11 +99,11 @@ func mergeAndValidateDuplicates(yamlPaths []string) (errs error) {
 				bitflags[bf.Name] = bf
 			}
 		}
-		for _, ft := range data.FunctionTypes {
-			if _, ok := functionTypes[ft.Name]; ok {
-				errs = errors.Join(errs, fmt.Errorf("merge: function_types.%s in %s was already found previously while parsing, duplicates are not allowed", ft.Name, yamlPath))
+		for _, c := range data.Callbacks {
+			if _, ok := callbacks[c.Name]; ok {
+				errs = errors.Join(errs, fmt.Errorf("merge: callbacks.%s in %s was already found previously while parsing, duplicates are not allowed", c.Name, yamlPath))
 			}
-			functionTypes[ft.Name] = ft
+			callbacks[c.Name] = c
 		}
 		for _, s := range data.Structs {
 			if _, ok := structs[s.Name]; ok {

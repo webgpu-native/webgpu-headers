@@ -16,7 +16,7 @@ func main() {
 	flag.StringVar(&yamlPath, "yaml", "", "path of the yaml spec")
 	flag.Parse()
 
-	arrays := []string{"constants", "typedefs", "enums", "bitflags", "function_types", "structs", "functions", "objects"}
+	arrays := []string{"constants", "typedefs", "enums", "bitflags", "structs", "callbacks", "functions", "objects"}
 	for _, array := range arrays {
 		SortArrayByFieldInPlace(array, "name")
 	}
