@@ -20,23 +20,23 @@ func (g *Generator) Gen(dst io.Writer) error {
 	t := template.
 		New("").
 		Funcs(template.FuncMap{
-			"SComment":     func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, true) },
-			"MComment":     func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, true) },
-			"SCommentN":    func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, false) },
-			"MCommentN":    func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, false) },
+			"SComment":  func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, true) },
+			"MComment":  func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, true) },
+			"SCommentN": func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, false) },
+			"MCommentN": func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, false) },
 			"MCommentEnum": func(v string, indent int, prefix string, e Enum, entryIndex int) string {
 				if v == "" || strings.TrimSpace(v) == "TODO" {
 					return ""
 				}
 				value, _ := g.EnumValue(prefix, e, entryIndex)
-				return Comment("`" + value + "` " + v, CommentTypeMultiLine, indent, true)
+				return Comment("`"+value+"` \n"+v, CommentTypeMultiLine, indent, true)
 			},
 			"MCommentBitflag": func(v string, indent int, b Bitflag, entryIndex int) string {
 				if v == "" || strings.TrimSpace(v) == "TODO" {
 					return ""
 				}
 				value, _ := g.BitflagValue(b, entryIndex)
-				return Comment("`" + value + "` " + v, CommentTypeMultiLine, indent, true)
+				return Comment("`"+value+"` "+v, CommentTypeMultiLine, indent, true)
 			},
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,

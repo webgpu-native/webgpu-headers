@@ -4,7 +4,7 @@
 
 /**
  * \mainpage
- * 
+ *
  * **Important:** *This documentation is a Work In Progress.*
  *
  * This is the home of WebGPU C API specification. We define here the standard
@@ -68,7 +68,7 @@
 /**
  * \defgroup Constants
  * \brief Constants.
- * 
+ *
  * @{
  */
 
@@ -84,7 +84,7 @@
 /**
  * \defgroup Typedefs
  * \brief Utility typedefs.
- * 
+ *
  * @{
  */
 
@@ -102,7 +102,7 @@ typedef {{CType .Type "" ""}} WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
 /**
  * \defgroup Objects
  * \brief Opaque, non-dispatchable handles to WebGPU objects.
- * 
+ *
  * @{
  */
 
@@ -134,7 +134,7 @@ struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
 /**
  * \defgroup Enumerations
  * \brief Enums.
- * 
+ *
  * @{
  */
 
@@ -160,7 +160,7 @@ typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 /**
  * \defgroup Bitflags
  * \brief Enum used as bit flags.
- * 
+ *
  * @{
  */
 
@@ -191,7 +191,7 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * \defgroup Callbacks
  * \brief Callbacks through which asynchronous functions return.
- * 
+ *
  * @{
  */
 
@@ -206,7 +206,7 @@ typedef void (*WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}})({{CallbackArgs
 /**
  * \defgroup ChainedStructures Chained Structures
  * \brief Structures used to extend descriptors.
- * 
+ *
  * @{
  */
 
@@ -226,14 +226,14 @@ typedef struct WGPUChainedStructOut {
 /**
  * \defgroup Structures
  * \brief Descriptors and other transparent structures.
- * 
+ *
  * @{
  */
 
  /**
  * \defgroup WGPUCallbackInfo
  * \brief Callback info structures that are used in asynchronous functions.
- * 
+ *
  * @{
  */
 
@@ -266,6 +266,7 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
+    {{- MComment .Doc 4 }}
     {{  StructMember $struct $memberIndex}}
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
@@ -306,7 +307,7 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
 /**
  * \defgroup GlobalFunctions Global Functions
  * \brief Functions that are not specific to an object.
- * 
+ *
  * @{
  */
 
@@ -323,7 +324,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 /**
  * \defgroup Methods
  * \brief Functions that are relative to a specific object.
- * 
+ *
  * @{
  */
 
@@ -332,7 +333,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 /**
  * \defgroup WGPU{{$object.Name | PascalCase}}Methods WGPU{{$object.Name | PascalCase}} methods
  * \brief Functions whose first argument has type WGPU{{$object.Name | PascalCase}}.
- * 
+ *
  * @{
  */
 {{-   range $object.Methods}}
