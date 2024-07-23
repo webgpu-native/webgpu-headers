@@ -37,7 +37,7 @@ Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance with
 
 ### Mixed Sources {#Mixed-Sources}
 
-Asynchronous operations may originate from different sources. There are CPU-timeline operations and there are Queue-timeline operations. Within a _timed wait_, it is only valid to wait on `WGPUFuture`s originating from a single `WGPUQueue`. Waiting on two futures from different queues, or waiting on a Queue-timline future and some other CPU-timeline future is an error.
+Asynchronous operations may originate from different sources. There are CPU-timeline operations and there are Queue-timeline operations. Within a _timed wait_, it is only valid to wait on `WGPUFuture`s originating from a single `WGPUQueue`. Waiting on two futures from different queues, or waiting on a Queue-timeline future and some other CPU-timeline future is an error.
 
 #### CPU-Timeline Operations
  - ::wgpuInstanceRequestAdapter
