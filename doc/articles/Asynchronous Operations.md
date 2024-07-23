@@ -19,17 +19,20 @@ All asynchronous operations start when the application calls an asynchronous web
    `void* userdata1`\n
    `void* userdata2`
 
-The `callback` function pointer is called when the application callback fires. The `userdata1` and `userdata2` members are passed back to the application as the last two arguments in the callback function. Callbacks may not fire unless the application explicitly flushes them. It depends on the @ref WGPUCallbackMode of the operation. webgpu.h provides three callback modes: `::WGPUCallbackMode_WaitAnyOnly`, `::WGPUCallbackMode_AllowProcessEvents`, and `::WGPUCallbackMode_AllowSpontaneous`.
+The `callback` function pointer is called when the application _observes completion_ of the asynchronous operation. The `userdata1` and `userdata2` members are passed back to the application as the last two arguments in the callback function. Callbacks **may not** be called unless the application explicitly flushes them in order to _observe completion_. The point in time a callback is called depends on the @ref WGPUCallbackMode of the operation. webgpu.h provides three callback modes: `::WGPUCallbackMode_WaitAnyOnly`, `::WGPUCallbackMode_AllowProcessEvents`, and `::WGPUCallbackMode_AllowSpontaneous`.
 
+> @copydoc ::WGPUCallbackMode_WaitAnyOnly
+> @copydoc ::WGPUCallbackMode_AllowProcessEvents
+> @copydoc ::WGPUCallbackMode_AllowSpontaneous
 
 ## wgpuInstanceWaitAny {#Wait-Any}
 `WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance, size_t futureCount, WGPUFutureWaitInfo * futures, uint64_t timeoutNS)`
 
-Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nanoseconds. Returns when at least one `WGPUFuture` is completed or `timeoutNS` elapses, whichever is first.
+Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nanoseconds. Returns when at least one `WGPUFuture` is completed or `timeoutNS` elapses, whichever is first. If `timeoutNS` is zero, all `futures` are polled once, without blocking.
 
 Returns `::WGPUWaitStatus_Success` if at least one `WGPUFuture` completes. WGPUFutureWaitInfo::completed is set to true for all completed futures. See @ref WGPUWaitStatus for other status codes.
 
-Within this call, any `WGPUFuture`s that completed, their respective callbacks will fire.
+Within this call, for any `WGPUFuture`s that completed, their respective callbacks will fire.
 
 ### Timed Wait {#Timed-Wait}
 
@@ -54,7 +57,7 @@ Asynchronous operations may originate from different sources. There are CPU-time
 ## wgpuInstanceProcessEvents {#Process-Events}
 `void wgpuInstanceProcessEvents(WGPUInstance)`
 
-Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `WGPUCallbackMode_AllowProcessEvents` that have completed. This is a non-blocking operation.
+Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents` that have completed. This is a non-blocking operation.
 
 ## Device Events
 

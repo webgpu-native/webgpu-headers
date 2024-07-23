@@ -309,22 +309,19 @@ typedef enum WGPUCallbackMode {
     /**
      * `0x00000002` 
      * Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
-     * - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
-     *   AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
-     * - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous asychronous operation is complete.
+     * - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
+     * - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
      */
     WGPUCallbackMode_AllowProcessEvents = 0x00000002,
     /**
      * `0x00000003` 
      * Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
-     * - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
-     *   AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
-     * - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous asychronous operation is complete.
+     * - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
      * - **may** fire spontaneously on an arbitrary or application thread, when the WebGPU implementations discovers that the asynchronous operation is complete.
      * 
      *   Implementations _should_ fire spontaneous callbacks as soon as possible.
      * 
-     * Because spontaneous callbacks may fire at an arbitrary time on an arbitrary thread, applications should take extra care when acquiring locks or mutating state inside the callback. It undefined behavior to re-entrantly call into the webgpu.h API if the callback fires while inside the callstack of another webgpu.h function.
+     * @note Because spontaneous callbacks may fire at an arbitrary time on an arbitrary thread, applications should take extra care when acquiring locks or mutating state inside the callback. It undefined behavior to re-entrantly call into the webgpu.h API if the callback fires while inside the callstack of another webgpu.h function that is not `wgpuInstanceWaitAny` or `wgpuInstanceProcessEvents`.
      */
     WGPUCallbackMode_AllowSpontaneous = 0x00000003,
     WGPUCallbackMode_Force32 = 0x7FFFFFFF

@@ -79,7 +79,7 @@ LAYOUT_FILE            =
 
 # When adding extra files, separate them with spaces.
 
-INPUT                  = webgpu.h doc/
+INPUT                  = webgpu.h doc/articles/
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
