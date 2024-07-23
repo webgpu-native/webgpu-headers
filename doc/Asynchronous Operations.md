@@ -22,7 +22,7 @@ All asynchronous operations start when the application calls an asynchronous web
 The `callback` function pointer is called when the application callback fires. The `userdata1` and `userdata2` members are passed back to the application as the last two arguments in the callback function. Callbacks may not fire unless the application explicitly flushes them. It depends on the @ref WGPUCallbackMode of the operation. webgpu.h provides three callback modes: `::WGPUCallbackMode_WaitAnyOnly`, `::WGPUCallbackMode_AllowProcessEvents`, and `::WGPUCallbackMode_AllowSpontaneous`.
 
 
-## wgpInstanceWaitAny {#Wait-Any}
+## wgpuInstanceWaitAny {#Wait-Any}
 `WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance, size_t futureCount, WGPUFutureWaitInfo * futures, uint64_t timeoutNS)`
 
 Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nanoseconds. Returns when at least one `WGPUFuture` is completed or `timeoutNS` elapses, whichever is first.
