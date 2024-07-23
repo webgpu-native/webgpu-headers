@@ -240,7 +240,7 @@ enums:
           Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
           - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
             AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
-          - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous asychronous operation is complete.
+          - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
       - name: allow_spontaneous
         value: 0x0003
         doc: |
