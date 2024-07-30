@@ -447,6 +447,9 @@ enums:
       - name: texture_compression_BC
         doc: |
           TODO
+      - name: texture_compression_BC_sliced_3D
+        doc: |
+          TODO
       - name: texture_compression_ETC2
         doc: |
           TODO
