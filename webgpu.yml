@@ -706,34 +706,34 @@ enums:
       - name: invalid
         doc: |
           TODO
-      - name: surface_from_metal_layer
+      - name: surface_source_metal_layer
         doc: |
           TODO
-      - name: surface_from_windows_HWND
+      - name: surface_source_windows_HWND
         doc: |
           TODO
-      - name: surface_from_xlib_window
+      - name: surface_source_xlib_window
         doc: |
           TODO
-      - name: surface_from_canvas_HTML_selector
+      - name: surface_source_canvas_HTML_selector__Emscripten
         doc: |
           TODO
-      - name: shader_module_SPIRV
+      - name: shader_source_SPIRV
         doc: |
           TODO
-      - name: shader_module_WGSL
+      - name: shader_source_WGSL
         doc: |
           TODO
-      - name: surface_from_wayland_surface
+      - name: surface_source_wayland_surface
         doc: |
           TODO
-      - name: surface_from_android_native_window
+      - name: surface_source_android_native_window
         doc: |
           TODO
-      - name: surface_from_xcb_window
+      - name: surface_source_XCB_window
         doc: |
           TODO
-      - name: render_pass_descriptor_max_draw_count
+      - name: render_pass_max_draw_count
         value: 0x000F
         doc: |
           TODO
@@ -2573,7 +2573,7 @@ structs:
           TODO
         type: array<struct.shader_module_compilation_hint>
         pointer: immutable
-  - name: shader_module_SPIRV
+  - name: shader_source_SPIRV
     doc: |
       TODO
     type: extension_in
@@ -2589,7 +2589,7 @@ structs:
           TODO
         type: uint32
         pointer: immutable
-  - name: shader_module_WGSL
+  - name: shader_source_WGSL
     doc: |
       TODO
     type: extension_in
@@ -2720,7 +2720,7 @@ structs:
           TODO
         type: string
         optional: true
-  - name: surface_from_android_native_window
+  - name: surface_source_android_native_window
     doc: |
       TODO
     type: extension_in
@@ -2732,7 +2732,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_from_canvas_HTML_selector
+  - name: surface_source_canvas_HTML_selector__Emscripten
     doc: |
       TODO
     type: extension_in
@@ -2743,7 +2743,7 @@ structs:
         doc: |
           TODO
         type: string
-  - name: surface_from_metal_layer
+  - name: surface_source_metal_layer
     doc: |
       TODO
     type: extension_in
@@ -2755,7 +2755,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_from_wayland_surface
+  - name: surface_source_wayland_surface
     doc: |
       TODO
     type: extension_in
@@ -2772,7 +2772,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_from_windows_HWND
+  - name: surface_source_windows_HWND
     doc: |
       TODO
     type: extension_in
@@ -2789,7 +2789,7 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_from_xcb_window
+  - name: surface_source_XCB_window
     doc: |
       TODO
     type: extension_in
@@ -2805,7 +2805,7 @@ structs:
         doc: |
           TODO
         type: uint32
-  - name: surface_from_xlib_window
+  - name: surface_source_xlib_window
     doc: |
       TODO
     type: extension_in
