@@ -149,20 +149,20 @@ struct WGPURequestAdapterOptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
 struct WGPUShaderModuleCompilationHint;
-struct WGPUShaderModuleSPIRV;
-struct WGPUShaderModuleWGSL;
+struct WGPUShaderSourceSPIRV;
+struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
 struct WGPUStorageTextureBindingLayout;
 struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceConfiguration;
 struct WGPUSurfaceDescriptor;
-struct WGPUSurfaceFromAndroidNativeWindow;
-struct WGPUSurfaceFromCanvasHTMLSelector;
-struct WGPUSurfaceFromMetalLayer;
-struct WGPUSurfaceFromWaylandSurface;
-struct WGPUSurfaceFromWindowsHWND;
-struct WGPUSurfaceFromXcbWindow;
-struct WGPUSurfaceFromXlibWindow;
+struct WGPUSurfaceSourceAndroidNativeWindow;
+struct WGPUSurfaceSourceCanvasHTMLSelector_Emscripten;
+struct WGPUSurfaceSourceMetalLayer;
+struct WGPUSurfaceSourceWaylandSurface;
+struct WGPUSurfaceSourceWindowsHWND;
+struct WGPUSurfaceSourceXCBWindow;
+struct WGPUSurfaceSourceXlibWindow;
 struct WGPUSurfaceTexture;
 struct WGPUTextureBindingLayout;
 struct WGPUTextureDataLayout;
@@ -509,16 +509,16 @@ typedef enum WGPURequestDeviceStatus {
 
 typedef enum WGPUSType {
     WGPUSType_Invalid = 0x00000000,
-    WGPUSType_SurfaceFromMetalLayer = 0x00000001,
-    WGPUSType_SurfaceFromWindowsHWND = 0x00000002,
-    WGPUSType_SurfaceFromXlibWindow = 0x00000003,
-    WGPUSType_SurfaceFromCanvasHTMLSelector = 0x00000004,
-    WGPUSType_ShaderModuleSPIRV = 0x00000005,
-    WGPUSType_ShaderModuleWGSL = 0x00000006,
-    WGPUSType_SurfaceFromWaylandSurface = 0x00000007,
-    WGPUSType_SurfaceFromAndroidNativeWindow = 0x00000008,
-    WGPUSType_SurfaceFromXcbWindow = 0x00000009,
-    WGPUSType_RenderPassDescriptorMaxDrawCount = 0x0000000F,
+    WGPUSType_SurfaceSourceMetalLayer = 0x00000001,
+    WGPUSType_SurfaceSourceWindowsHWND = 0x00000002,
+    WGPUSType_SurfaceSourceXlibWindow = 0x00000003,
+    WGPUSType_SurfaceSourceCanvasHTMLSelector_Emscripten = 0x00000004,
+    WGPUSType_ShaderSourceSPIRV = 0x00000005,
+    WGPUSType_ShaderSourceWGSL = 0x00000006,
+    WGPUSType_SurfaceSourceWaylandSurface = 0x00000007,
+    WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
+    WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
+    WGPUSType_RenderPassMaxDrawCount = 0x0000000F,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -1193,16 +1193,16 @@ typedef struct WGPUShaderModuleCompilationHint {
     WGPUPipelineLayout layout;
 } WGPUShaderModuleCompilationHint WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUShaderModuleSPIRV {
+typedef struct WGPUShaderSourceSPIRV {
     WGPUChainedStruct chain;
     uint32_t codeSize;
     uint32_t const * code;
-} WGPUShaderModuleSPIRV WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUShaderSourceSPIRV WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUShaderModuleWGSL {
+typedef struct WGPUShaderSourceWGSL {
     WGPUChainedStruct chain;
     char const * code;
-} WGPUShaderModuleWGSL WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUShaderSourceWGSL WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUStencilFaceState {
     WGPUCompareFunction compare;
@@ -1247,44 +1247,44 @@ typedef struct WGPUSurfaceDescriptor {
     WGPU_NULLABLE char const * label;
 } WGPUSurfaceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceFromAndroidNativeWindow {
+typedef struct WGPUSurfaceSourceAndroidNativeWindow {
     WGPUChainedStruct chain;
     void * window;
-} WGPUSurfaceFromAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceFromCanvasHTMLSelector {
+typedef struct WGPUSurfaceSourceCanvasHTMLSelector_Emscripten {
     WGPUChainedStruct chain;
     char const * selector;
-} WGPUSurfaceFromCanvasHTMLSelector WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceCanvasHTMLSelector_Emscripten WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceFromMetalLayer {
+typedef struct WGPUSurfaceSourceMetalLayer {
     WGPUChainedStruct chain;
     void * layer;
-} WGPUSurfaceFromMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceFromWaylandSurface {
+typedef struct WGPUSurfaceSourceWaylandSurface {
     WGPUChainedStruct chain;
     void * display;
     void * surface;
-} WGPUSurfaceFromWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceFromWindowsHWND {
+typedef struct WGPUSurfaceSourceWindowsHWND {
     WGPUChainedStruct chain;
     void * hinstance;
     void * hwnd;
-} WGPUSurfaceFromWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceFromXcbWindow {
+typedef struct WGPUSurfaceSourceXCBWindow {
     WGPUChainedStruct chain;
     void * connection;
     uint32_t window;
-} WGPUSurfaceFromXcbWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceXCBWindow WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUSurfaceFromXlibWindow {
+typedef struct WGPUSurfaceSourceXlibWindow {
     WGPUChainedStruct chain;
     void * display;
     uint64_t window;
-} WGPUSurfaceFromXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSurfaceTexture {
     WGPUTexture texture;
