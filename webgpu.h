@@ -132,7 +132,6 @@ struct WGPUComputePassTimestampWrites;
 struct WGPUConstantEntry;
 struct WGPUExtent3D;
 struct WGPUFuture;
-struct WGPUInstanceDescriptor;
 struct WGPUInstanceFeatures;
 struct WGPULimits;
 struct WGPUMultisampleState;
@@ -178,6 +177,7 @@ struct WGPUDepthStencilState;
 struct WGPUFutureWaitInfo;
 struct WGPUImageCopyBuffer;
 struct WGPUImageCopyTexture;
+struct WGPUInstanceDescriptor;
 struct WGPUProgrammableStageDescriptor;
 struct WGPURenderPassColorAttachment;
 struct WGPURequiredLimits;
@@ -1105,10 +1105,6 @@ typedef struct WGPUFuture {
     uint64_t id;
 } WGPUFuture WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUInstanceDescriptor {
-    WGPUChainedStruct const * nextInChain;
-} WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
-
 /**
  * Features enabled on the WGPUInstance
  */
@@ -1480,6 +1476,14 @@ typedef struct WGPUImageCopyTexture {
     WGPUOrigin3D origin;
     WGPUTextureAspect aspect;
 } WGPUImageCopyTexture WGPU_STRUCTURE_ATTRIBUTE;
+
+typedef struct WGPUInstanceDescriptor {
+    WGPUChainedStruct const * nextInChain;
+    /**
+     * Instance features to enable
+     */
+    WGPUInstanceFeatures features;
+} WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUProgrammableStageDescriptor {
     WGPUChainedStruct const * nextInChain;

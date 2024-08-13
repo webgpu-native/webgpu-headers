@@ -2019,6 +2019,10 @@ structs:
     doc: |
       TODO
     type: base_in
+    members:
+      - name: features
+        doc: Instance features to enable
+        type: struct.instance_features
   - name: instance_features
     doc: |
       Features enabled on the WGPUInstance
