@@ -38,7 +38,7 @@ Within this call, for any `WGPUFuture`s that completed, their respective callbac
 
 ### Timed Wait {#Timed-Wait}
 
-Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in `wgpuCreateInstance` with `WGPUInstanceFeatures::timedWaitAnyEnable`, and the number of futures waited on must be less than or equal to `WGPUInstanceFeatures::timedWaitAnyMaxCount`. Supported instance features may be queried using `::wgpuGetInstanceFeatures`.
+Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in `::wgpuCreateInstance` with `WGPUInstanceFeatures::timedWaitAnyEnable`, and the number of futures waited on must be less than or equal to `WGPUInstanceFeatures::timedWaitAnyMaxCount`. Supported instance features may be queried using `::wgpuGetInstanceFeatures`.
 
 ### Mixed Sources {#Mixed-Sources}
 

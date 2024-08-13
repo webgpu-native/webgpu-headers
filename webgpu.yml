@@ -3212,8 +3212,7 @@ callbacks:
         type: string
 functions:
   - name: create_instance
-    doc: |
-      TODO
+    doc: Create a WGPUInstance
     returns:
       doc: |
         TODO

@@ -1621,6 +1621,9 @@ extern "C" {
 
 #if !defined(WGPU_SKIP_PROCS)
 
+/**
+ * Create a WGPUInstance
+ */
 typedef WGPUInstance (*WGPUProcCreateInstance)(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Query the supported instance features
@@ -1876,6 +1879,9 @@ typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView) WGPU_FUN
  * \brief Functions that are not specific to an object.
  *
  * @{
+ */
+/**
+ * Create a WGPUInstance
  */
 WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
