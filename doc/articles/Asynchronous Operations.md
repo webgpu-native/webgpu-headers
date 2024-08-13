@@ -10,16 +10,18 @@ All asynchronous operations start when the application calls an asynchronous web
  - a `WGPUChainedStruct const * nextInChain` pointer, for extensions.
  - a @ref WGPUCallbackMode `mode` enum.
  - a `callback` function pointer. For example:
-   ```typedef void (*WGPUBufferMapCallback)(
-        WGPUMapAsyncStatus status,
-        char const * message,
-        WGPU_NULLABLE void* userdata1,
-        WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;```
- - Two application-owned userdata members.\n
-   `void* userdata1`\n
+   ```c
+   typedef void (*WGPUBufferMapCallback)(
+       WGPUMapAsyncStatus status,
+       char const * message,
+       WGPU_NULLABLE void* userdata1,
+       WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+   ```
+ - Two application-owned userdata members.<br>
+   `void* userdata1`<br>
    `void* userdata2`
 
-The `callback` function pointer is called when the application _observes completion_ of the asynchronous operation. The `userdata1` and `userdata2` members are passed back to the application as the last two arguments in the callback function. Callbacks **may not** be called unless the application explicitly flushes them in order to _observe completion_. The point in time a callback is called depends on the @ref WGPUCallbackMode of the operation. webgpu.h provides three callback modes: `::WGPUCallbackMode_WaitAnyOnly`, `::WGPUCallbackMode_AllowProcessEvents`, and `::WGPUCallbackMode_AllowSpontaneous`.
+The `callback` function pointer is called when the application _observes completion_ of the asynchronous operation. The `userdata1` and `userdata2` members are passed back to the application as the last two arguments in the callback function. Callbacks **might not** be called unless the application explicitly flushes them in order to _observe completion_. The point in time a callback is called depends on the @ref WGPUCallbackMode of the operation. webgpu.h provides three callback modes: `::WGPUCallbackMode_WaitAnyOnly`, `::WGPUCallbackMode_AllowProcessEvents`, and `::WGPUCallbackMode_AllowSpontaneous`.
 
 > @copydoc ::WGPUCallbackMode_WaitAnyOnly
 > @copydoc ::WGPUCallbackMode_AllowProcessEvents
@@ -36,7 +38,7 @@ Within this call, for any `WGPUFuture`s that completed, their respective callbac
 
 ### Timed Wait {#Timed-Wait}
 
-Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance with WGPUInstanceFeatures::timedWaitAnyEnable, and the number of futures waited on must be less than or equal to WGPUInstanceFeatures::timedWaitAnyMaxCount. Supported instance features may be queried using `::wgpuGetInstanceFeatures`.
+Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in `wgpuCreateInstance` with `WGPUInstanceFeatures::timedWaitAnyEnable`, and the number of futures waited on must be less than or equal to `WGPUInstanceFeatures::timedWaitAnyMaxCount`. Supported instance features may be queried using `::wgpuGetInstanceFeatures`.
 
 ### Mixed Sources {#Mixed-Sources}
 
