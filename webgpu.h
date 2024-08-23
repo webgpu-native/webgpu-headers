@@ -112,6 +112,9 @@ typedef struct WGPURenderPassEncoderImpl* WGPURenderPassEncoder WGPU_OBJECT_ATTR
 typedef struct WGPURenderPipelineImpl* WGPURenderPipeline WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUSamplerImpl* WGPUSampler WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUShaderModuleImpl* WGPUShaderModule WGPU_OBJECT_ATTRIBUTE;
+/**
+ * An object used to continuously present image data to the user, see @ref Surfaces for more details.
+ */
 typedef struct WGPUSurfaceImpl* WGPUSurface WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUTextureImpl* WGPUTexture WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUTextureViewImpl* WGPUTextureView WGPU_OBJECT_ATTRIBUTE;
@@ -356,11 +359,34 @@ typedef enum WGPUCompilationMessageType {
     WGPUCompilationMessageType_Force32 = 0x7FFFFFFF
 } WGPUCompilationMessageType WGPU_ENUM_ATTRIBUTE;
 
+/**
+ * Describes how frames are composited with other contents on the screen when `::wgpuSurfacePresent` is called.
+ */
 typedef enum WGPUCompositeAlphaMode {
+    /**
+     * `0x00000000` 
+     * Lets the WebGPU implementation choose the best mode (supported, and with the best performance).
+     */
     WGPUCompositeAlphaMode_Auto = 0x00000000,
+    /**
+     * `0x00000001` 
+     * The alpha component of the image is ignored and teated as if it is always 1.0.
+     */
     WGPUCompositeAlphaMode_Opaque = 0x00000001,
+    /**
+     * `0x00000002` 
+     * The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component.
+     */
     WGPUCompositeAlphaMode_Premultiplied = 0x00000002,
+    /**
+     * `0x00000003` 
+     * The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component.
+     */
     WGPUCompositeAlphaMode_Unpremultiplied = 0x00000003,
+    /**
+     * `0x00000004` 
+     * The handling of the alpha component is unknown to WebGPU and should be handled by the application using system-specific APIs.
+     */
     WGPUCompositeAlphaMode_Inherit = 0x00000004,
     WGPUCompositeAlphaMode_Force32 = 0x7FFFFFFF
 } WGPUCompositeAlphaMode WGPU_ENUM_ATTRIBUTE;
@@ -485,10 +511,35 @@ typedef enum WGPUPowerPreference {
     WGPUPowerPreference_Force32 = 0x7FFFFFFF
 } WGPUPowerPreference WGPU_ENUM_ATTRIBUTE;
 
+/**
+ * Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
+ */
 typedef enum WGPUPresentMode {
+    /**
+     * `0x00000000` 
+     * The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
+     * Tearing cannot be observed and frame-loop will execute at maximum at the display's refresh rate.
+     * This is the only mode that's always available.
+     */
     WGPUPresentMode_Fifo = 0x00000000,
+    /**
+     * `0x00000001` 
+     * The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
+     * Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
+     * This is still a first-in, first-out mechanism so a frame-loop will execute at maximum at the display's refresh rate.
+     */
     WGPUPresentMode_FifoRelaxed = 0x00000001,
+    /**
+     * `0x00000002` 
+     * The presentation of the image to the user is updated immediately without waiting for a vertical blank.
+     * Tearing can be observed but latency is minimized.
+     */
     WGPUPresentMode_Immediate = 0x00000002,
+    /**
+     * `0x00000003` 
+     * The presentation of the image to the user waits for the next vertical blanking period to update to the latest provided image.
+     * Tearing cannot be observed and a frame-loop is not limited to the display's refresh rate.
+     */
     WGPUPresentMode_Mailbox = 0x00000003,
     WGPUPresentMode_Force32 = 0x7FFFFFFF
 } WGPUPresentMode WGPU_ENUM_ATTRIBUTE;
@@ -1294,13 +1345,30 @@ typedef struct WGPUStorageTextureBindingLayout {
     WGPUTextureViewDimension viewDimension;
 } WGPUStorageTextureBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
+ */
 typedef struct WGPUSurfaceCapabilities {
     WGPUChainedStructOut * nextInChain;
+    /**
+     * The bit set of supported @ref WGPUTextureUsage bits.
+     * Guaranteed to contain @ref WGPUTextureUsage_RenderAttachment.
+     */
     WGPUTextureUsageFlags usages;
+    /**
+     * A list of supported @ref WGPUTextureFormat values, in order of preference.
+     */
     size_t formatCount;
     WGPUTextureFormat const * formats;
+    /**
+     * A list of supported @ref WGPUPresentMode values.
+     * Guaranteed to contain @ref WGPUPresentMode_Fifo.
+     */
     size_t presentModeCount;
     WGPUPresentMode const * presentModes;
+    /**
+     * A list of supported @ref WGPUCompositeAlphaMode values.
+     */
     size_t alphaModeCount;
     WGPUCompositeAlphaMode const * alphaModes;
 } WGPUSurfaceCapabilities WGPU_STRUCTURE_ATTRIBUTE;
@@ -1318,47 +1386,111 @@ typedef struct WGPUSurfaceConfiguration {
     WGPUPresentMode presentMode;
 } WGPUSurfaceConfiguration WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
+ * It isn't sufficient by itself and must have one of the `WGPUSurfaceFrom*` in its chain.
+ * See @ref Surface-Creation for more details.
+ */
 typedef struct WGPUSurfaceDescriptor {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Label used to refer to the object.
+     */
     WGPU_NULLABLE char const * label;
 } WGPUSurfaceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an Android [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window).
+ */
 typedef struct WGPUSurfaceFromAndroidNativeWindow {
     WGPUChainedStruct chain;
+    /**
+     * The pointer to the [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window) that will be wrapped by the @ref WGPUSurface.
+     */
     void * window;
 } WGPUSurfaceFromAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [HTML `<canvas>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas).
+ */
 typedef struct WGPUSurfaceFromCanvasHTMLSelector {
     WGPUChainedStruct chain;
+    /**
+     * The [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) for the `<canvas>` element that will be wrapped by the @ref WGPUSurface.
+     * Most commonly `"#id_of_the_canvas"`.
+     */
     char const * selector;
 } WGPUSurfaceFromCanvasHTMLSelector WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
+ */
 typedef struct WGPUSurfaceFromMetalLayer {
     WGPUChainedStruct chain;
+    /**
+     * The pointer to the [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc) that will be wrapped by the @ref WGPUSurface.
+     */
     void * layer;
 } WGPUSurfaceFromMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [Wayland](https://wayland.freedesktop.org/) [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface).
+ */
 typedef struct WGPUSurfaceFromWaylandSurface {
     WGPUChainedStruct chain;
+    /**
+     * A [`wl_display`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_display) for this Wayland instance.
+     */
     void * display;
+    /**
+     * A [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface) that will be wrapped by the @ref WGPUSurface
+     */
     void * surface;
 } WGPUSurfaceFromWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a Windows [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd).
+ */
 typedef struct WGPUSurfaceFromWindowsHWND {
     WGPUChainedStruct chain;
+    /**
+     * The [`HINSTANCE`](https://learn.microsoft.com/en-us/windows/win32/learnwin32/winmain--the-application-entry-point) for this application.
+     * Most commonly `GetModuleHandle(nullptr)`.
+     */
     void * hinstance;
+    /**
+     * The [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd) that will be wrapped by the @ref WGPUSurface.
+     */
     void * hwnd;
 } WGPUSurfaceFromWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
+ */
 typedef struct WGPUSurfaceFromXcbWindow {
     WGPUChainedStruct chain;
+    /**
+     * The `xcb_connection_t` for the connection to the X server.
+     */
     void * connection;
+    /**
+     * The `xcb_window_t` for the window that will be wrapped by the @ref WGPUSurface.
+     */
     uint32_t window;
 } WGPUSurfaceFromXcbWindow WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [Xlib](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) `Window`.
+ */
 typedef struct WGPUSurfaceFromXlibWindow {
     WGPUChainedStruct chain;
+    /**
+     * A pointer to the [`Display`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Opening_the_Display) connected to the X server.
+     */
     void * display;
+    /**
+     * The [`Window`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Creating_Windows) that will be wrapped by the @ref WGPUSurface.
+     */
     uint64_t window;
 } WGPUSurfaceFromXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1735,6 +1867,9 @@ typedef void (*WGPUProcDeviceReference)(WGPUDevice device) WGPU_FUNCTION_ATTRIBU
 typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Instance
+/**
+ * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
+ */
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -1839,11 +1974,35 @@ typedef void (*WGPUProcShaderModuleReference)(WGPUShaderModule shaderModule) WGP
 typedef void (*WGPUProcShaderModuleRelease)(WGPUShaderModule shaderModule) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Surface
+/**
+ * Configures parameters for rendering to `surface`.
+ * See @ref Surface-Configuration for more details.
+ */
 typedef void (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Returns information on how `adapter` is able to use `surface`.
+ * See @ref Surface-Capabilities for more details.
+ * TODO: Should this return a `WGPUStatus` for validation errors? (Like the surface and adapter being on different instance.)
+ */
 typedef void (*WGPUProcSurfaceGetCapabilities)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
+ * See @ref Surface-Presenting for more details.
+ */
 typedef void (*WGPUProcSurfaceGetCurrentTexture)(WGPUSurface surface, WGPUSurfaceTexture * surfaceTexture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Shows `surface`'s current texture to the user.
+ * See @ref Surface-Presenting for more details.
+ */
 typedef void (*WGPUProcSurfacePresent)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Modifies the label used to refer to `surface`.
+ */
 typedef void (*WGPUProcSurfaceSetLabel)(WGPUSurface surface, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Removes the configuration for `surface`.
+ * See @ref Surface-Configuration for more details.
+ */
 typedef void (*WGPUProcSurfaceUnconfigure)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcSurfaceReference)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcSurfaceRelease)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
@@ -2089,6 +2248,9 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  *
  * @{
  */
+/**
+ * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
+ */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -2273,11 +2435,35 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
  *
  * @{
  */
+/**
+ * Configures parameters for rendering to `surface`.
+ * See @ref Surface-Configuration for more details.
+ */
 WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Returns information on how `adapter` is able to use `surface`.
+ * See @ref Surface-Capabilities for more details.
+ * TODO: Should this return a `WGPUStatus` for validation errors? (Like the surface and adapter being on different instance.)
+ */
 WGPU_EXPORT void wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
+ * See @ref Surface-Presenting for more details.
+ */
 WGPU_EXPORT void wgpuSurfaceGetCurrentTexture(WGPUSurface surface, WGPUSurfaceTexture * surfaceTexture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Shows `surface`'s current texture to the user.
+ * See @ref Surface-Presenting for more details.
+ */
 WGPU_EXPORT void wgpuSurfacePresent(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Modifies the label used to refer to `surface`.
+ */
 WGPU_EXPORT void wgpuSurfaceSetLabel(WGPUSurface surface, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Removes the configuration for `surface`.
+ * See @ref Surface-Configuration for more details.
+ */
 WGPU_EXPORT void wgpuSurfaceUnconfigure(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuSurfaceReference(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuSurfaceRelease(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;

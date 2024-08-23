@@ -319,24 +319,18 @@ enums:
         doc: |
           TODO
   - name: composite_alpha_mode
-    doc: |
-      TODO
+    doc: Describes how frames are composited with other contents on the screen when `::wgpuSurfacePresent` is called.
     entries:
       - name: auto
-        doc: |
-          TODO
+        doc: Lets the WebGPU implementation choose the best mode (supported, and with the best performance).
       - name: opaque
-        doc: |
-          TODO
+        doc: The alpha component of the image is ignored and teated as if it is always 1.0.
       - name: premultiplied
-        doc: |
-          TODO
+        doc: The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component.
       - name: unpremultiplied
-        doc: |
-          TODO
+        doc: The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component.
       - name: inherit
-        doc: |
-          TODO
+        doc: The handling of the alpha component is unknown to WebGPU and should be handled by the application using system-specific APIs.
   - name: create_pipeline_async_status
     doc: |
       TODO
@@ -596,21 +590,26 @@ enums:
         doc: |
           TODO
   - name: present_mode
-    doc: |
-      TODO
+    doc: Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
     entries:
       - name: fifo
         doc: |
-          TODO
+          The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
+          Tearing cannot be observed and frame-loop will execute at maximum at the display's refresh rate.
+          This is the only mode that's always available.
       - name: fifo_relaxed
         doc: |
-          TODO
+          The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
+          Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
+          This is still a first-in, first-out mechanism so a frame-loop will execute at maximum at the display's refresh rate.
       - name: immediate
         doc: |
-          TODO
+          The presentation of the image to the user is updated immediately without waiting for a vertical blank.
+          Tearing can be observed but latency is minimized.
       - name: mailbox
         doc: |
-          TODO
+          The presentation of the image to the user waits for the next vertical blanking period to update to the latest provided image.
+          Tearing cannot be observed and a frame-loop is not limited to the display's refresh rate.
   - name: primitive_topology
     doc: |
       TODO
@@ -2693,28 +2692,27 @@ structs:
           TODO
         type: struct.limits
   - name: surface_capabilities
-    doc: |
-      TODO
+    doc: Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
     type: base_out
     free_members: true
     members:
       - name: usages
         doc: |
-          TODO
+          The bit set of supported @ref WGPUTextureUsage bits.
+          Guaranteed to contain @ref WGPUTextureUsage_RenderAttachment.
         type: bitflag.texture_usage
       - name: formats
-        doc: |
-          TODO
+        doc: A list of supported @ref WGPUTextureFormat values, in order of preference.
         type: array<enum.texture_format>
         pointer: immutable
       - name: present_modes
         doc: |
-          TODO
+          A list of supported @ref WGPUPresentMode values.
+          Guaranteed to contain @ref WGPUPresentMode_Fifo.
         type: array<enum.present_mode>
         pointer: immutable
       - name: alpha_modes
-        doc: |
-          TODO
+        doc: A list of supported @ref WGPUCompositeAlphaMode values.
         type: array<enum.composite_alpha_mode>
         pointer: immutable
   - name: surface_configuration
@@ -2757,114 +2755,101 @@ structs:
         type: enum.present_mode
   - name: surface_descriptor
     doc: |
-      TODO
+      The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
+      It isn't sufficient by itself and must have one of the `WGPUSurfaceFrom*` in its chain.
+      See @ref Surface-Creation for more details.
     type: base_in
     members:
       - name: label
-        doc: |
-          TODO
+        doc: Label used to refer to the object.
         type: string
         optional: true
   - name: surface_from_android_native_window
-    doc: |
-      TODO
+    doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an Android [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window).
     type: extension_in
     extends:
       - surface_descriptor
     members:
       - name: window
-        doc: |
-          TODO
+        doc: The pointer to the [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window) that will be wrapped by the @ref WGPUSurface.
         type: c_void
         pointer: mutable
   - name: surface_from_canvas_HTML_selector
-    doc: |
-      TODO
+    doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [HTML `<canvas>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas).
     type: extension_in
     extends:
       - surface_descriptor
     members:
       - name: selector
         doc: |
-          TODO
+          The [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) for the `<canvas>` element that will be wrapped by the @ref WGPUSurface.
+          Most commonly `"#id_of_the_canvas"`.
         type: string
   - name: surface_from_metal_layer
-    doc: |
-      TODO
+    doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
     type: extension_in
     extends:
       - surface_descriptor
     members:
       - name: layer
-        doc: |
-          TODO
+        doc: The pointer to the [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc) that will be wrapped by the @ref WGPUSurface.
         type: c_void
         pointer: mutable
   - name: surface_from_wayland_surface
-    doc: |
-      TODO
+    doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [Wayland](https://wayland.freedesktop.org/) [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface).
     type: extension_in
     extends:
       - surface_descriptor
     members:
       - name: display
-        doc: |
-          TODO
+        doc: A [`wl_display`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_display) for this Wayland instance.
         type: c_void
         pointer: mutable
       - name: surface
-        doc: |
-          TODO
+        doc: A [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface) that will be wrapped by the @ref WGPUSurface
         type: c_void
         pointer: mutable
   - name: surface_from_windows_HWND
-    doc: |
-      TODO
+    doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a Windows [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd).
     type: extension_in
     extends:
       - surface_descriptor
     members:
       - name: hinstance
         doc: |
-          TODO
+          The [`HINSTANCE`](https://learn.microsoft.com/en-us/windows/win32/learnwin32/winmain--the-application-entry-point) for this application.
+          Most commonly `GetModuleHandle(nullptr)`.
         type: c_void
         pointer: mutable
       - name: hwnd
-        doc: |
-          TODO
+        doc: The [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd) that will be wrapped by the @ref WGPUSurface.
         type: c_void
         pointer: mutable
   - name: surface_from_xcb_window
-    doc: |
-      TODO
+    doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
     type: extension_in
     extends:
       - surface_descriptor
     members:
       - name: connection
-        doc: |
-          TODO
+        doc: The `xcb_connection_t` for the connection to the X server.
         type: c_void
         pointer: mutable
       - name: window
-        doc: |
-          TODO
+        doc: The `xcb_window_t` for the window that will be wrapped by the @ref WGPUSurface.
         type: uint32
   - name: surface_from_xlib_window
-    doc: |
-      TODO
+    doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [Xlib](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) `Window`.
     type: extension_in
     extends:
       - surface_descriptor
     members:
       - name: display
-        doc: |
-          TODO
+        doc: A pointer to the [`Display`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Opening_the_Display) connected to the X server.
         type: c_void
         pointer: mutable
       - name: window
-        doc: |
-          TODO
+        doc: The [`Window`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Creating_Windows) that will be wrapped by the @ref WGPUSurface.
         type: uint64
   - name: surface_texture
     doc: |
@@ -3992,16 +3977,13 @@ objects:
       TODO
     methods:
       - name: create_surface
-        doc: |
-          TODO
+        doc: Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
         returns:
-          doc: |
-            TODO
+          doc: A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
           type: object.surface
         args:
           - name: descriptor
-            doc: |
-              TODO
+            doc: The description of the @ref WGPUSurface to create.
             type: struct.surface_descriptor
             pointer: immutable
       - name: has_WGSL_language_feature
@@ -4670,53 +4652,54 @@ objects:
               TODO
             type: string
   - name: surface
-    doc: |
-      TODO
+    doc: An object used to continuously present image data to the user, see @ref Surfaces for more details.
     methods:
       - name: configure
         doc: |
-          TODO
+          Configures parameters for rendering to `surface`.
+          See @ref Surface-Configuration for more details.
         args:
           - name: config
-            doc: |
-              TODO
+            doc: The new configuration to use.
             type: struct.surface_configuration
             pointer: immutable
       - name: get_capabilities
         doc: |
-          TODO
+          Returns information on how `adapter` is able to use `surface`.
+          See @ref Surface-Capabilities for more details.
+          TODO: Should this return a `WGPUStatus` for validation errors? (Like the surface and adapter being on different instance.)
         args:
           - name: adapter
-            doc: |
-              TODO
+            doc: The @ref WGPUAdapter to get capabilities for presenting to this @ref WGPUSurface.
             type: object.adapter
           - name: capabilities
             doc: |
-              TODO
+              The structure to fill capabilities in.
+              It may contain memory allocations so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid memory leaks.
             type: struct.surface_capabilities
             pointer: mutable
       - name: get_current_texture
         doc: |
-          TODO
+          Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
+          See @ref Surface-Presenting for more details.
         args:
           - name: surface_texture
-            doc: |
-              TODO
+            doc: The structure to fill the @ref WGPUTexture and metadata in.
             type: struct.surface_texture
             pointer: mutable
       - name: present
         doc: |
-          TODO
+          Shows `surface`'s current texture to the user.
+          See @ref Surface-Presenting for more details.
       - name: unconfigure
         doc: |
-          TODO
+          Removes the configuration for `surface`.
+          See @ref Surface-Configuration for more details.
       - name: set_label
-        doc: |
-          TODO
+        doc: Modifies the label used to refer to `surface`.
         args:
           - name: label
-            doc: |
-              TODO
+            doc: The new label.
             type: string
   - name: texture
     doc: |
