@@ -226,21 +226,30 @@ enums:
         doc: |
           TODO
   - name: callback_mode
-    doc: |
-      TODO
+    doc: The callback mode controls how a callback for an asynchronous operation may be fired. See @ref Asynchronous-Operations for how these are used.
     entries:
       - name: wait_any_only
         value: 0x0001
         doc: |
-          TODO
+          Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
+          - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
+            AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
       - name: allow_process_events
         value: 0x0002
         doc: |
-          TODO
+          Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
+          - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
+          - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
       - name: allow_spontaneous
         value: 0x0003
         doc: |
-          TODO
+          Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
+          - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
+          - **may** fire spontaneously on an arbitrary or application thread, when the WebGPU implementations discovers that the asynchronous operation is complete.
+
+            Implementations _should_ fire spontaneous callbacks as soon as possible.
+
+          @note Because spontaneous callbacks may fire at an arbitrary time on an arbitrary thread, applications should take extra care when acquiring locks or mutating state inside the callback. It undefined behavior to re-entrantly call into the webgpu.h API if the callback fires while inside the callstack of another webgpu.h function that is not `wgpuInstanceWaitAny` or `wgpuInstanceProcessEvents`.
   - name: compare_function
     doc: |
       TODO
@@ -1310,6 +1319,19 @@ enums:
       - name: vertex_buffer_not_used
         doc: |
           TODO
+  - name: wait_status
+    doc: Status returned from a call to ::wgpuInstanceWaitAny.
+    entries:
+      - name: success
+        doc: At least one WGPUFuture completed successfully.
+      - name: timed_out
+        doc: No WGPUFutures completed within the timeout.
+      - name: unsupported_timeout
+        doc: A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
+      - name: unsupported_count
+        doc: The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
+      - name: unsupported_mixed_sources
+        doc: An invalid wait was performed with @ref Mixed-Sources.
   - name: WGSL_feature_name
     doc: |
       TODO
@@ -1946,14 +1968,22 @@ structs:
         type: array<struct.color_target_state>
         pointer: immutable
   - name: future
-    doc: |
-      TODO
+    doc: Opaque handle to an asynchronous operation. See @ref Asynchronous-Operations for more information.
     type: standalone
     members:
       - name: id
-        doc: |
-          TODO
+        doc: Opaque id of the @ref WGPUFuture
         type: uint64
+  - name: future_wait_info
+    doc: Struct holding a future to wait on, and a `completed` boolean flag.
+    type: standalone
+    members:
+      - name: future
+        doc: The future to wait on.
+        type: struct.future
+      - name: completed
+        doc: Whether or not the future completed.
+        type: bool
   - name: image_copy_buffer
     doc: |
       TODO
@@ -1992,6 +2022,21 @@ structs:
     doc: |
       TODO
     type: base_in
+    members:
+      - name: features
+        doc: Instance features to enable
+        type: struct.instance_features
+  - name: instance_features
+    doc: |
+      Features enabled on the WGPUInstance
+    type: base_in
+    members:
+      - name: timed_wait_any_enable
+        doc: Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+        type: bool
+      - name: timed_wait_any_max_count
+        doc: The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+        type: usize
   - name: limits
     doc: |
       TODO
@@ -3170,8 +3215,7 @@ callbacks:
         type: string
 functions:
   - name: create_instance
-    doc: |
-      TODO
+    doc: Create a WGPUInstance
     returns:
       doc: |
         TODO
@@ -3183,6 +3227,13 @@ functions:
         type: struct.instance_descriptor
         pointer: immutable
         optional: true
+  - name: get_instance_features
+    doc: Query the supported instance features
+    args:
+      - name: features
+        doc: The supported instance features
+        type: struct.instance_features
+        pointer: mutable
 objects:
   - name: adapter
     doc: |
@@ -3970,7 +4021,9 @@ objects:
             type: enum.WGSL_feature_name
       - name: process_events
         doc: |
-          TODO
+          Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
+
+          See @ref Process-Events for more information.
       - name: request_adapter
         doc: |
           TODO
@@ -3982,6 +4035,30 @@ objects:
             type: struct.request_adapter_options
             pointer: immutable
             optional: true
+      - name: wait_any
+        doc: |
+          Wait for at least one WGPUFuture in `futures` to complete, and call callbacks of the respective completed asynchronous operations.
+
+          See @ref Wait-Any for more information.
+        returns:
+          doc: |
+            TODO
+          type: enum.wait_status
+        args:
+          - name: future_count
+            doc: |
+              TODO
+            type: usize
+          - name: futures
+            doc: |
+              TODO
+            type: struct.future_wait_info
+            pointer: mutable
+            optional: true
+          - name: timeout_NS
+            doc: |
+              TODO
+            type: uint64
   - name: pipeline_layout
     doc: |
       TODO

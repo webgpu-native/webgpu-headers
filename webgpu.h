@@ -8,7 +8,7 @@
 
 /**
  * \mainpage
- * 
+ *
  * **Important:** *This documentation is a Work In Progress.*
  *
  * This is the home of WebGPU C API specification. We define here the standard
@@ -59,7 +59,7 @@
 /**
  * \defgroup Constants
  * \brief Constants.
- * 
+ *
  * @{
  */
 #define WGPU_ARRAY_LAYER_COUNT_UNDEFINED (0xffffffffUL)
@@ -78,7 +78,7 @@
 /**
  * \defgroup Typedefs
  * \brief Utility typedefs.
- * 
+ *
  * @{
  */
 typedef uint32_t WGPUFlags;
@@ -90,7 +90,7 @@ typedef uint32_t WGPUBool;
 /**
  * \defgroup Objects
  * \brief Opaque, non-dispatchable handles to WebGPU objects.
- * 
+ *
  * @{
  */
 typedef struct WGPUAdapterImpl* WGPUAdapter WGPU_OBJECT_ATTRIBUTE;
@@ -132,7 +132,7 @@ struct WGPUComputePassTimestampWrites;
 struct WGPUConstantEntry;
 struct WGPUExtent3D;
 struct WGPUFuture;
-struct WGPUInstanceDescriptor;
+struct WGPUInstanceFeatures;
 struct WGPULimits;
 struct WGPUMultisampleState;
 struct WGPUOrigin3D;
@@ -174,8 +174,10 @@ struct WGPUBlendState;
 struct WGPUCompilationInfo;
 struct WGPUComputePassDescriptor;
 struct WGPUDepthStencilState;
+struct WGPUFutureWaitInfo;
 struct WGPUImageCopyBuffer;
 struct WGPUImageCopyTexture;
+struct WGPUInstanceDescriptor;
 struct WGPUProgrammableStageDescriptor;
 struct WGPURenderPassColorAttachment;
 struct WGPURequiredLimits;
@@ -208,7 +210,7 @@ struct WGPUUncapturedErrorCallbackInfo;
 /**
  * \defgroup Enumerations
  * \brief Enums.
- * 
+ *
  * @{
  */
 typedef enum WGPUAdapterType {
@@ -293,9 +295,34 @@ typedef enum WGPUBufferMapState {
     WGPUBufferMapState_Force32 = 0x7FFFFFFF
 } WGPUBufferMapState WGPU_ENUM_ATTRIBUTE;
 
+/**
+ * The callback mode controls how a callback for an asynchronous operation may be fired. See @ref Asynchronous-Operations for how these are used.
+ */
 typedef enum WGPUCallbackMode {
+    /**
+     * `0x00000001` 
+     * Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
+     * - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
+     *   AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
+     */
     WGPUCallbackMode_WaitAnyOnly = 0x00000001,
+    /**
+     * `0x00000002` 
+     * Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
+     * - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
+     * - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
+     */
     WGPUCallbackMode_AllowProcessEvents = 0x00000002,
+    /**
+     * `0x00000003` 
+     * Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
+     * - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
+     * - **may** fire spontaneously on an arbitrary or application thread, when the WebGPU implementations discovers that the asynchronous operation is complete.
+     * 
+     *   Implementations _should_ fire spontaneous callbacks as soon as possible.
+     * 
+     * @note Because spontaneous callbacks may fire at an arbitrary time on an arbitrary thread, applications should take extra care when acquiring locks or mutating state inside the callback. It undefined behavior to re-entrantly call into the webgpu.h API if the callback fires while inside the callstack of another webgpu.h function that is not `wgpuInstanceWaitAny` or `wgpuInstanceProcessEvents`.
+     */
     WGPUCallbackMode_AllowSpontaneous = 0x00000003,
     WGPUCallbackMode_Force32 = 0x7FFFFFFF
 } WGPUCallbackMode WGPU_ENUM_ATTRIBUTE;
@@ -754,13 +781,45 @@ typedef enum WGPUWGSLFeatureName {
     WGPUWGSLFeatureName_Force32 = 0x7FFFFFFF
 } WGPUWGSLFeatureName WGPU_ENUM_ATTRIBUTE;
 
+/**
+ * Status returned from a call to ::wgpuInstanceWaitAny.
+ */
+typedef enum WGPUWaitStatus {
+    /**
+     * `0x00000000` 
+     * At least one WGPUFuture completed successfully.
+     */
+    WGPUWaitStatus_Success = 0x00000000,
+    /**
+     * `0x00000001` 
+     * No WGPUFutures completed within the timeout.
+     */
+    WGPUWaitStatus_TimedOut = 0x00000001,
+    /**
+     * `0x00000002` 
+     * A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
+     */
+    WGPUWaitStatus_UnsupportedTimeout = 0x00000002,
+    /**
+     * `0x00000003` 
+     * The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
+     */
+    WGPUWaitStatus_UnsupportedCount = 0x00000003,
+    /**
+     * `0x00000004` 
+     * An invalid wait was performed with @ref Mixed-Sources.
+     */
+    WGPUWaitStatus_UnsupportedMixedSources = 0x00000004,
+    WGPUWaitStatus_Force32 = 0x7FFFFFFF
+} WGPUWaitStatus WGPU_ENUM_ATTRIBUTE;
+
 
 /** @} */
 
 /**
  * \defgroup Bitflags
  * \brief Enum used as bit flags.
- * 
+ *
  * @{
  */
 typedef enum WGPUBufferUsage {
@@ -826,7 +885,7 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * \defgroup Callbacks
  * \brief Callbacks through which asynchronous functions return.
- * 
+ *
  * @{
  */
 typedef void (*WGPUBufferMapCallback)(WGPUMapAsyncStatus status, char const * message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
@@ -844,7 +903,7 @@ typedef void (*WGPUUncapturedErrorCallback)(WGPUDevice const * device, WGPUError
 /**
  * \defgroup ChainedStructures Chained Structures
  * \brief Structures used to extend descriptors.
- * 
+ *
  * @{
  */
 
@@ -864,14 +923,14 @@ typedef struct WGPUChainedStructOut {
 /**
  * \defgroup Structures
  * \brief Descriptors and other transparent structures.
- * 
+ *
  * @{
  */
 
  /**
  * \defgroup WGPUCallbackInfo
  * \brief Callback info structures that are used in asynchronous functions.
- * 
+ *
  * @{
  */
 typedef struct WGPUBufferMapCallbackInfo {
@@ -1037,13 +1096,30 @@ typedef struct WGPUExtent3D {
     uint32_t depthOrArrayLayers;
 } WGPUExtent3D WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Opaque handle to an asynchronous operation. See @ref Asynchronous-Operations for more information.
+ */
 typedef struct WGPUFuture {
+    /**
+     * Opaque id of the @ref WGPUFuture
+     */
     uint64_t id;
 } WGPUFuture WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUInstanceDescriptor {
+/**
+ * Features enabled on the WGPUInstance
+ */
+typedef struct WGPUInstanceFeatures {
     WGPUChainedStruct const * nextInChain;
-} WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+    /**
+     * Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+     */
+    WGPUBool timedWaitAnyEnable;
+    /**
+     * The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+     */
+    size_t timedWaitAnyMaxCount;
+} WGPUInstanceFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPULimits {
     uint32_t maxTextureDimension1D;
@@ -1374,6 +1450,20 @@ typedef struct WGPUDepthStencilState {
     float depthBiasClamp;
 } WGPUDepthStencilState WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Struct holding a future to wait on, and a `completed` boolean flag.
+ */
+typedef struct WGPUFutureWaitInfo {
+    /**
+     * The future to wait on.
+     */
+    WGPUFuture future;
+    /**
+     * Whether or not the future completed.
+     */
+    WGPUBool completed;
+} WGPUFutureWaitInfo WGPU_STRUCTURE_ATTRIBUTE;
+
 typedef struct WGPUImageCopyBuffer {
     WGPUChainedStruct const * nextInChain;
     WGPUTextureDataLayout layout;
@@ -1387,6 +1477,14 @@ typedef struct WGPUImageCopyTexture {
     WGPUOrigin3D origin;
     WGPUTextureAspect aspect;
 } WGPUImageCopyTexture WGPU_STRUCTURE_ATTRIBUTE;
+
+typedef struct WGPUInstanceDescriptor {
+    WGPUChainedStruct const * nextInChain;
+    /**
+     * Instance features to enable
+     */
+    WGPUInstanceFeatures features;
+} WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUProgrammableStageDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -1524,7 +1622,14 @@ extern "C" {
 
 #if !defined(WGPU_SKIP_PROCS)
 
+/**
+ * Create a WGPUInstance
+ */
 typedef WGPUInstance (*WGPUProcCreateInstance)(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Query the supported instance features
+ */
+typedef void (*WGPUProcGetInstanceFeatures)(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Adapter
@@ -1633,8 +1738,19 @@ typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE
 // Procs of Instance
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
+ * 
+ * See @ref Process-Events for more information.
+ */
 typedef void (*WGPUProcInstanceProcessEvents)(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUFuture (*WGPUProcInstanceRequestAdapter)(WGPUInstance instance, WGPU_NULLABLE WGPURequestAdapterOptions const * options, WGPURequestAdapterCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Wait for at least one WGPUFuture in `futures` to complete, and call callbacks of the respective completed asynchronous operations.
+ * 
+ * See @ref Wait-Any for more information.
+ */
+typedef WGPUWaitStatus (*WGPUProcInstanceWaitAny)(WGPUInstance instance, size_t futureCount, WGPU_NULLABLE WGPUFutureWaitInfo * futures, uint64_t timeoutNS) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcInstanceReference)(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUProcInstanceRelease)(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 
@@ -1762,10 +1878,17 @@ typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView) WGPU_FUN
 /**
  * \defgroup GlobalFunctions Global Functions
  * \brief Functions that are not specific to an object.
- * 
+ *
  * @{
  */
+/**
+ * Create a WGPUInstance
+ */
 WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Query the supported instance features
+ */
+WGPU_EXPORT void wgpuGetInstanceFeatures(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 
 
@@ -1774,14 +1897,14 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName
 /**
  * \defgroup Methods
  * \brief Functions that are relative to a specific object.
- * 
+ *
  * @{
  */
 
 /**
  * \defgroup WGPUAdapterMethods WGPUAdapter methods
  * \brief Functions whose first argument has type WGPUAdapter.
- * 
+ *
  * @{
  */
 WGPU_EXPORT size_t wgpuAdapterEnumerateFeatures(WGPUAdapter adapter, WGPUFeatureName * features) WGPU_FUNCTION_ATTRIBUTE;
@@ -1798,7 +1921,7 @@ WGPU_EXPORT void wgpuAdapterRelease(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE
 /**
  * \defgroup WGPUAdapterInfoMethods WGPUAdapterInfo methods
  * \brief Functions whose first argument has type WGPUAdapterInfo.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuAdapterInfoFreeMembers(WGPUAdapterInfo adapterInfo) WGPU_FUNCTION_ATTRIBUTE;
@@ -1809,7 +1932,7 @@ WGPU_EXPORT void wgpuAdapterInfoFreeMembers(WGPUAdapterInfo adapterInfo) WGPU_FU
 /**
  * \defgroup WGPUBindGroupMethods WGPUBindGroup methods
  * \brief Functions whose first argument has type WGPUBindGroup.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuBindGroupSetLabel(WGPUBindGroup bindGroup, char const * label) WGPU_FUNCTION_ATTRIBUTE;
@@ -1822,7 +1945,7 @@ WGPU_EXPORT void wgpuBindGroupRelease(WGPUBindGroup bindGroup) WGPU_FUNCTION_ATT
 /**
  * \defgroup WGPUBindGroupLayoutMethods WGPUBindGroupLayout methods
  * \brief Functions whose first argument has type WGPUBindGroupLayout.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuBindGroupLayoutSetLabel(WGPUBindGroupLayout bindGroupLayout, char const * label) WGPU_FUNCTION_ATTRIBUTE;
@@ -1835,7 +1958,7 @@ WGPU_EXPORT void wgpuBindGroupLayoutRelease(WGPUBindGroupLayout bindGroupLayout)
 /**
  * \defgroup WGPUBufferMethods WGPUBuffer methods
  * \brief Functions whose first argument has type WGPUBuffer.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
@@ -1856,7 +1979,7 @@ WGPU_EXPORT void wgpuBufferRelease(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * \defgroup WGPUCommandBufferMethods WGPUCommandBuffer methods
  * \brief Functions whose first argument has type WGPUCommandBuffer.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuCommandBufferSetLabel(WGPUCommandBuffer commandBuffer, char const * label) WGPU_FUNCTION_ATTRIBUTE;
@@ -1869,7 +1992,7 @@ WGPU_EXPORT void wgpuCommandBufferRelease(WGPUCommandBuffer commandBuffer) WGPU_
 /**
  * \defgroup WGPUCommandEncoderMethods WGPUCommandEncoder methods
  * \brief Functions whose first argument has type WGPUCommandEncoder.
- * 
+ *
  * @{
  */
 WGPU_EXPORT WGPUComputePassEncoder wgpuCommandEncoderBeginComputePass(WGPUCommandEncoder commandEncoder, WGPU_NULLABLE WGPUComputePassDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
@@ -1895,7 +2018,7 @@ WGPU_EXPORT void wgpuCommandEncoderRelease(WGPUCommandEncoder commandEncoder) WG
 /**
  * \defgroup WGPUComputePassEncoderMethods WGPUComputePassEncoder methods
  * \brief Functions whose first argument has type WGPUComputePassEncoder.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuComputePassEncoderDispatchWorkgroups(WGPUComputePassEncoder computePassEncoder, uint32_t workgroupCountX, uint32_t workgroupCountY, uint32_t workgroupCountZ) WGPU_FUNCTION_ATTRIBUTE;
@@ -1916,7 +2039,7 @@ WGPU_EXPORT void wgpuComputePassEncoderRelease(WGPUComputePassEncoder computePas
 /**
  * \defgroup WGPUComputePipelineMethods WGPUComputePipeline methods
  * \brief Functions whose first argument has type WGPUComputePipeline.
- * 
+ *
  * @{
  */
 WGPU_EXPORT WGPUBindGroupLayout wgpuComputePipelineGetBindGroupLayout(WGPUComputePipeline computePipeline, uint32_t groupIndex) WGPU_FUNCTION_ATTRIBUTE;
@@ -1930,7 +2053,7 @@ WGPU_EXPORT void wgpuComputePipelineRelease(WGPUComputePipeline computePipeline)
 /**
  * \defgroup WGPUDeviceMethods WGPUDevice methods
  * \brief Functions whose first argument has type WGPUDevice.
- * 
+ *
  * @{
  */
 WGPU_EXPORT WGPUBindGroup wgpuDeviceCreateBindGroup(WGPUDevice device, WGPUBindGroupDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
@@ -1964,13 +2087,24 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * \defgroup WGPUInstanceMethods WGPUInstance methods
  * \brief Functions whose first argument has type WGPUInstance.
- * 
+ *
  * @{
  */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
+ * 
+ * See @ref Process-Events for more information.
+ */
 WGPU_EXPORT void wgpuInstanceProcessEvents(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuInstanceRequestAdapter(WGPUInstance instance, WGPU_NULLABLE WGPURequestAdapterOptions const * options, WGPURequestAdapterCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Wait for at least one WGPUFuture in `futures` to complete, and call callbacks of the respective completed asynchronous operations.
+ * 
+ * See @ref Wait-Any for more information.
+ */
+WGPU_EXPORT WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance instance, size_t futureCount, WGPU_NULLABLE WGPUFutureWaitInfo * futures, uint64_t timeoutNS) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuInstanceReference(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuInstanceRelease(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */
@@ -1980,7 +2114,7 @@ WGPU_EXPORT void wgpuInstanceRelease(WGPUInstance instance) WGPU_FUNCTION_ATTRIB
 /**
  * \defgroup WGPUPipelineLayoutMethods WGPUPipelineLayout methods
  * \brief Functions whose first argument has type WGPUPipelineLayout.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuPipelineLayoutSetLabel(WGPUPipelineLayout pipelineLayout, char const * label) WGPU_FUNCTION_ATTRIBUTE;
@@ -1993,7 +2127,7 @@ WGPU_EXPORT void wgpuPipelineLayoutRelease(WGPUPipelineLayout pipelineLayout) WG
 /**
  * \defgroup WGPUQuerySetMethods WGPUQuerySet methods
  * \brief Functions whose first argument has type WGPUQuerySet.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuQuerySetDestroy(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
@@ -2009,7 +2143,7 @@ WGPU_EXPORT void wgpuQuerySetRelease(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIB
 /**
  * \defgroup WGPUQueueMethods WGPUQueue methods
  * \brief Functions whose first argument has type WGPUQueue.
- * 
+ *
  * @{
  */
 WGPU_EXPORT WGPUFuture wgpuQueueOnSubmittedWorkDone(WGPUQueue queue, WGPUQueueWorkDoneCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
@@ -2026,7 +2160,7 @@ WGPU_EXPORT void wgpuQueueRelease(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * \defgroup WGPURenderBundleMethods WGPURenderBundle methods
  * \brief Functions whose first argument has type WGPURenderBundle.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuRenderBundleSetLabel(WGPURenderBundle renderBundle, char const * label) WGPU_FUNCTION_ATTRIBUTE;
@@ -2039,7 +2173,7 @@ WGPU_EXPORT void wgpuRenderBundleRelease(WGPURenderBundle renderBundle) WGPU_FUN
 /**
  * \defgroup WGPURenderBundleEncoderMethods WGPURenderBundleEncoder methods
  * \brief Functions whose first argument has type WGPURenderBundleEncoder.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuRenderBundleEncoderDraw(WGPURenderBundleEncoder renderBundleEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) WGPU_FUNCTION_ATTRIBUTE;
@@ -2064,7 +2198,7 @@ WGPU_EXPORT void wgpuRenderBundleEncoderRelease(WGPURenderBundleEncoder renderBu
 /**
  * \defgroup WGPURenderPassEncoderMethods WGPURenderPassEncoder methods
  * \brief Functions whose first argument has type WGPURenderPassEncoder.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuRenderPassEncoderBeginOcclusionQuery(WGPURenderPassEncoder renderPassEncoder, uint32_t queryIndex) WGPU_FUNCTION_ATTRIBUTE;
@@ -2096,7 +2230,7 @@ WGPU_EXPORT void wgpuRenderPassEncoderRelease(WGPURenderPassEncoder renderPassEn
 /**
  * \defgroup WGPURenderPipelineMethods WGPURenderPipeline methods
  * \brief Functions whose first argument has type WGPURenderPipeline.
- * 
+ *
  * @{
  */
 WGPU_EXPORT WGPUBindGroupLayout wgpuRenderPipelineGetBindGroupLayout(WGPURenderPipeline renderPipeline, uint32_t groupIndex) WGPU_FUNCTION_ATTRIBUTE;
@@ -2110,7 +2244,7 @@ WGPU_EXPORT void wgpuRenderPipelineRelease(WGPURenderPipeline renderPipeline) WG
 /**
  * \defgroup WGPUSamplerMethods WGPUSampler methods
  * \brief Functions whose first argument has type WGPUSampler.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuSamplerSetLabel(WGPUSampler sampler, char const * label) WGPU_FUNCTION_ATTRIBUTE;
@@ -2123,7 +2257,7 @@ WGPU_EXPORT void wgpuSamplerRelease(WGPUSampler sampler) WGPU_FUNCTION_ATTRIBUTE
 /**
  * \defgroup WGPUShaderModuleMethods WGPUShaderModule methods
  * \brief Functions whose first argument has type WGPUShaderModule.
- * 
+ *
  * @{
  */
 WGPU_EXPORT WGPUFuture wgpuShaderModuleGetCompilationInfo(WGPUShaderModule shaderModule, WGPUCompilationInfoCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
@@ -2137,7 +2271,7 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
 /**
  * \defgroup WGPUSurfaceMethods WGPUSurface methods
  * \brief Functions whose first argument has type WGPUSurface.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
@@ -2155,7 +2289,7 @@ WGPU_EXPORT void wgpuSurfaceRelease(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE
 /**
  * \defgroup WGPUSurfaceCapabilitiesMethods WGPUSurfaceCapabilities methods
  * \brief Functions whose first argument has type WGPUSurfaceCapabilities.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuSurfaceCapabilitiesFreeMembers(WGPUSurfaceCapabilities surfaceCapabilities) WGPU_FUNCTION_ATTRIBUTE;
@@ -2166,7 +2300,7 @@ WGPU_EXPORT void wgpuSurfaceCapabilitiesFreeMembers(WGPUSurfaceCapabilities surf
 /**
  * \defgroup WGPUTextureMethods WGPUTexture methods
  * \brief Functions whose first argument has type WGPUTexture.
- * 
+ *
  * @{
  */
 WGPU_EXPORT WGPUTextureView wgpuTextureCreateView(WGPUTexture texture, WGPU_NULLABLE WGPUTextureViewDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
@@ -2189,7 +2323,7 @@ WGPU_EXPORT void wgpuTextureRelease(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE
 /**
  * \defgroup WGPUTextureViewMethods WGPUTextureView methods
  * \brief Functions whose first argument has type WGPUTextureView.
- * 
+ *
  * @{
  */
 WGPU_EXPORT void wgpuTextureViewSetLabel(WGPUTextureView textureView, char const * label) WGPU_FUNCTION_ATTRIBUTE;
