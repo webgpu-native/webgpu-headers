@@ -1,17 +1,17 @@
 # Surfaces {#Surfaces}
 
-Surfaces are the used to continuously present color texture data to users in an OS Window, HTML `<canvas>` or other similar concepts.
-The `webgpu.h` concept of @ref WGPUSurface is similar to WebGPU's [`GPUCanvasContext`](https://gpuweb.github.io/gpuweb/#canvas-context) but includes additional options to control behavior or query options that are specific to the environment the application runs in. In other GPU APIs similar concepts are called default framebuffer, swapchain or presentable.
+Surfaces are used to continuously present color texture data to users in an OS Window, HTML `<canvas>`, or other similar outputs.
+The `webgpu.h` concept of @ref WGPUSurface is similar to WebGPU's [`GPUCanvasContext`](https://gpuweb.github.io/gpuweb/#canvas-context) but includes additional options to control behavior or query options that are specific to the environment the application runs in. In other GPU APIs, similar concepts are called "default framebuffer", "swapchain" or "presentable".
 
-Using a surface is done through a one-time set-up and per-frame operations.
-The one time setyp is: environment-specific creation (to wrap a `<canvas>`, `HWND`, `Window` etc), querying capabilities of the surface and configuration of the surface.
-Per-frame operations are getting a current @ref WGPUSurfaceTexture to render content to, presenting the surface, and when appropriate reconfiguring the surface (typically when the window is resized).
+To use a surface, there is a one-time setup, then additional per-frame operations.
+The one time setup is: environment-specific creation (to wrap a `<canvas>`, `HWND`, `Window`, etc.), querying capabilities of the surface, and configuring the surface.
+Per-frame operations are: getting a current @ref WGPUSurfaceTexture to render content to, rendering content, presenting the surface, and when appropriate reconfiguring the surface (typically when the window is resized).
 
 Sections below give more details about these operations, including the specification of their behavior.
 
 ## Surface Creation {#Surface-Creation}
 
-A @ref WGPUSurface is child objects of a @ref WGPUInstance and created using `::wgpuInstanceCreateSurface`.
+A @ref WGPUSurface is child object of a @ref WGPUInstance and created using `::wgpuInstanceCreateSurface`.
 The description of a @ref WGPUSurface is a @ref WGPUSurfaceDescriptor with a sub-descriptor chained containing the environment-specific objects used to identify the surface.
 
 Surfaces that can be presented to using webgpu.h (but not necessarily by all implementations) are:
@@ -24,7 +24,7 @@ Surfaces that can be presented to using webgpu.h (but not necessarily by all imp
  - `wl_surface` on Wayland systems with @ref WGPUSurfaceSourceWaylandSurface
  - `xcb_window_t` using XCB windows with @ref WGPUSurfaceSourceXCBWindow
 
-For example creating an @ref WGPUSurface from an `HWND` is done like so:
+For example, creating an @ref WGPUSurface from an `HWND` is done like so:
 
 ```c
 WGPUSurfaceSourceWindowsHWND hwndDesc = {
@@ -36,10 +36,10 @@ WGPUSurfaceDescriptor desc {
     .nextInChain = &hwndDesc.chain,
     .label = "Main window",
 };
-WGPUSurface surface = wgpuInstanceCreateSurface(myInstance, &hwnd);
+WGPUSurface surface = wgpuInstanceCreateSurface(myInstance, &desc);
 ```
 
-In addition @ref WGPUSurfaces have a bunch of internal fields that could be represented like this (in pseudo-C/Rust):
+In addition, @ref WGPUSurfaces have a bunch of internal fields that could be represented like this (in C/Rust-like pseudocode):
 
 ```cpp
 struct WGPUSurface {
@@ -72,7 +72,7 @@ This first step of the negotiation is querying what capabilities are available u
 
  - A bit set of supported @ref WGPUTextureUsage that are guaranteed to contains @ref WGPUTextureUsage_RenderAttachment.
  - A list of supported @ref WGPUTextureFormat values, in order of preference.
- - A list of supported @ref WGPUPresentMode values that's guaranteed to contain @ref WGPUPresentMode_Fifo.
+ - A list of supported @ref WGPUPresentMode values (guaranteed to contain @ref WGPUPresentMode_Fifo).
  - A list of supported @ref WGPUCompositeAlphaMode values (@ref WGPUCompositeAlphaMode_Auto is always supported but never listed in capabilities as it just lets the implementation decide what to use).
 
 The call to `::wgpuSurfaceGetCapabilities` may allocate memory for pointers filled in the @ref WGPUSurfaceCapabilities structure so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid leaking memory once the capabilities are no longer needed.
@@ -114,11 +114,12 @@ The behavior of `::wgpuSurfaceGetCapabilities``(surface, adapter, caps)` is:
 ## Surface Configuration {#Surface-Configuration}
 
 Before it can use it for rendering, the application must configure the surface.
-The configuration is the second step of the negotiation and done after analyzing the results of `::wgpuSurfaceGetCapabilities` and contains the following kinds of parameters:
+The configuration is the second step of the negotiation, done after analyzing the results of `::wgpuSurfaceGetCapabilities`.
+It contains the following kinds of parameters:
 
  - The @ref WGPUDevice that will be used to render to the surface.
  - Parameters for the textures returned by `::wgpuSurfaceGetCurrentTexture`.
- - Both a @ref WGPUPresentMode and a @ref WGPUCompositeAlphaMode parameters for how and when the surface will be presented to the user.
+ - @ref WGPUPresentMode and @ref WGPUCompositeAlphaMode parameters for how and when the surface will be presented to the user.
 
 This is an example of how to configure a @ref WGPUSurface:
 
@@ -144,7 +145,7 @@ WGPUTextureDescriptor GetSurfaceEquivalentTextureDescriptor(const WGPUSurfaceCon
         // Parameters controlled by the surface configuration.
         .size = {config->width, config->height, 1},
         .usage = config->usage,
-        .foramt = config->format,
+        .format = config->format,
         .viewFormatCount = config->viewFormatCount,
         .viewFormats = config->viewFormats,
 
@@ -158,7 +159,7 @@ WGPUTextureDescriptor GetSurfaceEquivalentTextureDescriptor(const WGPUSurfaceCon
 }
 ```
 
-When successfully configuring a surface, the new configuration overrides any previous configuration and removes any previous current surface (so that can no longer be presented).
+When successfully a surface is successfully configured, the new configuration overrides any previous configuration and destroys the previous current texture (if any) so it can no longer be used.
 
 The behavior of `::wgpuSurfaceConfigure``(surface, config)` is:
 
@@ -194,7 +195,7 @@ Each frame, the application retrieves the @ref WGPUTexture for the frame with `:
 Issues can happen when trying to retrieve the frame's @ref WGPUTexture, so the application must check @ref WGPUSurfaceTexture `.status` to see if the surface or the device was lost, or some other windowing system issue caused a timeout.
 The environment can also change the surface without breaking it, but making the current configuration suboptimal. 
 In this case, @ref WGPUSurfaceTexture `.suboptimal` will be `true` and the application should (but isn't required to) handle it.
-Surface often become suboptimal when the window is resized (so presenting requires resizing a texture, which is both performance overhead, and a visual quality degradation).
+Surfaces often become suboptimal when the window is resized (so presenting requires resizing a texture, which is both performance overhead, and a visual quality degradation).
 
 This is an example of how to render to a @ref WGPUSurface each frame:
 
@@ -208,7 +209,7 @@ if (surfaceTexture.status != WGPUSurfaceGetCurrentTextureStatus_Success) {
     return;
 }
 if (surfaceTexture.suboptimal) {
-    HandlResize();
+    HandleResize();
     return;
 }
 
@@ -219,23 +220,23 @@ RenderTo(surfaceTexture.texture);
 wgpuSurfacePresent(mySurface);
 ```
 
-The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, texture)` is:
+The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, surfaceTexture)` is:
 
- - Set `texture->texture` to `NULL`.
- - Set `texture->suboptimal` to `false`.
+ - Set `surfaceTexture->texture` to `NULL`.
+ - Set `surfaceTexture->suboptimal` to `false`.
 
- - If any of these validation steps fails, set `texture->status` to `WGPUSurfaceGetCurrentTextureStatus_Error` and return (TODO send error to device?).
+ - If any of these validation steps fails, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_Error` and return (TODO send error to device?).
 
    - Validate that `surface` is not an error.
    - Validate that `surface.config` is not `None`.
    - Validate that `surface.currentFrame` is `None`.
 
- - If `surface.config.device` is not alive, set `texture->status` to `WGPUSurfaceGetCurrentTextureStatus_DeviceLost` and return.
- - If the implementation detects any other problem preventing use of the surface, set `texture->status` to any status other than `Success`, `Error` and `DeviceLost` and return.
+ - If `surface.config.device` is not alive, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_DeviceLost` and return.
+ - If the implementation detects any other problem preventing use of the surface, set `surfaceTexture->status` to an appropriate status (other than `Success`, `Error`, or `DeviceLost`) and return.
  - Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(surface.config)`.
  - Create (or really acquire) a new @ref WGPUTexture called `t` as if calling `wgpuDeviceCreateTexture(surface.config.device, &textureDesc)`.
  - Set `surface.currentFrame` to `t`.
- - If the implementation detects a reason why the current configuration is suboptimal, set `texture->suboptimal` to `true`.
+ - If the implementation detects a reason why the current configuration is suboptimal, set `surfaceTexture->suboptimal` to `true`.
 
 The behavior of `::wgpuSurfacePresent``(surface)` is:
 
