@@ -636,12 +636,39 @@ typedef enum WGPUStoreOp {
     WGPUStoreOp_Force32 = 0x7FFFFFFF
 } WGPUStoreOp WGPU_ENUM_ATTRIBUTE;
 
+/**
+ * The status enum for `::wgpuSurfaceGetCurrentTexture`.
+ */
 typedef enum WGPUSurfaceGetCurrentTextureStatus {
+    /**
+     * `0x00000000` 
+     * Yay! Everything is good and we can render this frame.
+     */
     WGPUSurfaceGetCurrentTextureStatus_Success = 0x00000000,
+    /**
+     * `0x00000001` 
+     * Some operation timed out while trying to acquire the frame.
+     */
     WGPUSurfaceGetCurrentTextureStatus_Timeout = 0x00000001,
+    /**
+     * `0x00000002` 
+     * The surface is too different to be used, compared to when it was originally created.
+     */
     WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000002,
+    /**
+     * `0x00000003` 
+     * The connection to whatever owns the surface was lost.
+     */
     WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000003,
+    /**
+     * `0x00000004` 
+     * The system ran out of memory.
+     */
     WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000004,
+    /**
+     * `0x00000005` 
+     * The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
+     */
     WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000005,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
@@ -1523,9 +1550,22 @@ typedef struct WGPUSurfaceSourceXlibWindow {
     uint64_t window;
 } WGPUSurfaceSourceXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Queried each frame from a @ref WGPUSurface to get a @ref WGPUTexture to render to along with some metadata.
+ * See @ref Surface-Presenting for more details.
+ */
 typedef struct WGPUSurfaceTexture {
+    /**
+     * The @ref WGPUTexture representing the frame that will be shown on the surface.
+     */
     WGPUTexture texture;
+    /**
+     * True if the surface can present the frame, but in a suboptimal way.
+     */
     WGPUBool suboptimal;
+    /**
+     * Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
+     */
     WGPUSurfaceGetCurrentTextureStatus status;
 } WGPUSurfaceTexture WGPU_STRUCTURE_ATTRIBUTE;
 

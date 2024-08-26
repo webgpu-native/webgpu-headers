@@ -822,27 +822,20 @@ enums:
         doc: |
           TODO
   - name: surface_get_current_texture_status
-    doc: |
-      TODO
+    doc: The status enum for `::wgpuSurfaceGetCurrentTexture`.
     entries:
       - name: success
-        doc: |
-          TODO
+        doc: Yay! Everything is good and we can render this frame.
       - name: timeout
-        doc: |
-          TODO
+        doc: Some operation timed out while trying to acquire the frame.
       - name: outdated
-        doc: |
-          TODO
+        doc: The surface is too different to be used, compared to when it was originally created.
       - name: lost
-        doc: |
-          TODO
+        doc: The connection to whatever owns the surface was lost.
       - name: out_of_memory
-        doc: |
-          TODO
+        doc: The system ran out of memory.
       - name: device_lost
-        doc: |
-          TODO
+        doc: The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
   - name: texture_aspect
     doc: |
       TODO
@@ -2849,20 +2842,18 @@ structs:
         type: uint64
   - name: surface_texture
     doc: |
-      TODO
+      Queried each frame from a @ref WGPUSurface to get a @ref WGPUTexture to render to along with some metadata.
+      See @ref Surface-Presenting for more details.
     type: standalone
     members:
       - name: texture
-        doc: |
-          TODO
+        doc: The @ref WGPUTexture representing the frame that will be shown on the surface.
         type: object.texture
       - name: suboptimal
-        doc: |
-          TODO
+        doc: True if the surface can present the frame, but in a suboptimal way.
         type: bool
       - name: status
-        doc: |
-          TODO
+        doc: Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
         type: enum.surface_get_current_texture_status
   - name: texture_binding_layout
     doc: |
