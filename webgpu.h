@@ -152,15 +152,15 @@ struct WGPURequestAdapterOptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
 struct WGPUShaderModuleCompilationHint;
-struct WGPUShaderModuleSPIRV;
-struct WGPUShaderModuleWGSL;
+struct WGPUShaderSourceSPIRV;
+struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
 struct WGPUStorageTextureBindingLayout;
 struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceConfiguration;
 struct WGPUSurfaceDescriptor;
 struct WGPUSurfaceSourceAndroidNativeWindow;
-struct WGPUSurfaceSourceCanvasHTMLSelector;
+struct WGPUSurfaceSourceCanvasHTMLSelector_Emscripten;
 struct WGPUSurfaceSourceMetalLayer;
 struct WGPUSurfaceSourceWaylandSurface;
 struct WGPUSurfaceSourceWindowsHWND;
@@ -440,13 +440,14 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_Depth32FloatStencil8 = 0x00000002,
     WGPUFeatureName_TimestampQuery = 0x00000003,
     WGPUFeatureName_TextureCompressionBC = 0x00000004,
-    WGPUFeatureName_TextureCompressionETC2 = 0x00000005,
-    WGPUFeatureName_TextureCompressionASTC = 0x00000006,
-    WGPUFeatureName_IndirectFirstInstance = 0x00000007,
-    WGPUFeatureName_ShaderF16 = 0x00000008,
-    WGPUFeatureName_RG11B10UfloatRenderable = 0x00000009,
-    WGPUFeatureName_BGRA8UnormStorage = 0x0000000A,
-    WGPUFeatureName_Float32Filterable = 0x0000000B,
+    WGPUFeatureName_TextureCompressionBCSliced3D = 0x00000005,
+    WGPUFeatureName_TextureCompressionETC2 = 0x00000006,
+    WGPUFeatureName_TextureCompressionASTC = 0x00000007,
+    WGPUFeatureName_IndirectFirstInstance = 0x00000008,
+    WGPUFeatureName_ShaderF16 = 0x00000009,
+    WGPUFeatureName_RG11B10UfloatRenderable = 0x0000000A,
+    WGPUFeatureName_BGRA8UnormStorage = 0x0000000B,
+    WGPUFeatureName_Float32Filterable = 0x0000000C,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 
@@ -590,13 +591,13 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceSourceMetalLayer = 0x00000001,
     WGPUSType_SurfaceSourceWindowsHWND = 0x00000002,
     WGPUSType_SurfaceSourceXlibWindow = 0x00000003,
-    WGPUSType_SurfaceSourceCanvasHTMLSelector = 0x00000004,
-    WGPUSType_ShaderModuleSPIRV = 0x00000005,
-    WGPUSType_ShaderModuleWGSL = 0x00000006,
+    WGPUSType_SurfaceSourceCanvasHTMLSelector_Emscripten = 0x00000004,
+    WGPUSType_ShaderSourceSPIRV = 0x00000005,
+    WGPUSType_ShaderSourceWGSL = 0x00000006,
     WGPUSType_SurfaceSourceWaylandSurface = 0x00000007,
     WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
-    WGPUSType_SurfaceSourceXcbWindow = 0x00000009,
-    WGPUSType_RenderPassDescriptorMaxDrawCount = 0x0000000F,
+    WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
+    WGPUSType_RenderPassMaxDrawCount = 0x0000000F,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -1320,16 +1321,16 @@ typedef struct WGPUShaderModuleCompilationHint {
     WGPUPipelineLayout layout;
 } WGPUShaderModuleCompilationHint WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUShaderModuleSPIRV {
+typedef struct WGPUShaderSourceSPIRV {
     WGPUChainedStruct chain;
     uint32_t codeSize;
     uint32_t const * code;
-} WGPUShaderModuleSPIRV WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUShaderSourceSPIRV WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUShaderModuleWGSL {
+typedef struct WGPUShaderSourceWGSL {
     WGPUChainedStruct chain;
     char const * code;
-} WGPUShaderModuleWGSL WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUShaderSourceWGSL WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUStencilFaceState {
     WGPUCompareFunction compare;
@@ -1413,14 +1414,14 @@ typedef struct WGPUSurfaceSourceAndroidNativeWindow {
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [HTML `<canvas>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas).
  */
-typedef struct WGPUSurfaceSourceCanvasHTMLSelector {
+typedef struct WGPUSurfaceSourceCanvasHTMLSelector_Emscripten {
     WGPUChainedStruct chain;
     /**
      * The [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) for the `<canvas>` element that will be wrapped by the @ref WGPUSurface.
      * Most commonly `"#id_of_the_canvas"`.
      */
     char const * selector;
-} WGPUSurfaceSourceCanvasHTMLSelector WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceCanvasHTMLSelector_Emscripten WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
