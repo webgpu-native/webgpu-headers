@@ -18,11 +18,11 @@ Surfaces that can be presented to using webgpu.h (but not necessarily by all imp
 
  - `ANativeWindow` on Android with @ref WGPUSurfaceSourceAndroidNativeWindow
  - `CAMetalLayer` on various Apple OSes like macOS and iOS with @ref WGPUSurfaceSourceMetalLayer
- - `<canvas>` HTML elements in WebAssembly with @ref WGPUSurfaceSourceCanvasHTMLSelector
+ - `<canvas>` HTML elements in Emscripten (targeting WebAssembly) with `WGPUSurfaceSourceCanvasHTMLSelector_Emscripten`
  - `HWND` on Windows with @ref WGPUSurfaceSourceWindowsHWND
  - `Window` using Xlib with @ref WGPUSurfaceSourceXlibWindow
  - `wl_surface` on Wayland systems with @ref WGPUSurfaceSourceWaylandSurface
- - `xcb_window_t` using XCB windows with @ref WGPUSurfaceSourceXcbWindow
+ - `xcb_window_t` using XCB windows with @ref WGPUSurfaceSourceXCBWindow
 
 For example creating an @ref WGPUSurface from an `HWND` is done like so:
 
