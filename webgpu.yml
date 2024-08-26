@@ -718,6 +718,16 @@ enums:
       - name: invalid
         doc: |
           TODO
+      - name: shader_source_SPIRV
+        doc: |
+          TODO
+      - name: shader_source_WGSL
+        doc: |
+          TODO
+      - name: render_pass_max_draw_count
+        doc: |
+          TODO
+      # TODO(#214): Move all of the surface sources into block 0x0001
       - name: surface_source_metal_layer
         doc: |
           TODO
@@ -727,15 +737,6 @@ enums:
       - name: surface_source_xlib_window
         doc: |
           TODO
-      - name: surface_source_canvas_HTML_selector__Emscripten
-        doc: |
-          TODO
-      - name: shader_source_SPIRV
-        doc: |
-          TODO
-      - name: shader_source_WGSL
-        doc: |
-          TODO
       - name: surface_source_wayland_surface
         doc: |
           TODO
@@ -743,10 +744,6 @@ enums:
         doc: |
           TODO
       - name: surface_source_XCB_window
-        doc: |
-          TODO
-      - name: render_pass_max_draw_count
-        value: 0x000F
         doc: |
           TODO
   - name: sampler_binding_type
@@ -2780,17 +2777,6 @@ structs:
           TODO
         type: c_void
         pointer: mutable
-  - name: surface_source_canvas_HTML_selector__Emscripten
-    doc: |
-      TODO
-    type: extension_in
-    extends:
-      - surface_descriptor
-    members:
-      - name: selector
-        doc: |
-          TODO
-        type: string
   - name: surface_source_metal_layer
     doc: |
       TODO

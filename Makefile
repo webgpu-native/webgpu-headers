@@ -1,4 +1,8 @@
-.PHONY: gen gen-check doc
+.PHONY: help gen gen-check doc
+
+# default target if you just type `make`
+help:
+	@echo 'Targets are: help, fix, gen, gen-check, doc'
 
 fix: webgpu.yml
 	go run ./fix -yaml webgpu.yml
