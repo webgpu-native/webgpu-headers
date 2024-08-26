@@ -159,13 +159,13 @@ struct WGPUStorageTextureBindingLayout;
 struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceConfiguration;
 struct WGPUSurfaceDescriptor;
-struct WGPUSurfaceFromAndroidNativeWindow;
-struct WGPUSurfaceFromCanvasHTMLSelector;
-struct WGPUSurfaceFromMetalLayer;
-struct WGPUSurfaceFromWaylandSurface;
-struct WGPUSurfaceFromWindowsHWND;
-struct WGPUSurfaceFromXcbWindow;
-struct WGPUSurfaceFromXlibWindow;
+struct WGPUSurfaceSourceAndroidNativeWindow;
+struct WGPUSurfaceSourceCanvasHTMLSelector;
+struct WGPUSurfaceSourceMetalLayer;
+struct WGPUSurfaceSourceWaylandSurface;
+struct WGPUSurfaceSourceWindowsHWND;
+struct WGPUSurfaceSourceXcbWindow;
+struct WGPUSurfaceSourceXlibWindow;
 struct WGPUSurfaceTexture;
 struct WGPUTextureBindingLayout;
 struct WGPUTextureDataLayout;
@@ -587,15 +587,15 @@ typedef enum WGPURequestDeviceStatus {
 
 typedef enum WGPUSType {
     WGPUSType_Invalid = 0x00000000,
-    WGPUSType_SurfaceFromMetalLayer = 0x00000001,
-    WGPUSType_SurfaceFromWindowsHWND = 0x00000002,
-    WGPUSType_SurfaceFromXlibWindow = 0x00000003,
-    WGPUSType_SurfaceFromCanvasHTMLSelector = 0x00000004,
+    WGPUSType_SurfaceSourceMetalLayer = 0x00000001,
+    WGPUSType_SurfaceSourceWindowsHWND = 0x00000002,
+    WGPUSType_SurfaceSourceXlibWindow = 0x00000003,
+    WGPUSType_SurfaceSourceCanvasHTMLSelector = 0x00000004,
     WGPUSType_ShaderModuleSPIRV = 0x00000005,
     WGPUSType_ShaderModuleWGSL = 0x00000006,
-    WGPUSType_SurfaceFromWaylandSurface = 0x00000007,
-    WGPUSType_SurfaceFromAndroidNativeWindow = 0x00000008,
-    WGPUSType_SurfaceFromXcbWindow = 0x00000009,
+    WGPUSType_SurfaceSourceWaylandSurface = 0x00000007,
+    WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
+    WGPUSType_SurfaceSourceXcbWindow = 0x00000009,
     WGPUSType_RenderPassDescriptorMaxDrawCount = 0x0000000F,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
@@ -1402,41 +1402,41 @@ typedef struct WGPUSurfaceDescriptor {
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an Android [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window).
  */
-typedef struct WGPUSurfaceFromAndroidNativeWindow {
+typedef struct WGPUSurfaceSourceAndroidNativeWindow {
     WGPUChainedStruct chain;
     /**
      * The pointer to the [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window) that will be wrapped by the @ref WGPUSurface.
      */
     void * window;
-} WGPUSurfaceFromAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [HTML `<canvas>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas).
  */
-typedef struct WGPUSurfaceFromCanvasHTMLSelector {
+typedef struct WGPUSurfaceSourceCanvasHTMLSelector {
     WGPUChainedStruct chain;
     /**
      * The [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) for the `<canvas>` element that will be wrapped by the @ref WGPUSurface.
      * Most commonly `"#id_of_the_canvas"`.
      */
     char const * selector;
-} WGPUSurfaceFromCanvasHTMLSelector WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceCanvasHTMLSelector WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
  */
-typedef struct WGPUSurfaceFromMetalLayer {
+typedef struct WGPUSurfaceSourceMetalLayer {
     WGPUChainedStruct chain;
     /**
      * The pointer to the [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc) that will be wrapped by the @ref WGPUSurface.
      */
     void * layer;
-} WGPUSurfaceFromMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [Wayland](https://wayland.freedesktop.org/) [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface).
  */
-typedef struct WGPUSurfaceFromWaylandSurface {
+typedef struct WGPUSurfaceSourceWaylandSurface {
     WGPUChainedStruct chain;
     /**
      * A [`wl_display`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_display) for this Wayland instance.
@@ -1446,12 +1446,12 @@ typedef struct WGPUSurfaceFromWaylandSurface {
      * A [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface) that will be wrapped by the @ref WGPUSurface
      */
     void * surface;
-} WGPUSurfaceFromWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a Windows [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd).
  */
-typedef struct WGPUSurfaceFromWindowsHWND {
+typedef struct WGPUSurfaceSourceWindowsHWND {
     WGPUChainedStruct chain;
     /**
      * The [`HINSTANCE`](https://learn.microsoft.com/en-us/windows/win32/learnwin32/winmain--the-application-entry-point) for this application.
@@ -1462,12 +1462,12 @@ typedef struct WGPUSurfaceFromWindowsHWND {
      * The [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd) that will be wrapped by the @ref WGPUSurface.
      */
     void * hwnd;
-} WGPUSurfaceFromWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
  */
-typedef struct WGPUSurfaceFromXcbWindow {
+typedef struct WGPUSurfaceSourceXcbWindow {
     WGPUChainedStruct chain;
     /**
      * The `xcb_connection_t` for the connection to the X server.
@@ -1477,12 +1477,12 @@ typedef struct WGPUSurfaceFromXcbWindow {
      * The `xcb_window_t` for the window that will be wrapped by the @ref WGPUSurface.
      */
     uint32_t window;
-} WGPUSurfaceFromXcbWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceXcbWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [Xlib](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) `Window`.
  */
-typedef struct WGPUSurfaceFromXlibWindow {
+typedef struct WGPUSurfaceSourceXlibWindow {
     WGPUChainedStruct chain;
     /**
      * A pointer to the [`Display`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Opening_the_Display) connected to the X server.
@@ -1492,7 +1492,7 @@ typedef struct WGPUSurfaceFromXlibWindow {
      * The [`Window`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Creating_Windows) that will be wrapped by the @ref WGPUSurface.
      */
     uint64_t window;
-} WGPUSurfaceFromXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSurfaceTexture {
     WGPUTexture texture;

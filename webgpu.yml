@@ -714,16 +714,16 @@ enums:
       - name: invalid
         doc: |
           TODO
-      - name: surface_from_metal_layer
+      - name: surface_source_metal_layer
         doc: |
           TODO
-      - name: surface_from_windows_HWND
+      - name: surface_source_windows_HWND
         doc: |
           TODO
-      - name: surface_from_xlib_window
+      - name: surface_source_xlib_window
         doc: |
           TODO
-      - name: surface_from_canvas_HTML_selector
+      - name: surface_source_canvas_HTML_selector
         doc: |
           TODO
       - name: shader_module_SPIRV
@@ -732,13 +732,13 @@ enums:
       - name: shader_module_WGSL
         doc: |
           TODO
-      - name: surface_from_wayland_surface
+      - name: surface_source_wayland_surface
         doc: |
           TODO
-      - name: surface_from_android_native_window
+      - name: surface_source_android_native_window
         doc: |
           TODO
-      - name: surface_from_xcb_window
+      - name: surface_source_xcb_window
         doc: |
           TODO
       - name: render_pass_descriptor_max_draw_count
@@ -2764,7 +2764,7 @@ structs:
         doc: Label used to refer to the object.
         type: string
         optional: true
-  - name: surface_from_android_native_window
+  - name: surface_source_android_native_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an Android [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window).
     type: extension_in
     extends:
@@ -2774,7 +2774,7 @@ structs:
         doc: The pointer to the [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window) that will be wrapped by the @ref WGPUSurface.
         type: c_void
         pointer: mutable
-  - name: surface_from_canvas_HTML_selector
+  - name: surface_source_canvas_HTML_selector
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [HTML `<canvas>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas).
     type: extension_in
     extends:
@@ -2785,7 +2785,7 @@ structs:
           The [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) for the `<canvas>` element that will be wrapped by the @ref WGPUSurface.
           Most commonly `"#id_of_the_canvas"`.
         type: string
-  - name: surface_from_metal_layer
+  - name: surface_source_metal_layer
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
     type: extension_in
     extends:
@@ -2795,7 +2795,7 @@ structs:
         doc: The pointer to the [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc) that will be wrapped by the @ref WGPUSurface.
         type: c_void
         pointer: mutable
-  - name: surface_from_wayland_surface
+  - name: surface_source_wayland_surface
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [Wayland](https://wayland.freedesktop.org/) [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface).
     type: extension_in
     extends:
@@ -2809,7 +2809,7 @@ structs:
         doc: A [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface) that will be wrapped by the @ref WGPUSurface
         type: c_void
         pointer: mutable
-  - name: surface_from_windows_HWND
+  - name: surface_source_windows_HWND
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a Windows [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd).
     type: extension_in
     extends:
@@ -2825,7 +2825,7 @@ structs:
         doc: The [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd) that will be wrapped by the @ref WGPUSurface.
         type: c_void
         pointer: mutable
-  - name: surface_from_xcb_window
+  - name: surface_source_xcb_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
     type: extension_in
     extends:
@@ -2838,7 +2838,7 @@ structs:
       - name: window
         doc: The `xcb_window_t` for the window that will be wrapped by the @ref WGPUSurface.
         type: uint32
-  - name: surface_from_xlib_window
+  - name: surface_source_xlib_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [Xlib](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) `Window`.
     type: extension_in
     extends:
