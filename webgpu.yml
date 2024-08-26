@@ -2720,41 +2720,34 @@ structs:
         pointer: immutable
   - name: surface_configuration
     doc: |
-      TODO
+      Options to `::wgpuSurfaceConfigure` for defining how a @ref WGPUSurface will be rendered to and presented to the user.
+      See @ref Surface-Configuration for more details.
     type: base_in
     members:
       - name: device
-        doc: |
-          TODO
+        doc: The @ref WGPUDevice to use to render to surface's textures.
         type: object.device
       - name: format
-        doc: |
-          TODO
+        doc: The @ref WGPUTextureFormat of the surface's textures.
         type: enum.texture_format
       - name: usage
-        doc: |
-          TODO
+        doc: The @ref WGPUTextureUsage of the surface's textures.
         type: bitflag.texture_usage
+      - name: width
+        doc: The width of the surface's textures.
+        type: uint32
+      - name: height
+        doc: The height of the surface's textures.
+        type: uint32
       - name: view_formats
-        doc: |
-          TODO
+        doc: The additional @ref WGPUTextureFormat for @ref WGPUTextureView format reinterpretation of the surface's textures.
         type: array<enum.texture_format>
         pointer: immutable
       - name: alpha_mode
-        doc: |
-          TODO
+        doc: How the surface's frames will be composited on the screen.
         type: enum.composite_alpha_mode
-      - name: width
-        doc: |
-          TODO
-        type: uint32
-      - name: height
-        doc: |
-          TODO
-        type: uint32
       - name: present_mode
-        doc: |
-          TODO
+        doc: When and in which order the surface's frames will be shown on the screen.
         type: enum.present_mode
   - name: surface_descriptor
     doc: |
@@ -4668,9 +4661,11 @@ objects:
             pointer: immutable
       - name: get_capabilities
         doc: |
-          Returns information on how `adapter` is able to use `surface`.
+          Provides information on how `adapter` is able to use `surface`.
           See @ref Surface-Capabilities for more details.
-          TODO: Should this return a `WGPUStatus` for validation errors? (Like the surface and adapter being on different instance.)
+        returns:
+          doc: TODO make this WGPUStatus instead of a boolean.
+          type: bool
         args:
           - name: adapter
             doc: The @ref WGPUAdapter to get capabilities for presenting to this @ref WGPUSurface.

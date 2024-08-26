@@ -1374,16 +1374,44 @@ typedef struct WGPUSurfaceCapabilities {
     WGPUCompositeAlphaMode const * alphaModes;
 } WGPUSurfaceCapabilities WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Options to `::wgpuSurfaceConfigure` for defining how a @ref WGPUSurface will be rendered to and presented to the user.
+ * See @ref Surface-Configuration for more details.
+ */
 typedef struct WGPUSurfaceConfiguration {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * The @ref WGPUDevice to use to render to surface's textures.
+     */
     WGPUDevice device;
+    /**
+     * The @ref WGPUTextureFormat of the surface's textures.
+     */
     WGPUTextureFormat format;
+    /**
+     * The @ref WGPUTextureUsage of the surface's textures.
+     */
     WGPUTextureUsageFlags usage;
+    /**
+     * The width of the surface's textures.
+     */
+    uint32_t width;
+    /**
+     * The height of the surface's textures.
+     */
+    uint32_t height;
+    /**
+     * The additional @ref WGPUTextureFormat for @ref WGPUTextureView format reinterpretation of the surface's textures.
+     */
     size_t viewFormatCount;
     WGPUTextureFormat const * viewFormats;
+    /**
+     * How the surface's frames will be composited on the screen.
+     */
     WGPUCompositeAlphaMode alphaMode;
-    uint32_t width;
-    uint32_t height;
+    /**
+     * When and in which order the surface's frames will be shown on the screen.
+     */
     WGPUPresentMode presentMode;
 } WGPUSurfaceConfiguration WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -1981,11 +2009,10 @@ typedef void (*WGPUProcShaderModuleRelease)(WGPUShaderModule shaderModule) WGPU_
  */
 typedef void (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Returns information on how `adapter` is able to use `surface`.
+ * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
- * TODO: Should this return a `WGPUStatus` for validation errors? (Like the surface and adapter being on different instance.)
  */
-typedef void (*WGPUProcSurfaceGetCapabilities)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUBool (*WGPUProcSurfaceGetCapabilities)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
  * See @ref Surface-Presenting for more details.
@@ -2442,11 +2469,10 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
  */
 WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Returns information on how `adapter` is able to use `surface`.
+ * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
- * TODO: Should this return a `WGPUStatus` for validation errors? (Like the surface and adapter being on different instance.)
  */
-WGPU_EXPORT void wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUBool wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
  * See @ref Surface-Presenting for more details.

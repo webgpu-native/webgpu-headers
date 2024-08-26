@@ -82,7 +82,11 @@ This is an example of how to query the capabilities or a @ref WGPUSurface:
 ```c
 // Get the capabilities
 WGPUSurfaceCapabilities caps;
-wgpuSurfaceGetCapabilities(mySurface, myAdapter, &caps);
+if (!wgpuSurfaceGetCapabilities(mySurface, myAdapter, &caps)) {
+    // Either a validation error happened or the adapter doesn't support the surface.
+    // TODO: This should be a WGPUStatus.
+    return;
+}
 
 // Do things with capabilities
 bool canSampleSurface = caps.usages & WGPUTextureUsage_TextureBinding;
@@ -97,12 +101,149 @@ for (size_t i = 0; i < caps.presentModeCount; i++) {
 wgpuSurfaceCapabilitiesFreeMembers(&caps);
 ```
 
-TODO: Write the behavior of `::wgpuSurfaceGetCapabilities`, in particular validation that adapter and surface must be on the same instance, and what happens if rendering to the surface is not possible.
+The behavior of `::wgpuSurfaceGetCapabilities``(surface, adapter, caps)` is:
+
+ - If any of these validation steps fails, return false. (TODO return an error WGPUStatus):
+
+   - Validate that all the sub-descriptors in the chain for `caps` are known to this implementation.
+   - Validate that `surface` and `adapter` are created from the same @ref WGPUInstance.
+
+ - Fill `caps` with `adapter`'s capabilities to render to `surface`.
+ - Return true. (TODO return WGPUStatus_Success)
 
 ## Surface Configuration {#Surface-Configuration}
 
-TODO
+Before it can use it for rendering, the application must configure the surface.
+The configuration is the second step of the negotiation and done after analyzing the results of `::wgpuSurfaceGetCapabilities` and contains the following kinds of parameters:
+
+ - The @ref WGPUDevice that will be used to render to the surface.
+ - Parameters for the textures returned by `::wgpuSurfaceGetCurrentTexture`.
+ - Both a @ref WGPUPresentMode and a @ref WGPUCompositeAlphaMode parameters for how and when the surface will be presented to the user.
+
+This is an example of how to configure a @ref WGPUSurface:
+
+```c
+WGPUSurfaceConfiguration config = {
+    nextInChain = nullptr,
+    device = myDevice,
+    format = WGPUTextureFormat_BGRA8Unorm,
+    width = 640, // Depending on the window size.
+    height = 480,
+    usage = WGPUTextureUsage_RenderAttachment,
+    presentMode = supportsMailbox ? WGPUPresentMode_Mailbox : WGPUPresentMode_Fifo,
+    alphaMode = WGPUCompositeAlphaMode_Auto,
+};
+wgpuSurfaceConfigure(mySurface, &config);
+```
+
+The parameters for the texture are used to create the texture each frame (see @ref Surface-Presenting) with the equivalent @ref WGPUTextureDescriptor computed like this:
+
+```c
+WGPUTextureDescriptor GetSurfaceEquivalentTextureDescriptor(const WGPUSurfaceConfiguration* config) {
+    return {
+        // Parameters controlled by the surface configuration.
+        .size = {config->width, config->height, 1},
+        .usage = config->usage,
+        .foramt = config->format,
+        .viewFormatCount = config->viewFormatCount,
+        .viewFormats = config->viewFormats,
+
+        // Parameters that cannot be changed.
+        .nextInChain = nullptr,
+        .label = "",
+        .dimension = WGPUTextureDimension_2D,
+        .sampleCount = 1,
+        .mipLevelCount = 1,
+    };
+}
+```
+
+When successfully configuring a surface, the new configuration overrides any previous configuration and removes any previous current surface (so that can no longer be presented).
+
+The behavior of `::wgpuSurfaceConfigure``(surface, config)` is:
+
+ - If any of these validation steps fails, TODO: what should happen on failure?
+
+   - Validate that `surface` is not an error.
+   - Let `adapter` be the adapter used to create `device`.
+   - Let `caps` be the @ref WGPUSurfaceCapabilities filled with `::wgpuSurfaceGetCapabilities``(surface, adapter, &caps)`.
+   - Validate that all the sub-descriptors in the chain for `caps` are known to this implementation.
+   - Validate that `device` is alive.
+   - Validate that `config->presentMode` is in `caps->presentModes`.
+   - Validate that `config->alphaMode` is either `WGPUCompositeAlphaMode_Auto` or in `caps->alphaModes`.
+   - Validate that `config->format` if in `caps->formats`.
+   - Validate that `config->usage` is a subset of `caps->usages`.
+   - Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(config)`.
+   - Validate that `wgpuDeviceCreateTexture(device, &textureDesc)` would succeed.
+
+ - Set `surface.config` to a deep copy of `config`.
+ - Set `surface.currentFrame` to `None`.
+
+It can also be useful to remove the configuration of a @ref WGPUSurface without replacing it with a valid one.
+Without removing the configuration, the @ref WGPUSurface will keep referencing the @ref WGPUDevice that cannot be totally reclaimed.
+
+The behavior of `::wgpuSurfaceUnconfigure``()` is:
+
+ - Set `surface.config` to `None`.
+ - Set `surface.currentFrame` to `None`.
 
 ## Presenting to Surface {#Surface-Presenting}
 
-TODO
+Each frame, the application retrieves the @ref WGPUTexture for the frame with `::wgpuSurfaceGetCurrentTexture`, renders to it and then presents it on the screen with `::wgpuSurfacePresent`.
+
+Issues can happen when trying to retrieve the frame's @ref WGPUTexture, so the application must check @ref WGPUSurfaceTexture `.status` to see if the surface or the device was lost, or some other windowing system issue caused a timeout.
+The environment can also change the surface without breaking it, but making the current configuration suboptimal. 
+In this case, @ref WGPUSurfaceTexture `.suboptimal` will be `true` and the application should (but isn't required to) handle it.
+Surface often become suboptimal when the window is resized (so presenting requires resizing a texture, which is both performance overhead, and a visual quality degradation).
+
+This is an example of how to render to a @ref WGPUSurface each frame:
+
+```c
+// Get the texture and handle exceptional cases.
+WGPUSurfaceTexture surfaceTexture;
+wgpuSurfaceGetCurrentTexture(mySurface, &surfaceTexture);
+
+if (surfaceTexture.status != WGPUSurfaceGetCurrentTextureStatus_Success) {
+    // Recover if possible.
+    return;
+}
+if (surfaceTexture.suboptimal) {
+    HandlResize();
+    return;
+}
+
+// The application renders to the texture.
+RenderTo(surfaceTexture.texture);
+
+// Present the texture, it is no longer accessible after that point.
+wgpuSurfacePresent(mySurface);
+```
+
+The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, texture)` is:
+
+ - Set `texture->texture` to `NULL`.
+ - Set `texture->suboptimal` to `false`.
+
+ - If any of these validation steps fails, set `texture->status` to `WGPUSurfaceGetCurrentTextureStatus_Error` and return (TODO send error to device?).
+
+   - Validate that `surface` is not an error.
+   - Validate that `surface.config` is not `None`.
+   - Validate that `surface.currentFrame` is `None`.
+
+ - If `surface.config.device` is not alive, set `texture->status` to `WGPUSurfaceGetCurrentTextureStatus_DeviceLost` and return.
+ - If the implementation detects any other problem preventing use of the surface, set `texture->status` to any status other than `Success`, `Error` and `DeviceLost` and return.
+ - Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(surface.config)`.
+ - Create (or really acquire) a new @ref WGPUTexture called `t` as if calling `wgpuDeviceCreateTexture(surface.config.device, &textureDesc)`.
+ - Set `surface.currentFrame` to `t`.
+ - If the implementation detects a reason why the current configuration is suboptimal, set `texture->suboptimal` to `true`.
+
+The behavior of `::wgpuSurfacePresent``(surface)` is:
+
+ - If any of these validation steps fails, TODO send error to device?
+
+   - Validate that `surface` is not an error.
+   - Validate that `surface.currentFrame` is not `None`.
+
+ - Do as if `::wgpuTextureDestroy``(surface.currentFrame)` was called.
+ - Present `surface.currentFrame` to the `surface`.
+ - Set `surface.currentFrame` to `None`.
