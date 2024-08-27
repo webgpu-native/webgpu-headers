@@ -326,7 +326,7 @@ enums:
       - name: opaque
         doc: The alpha component of the image is ignored and teated as if it is always 1.0.
       - name: premultiplied
-        doc: The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component.
+        doc: The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component. For example, (0.5, 0, 0, 0.5) is semi-transparent bright red.
       - name: unpremultiplied
         doc: The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component.
       - name: inherit
