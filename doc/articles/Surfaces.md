@@ -98,7 +98,7 @@ for (size_t i = 0; i < caps.presentModeCount; i++) {
 }
 
 // Cleanup
-wgpuSurfaceCapabilitiesFreeMembers(&caps);
+wgpuSurfaceCapabilitiesFreeMembers(caps);
 ```
 
 The behavior of `::wgpuSurfaceGetCapabilities``(surface, adapter, caps)` is:
@@ -159,7 +159,7 @@ WGPUTextureDescriptor GetSurfaceEquivalentTextureDescriptor(const WGPUSurfaceCon
 }
 ```
 
-When successfully a surface is successfully configured, the new configuration overrides any previous configuration and destroys the previous current texture (if any) so it can no longer be used.
+When a surface is successfully configured, the new configuration overrides any previous configuration and destroys the previous current texture (if any) so it can no longer be used.
 
 The behavior of `::wgpuSurfaceConfigure``(surface, config)` is:
 
@@ -234,7 +234,7 @@ The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, surfaceTexture)` is:
  - If `surface.config.device` is not alive, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_DeviceLost` and return.
  - If the implementation detects any other problem preventing use of the surface, set `surfaceTexture->status` to an appropriate status (other than `Success`, `Error`, or `DeviceLost`) and return.
  - Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(surface.config)`.
- - Create (or really acquire) a new @ref WGPUTexture called `t` as if calling `wgpuDeviceCreateTexture(surface.config.device, &textureDesc)`.
+ - Create a new @ref WGPUTexture `t`, as if calling `wgpuDeviceCreateTexture(surface.config.device, &textureDesc)`, but wrapping the appropriate backing resource.
  - Set `surface.currentFrame` to `t`.
  - If the implementation detects a reason why the current configuration is suboptimal, set `surfaceTexture->suboptimal` to `true`.
 

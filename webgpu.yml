@@ -328,9 +328,9 @@ enums:
       - name: premultiplied
         doc: The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component. For example, (0.5, 0, 0, 0.5) is semi-transparent bright red.
       - name: unpremultiplied
-        doc: The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component.
+        doc: The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component. For example, (1.0, 0, 0, 0.5) is semi-transparent bright red.
       - name: inherit
-        doc: The handling of the alpha component is unknown to WebGPU and should be handled by the application using system-specific APIs.
+        doc: The handling of the alpha component is unknown to WebGPU and should be handled by the application using system-specific APIs. This mode may be unavailable (for example on Wasm).
   - name: create_pipeline_async_status
     doc: |
       TODO
@@ -598,13 +598,13 @@ enums:
       - name: fifo
         doc: |
           The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
-          Tearing cannot be observed and frame-loop will execute at maximum at the display's refresh rate.
+          Tearing cannot be observed and frame-loop will be limited to the display's refresh rate.
           This is the only mode that's always available.
       - name: fifo_relaxed
         doc: |
           The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
           Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
-          This is still a first-in, first-out mechanism so a frame-loop will execute at maximum at the display's refresh rate.
+          This is still a first-in, first-out mechanism so a frame-loop will be limited to the display's refresh rate.
       - name: immediate
         doc: |
           The presentation of the image to the user is updated immediately without waiting for a vertical blank.
@@ -2745,7 +2745,7 @@ structs:
   - name: surface_descriptor
     doc: |
       The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
-      It isn't sufficient by itself and must have one of the `WGPUSurfaceFrom*` in its chain.
+      It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
       See @ref Surface-Creation for more details.
     type: base_in
     members:
@@ -2814,7 +2814,7 @@ structs:
         doc: The [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd) that will be wrapped by the @ref WGPUSurface.
         type: c_void
         pointer: mutable
-  - name: surface_source_xcb_window
+  - name: surface_source_XCB_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
     type: extension_in
     extends:
