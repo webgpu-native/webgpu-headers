@@ -322,7 +322,7 @@ enums:
     doc: Describes how frames are composited with other contents on the screen when `::wgpuSurfacePresent` is called.
     entries:
       - name: auto
-        doc: Lets the WebGPU implementation choose the best mode (supported, and with the best performance).
+        doc: Lets the WebGPU implementation choose the best mode (supported, and with the best performance) between @ref WGPUCompositeAlphaMode_Opaque or @ref WGPUCompositeAlphaMode_Inherit.
       - name: opaque
         doc: The alpha component of the image is ignored and teated as if it is always 1.0.
       - name: premultiplied
@@ -2708,7 +2708,9 @@ structs:
         type: array<enum.present_mode>
         pointer: immutable
       - name: alpha_modes
-        doc: A list of supported @ref WGPUCompositeAlphaMode values.
+        doc: |
+          A list of supported @ref WGPUCompositeAlphaMode values.
+          @ref WGPUCompositeAlphaMode_Auto will be an alias for the first element and will never be present in this array.
         type: array<enum.composite_alpha_mode>
         pointer: immutable
   - name: surface_configuration

@@ -164,7 +164,7 @@ struct WGPUSurfaceSourceCanvasHTMLSelector_Emscripten;
 struct WGPUSurfaceSourceMetalLayer;
 struct WGPUSurfaceSourceWaylandSurface;
 struct WGPUSurfaceSourceWindowsHWND;
-struct WGPUSurfaceSourceXcbWindow;
+struct WGPUSurfaceSourceXCBWindow;
 struct WGPUSurfaceSourceXlibWindow;
 struct WGPUSurfaceTexture;
 struct WGPUTextureBindingLayout;
@@ -365,7 +365,7 @@ typedef enum WGPUCompilationMessageType {
 typedef enum WGPUCompositeAlphaMode {
     /**
      * `0x00000000` 
-     * Lets the WebGPU implementation choose the best mode (supported, and with the best performance).
+     * Lets the WebGPU implementation choose the best mode (supported, and with the best performance) between @ref WGPUCompositeAlphaMode_Opaque or @ref WGPUCompositeAlphaMode_Inherit.
      */
     WGPUCompositeAlphaMode_Auto = 0x00000000,
     /**
@@ -375,17 +375,17 @@ typedef enum WGPUCompositeAlphaMode {
     WGPUCompositeAlphaMode_Opaque = 0x00000001,
     /**
      * `0x00000002` 
-     * The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component.
+     * The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component. For example, (0.5, 0, 0, 0.5) is semi-transparent bright red.
      */
     WGPUCompositeAlphaMode_Premultiplied = 0x00000002,
     /**
      * `0x00000003` 
-     * The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component.
+     * The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component. For example, (1.0, 0, 0, 0.5) is semi-transparent bright red.
      */
     WGPUCompositeAlphaMode_Unpremultiplied = 0x00000003,
     /**
      * `0x00000004` 
-     * The handling of the alpha component is unknown to WebGPU and should be handled by the application using system-specific APIs.
+     * The handling of the alpha component is unknown to WebGPU and should be handled by the application using system-specific APIs. This mode may be unavailable (for example on Wasm).
      */
     WGPUCompositeAlphaMode_Inherit = 0x00000004,
     WGPUCompositeAlphaMode_Force32 = 0x7FFFFFFF
@@ -519,7 +519,7 @@ typedef enum WGPUPresentMode {
     /**
      * `0x00000000` 
      * The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
-     * Tearing cannot be observed and frame-loop will execute at maximum at the display's refresh rate.
+     * Tearing cannot be observed and frame-loop will be limited to the display's refresh rate.
      * This is the only mode that's always available.
      */
     WGPUPresentMode_Fifo = 0x00000000,
@@ -527,7 +527,7 @@ typedef enum WGPUPresentMode {
      * `0x00000001` 
      * The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
      * Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
-     * This is still a first-in, first-out mechanism so a frame-loop will execute at maximum at the display's refresh rate.
+     * This is still a first-in, first-out mechanism so a frame-loop will be limited to the display's refresh rate.
      */
     WGPUPresentMode_FifoRelaxed = 0x00000001,
     /**
@@ -1396,6 +1396,7 @@ typedef struct WGPUSurfaceCapabilities {
     WGPUPresentMode const * presentModes;
     /**
      * A list of supported @ref WGPUCompositeAlphaMode values.
+     * @ref WGPUCompositeAlphaMode_Auto will be an alias for the first element and will never be present in this array.
      */
     size_t alphaModeCount;
     WGPUCompositeAlphaMode const * alphaModes;
@@ -1444,7 +1445,7 @@ typedef struct WGPUSurfaceConfiguration {
 
 /**
  * The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
- * It isn't sufficient by itself and must have one of the `WGPUSurfaceFrom*` in its chain.
+ * It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
  * See @ref Surface-Creation for more details.
  */
 typedef struct WGPUSurfaceDescriptor {
@@ -1523,7 +1524,7 @@ typedef struct WGPUSurfaceSourceWindowsHWND {
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
  */
-typedef struct WGPUSurfaceSourceXcbWindow {
+typedef struct WGPUSurfaceSourceXCBWindow {
     WGPUChainedStruct chain;
     /**
      * The `xcb_connection_t` for the connection to the X server.
@@ -1533,7 +1534,7 @@ typedef struct WGPUSurfaceSourceXcbWindow {
      * The `xcb_window_t` for the window that will be wrapped by the @ref WGPUSurface.
      */
     uint32_t window;
-} WGPUSurfaceSourceXcbWindow WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUSurfaceSourceXCBWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [Xlib](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) `Window`.

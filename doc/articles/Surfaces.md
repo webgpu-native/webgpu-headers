@@ -178,7 +178,10 @@ The behavior of `::wgpuSurfaceConfigure``(surface, config)` is:
    - Validate that `wgpuDeviceCreateTexture(device, &textureDesc)` would succeed.
 
  - Set `surface.config` to a deep copy of `config`.
- - Set `surface.currentFrame` to `None`.
+ - If `surface.currentFrame` is not `None`:
+
+   - Do as if `::wgpuTextureDestroy``(surface.currentFrame)` was called.
+   - Set `surface.currentFrame` to `None`.
 
 It can also be useful to remove the configuration of a @ref WGPUSurface without replacing it with a valid one.
 Without removing the configuration, the @ref WGPUSurface will keep referencing the @ref WGPUDevice that cannot be totally reclaimed.
@@ -186,7 +189,10 @@ Without removing the configuration, the @ref WGPUSurface will keep referencing t
 The behavior of `::wgpuSurfaceUnconfigure``()` is:
 
  - Set `surface.config` to `None`.
- - Set `surface.currentFrame` to `None`.
+ - If `surface.currentFrame` is not `None`:
+
+   - Do as if `::wgpuTextureDestroy``(surface.currentFrame)` was called.
+   - Set `surface.currentFrame` to `None`.
 
 ## Presenting to Surface {#Surface-Presenting}
 
