@@ -127,7 +127,7 @@ This is an example of how to configure a @ref WGPUSurface:
 WGPUSurfaceConfiguration config = {
     nextInChain = nullptr,
     device = myDevice,
-    format = WGPUTextureFormat_BGRA8Unorm,
+    format = preferredFormat,
     width = 640, // Depending on the window size.
     height = 480,
     usage = WGPUTextureUsage_RenderAttachment,
