@@ -717,6 +717,16 @@ enums:
       - name: invalid
         doc: |
           TODO
+      - name: shader_source_SPIRV
+        doc: |
+          TODO
+      - name: shader_source_WGSL
+        doc: |
+          TODO
+      - name: render_pass_max_draw_count
+        doc: |
+          TODO
+      # TODO(#214): Move all of the surface sources into block 0x0001
       - name: surface_source_metal_layer
         doc: |
           TODO
@@ -726,15 +736,6 @@ enums:
       - name: surface_source_xlib_window
         doc: |
           TODO
-      - name: surface_source_canvas_HTML_selector__Emscripten
-        doc: |
-          TODO
-      - name: shader_source_SPIRV
-        doc: |
-          TODO
-      - name: shader_source_WGSL
-        doc: |
-          TODO
       - name: surface_source_wayland_surface
         doc: |
           TODO
@@ -742,10 +743,6 @@ enums:
         doc: |
           TODO
       - name: surface_source_XCB_window
-        doc: |
-          TODO
-      - name: render_pass_max_draw_count
-        value: 0x000F
         doc: |
           TODO
   - name: sampler_binding_type
@@ -2765,17 +2762,6 @@ structs:
         doc: The pointer to the [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window) that will be wrapped by the @ref WGPUSurface.
         type: c_void
         pointer: mutable
-  - name: surface_source_canvas_HTML_selector__Emscripten
-    doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [HTML `<canvas>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas).
-    type: extension_in
-    extends:
-      - surface_descriptor
-    members:
-      - name: selector
-        doc: |
-          The [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) for the `<canvas>` element that will be wrapped by the @ref WGPUSurface.
-          Most commonly `"#id_of_the_canvas"`.
-        type: string
   - name: surface_source_metal_layer
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
     type: extension_in

@@ -160,7 +160,6 @@ struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceConfiguration;
 struct WGPUSurfaceDescriptor;
 struct WGPUSurfaceSourceAndroidNativeWindow;
-struct WGPUSurfaceSourceCanvasHTMLSelector_Emscripten;
 struct WGPUSurfaceSourceMetalLayer;
 struct WGPUSurfaceSourceWaylandSurface;
 struct WGPUSurfaceSourceWindowsHWND;
@@ -588,16 +587,15 @@ typedef enum WGPURequestDeviceStatus {
 
 typedef enum WGPUSType {
     WGPUSType_Invalid = 0x00000000,
-    WGPUSType_SurfaceSourceMetalLayer = 0x00000001,
-    WGPUSType_SurfaceSourceWindowsHWND = 0x00000002,
-    WGPUSType_SurfaceSourceXlibWindow = 0x00000003,
-    WGPUSType_SurfaceSourceCanvasHTMLSelector_Emscripten = 0x00000004,
-    WGPUSType_ShaderSourceSPIRV = 0x00000005,
-    WGPUSType_ShaderSourceWGSL = 0x00000006,
+    WGPUSType_ShaderSourceSPIRV = 0x00000001,
+    WGPUSType_ShaderSourceWGSL = 0x00000002,
+    WGPUSType_RenderPassMaxDrawCount = 0x00000003,
+    WGPUSType_SurfaceSourceMetalLayer = 0x00000004,
+    WGPUSType_SurfaceSourceWindowsHWND = 0x00000005,
+    WGPUSType_SurfaceSourceXlibWindow = 0x00000006,
     WGPUSType_SurfaceSourceWaylandSurface = 0x00000007,
     WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
     WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
-    WGPUSType_RenderPassMaxDrawCount = 0x0000000F,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -1466,18 +1464,6 @@ typedef struct WGPUSurfaceSourceAndroidNativeWindow {
      */
     void * window;
 } WGPUSurfaceSourceAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [HTML `<canvas>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas).
- */
-typedef struct WGPUSurfaceSourceCanvasHTMLSelector_Emscripten {
-    WGPUChainedStruct chain;
-    /**
-     * The [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) for the `<canvas>` element that will be wrapped by the @ref WGPUSurface.
-     * Most commonly `"#id_of_the_canvas"`.
-     */
-    char const * selector;
-} WGPUSurfaceSourceCanvasHTMLSelector_Emscripten WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
