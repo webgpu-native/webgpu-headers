@@ -471,8 +471,8 @@ typedef enum WGPUIndexFormat {
 
 typedef enum WGPULoadOp {
     WGPULoadOp_Undefined = 0x00000000,
-    WGPULoadOp_Clear = 0x00000001,
-    WGPULoadOp_Load = 0x00000002,
+    WGPULoadOp_Load = 0x00000001,
+    WGPULoadOp_Clear = 0x00000002,
     WGPULoadOp_Force32 = 0x7FFFFFFF
 } WGPULoadOp WGPU_ENUM_ATTRIBUTE;
 

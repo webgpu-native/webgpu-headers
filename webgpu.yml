@@ -514,10 +514,10 @@ enums:
       - name: undefined
         doc: |
           TODO
-      - name: clear
+      - name: load
         doc: |
           TODO
-      - name: load
+      - name: clear
         doc: |
           TODO
   - name: map_async_status
