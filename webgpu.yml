@@ -1295,6 +1295,9 @@ enums:
       - name: sint32x4
         doc: |
           TODO
+      - name: unorm10__10__10__2
+        doc: |
+          TODO
   - name: vertex_step_mode
     doc: |
       TODO
