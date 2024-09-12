@@ -2957,6 +2957,10 @@ structs:
         doc: |
           TODO
         type: enum.texture_aspect
+      - name: usage
+        doc: |
+          TODO
+        type: bitflag.texture_usage
   - name: vertex_attribute
     doc: |
       TODO
