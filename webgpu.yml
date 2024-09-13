@@ -2125,10 +2125,6 @@ structs:
         doc: |
           TODO
         type: uint32
-      - name: max_inter_stage_shader_components
-        doc: |
-          TODO
-        type: uint32
       - name: max_inter_stage_shader_variables
         doc: |
           TODO

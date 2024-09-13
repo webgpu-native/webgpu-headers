@@ -1222,7 +1222,6 @@ typedef struct WGPULimits {
     uint64_t maxBufferSize;
     uint32_t maxVertexAttributes;
     uint32_t maxVertexBufferArrayStride;
-    uint32_t maxInterStageShaderComponents;
     uint32_t maxInterStageShaderVariables;
     uint32_t maxColorAttachments;
     uint32_t maxColorAttachmentBytesPerSample;
