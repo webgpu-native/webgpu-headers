@@ -459,6 +459,9 @@ enums:
       - name: texture_compression_ASTC
         doc: |
           TODO
+      - name: texture_compression_ASTC_sliced_3D
+        doc: |
+          TODO
       - name: indirect_first_instance
         doc: |
           TODO
