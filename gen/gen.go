@@ -85,9 +85,9 @@ func (g *Generator) CValue(s string) (string, error) {
 	case "usize_max":
 		return "SIZE_MAX", nil
 	case "uint32_max":
-		return "0xffffffffUL", nil
+		return "UINT32_MAX", nil
 	case "uint64_max":
-		return "0xffffffffffffffffULL", nil
+		return "UINT64_MAX", nil
 	default:
 		var num string
 		var base int

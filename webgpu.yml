@@ -2584,19 +2584,6 @@ structs:
         doc: |
           TODO
         type: uint16
-  - name: shader_module_compilation_hint
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: entry_point
-        doc: |
-          TODO
-        type: string
-      - name: layout
-        doc: |
-          TODO
-        type: object.pipeline_layout
   - name: shader_module_descriptor
     doc: |
       TODO
@@ -2607,11 +2594,6 @@ structs:
           TODO
         type: string
         optional: true
-      - name: hints
-        doc: |
-          TODO
-        type: array<struct.shader_module_compilation_hint>
-        pointer: immutable
   - name: shader_source_SPIRV
     doc: |
       TODO
