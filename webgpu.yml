@@ -598,6 +598,9 @@ enums:
   - name: present_mode
     doc: Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
     entries:
+      - name: undefined
+        doc: |
+          Present mode is not specified. Use the default.
       - name: fifo
         doc: |
           The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
@@ -2741,7 +2744,7 @@ structs:
         doc: How the surface's frames will be composited on the screen.
         type: enum.composite_alpha_mode
       - name: present_mode
-        doc: When and in which order the surface's frames will be shown on the screen.
+        doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
   - name: surface_descriptor
     doc: |
