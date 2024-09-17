@@ -151,7 +151,7 @@ struct WGPURenderPassTimestampWrites;
 struct WGPURequestAdapterOptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
-struct WGPUShaderModuleCompilationHint;
+struct WGPUShaderModuleDescriptor;
 struct WGPUShaderSourceSPIRV;
 struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
@@ -183,7 +183,6 @@ struct WGPUInstanceDescriptor;
 struct WGPUProgrammableStageDescriptor;
 struct WGPURenderPassColorAttachment;
 struct WGPURequiredLimits;
-struct WGPUShaderModuleDescriptor;
 struct WGPUSupportedLimits;
 struct WGPUTextureDescriptor;
 struct WGPUVertexBufferLayout;
@@ -1341,11 +1340,10 @@ typedef struct WGPUSamplerDescriptor {
     uint16_t maxAnisotropy;
 } WGPUSamplerDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUShaderModuleCompilationHint {
+typedef struct WGPUShaderModuleDescriptor {
     WGPUChainedStruct const * nextInChain;
-    char const * entryPoint;
-    WGPUPipelineLayout layout;
-} WGPUShaderModuleCompilationHint WGPU_STRUCTURE_ATTRIBUTE;
+    WGPU_NULLABLE char const * label;
+} WGPUShaderModuleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUShaderSourceSPIRV {
     WGPUChainedStruct chain;
@@ -1697,13 +1695,6 @@ typedef struct WGPURequiredLimits {
     WGPUChainedStruct const * nextInChain;
     WGPULimits limits;
 } WGPURequiredLimits WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPUShaderModuleDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    WGPU_NULLABLE char const * label;
-    size_t hintCount;
-    WGPUShaderModuleCompilationHint const * hints;
-} WGPUShaderModuleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSupportedLimits {
     WGPUChainedStructOut * nextInChain;
