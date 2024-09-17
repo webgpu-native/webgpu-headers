@@ -89,7 +89,7 @@
  */
 
 {{- if eq .Name "webgpu"}}
-typedef uint32_t WGPUFlags;
+typedef uint64_t WGPUFlags;
 typedef uint32_t WGPUBool;
 {{  end}}
 {{- range .Typedefs}}
@@ -165,20 +165,11 @@ typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
  */
 
 {{- range $bitflag := .Bitflags}}
-{{-   if .Extended}}
-{{-     range $entryIndex, $_ := .Entries}}
-__WGPU_EXTEND_ENUM(WGPU{{$bitflag.Name | PascalCase}}, WGPU{{$bitflag.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{BitflagValue $bitflag $entryIndex}});
-{{-     end}}
-{{-   else}}
-{{-     MComment .Doc 0}}
-typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
-{{-     range $entryIndex, $_ := .Entries}}
-{{-       MCommentBitflag .Doc 4 $bitflag $entryIndex }}
-    WGPU{{$bitflag.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{BitflagValue $bitflag $entryIndex}},
-{{-     end}}
-    WGPU{{$bitflag.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF
-} WGPU{{$bitflag.Name | PascalCase}}{{$.ExtSuffix}} WGPU_ENUM_ATTRIBUTE;
-typedef WGPUFlags WGPU{{$bitflag.Name | PascalCase}}Flags{{$.ExtSuffix}} WGPU_ENUM_ATTRIBUTE;
+{{-   MComment .Doc 0}}
+typedef WGPUFlags WGPU{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}};
+{{-   range $entryIndex, $_ := .Entries}}
+{{-     MCommentBitflag .Doc 4 $bitflag $entryIndex }}
+static const WGPU{{$bitflag.Name | PascalCase}} WGPU{{$bitflag.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{BitflagValue $bitflag $entryIndex}};
 {{-   end}}
 {{  end}}
 
