@@ -276,7 +276,7 @@ extern "C" {
 typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
-typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUProc (*WGPUProcGetProcAddress)(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
 {{- range $object := .Objects}}
@@ -307,7 +307,7 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
-WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUDevice device, char const * procName) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUProc wgpuGetProcAddress(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
 /** @} */
