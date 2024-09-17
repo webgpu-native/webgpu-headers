@@ -157,7 +157,7 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "typedef.")) + suffix
 		return appendModifiers(ctype, pointerType)
 	case strings.HasPrefix(typ, "bitflag."):
-		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "bitflag.")) + "Flags" + suffix
+		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "bitflag.")) + suffix
 		return appendModifiers(ctype, pointerType)
 	case strings.HasPrefix(typ, "struct."):
 		ctype := "WGPU" + PascalCase(strings.TrimPrefix(typ, "struct.")) + suffix
