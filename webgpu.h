@@ -62,15 +62,15 @@
  *
  * @{
  */
-#define WGPU_ARRAY_LAYER_COUNT_UNDEFINED (0xffffffffUL)
-#define WGPU_COPY_STRIDE_UNDEFINED (0xffffffffUL)
-#define WGPU_DEPTH_SLICE_UNDEFINED (0xffffffffUL)
-#define WGPU_LIMIT_U32_UNDEFINED (0xffffffffUL)
-#define WGPU_LIMIT_U64_UNDEFINED (0xffffffffffffffffULL)
-#define WGPU_MIP_LEVEL_COUNT_UNDEFINED (0xffffffffUL)
-#define WGPU_QUERY_SET_INDEX_UNDEFINED (0xffffffffUL)
+#define WGPU_ARRAY_LAYER_COUNT_UNDEFINED (UINT32_MAX)
+#define WGPU_COPY_STRIDE_UNDEFINED (UINT32_MAX)
+#define WGPU_DEPTH_SLICE_UNDEFINED (UINT32_MAX)
+#define WGPU_LIMIT_U32_UNDEFINED (UINT32_MAX)
+#define WGPU_LIMIT_U64_UNDEFINED (UINT64_MAX)
+#define WGPU_MIP_LEVEL_COUNT_UNDEFINED (UINT32_MAX)
+#define WGPU_QUERY_SET_INDEX_UNDEFINED (UINT32_MAX)
 #define WGPU_WHOLE_MAP_SIZE (SIZE_MAX)
-#define WGPU_WHOLE_SIZE (0xffffffffffffffffULL)
+#define WGPU_WHOLE_SIZE (UINT64_MAX)
 
 
 /** @} */
@@ -151,7 +151,7 @@ struct WGPURenderPassTimestampWrites;
 struct WGPURequestAdapterOptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
-struct WGPUShaderModuleCompilationHint;
+struct WGPUShaderModuleDescriptor;
 struct WGPUShaderSourceSPIRV;
 struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
@@ -183,7 +183,6 @@ struct WGPUInstanceDescriptor;
 struct WGPUProgrammableStageDescriptor;
 struct WGPURenderPassColorAttachment;
 struct WGPURequiredLimits;
-struct WGPUShaderModuleDescriptor;
 struct WGPUSupportedLimits;
 struct WGPUTextureDescriptor;
 struct WGPUVertexBufferLayout;
@@ -302,21 +301,21 @@ typedef enum WGPUBufferMapState {
  */
 typedef enum WGPUCallbackMode {
     /**
-     * `0x00000001` 
+     * `0x00000001`.
      * Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
      * - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
      *   AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
      */
     WGPUCallbackMode_WaitAnyOnly = 0x00000001,
     /**
-     * `0x00000002` 
+     * `0x00000002`.
      * Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
      * - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
      */
     WGPUCallbackMode_AllowProcessEvents = 0x00000002,
     /**
-     * `0x00000003` 
+     * `0x00000003`.
      * Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
      * - **may** fire spontaneously on an arbitrary or application thread, when the WebGPU implementations discovers that the asynchronous operation is complete.
@@ -363,27 +362,27 @@ typedef enum WGPUCompilationMessageType {
  */
 typedef enum WGPUCompositeAlphaMode {
     /**
-     * `0x00000000` 
+     * `0x00000000`.
      * Lets the WebGPU implementation choose the best mode (supported, and with the best performance) between @ref WGPUCompositeAlphaMode_Opaque or @ref WGPUCompositeAlphaMode_Inherit.
      */
     WGPUCompositeAlphaMode_Auto = 0x00000000,
     /**
-     * `0x00000001` 
+     * `0x00000001`.
      * The alpha component of the image is ignored and teated as if it is always 1.0.
      */
     WGPUCompositeAlphaMode_Opaque = 0x00000001,
     /**
-     * `0x00000002` 
+     * `0x00000002`.
      * The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component. For example, (0.5, 0, 0, 0.5) is semi-transparent bright red.
      */
     WGPUCompositeAlphaMode_Premultiplied = 0x00000002,
     /**
-     * `0x00000003` 
+     * `0x00000003`.
      * The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component. For example, (1.0, 0, 0, 0.5) is semi-transparent bright red.
      */
     WGPUCompositeAlphaMode_Unpremultiplied = 0x00000003,
     /**
-     * `0x00000004` 
+     * `0x00000004`.
      * The handling of the alpha component is unknown to WebGPU and should be handled by the application using system-specific APIs. This mode may be unavailable (for example on Wasm).
      */
     WGPUCompositeAlphaMode_Inherit = 0x00000004,
@@ -517,27 +516,27 @@ typedef enum WGPUPowerPreference {
  */
 typedef enum WGPUPresentMode {
     /**
-     * `0x00000000` 
+     * `0x00000000`.
      * The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
      * Tearing cannot be observed and frame-loop will be limited to the display's refresh rate.
      * This is the only mode that's always available.
      */
     WGPUPresentMode_Fifo = 0x00000000,
     /**
-     * `0x00000001` 
+     * `0x00000001`.
      * The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
      * Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
      * This is still a first-in, first-out mechanism so a frame-loop will be limited to the display's refresh rate.
      */
     WGPUPresentMode_FifoRelaxed = 0x00000001,
     /**
-     * `0x00000002` 
+     * `0x00000002`.
      * The presentation of the image to the user is updated immediately without waiting for a vertical blank.
      * Tearing can be observed but latency is minimized.
      */
     WGPUPresentMode_Immediate = 0x00000002,
     /**
-     * `0x00000003` 
+     * `0x00000003`.
      * The presentation of the image to the user waits for the next vertical blanking period to update to the latest provided image.
      * Tearing cannot be observed and a frame-loop is not limited to the display's refresh rate.
      */
@@ -640,32 +639,32 @@ typedef enum WGPUStoreOp {
  */
 typedef enum WGPUSurfaceGetCurrentTextureStatus {
     /**
-     * `0x00000000` 
+     * `0x00000000`.
      * Yay! Everything is good and we can render this frame.
      */
     WGPUSurfaceGetCurrentTextureStatus_Success = 0x00000000,
     /**
-     * `0x00000001` 
+     * `0x00000001`.
      * Some operation timed out while trying to acquire the frame.
      */
     WGPUSurfaceGetCurrentTextureStatus_Timeout = 0x00000001,
     /**
-     * `0x00000002` 
+     * `0x00000002`.
      * The surface is too different to be used, compared to when it was originally created.
      */
     WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000002,
     /**
-     * `0x00000003` 
+     * `0x00000003`.
      * The connection to whatever owns the surface was lost.
      */
     WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000003,
     /**
-     * `0x00000004` 
+     * `0x00000004`.
      * The system ran out of memory.
      */
     WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000004,
     /**
-     * `0x00000005` 
+     * `0x00000005`.
      * The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
      */
     WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000005,
@@ -864,27 +863,27 @@ typedef enum WGPUWGSLFeatureName {
  */
 typedef enum WGPUWaitStatus {
     /**
-     * `0x00000000` 
+     * `0x00000000`.
      * At least one WGPUFuture completed successfully.
      */
     WGPUWaitStatus_Success = 0x00000000,
     /**
-     * `0x00000001` 
+     * `0x00000001`.
      * No WGPUFutures completed within the timeout.
      */
     WGPUWaitStatus_TimedOut = 0x00000001,
     /**
-     * `0x00000002` 
+     * `0x00000002`.
      * A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
      */
     WGPUWaitStatus_UnsupportedTimeout = 0x00000002,
     /**
-     * `0x00000003` 
+     * `0x00000003`.
      * The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
      */
     WGPUWaitStatus_UnsupportedCount = 0x00000003,
     /**
-     * `0x00000004` 
+     * `0x00000004`.
      * An invalid wait was performed with @ref Mixed-Sources.
      */
     WGPUWaitStatus_UnsupportedMixedSources = 0x00000004,
@@ -1326,11 +1325,10 @@ typedef struct WGPUSamplerDescriptor {
     uint16_t maxAnisotropy;
 } WGPUSamplerDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUShaderModuleCompilationHint {
+typedef struct WGPUShaderModuleDescriptor {
     WGPUChainedStruct const * nextInChain;
-    char const * entryPoint;
-    WGPUPipelineLayout layout;
-} WGPUShaderModuleCompilationHint WGPU_STRUCTURE_ATTRIBUTE;
+    WGPU_NULLABLE char const * label;
+} WGPUShaderModuleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUShaderSourceSPIRV {
     WGPUChainedStruct chain;
@@ -1682,13 +1680,6 @@ typedef struct WGPURequiredLimits {
     WGPUChainedStruct const * nextInChain;
     WGPULimits limits;
 } WGPURequiredLimits WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPUShaderModuleDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    WGPU_NULLABLE char const * label;
-    size_t hintCount;
-    WGPUShaderModuleCompilationHint const * hints;
-} WGPUShaderModuleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSupportedLimits {
     WGPUChainedStructOut * nextInChain;

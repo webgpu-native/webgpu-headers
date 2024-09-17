@@ -29,14 +29,14 @@ func (g *Generator) Gen(dst io.Writer) error {
 					return ""
 				}
 				value, _ := g.EnumValue(prefix, e, entryIndex)
-				return Comment("`"+value+"` \n"+v, CommentTypeMultiLine, indent, true)
+				return Comment("`"+value+"`.\n"+v, CommentTypeMultiLine, indent, true)
 			},
 			"MCommentBitflag": func(v string, indent int, b Bitflag, entryIndex int) string {
 				if v == "" || strings.TrimSpace(v) == "TODO" {
 					return ""
 				}
 				value, _ := g.BitflagValue(b, entryIndex)
-				return Comment("`"+value+"` "+v, CommentTypeMultiLine, indent, true)
+				return Comment("`"+value+"`.\n"+v, CommentTypeMultiLine, indent, true)
 			},
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,
@@ -85,9 +85,9 @@ func (g *Generator) CValue(s string) (string, error) {
 	case "usize_max":
 		return "SIZE_MAX", nil
 	case "uint32_max":
-		return "0xffffffffUL", nil
+		return "UINT32_MAX", nil
 	case "uint64_max":
-		return "0xffffffffffffffffULL", nil
+		return "UINT64_MAX", nil
 	default:
 		var num string
 		var base int
