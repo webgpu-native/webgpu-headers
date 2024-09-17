@@ -286,7 +286,7 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int) (string, error) {
 	} else {
 		if entry.Value == "" {
 			value := uint64(math.Pow(2, float64(entryIndex-1)))
-			entryValue = fmt.Sprintf("0x%.8X", value)
+			entryValue = fmt.Sprintf("0x%.16X", value)
 		} else {
 			var num string
 			var base int

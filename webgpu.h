@@ -81,7 +81,7 @@
  *
  * @{
  */
-typedef uint32_t WGPUFlags;
+typedef uint64_t WGPUFlags;
 typedef uint32_t WGPUBool;
 
 
@@ -900,60 +900,45 @@ typedef enum WGPUWaitStatus {
  *
  * @{
  */
-typedef enum WGPUBufferUsage {
-    WGPUBufferUsage_None = 0x00000000,
-    WGPUBufferUsage_MapRead = 0x00000001,
-    WGPUBufferUsage_MapWrite = 0x00000002,
-    WGPUBufferUsage_CopySrc = 0x00000004,
-    WGPUBufferUsage_CopyDst = 0x00000008,
-    WGPUBufferUsage_Index = 0x00000010,
-    WGPUBufferUsage_Vertex = 0x00000020,
-    WGPUBufferUsage_Uniform = 0x00000040,
-    WGPUBufferUsage_Storage = 0x00000080,
-    WGPUBufferUsage_Indirect = 0x00000100,
-    WGPUBufferUsage_QueryResolve = 0x00000200,
-    WGPUBufferUsage_Force32 = 0x7FFFFFFF
-} WGPUBufferUsage WGPU_ENUM_ATTRIBUTE;
-typedef WGPUFlags WGPUBufferUsageFlags WGPU_ENUM_ATTRIBUTE;
+typedef WGPUFlags WGPUBufferUsage;
+static const WGPUBufferUsage WGPUBufferUsage_None = 0x0000000000000000;
+static const WGPUBufferUsage WGPUBufferUsage_MapRead = 0x0000000000000001;
+static const WGPUBufferUsage WGPUBufferUsage_MapWrite = 0x0000000000000002;
+static const WGPUBufferUsage WGPUBufferUsage_CopySrc = 0x0000000000000004;
+static const WGPUBufferUsage WGPUBufferUsage_CopyDst = 0x0000000000000008;
+static const WGPUBufferUsage WGPUBufferUsage_Index = 0x0000000000000010;
+static const WGPUBufferUsage WGPUBufferUsage_Vertex = 0x0000000000000020;
+static const WGPUBufferUsage WGPUBufferUsage_Uniform = 0x0000000000000040;
+static const WGPUBufferUsage WGPUBufferUsage_Storage = 0x0000000000000080;
+static const WGPUBufferUsage WGPUBufferUsage_Indirect = 0x0000000000000100;
+static const WGPUBufferUsage WGPUBufferUsage_QueryResolve = 0x0000000000000200;
 
-typedef enum WGPUColorWriteMask {
-    WGPUColorWriteMask_None = 0x00000000,
-    WGPUColorWriteMask_Red = 0x00000001,
-    WGPUColorWriteMask_Green = 0x00000002,
-    WGPUColorWriteMask_Blue = 0x00000004,
-    WGPUColorWriteMask_Alpha = 0x00000008,
-    WGPUColorWriteMask_All = WGPUColorWriteMask_None | WGPUColorWriteMask_Red | WGPUColorWriteMask_Green | WGPUColorWriteMask_Blue | WGPUColorWriteMask_Alpha,
-    WGPUColorWriteMask_Force32 = 0x7FFFFFFF
-} WGPUColorWriteMask WGPU_ENUM_ATTRIBUTE;
-typedef WGPUFlags WGPUColorWriteMaskFlags WGPU_ENUM_ATTRIBUTE;
+typedef WGPUFlags WGPUColorWriteMask;
+static const WGPUColorWriteMask WGPUColorWriteMask_None = 0x0000000000000000;
+static const WGPUColorWriteMask WGPUColorWriteMask_Red = 0x0000000000000001;
+static const WGPUColorWriteMask WGPUColorWriteMask_Green = 0x0000000000000002;
+static const WGPUColorWriteMask WGPUColorWriteMask_Blue = 0x0000000000000004;
+static const WGPUColorWriteMask WGPUColorWriteMask_Alpha = 0x0000000000000008;
+static const WGPUColorWriteMask WGPUColorWriteMask_All = WGPUColorWriteMask_None | WGPUColorWriteMask_Red | WGPUColorWriteMask_Green | WGPUColorWriteMask_Blue | WGPUColorWriteMask_Alpha;
 
-typedef enum WGPUMapMode {
-    WGPUMapMode_None = 0x00000000,
-    WGPUMapMode_Read = 0x00000001,
-    WGPUMapMode_Write = 0x00000002,
-    WGPUMapMode_Force32 = 0x7FFFFFFF
-} WGPUMapMode WGPU_ENUM_ATTRIBUTE;
-typedef WGPUFlags WGPUMapModeFlags WGPU_ENUM_ATTRIBUTE;
+typedef WGPUFlags WGPUMapMode;
+static const WGPUMapMode WGPUMapMode_None = 0x0000000000000000;
+static const WGPUMapMode WGPUMapMode_Read = 0x0000000000000001;
+static const WGPUMapMode WGPUMapMode_Write = 0x0000000000000002;
 
-typedef enum WGPUShaderStage {
-    WGPUShaderStage_None = 0x00000000,
-    WGPUShaderStage_Vertex = 0x00000001,
-    WGPUShaderStage_Fragment = 0x00000002,
-    WGPUShaderStage_Compute = 0x00000004,
-    WGPUShaderStage_Force32 = 0x7FFFFFFF
-} WGPUShaderStage WGPU_ENUM_ATTRIBUTE;
-typedef WGPUFlags WGPUShaderStageFlags WGPU_ENUM_ATTRIBUTE;
+typedef WGPUFlags WGPUShaderStage;
+static const WGPUShaderStage WGPUShaderStage_None = 0x0000000000000000;
+static const WGPUShaderStage WGPUShaderStage_Vertex = 0x0000000000000001;
+static const WGPUShaderStage WGPUShaderStage_Fragment = 0x0000000000000002;
+static const WGPUShaderStage WGPUShaderStage_Compute = 0x0000000000000004;
 
-typedef enum WGPUTextureUsage {
-    WGPUTextureUsage_None = 0x00000000,
-    WGPUTextureUsage_CopySrc = 0x00000001,
-    WGPUTextureUsage_CopyDst = 0x00000002,
-    WGPUTextureUsage_TextureBinding = 0x00000004,
-    WGPUTextureUsage_StorageBinding = 0x00000008,
-    WGPUTextureUsage_RenderAttachment = 0x00000010,
-    WGPUTextureUsage_Force32 = 0x7FFFFFFF
-} WGPUTextureUsage WGPU_ENUM_ATTRIBUTE;
-typedef WGPUFlags WGPUTextureUsageFlags WGPU_ENUM_ATTRIBUTE;
+typedef WGPUFlags WGPUTextureUsage;
+static const WGPUTextureUsage WGPUTextureUsage_None = 0x0000000000000000;
+static const WGPUTextureUsage WGPUTextureUsage_CopySrc = 0x0000000000000001;
+static const WGPUTextureUsage WGPUTextureUsage_CopyDst = 0x0000000000000002;
+static const WGPUTextureUsage WGPUTextureUsage_TextureBinding = 0x0000000000000004;
+static const WGPUTextureUsage WGPUTextureUsage_StorageBinding = 0x0000000000000008;
+static const WGPUTextureUsage WGPUTextureUsage_RenderAttachment = 0x0000000000000010;
 
 
 /** @} */
