@@ -824,8 +824,10 @@ enums:
   - name: surface_get_current_texture_status
     doc: The status enum for `::wgpuSurfaceGetCurrentTexture`.
     entries:
-      - name: success
+      - name: success_optimal
         doc: Yay! Everything is good and we can render this frame.
+      - name: success_suboptimal
+        doc: Still OK - the surface can present the frame, but in a suboptimal way. The surface may need reconfiguration.
       - name: timeout
         doc: Some operation timed out while trying to acquire the frame.
       - name: outdated
@@ -2839,9 +2841,6 @@ structs:
       - name: texture
         doc: The @ref WGPUTexture representing the frame that will be shown on the surface.
         type: object.texture
-      - name: suboptimal
-        doc: True if the surface can present the frame, but in a suboptimal way.
-        type: bool
       - name: status
         doc: Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
         type: enum.surface_get_current_texture_status

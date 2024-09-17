@@ -643,32 +643,37 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
      * `0x00000000` 
      * Yay! Everything is good and we can render this frame.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Success = 0x00000000,
+    WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal = 0x00000000,
     /**
      * `0x00000001` 
-     * Some operation timed out while trying to acquire the frame.
+     * Still OK - the surface can present the frame, but in a suboptimal way. The surface may need reconfiguration.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Timeout = 0x00000001,
+    WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal = 0x00000001,
     /**
      * `0x00000002` 
-     * The surface is too different to be used, compared to when it was originally created.
+     * Some operation timed out while trying to acquire the frame.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000002,
+    WGPUSurfaceGetCurrentTextureStatus_Timeout = 0x00000002,
     /**
      * `0x00000003` 
-     * The connection to whatever owns the surface was lost.
+     * The surface is too different to be used, compared to when it was originally created.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000003,
+    WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000003,
     /**
      * `0x00000004` 
-     * The system ran out of memory.
+     * The connection to whatever owns the surface was lost.
      */
-    WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000004,
+    WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000004,
     /**
      * `0x00000005` 
+     * The system ran out of memory.
+     */
+    WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000005,
+    /**
+     * `0x00000006` 
      * The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
      */
-    WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000005,
+    WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000006,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1547,10 +1552,6 @@ typedef struct WGPUSurfaceTexture {
      * The @ref WGPUTexture representing the frame that will be shown on the surface.
      */
     WGPUTexture texture;
-    /**
-     * True if the surface can present the frame, but in a suboptimal way.
-     */
-    WGPUBool suboptimal;
     /**
      * Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
      */
