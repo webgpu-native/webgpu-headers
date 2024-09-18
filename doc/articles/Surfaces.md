@@ -200,7 +200,7 @@ Each frame, the application retrieves the @ref WGPUTexture for the frame with `:
 
 Issues can happen when trying to retrieve the frame's @ref WGPUTexture, so the application must check @ref WGPUSurfaceTexture `.status` to see if the surface or the device was lost, or some other windowing system issue caused a timeout.
 The environment can also change the surface without breaking it, but making the current configuration suboptimal. 
-In this case, @ref WGPUSurfaceTexture `.suboptimal` will be `true` and the application should (but isn't required to) handle it.
+In this case, @ref WGPUSurfaceTexture `.status` will be @ref WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal and the application should (but isn't required to) handle it.
 Surfaces often become suboptimal when the window is resized (so presenting requires resizing a texture, which is both performance overhead, and a visual quality degradation).
 
 This is an example of how to render to a @ref WGPUSurface each frame:
@@ -210,11 +210,13 @@ This is an example of how to render to a @ref WGPUSurface each frame:
 WGPUSurfaceTexture surfaceTexture;
 wgpuSurfaceGetCurrentTexture(mySurface, &surfaceTexture);
 
-if (surfaceTexture.status != WGPUSurfaceGetCurrentTextureStatus_Success) {
+if (surfaceTexture.texture == NULL) {
     // Recover if possible.
     return;
 }
-if (surfaceTexture.suboptimal) {
+// Since the texture is not null, the status is some kind of success.
+// We can optionally handle the "SuccessSuboptimal" case.
+if (surfaceTexture.status == WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal) {
     HandleResize();
     return;
 }
@@ -229,7 +231,6 @@ wgpuSurfacePresent(mySurface);
 The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, surfaceTexture)` is:
 
  - Set `surfaceTexture->texture` to `NULL`.
- - Set `surfaceTexture->suboptimal` to `false`.
 
  - If any of these validation steps fails, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_Error` and return (TODO send error to device?).
 
@@ -238,11 +239,12 @@ The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, surfaceTexture)` is:
    - Validate that `surface.currentFrame` is `None`.
 
  - If `surface.config.device` is not alive, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_DeviceLost` and return.
- - If the implementation detects any other problem preventing use of the surface, set `surfaceTexture->status` to an appropriate status (other than `Success`, `Error`, or `DeviceLost`) and return.
+ - If the implementation detects any other problem preventing use of the surface, set `surfaceTexture->status` to an appropriate status (something other than `SuccessOptimal`, `SuccessSuboptimal`, `Error`, or `DeviceLost`) and return.
  - Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(surface.config)`.
  - Create a new @ref WGPUTexture `t`, as if calling `wgpuDeviceCreateTexture(surface.config.device, &textureDesc)`, but wrapping the appropriate backing resource.
  - Set `surface.currentFrame` to `t`.
- - If the implementation detects a reason why the current configuration is suboptimal, set `surfaceTexture->suboptimal` to `true`.
+ - If the implementation detects a reason why the current configuration is suboptimal, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal`.
+   Otherwise, set it to `WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal`.
 
 The behavior of `::wgpuSurfacePresent``(surface)` is:
 
