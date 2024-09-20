@@ -1410,7 +1410,6 @@ bitflags:
           TODO
       - name: all
         value_combination:
-          - none
           - red
           - green
           - blue
