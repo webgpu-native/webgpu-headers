@@ -601,12 +601,12 @@ enums:
       - name: undefined
         doc: |
           Present mode is not specified. Use the default.
-      - name: fifo
+      - name: FIFO
         doc: |
           The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
           Tearing cannot be observed and frame-loop will be limited to the display's refresh rate.
           This is the only mode that's always available.
-      - name: fifo_relaxed
+      - name: FIFO_relaxed
         doc: |
           The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
           Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
@@ -2690,7 +2690,7 @@ structs:
       - name: present_modes
         doc: |
           A list of supported @ref WGPUPresentMode values.
-          Guaranteed to contain @ref WGPUPresentMode_Fifo.
+          Guaranteed to contain @ref WGPUPresentMode_FIFO.
         type: array<enum.present_mode>
         pointer: immutable
       - name: alpha_modes
@@ -2728,7 +2728,7 @@ structs:
         doc: How the surface's frames will be composited on the screen.
         type: enum.composite_alpha_mode
       - name: present_mode
-        doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
+        doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_FIFO.
         type: enum.present_mode
   - name: surface_descriptor
     doc: |

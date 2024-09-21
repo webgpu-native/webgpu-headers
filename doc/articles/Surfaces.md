@@ -72,7 +72,7 @@ This first step of the negotiation is querying what capabilities are available u
 
  - A bit set of supported @ref WGPUTextureUsage that are guaranteed to contains @ref WGPUTextureUsage_RenderAttachment.
  - A list of supported @ref WGPUTextureFormat values, in order of preference.
- - A list of supported @ref WGPUPresentMode values (guaranteed to contain @ref WGPUPresentMode_Fifo).
+ - A list of supported @ref WGPUPresentMode values (guaranteed to contain @ref WGPUPresentMode_FIFO).
  - A list of supported @ref WGPUCompositeAlphaMode values (@ref WGPUCompositeAlphaMode_Auto is always supported but never listed in capabilities as it just lets the implementation decide what to use).
 
 The call to `::wgpuSurfaceGetCapabilities` may allocate memory for pointers filled in the @ref WGPUSurfaceCapabilities structure so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid leaking memory once the capabilities are no longer needed.
@@ -131,7 +131,7 @@ WGPUSurfaceConfiguration config = {
     width = 640, // Depending on the window size.
     height = 480,
     usage = WGPUTextureUsage_RenderAttachment,
-    presentMode = supportsMailbox ? WGPUPresentMode_Mailbox : WGPUPresentMode_Fifo,
+    presentMode = supportsMailbox ? WGPUPresentMode_Mailbox : WGPUPresentMode_FIFO,
     alphaMode = WGPUCompositeAlphaMode_Auto,
 };
 wgpuSurfaceConfigure(mySurface, &config);

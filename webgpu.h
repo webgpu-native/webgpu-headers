@@ -526,14 +526,14 @@ typedef enum WGPUPresentMode {
      * Tearing cannot be observed and frame-loop will be limited to the display's refresh rate.
      * This is the only mode that's always available.
      */
-    WGPUPresentMode_Fifo = 0x00000001,
+    WGPUPresentMode_FIFO = 0x00000001,
     /**
      * `0x00000002`.
      * The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
      * Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
      * This is still a first-in, first-out mechanism so a frame-loop will be limited to the display's refresh rate.
      */
-    WGPUPresentMode_FifoRelaxed = 0x00000002,
+    WGPUPresentMode_FIFORelaxed = 0x00000002,
     /**
      * `0x00000003`.
      * The presentation of the image to the user is updated immediately without waiting for a vertical blank.
@@ -1382,7 +1382,7 @@ typedef struct WGPUSurfaceCapabilities {
     WGPUTextureFormat const * formats;
     /**
      * A list of supported @ref WGPUPresentMode values.
-     * Guaranteed to contain @ref WGPUPresentMode_Fifo.
+     * Guaranteed to contain @ref WGPUPresentMode_FIFO.
      */
     size_t presentModeCount;
     WGPUPresentMode const * presentModes;
@@ -1430,7 +1430,7 @@ typedef struct WGPUSurfaceConfiguration {
      */
     WGPUCompositeAlphaMode alphaMode;
     /**
-     * When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
+     * When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_FIFO.
      */
     WGPUPresentMode presentMode;
 } WGPUSurfaceConfiguration WGPU_STRUCTURE_ATTRIBUTE;
