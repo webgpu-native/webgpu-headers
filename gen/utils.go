@@ -46,13 +46,16 @@ func Comment(in string, mode CommentType, indent int, newline bool) string {
 		}
 		switch mode {
 		case CommentTypeSingleLine:
-			out.WriteString("// ")
+			out.WriteString("//")
 		case CommentTypeMultiLine:
-			out.WriteString(" * ")
+			out.WriteString(" *")
 		default:
 			panic("unreachable")
 		}
-		out.WriteString(line)
+		if line != "" {
+			out.WriteString(" ")
+			out.WriteString(line)
+		}
 		out.WriteString("\n")
 	}
 	if mode == CommentTypeMultiLine {
