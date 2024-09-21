@@ -1909,6 +1909,8 @@ typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE
 // Procs of Instance
 /**
  * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
+ * 
+ * @returns A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
@@ -2022,6 +2024,8 @@ typedef void (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfigu
 /**
  * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
+ * 
+ * @returns TODO make this WGPUStatus instead of a boolean.
  */
 typedef WGPUBool (*WGPUProcSurfaceGetCapabilities)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -2289,6 +2293,8 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  */
 /**
  * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
+ * 
+ * @returns A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
@@ -2482,6 +2488,8 @@ WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfigurat
 /**
  * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
+ * 
+ * @returns TODO make this WGPUStatus instead of a boolean.
  */
 WGPU_EXPORT WGPUBool wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
