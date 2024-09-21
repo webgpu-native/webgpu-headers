@@ -1311,7 +1311,7 @@ enums:
         doc: The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
       - name: unsupported_mixed_sources
         doc: An invalid wait was performed with @ref Mixed-Sources.
-  - name: WGSL_feature_name
+  - name: WGSL_language_feature_name
     doc: |
       TODO
     entries:
@@ -2651,6 +2651,17 @@ structs:
         doc: |
           TODO
         type: struct.limits
+  - name: supported_WGSL_language_features
+    doc: |
+      TODO
+    type: base_out
+    free_members: true
+    members:
+      - name: features
+        doc: |
+          TODO
+        type: array<enum.WGSL_language_feature_name>
+        pointer: immutable
   - name: surface_capabilities
     doc: Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
     type: base_out
@@ -3929,6 +3940,19 @@ objects:
             doc: The description of the @ref WGPUSurface to create.
             type: struct.surface_descriptor
             pointer: immutable
+      - name: get_WGSL_language_features
+        doc: |
+          Get the list of @ref WGPUWGSLLanguageFeatureName values supported by the instance.
+        returns:
+          doc: |
+            TODO
+          type: enum.status
+        args:
+          - name: features
+            doc: |
+              TODO
+            type: struct.supported_WGSL_language_features
+            pointer: mutable
       - name: has_WGSL_language_feature
         doc: |
           TODO
@@ -3940,7 +3964,7 @@ objects:
           - name: feature
             doc: |
               TODO
-            type: enum.WGSL_feature_name
+            type: enum.WGSL_language_feature_name
       - name: process_events
         doc: |
           Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
