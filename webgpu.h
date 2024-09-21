@@ -926,7 +926,7 @@ static const WGPUColorWriteMask WGPUColorWriteMask_Red = 0x0000000000000001;
 static const WGPUColorWriteMask WGPUColorWriteMask_Green = 0x0000000000000002;
 static const WGPUColorWriteMask WGPUColorWriteMask_Blue = 0x0000000000000004;
 static const WGPUColorWriteMask WGPUColorWriteMask_Alpha = 0x0000000000000008;
-static const WGPUColorWriteMask WGPUColorWriteMask_All = WGPUColorWriteMask_None | WGPUColorWriteMask_Red | WGPUColorWriteMask_Green | WGPUColorWriteMask_Blue | WGPUColorWriteMask_Alpha;
+static const WGPUColorWriteMask WGPUColorWriteMask_All = 0x000000000000000F /* Red | Green | Blue | Alpha */;
 
 typedef WGPUFlags WGPUMapMode;
 static const WGPUMapMode WGPUMapMode_None = 0x0000000000000000;
