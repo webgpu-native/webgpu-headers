@@ -43,6 +43,17 @@ constants:
       TODO
 typedefs: []
 enums:
+  - name: status
+    doc: |
+      Status code returned (synchronously) from many operations.
+      Generally indicates an invalid input like an unknown enum value,
+      unexpected null pointer, or struct chaining error.
+      Read the function's documentation for specific error conditions.
+    entries:
+      - name: success
+        doc: ""
+      - name: error
+        doc: ""
   - name: adapter_type
     doc: |
       TODO

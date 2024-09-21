@@ -612,6 +612,18 @@ typedef enum WGPUSamplerBindingType {
     WGPUSamplerBindingType_Force32 = 0x7FFFFFFF
 } WGPUSamplerBindingType WGPU_ENUM_ATTRIBUTE;
 
+/**
+ * Status code returned (synchronously) from many operations.
+ * Generally indicates an invalid input like an unknown enum value,
+ * unexpected null pointer, or struct chaining error.
+ * Read the function's documentation for specific error conditions.
+ */
+typedef enum WGPUStatus {
+    WGPUStatus_Success = 0x00000000,
+    WGPUStatus_Error = 0x00000001,
+    WGPUStatus_Force32 = 0x7FFFFFFF
+} WGPUStatus WGPU_ENUM_ATTRIBUTE;
+
 typedef enum WGPUStencilOperation {
     WGPUStencilOperation_Keep = 0x00000000,
     WGPUStencilOperation_Zero = 0x00000001,
