@@ -736,6 +736,16 @@ enums:
       - name: comparison
         doc: |
           TODO
+  - name: status
+    doc: |
+      Status code returned (synchronously) from many operations. Generally
+      indicates an invalid input like an unknown enum value or struct chaining
+      error. Read the function's documentation for specific error conditions.
+    entries:
+      - name: success
+        doc: ""
+      - name: error
+        doc: ""
   - name: stencil_operation
     doc: |
       TODO
