@@ -1,6 +1,6 @@
 /**
  * Copyright 2019-2023 WebGPU-Native developers
- * 
+ *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -276,19 +276,6 @@ typedef enum WGPUBufferBindingType {
     WGPUBufferBindingType_Force32 = 0x7FFFFFFF
 } WGPUBufferBindingType WGPU_ENUM_ATTRIBUTE;
 
-typedef enum WGPUBufferMapAsyncStatus {
-    WGPUBufferMapAsyncStatus_Success = 0x00000000,
-    WGPUBufferMapAsyncStatus_ValidationError = 0x00000001,
-    WGPUBufferMapAsyncStatus_Unknown = 0x00000002,
-    WGPUBufferMapAsyncStatus_DeviceLost = 0x00000003,
-    WGPUBufferMapAsyncStatus_DestroyedBeforeCallback = 0x00000004,
-    WGPUBufferMapAsyncStatus_UnmappedBeforeCallback = 0x00000005,
-    WGPUBufferMapAsyncStatus_MappingAlreadyPending = 0x00000006,
-    WGPUBufferMapAsyncStatus_OffsetOutOfRange = 0x00000007,
-    WGPUBufferMapAsyncStatus_SizeOutOfRange = 0x00000008,
-    WGPUBufferMapAsyncStatus_Force32 = 0x7FFFFFFF
-} WGPUBufferMapAsyncStatus WGPU_ENUM_ATTRIBUTE;
-
 typedef enum WGPUBufferMapState {
     WGPUBufferMapState_Unmapped = 0x00000000,
     WGPUBufferMapState_Pending = 0x00000001,
@@ -319,9 +306,9 @@ typedef enum WGPUCallbackMode {
      * Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
      * - **may** fire spontaneously on an arbitrary or application thread, when the WebGPU implementations discovers that the asynchronous operation is complete.
-     * 
+     *
      *   Implementations _should_ fire spontaneous callbacks as soon as possible.
-     * 
+     *
      * @note Because spontaneous callbacks may fire at an arbitrary time on an arbitrary thread, applications should take extra care when acquiring locks or mutating state inside the callback. It undefined behavior to re-entrantly call into the webgpu.h API if the callback fires while inside the callstack of another webgpu.h function that is not `wgpuInstanceWaitAny` or `wgpuInstanceProcessEvents`.
      */
     WGPUCallbackMode_AllowSpontaneous = 0x00000003,
@@ -611,6 +598,17 @@ typedef enum WGPUSamplerBindingType {
     WGPUSamplerBindingType_Comparison = 0x00000003,
     WGPUSamplerBindingType_Force32 = 0x7FFFFFFF
 } WGPUSamplerBindingType WGPU_ENUM_ATTRIBUTE;
+
+/**
+ * Status code returned (synchronously) from many operations. Generally
+ * indicates an invalid input like an unknown enum value or struct chaining
+ * error. Read the function's documentation for specific error conditions.
+ */
+typedef enum WGPUStatus {
+    WGPUStatus_Success = 0x00000000,
+    WGPUStatus_Error = 0x00000001,
+    WGPUStatus_Force32 = 0x7FFFFFFF
+} WGPUStatus WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUStencilOperation {
     WGPUStencilOperation_Keep = 0x00000000,
@@ -928,7 +926,7 @@ static const WGPUColorWriteMask WGPUColorWriteMask_Red = 0x0000000000000001;
 static const WGPUColorWriteMask WGPUColorWriteMask_Green = 0x0000000000000002;
 static const WGPUColorWriteMask WGPUColorWriteMask_Blue = 0x0000000000000004;
 static const WGPUColorWriteMask WGPUColorWriteMask_Alpha = 0x0000000000000008;
-static const WGPUColorWriteMask WGPUColorWriteMask_All = WGPUColorWriteMask_None | WGPUColorWriteMask_Red | WGPUColorWriteMask_Green | WGPUColorWriteMask_Blue | WGPUColorWriteMask_Alpha;
+static const WGPUColorWriteMask WGPUColorWriteMask_All = 0x000000000000000F /* Red | Green | Blue | Alpha */;
 
 typedef WGPUFlags WGPUMapMode;
 static const WGPUMapMode WGPUMapMode_None = 0x0000000000000000;
@@ -1912,19 +1910,21 @@ typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE
 // Procs of Instance
 /**
  * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
+ *
+ * @returns A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
- * 
+ *
  * See @ref Process-Events for more information.
  */
 typedef void (*WGPUProcInstanceProcessEvents)(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 typedef WGPUFuture (*WGPUProcInstanceRequestAdapter)(WGPUInstance instance, WGPU_NULLABLE WGPURequestAdapterOptions const * options, WGPURequestAdapterCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Wait for at least one WGPUFuture in `futures` to complete, and call callbacks of the respective completed asynchronous operations.
- * 
+ *
  * See @ref Wait-Any for more information.
  */
 typedef WGPUWaitStatus (*WGPUProcInstanceWaitAny)(WGPUInstance instance, size_t futureCount, WGPU_NULLABLE WGPUFutureWaitInfo * futures, uint64_t timeoutNS) WGPU_FUNCTION_ATTRIBUTE;
@@ -2025,6 +2025,8 @@ typedef void (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfigu
 /**
  * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
+ *
+ * @returns TODO make this WGPUStatus instead of a boolean.
  */
 typedef WGPUBool (*WGPUProcSurfaceGetCapabilities)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -2298,19 +2300,21 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  */
 /**
  * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
+ *
+ * @returns A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
- * 
+ *
  * See @ref Process-Events for more information.
  */
 WGPU_EXPORT void wgpuInstanceProcessEvents(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuInstanceRequestAdapter(WGPUInstance instance, WGPU_NULLABLE WGPURequestAdapterOptions const * options, WGPURequestAdapterCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Wait for at least one WGPUFuture in `futures` to complete, and call callbacks of the respective completed asynchronous operations.
- * 
+ *
  * See @ref Wait-Any for more information.
  */
 WGPU_EXPORT WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance instance, size_t futureCount, WGPU_NULLABLE WGPUFutureWaitInfo * futures, uint64_t timeoutNS) WGPU_FUNCTION_ATTRIBUTE;
@@ -2491,6 +2495,8 @@ WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfigurat
 /**
  * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
+ *
+ * @returns TODO make this WGPUStatus instead of a boolean.
  */
 WGPU_EXPORT WGPUBool wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
