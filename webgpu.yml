@@ -181,37 +181,6 @@ enums:
       - name: read_only_storage
         doc: |
           TODO
-  - name: buffer_map_async_status
-    doc: |
-      TODO
-    entries:
-      - name: success
-        doc: |
-          TODO
-      - name: validation_error
-        doc: |
-          TODO
-      - name: unknown
-        doc: |
-          TODO
-      - name: device_lost
-        doc: |
-          TODO
-      - name: destroyed_before_callback
-        doc: |
-          TODO
-      - name: unmapped_before_callback
-        doc: |
-          TODO
-      - name: mapping_already_pending
-        doc: |
-          TODO
-      - name: offset_out_of_range
-        doc: |
-          TODO
-      - name: size_out_of_range
-        doc: |
-          TODO
   - name: buffer_map_state
     doc: |
       TODO
@@ -767,6 +736,16 @@ enums:
       - name: comparison
         doc: |
           TODO
+  - name: status
+    doc: |
+      Status code returned (synchronously) from many operations. Generally
+      indicates an invalid input like an unknown enum value or struct chaining
+      error. Read the function's documentation for specific error conditions.
+    entries:
+      - name: success
+        doc: ""
+      - name: error
+        doc: ""
   - name: stencil_operation
     doc: |
       TODO
