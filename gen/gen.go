@@ -38,6 +38,20 @@ func (g *Generator) Gen(dst io.Writer) error {
 				value, _ := g.BitflagValue(b, entryIndex)
 				return Comment("`"+value+"`.\n"+v, CommentTypeMultiLine, indent, true)
 			},
+			"MCommentFunction": func(funcDoc string, indent int, returns *ParameterType) string {
+				var s string
+				funcDoc = strings.TrimSpace(funcDoc)
+				if funcDoc != "" && funcDoc != "TODO" {
+					s += funcDoc
+				}
+				if returns != nil {
+					returnsDoc := strings.TrimSpace(returns.Doc)
+					if returnsDoc != "" && returnsDoc != "TODO" {
+						s += "\n\n@returns " + returnsDoc
+					}
+				}
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,
 			"CamelCase":    CamelCase,
