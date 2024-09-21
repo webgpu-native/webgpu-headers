@@ -272,21 +272,39 @@ extern "C" {
 #if !defined(WGPU_SKIP_PROCS){{"\n" -}}
 
 {{- range .Functions}}
-{{-   MComment .Doc 0}}
+/**
+ * Proc pointer type for @ref wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}:
+ * > @copydoc wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}
+ */
 typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
+/**
+ * Proc pointer type for @ref wgpuGetProcAddress:
+ * > @copydoc wgpuGetProcAddress
+ */
 typedef WGPUProc (*WGPUProcGetProcAddress)(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
 {{- range $object := .Objects}}
 // Procs of {{$object.Name | PascalCase}}
 {{-   range $object.Methods}}
-{{-     MComment .Doc 0}}
+/**
+ * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}:
+ * > @copydoc wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}
+ */
 typedef {{FunctionReturns .}} (*WGPUProc{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{-   if not (or .IsStruct .Extended)}}
+/**
+ * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}AddRef{{$.ExtSuffix}}.
+ * > @copydoc wgpu{{$object.Name | PascalCase}}AddRef{{$.ExtSuffix}}
+ */
 typedef void (*WGPUProc{{.Name | PascalCase}}AddRef{{$.ExtSuffix}})(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}Release{{$.ExtSuffix}}.
+ * > @copydoc wgpu{{$object.Name | PascalCase}}Release{{$.ExtSuffix}}
+ */
 typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{  end}}{{"\n" -}}
@@ -307,6 +325,10 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
+/**
+ * Returns the "procedure address" (function pointer) of the named function.
+ * The result must be cast to the appropriate proc pointer type.
+ */
 WGPU_EXPORT WGPUProc wgpuGetProcAddress(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
