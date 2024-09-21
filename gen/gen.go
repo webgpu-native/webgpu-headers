@@ -38,6 +38,20 @@ func (g *Generator) Gen(dst io.Writer) error {
 				value, _ := g.BitflagValue(b, entryIndex)
 				return Comment("`"+value+"`.\n"+v, CommentTypeMultiLine, indent, true)
 			},
+			"MCommentFunction": func(funcDoc string, indent int, returns *ParameterType) string {
+				var s string
+				funcDoc = strings.TrimSpace(funcDoc)
+				if funcDoc != "" && funcDoc != "TODO" {
+					s += funcDoc
+				}
+				if returns != nil {
+					returnsDoc := strings.TrimSpace(returns.Doc)
+					if returnsDoc != "" && returnsDoc != "TODO" {
+						s += "\n\n@returns " + returnsDoc
+					}
+				}
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,
 			"CamelCase":    CamelCase,
@@ -270,40 +284,64 @@ func (g *Generator) EnumValue(prefix string, e Enum, entryIndex int) (string, er
 	return fmt.Sprintf("%s%.4X", prefix, entryValue), nil
 }
 
+func bitflagEntryValue(entry BitflagEntry, entryIndex int) (uint64, error) {
+	if entry.Value == "" {
+		value := uint64(math.Pow(2, float64(entryIndex-1)))
+		return value, nil
+	} else {
+		var num string
+		var base int
+		if strings.HasPrefix(entry.Value, "0x") {
+			base = 16
+			num = strings.TrimPrefix(entry.Value, "0x")
+		} else {
+			base = 10
+			num = entry.Value
+		}
+		return strconv.ParseUint(num, base, 64)
+	}
+}
+
 func (g *Generator) BitflagValue(b Bitflag, entryIndex int) (string, error) {
 	entry := b.Entries[entryIndex]
-	var entryValue string
+
+	var value uint64
+	var entryComment string
 	if len(entry.ValueCombination) > 0 {
+		if entry.Value != "" {
+			return "", fmt.Errorf("BitflagValue: found conflicting 'value' and 'value_combination' in '%s'", b.Name)
+		}
+		entryComment += " /* "
 		for valueIndex, v := range entry.ValueCombination {
-			entryValue += "WGPU" + PascalCase(b.Name) + "_" + PascalCase(v)
+			// find the value by searching in b, bitwise-OR it into the result
+			for searchIndex, search := range b.Entries {
+				if search.Name == v {
+					searchValue, err := bitflagEntryValue(search, searchIndex)
+					if err != nil {
+						return "", nil
+					}
+					value |= searchValue
+					break
+				}
+			}
+			// construct comment
+			entryComment += PascalCase(v)
 			if g.ExtSuffix != "" {
-				entryValue += "_" + g.ExtSuffix
+				entryComment += "_" + g.ExtSuffix
 			}
 			if valueIndex != len(entry.ValueCombination)-1 {
-				entryValue += " | "
+				entryComment += " | "
 			}
 		}
+		entryComment += " */"
 	} else {
-		if entry.Value == "" {
-			value := uint64(math.Pow(2, float64(entryIndex-1)))
-			entryValue = fmt.Sprintf("0x%.16X", value)
-		} else {
-			var num string
-			var base int
-			if strings.HasPrefix(entry.Value, "0x") {
-				base = 16
-				num = strings.TrimPrefix(entry.Value, "0x")
-			} else {
-				base = 10
-				num = entry.Value
-			}
-			value, err := strconv.ParseUint(num, base, 64)
-			if err != nil {
-				return "", err
-			}
-			entryValue = fmt.Sprintf("0x%.8X", value)
+		var err error
+		value, err = bitflagEntryValue(entry, entryIndex)
+		if err != nil {
+			return "", nil
 		}
 	}
+	entryValue := fmt.Sprintf("0x%.16X", value) + entryComment
 	return entryValue, nil
 }
 

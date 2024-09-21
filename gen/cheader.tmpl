@@ -321,7 +321,7 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
  */
 
 {{- range .Functions}}
-{{-   MComment .Doc 0}}
+{{-   MCommentFunction .Doc 0 .Returns}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
@@ -350,7 +350,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(char const * procName) WGPU_FUNCTION_ATT
  * @{
  */
 {{-   range $object.Methods}}
-{{-     MComment .Doc 0}}
+{{-     MCommentFunction .Doc 0 .Returns}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{-   if not (or .IsStruct .Extended)}}
