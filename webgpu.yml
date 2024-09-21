@@ -181,37 +181,6 @@ enums:
       - name: read_only_storage
         doc: |
           TODO
-  - name: buffer_map_async_status
-    doc: |
-      TODO
-    entries:
-      - name: success
-        doc: |
-          TODO
-      - name: validation_error
-        doc: |
-          TODO
-      - name: unknown
-        doc: |
-          TODO
-      - name: device_lost
-        doc: |
-          TODO
-      - name: destroyed_before_callback
-        doc: |
-          TODO
-      - name: unmapped_before_callback
-        doc: |
-          TODO
-      - name: mapping_already_pending
-        doc: |
-          TODO
-      - name: offset_out_of_range
-        doc: |
-          TODO
-      - name: size_out_of_range
-        doc: |
-          TODO
   - name: buffer_map_state
     doc: |
       TODO
