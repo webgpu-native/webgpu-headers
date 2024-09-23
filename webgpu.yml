@@ -2642,6 +2642,17 @@ structs:
         doc: |
           TODO
         type: enum.texture_view_dimension
+  - name: supported_features
+    doc: |
+      TODO
+    type: base_out
+    free_members: true
+    members:
+      - name: features
+        doc: |
+          TODO
+        type: array<enum.feature_name>
+        pointer: immutable
   - name: supported_limits
     doc: |
       TODO
@@ -3189,18 +3200,20 @@ objects:
             doc: |
               TODO
             type: enum.feature_name
-      - name: enumerate_features
+      - name: get_features
         doc: |
-          TODO
+          Get the list of @ref WGPUFeatureName values supported by the adapter.
         returns:
           doc: |
-            TODO
-          type: usize
+            Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
+
+            - `features` has an invalid struct chain.
+          type: enum.status
         args:
           - name: features
             doc: |
               TODO
-            type: enum.feature_name
+            type: struct.supported_features
             pointer: mutable
       - name: get_info
         doc: |
@@ -3875,18 +3888,20 @@ objects:
             doc: |
               TODO
             type: enum.feature_name
-      - name: enumerate_features
+      - name: get_features
         doc: |
-          TODO
+          Get the list of @ref WGPUFeatureName values supported by the device.
         returns:
           doc: |
-            TODO
-          type: usize
+            Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
+
+            - `features` has an invalid struct chain.
+          type: enum.status
         args:
           - name: features
             doc: |
               TODO
-            type: enum.feature_name
+            type: struct.supported_features
             pointer: mutable
       - name: get_queue
         doc: |
