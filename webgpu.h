@@ -1,6 +1,6 @@
 /**
  * Copyright 2019-2023 WebGPU-Native developers
- * 
+ *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -307,9 +307,9 @@ typedef enum WGPUCallbackMode {
      * Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
      * - **may** fire spontaneously on an arbitrary or application thread, when the WebGPU implementations discovers that the asynchronous operation is complete.
-     * 
+     *
      *   Implementations _should_ fire spontaneous callbacks as soon as possible.
-     * 
+     *
      * @note Because spontaneous callbacks may fire at an arbitrary time on an arbitrary thread, applications should take extra care when acquiring locks or mutating state inside the callback. It undefined behavior to re-entrantly call into the webgpu.h API if the callback fires while inside the callstack of another webgpu.h function that is not `wgpuInstanceWaitAny` or `wgpuInstanceProcessEvents`.
      */
     WGPUCallbackMode_AllowSpontaneous = 0x00000003,
@@ -1799,288 +1799,984 @@ extern "C" {
 #if !defined(WGPU_SKIP_PROCS)
 
 /**
- * Create a WGPUInstance
+ * Proc pointer type for @ref wgpuCreateInstance:
+ * > @copydoc wgpuCreateInstance
  */
 typedef WGPUInstance (*WGPUProcCreateInstance)(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Query the supported instance features
+ * Proc pointer type for @ref wgpuGetInstanceFeatures:
+ * > @copydoc wgpuGetInstanceFeatures
  */
 typedef void (*WGPUProcGetInstanceFeatures)(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuGetProcAddress:
+ * > @copydoc wgpuGetProcAddress
+ */
 typedef WGPUProc (*WGPUProcGetProcAddress)(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Adapter
 /**
- * Get the list of @ref WGPUFeatureName values supported by the adapter.
+ * Proc pointer type for @ref wgpuAdapterGetFeatures:
+ * > @copydoc wgpuAdapterGetFeatures
  */
 typedef WGPUStatus (*WGPUProcAdapterGetFeatures)(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuAdapterGetInfo:
+ * > @copydoc wgpuAdapterGetInfo
+ */
 typedef void (*WGPUProcAdapterGetInfo)(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuAdapterGetLimits:
+ * > @copydoc wgpuAdapterGetLimits
+ */
 typedef WGPUBool (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuAdapterHasFeature:
+ * > @copydoc wgpuAdapterHasFeature
+ */
 typedef WGPUBool (*WGPUProcAdapterHasFeature)(WGPUAdapter adapter, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuAdapterRequestDevice:
+ * > @copydoc wgpuAdapterRequestDevice
+ */
 typedef WGPUFuture (*WGPUProcAdapterRequestDevice)(WGPUAdapter adapter, WGPU_NULLABLE WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuAdapterAddRef.
+ * > @copydoc wgpuAdapterAddRef
+ */
 typedef void (*WGPUProcAdapterAddRef)(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuAdapterRelease.
+ * > @copydoc wgpuAdapterRelease
+ */
 typedef void (*WGPUProcAdapterRelease)(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of AdapterInfo
+/**
+ * Proc pointer type for @ref wgpuAdapterInfoFreeMembers:
+ * > @copydoc wgpuAdapterInfoFreeMembers
+ */
 typedef void (*WGPUProcAdapterInfoFreeMembers)(WGPUAdapterInfo adapterInfo) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of BindGroup
+/**
+ * Proc pointer type for @ref wgpuBindGroupSetLabel:
+ * > @copydoc wgpuBindGroupSetLabel
+ */
 typedef void (*WGPUProcBindGroupSetLabel)(WGPUBindGroup bindGroup, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBindGroupAddRef.
+ * > @copydoc wgpuBindGroupAddRef
+ */
 typedef void (*WGPUProcBindGroupAddRef)(WGPUBindGroup bindGroup) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBindGroupRelease.
+ * > @copydoc wgpuBindGroupRelease
+ */
 typedef void (*WGPUProcBindGroupRelease)(WGPUBindGroup bindGroup) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of BindGroupLayout
+/**
+ * Proc pointer type for @ref wgpuBindGroupLayoutSetLabel:
+ * > @copydoc wgpuBindGroupLayoutSetLabel
+ */
 typedef void (*WGPUProcBindGroupLayoutSetLabel)(WGPUBindGroupLayout bindGroupLayout, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBindGroupLayoutAddRef.
+ * > @copydoc wgpuBindGroupLayoutAddRef
+ */
 typedef void (*WGPUProcBindGroupLayoutAddRef)(WGPUBindGroupLayout bindGroupLayout) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBindGroupLayoutRelease.
+ * > @copydoc wgpuBindGroupLayoutRelease
+ */
 typedef void (*WGPUProcBindGroupLayoutRelease)(WGPUBindGroupLayout bindGroupLayout) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Buffer
+/**
+ * Proc pointer type for @ref wgpuBufferDestroy:
+ * > @copydoc wgpuBufferDestroy
+ */
 typedef void (*WGPUProcBufferDestroy)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferGetConstMappedRange:
+ * > @copydoc wgpuBufferGetConstMappedRange
+ */
 typedef void const * (*WGPUProcBufferGetConstMappedRange)(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferGetMapState:
+ * > @copydoc wgpuBufferGetMapState
+ */
 typedef WGPUBufferMapState (*WGPUProcBufferGetMapState)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferGetMappedRange:
+ * > @copydoc wgpuBufferGetMappedRange
+ */
 typedef void * (*WGPUProcBufferGetMappedRange)(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferGetSize:
+ * > @copydoc wgpuBufferGetSize
+ */
 typedef uint64_t (*WGPUProcBufferGetSize)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferGetUsage:
+ * > @copydoc wgpuBufferGetUsage
+ */
 typedef WGPUBufferUsage (*WGPUProcBufferGetUsage)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferMapAsync:
+ * > @copydoc wgpuBufferMapAsync
+ */
 typedef WGPUFuture (*WGPUProcBufferMapAsync)(WGPUBuffer buffer, WGPUMapMode mode, size_t offset, size_t size, WGPUBufferMapCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferSetLabel:
+ * > @copydoc wgpuBufferSetLabel
+ */
 typedef void (*WGPUProcBufferSetLabel)(WGPUBuffer buffer, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferUnmap:
+ * > @copydoc wgpuBufferUnmap
+ */
 typedef void (*WGPUProcBufferUnmap)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferAddRef.
+ * > @copydoc wgpuBufferAddRef
+ */
 typedef void (*WGPUProcBufferAddRef)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferRelease.
+ * > @copydoc wgpuBufferRelease
+ */
 typedef void (*WGPUProcBufferRelease)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of CommandBuffer
+/**
+ * Proc pointer type for @ref wgpuCommandBufferSetLabel:
+ * > @copydoc wgpuCommandBufferSetLabel
+ */
 typedef void (*WGPUProcCommandBufferSetLabel)(WGPUCommandBuffer commandBuffer, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandBufferAddRef.
+ * > @copydoc wgpuCommandBufferAddRef
+ */
 typedef void (*WGPUProcCommandBufferAddRef)(WGPUCommandBuffer commandBuffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandBufferRelease.
+ * > @copydoc wgpuCommandBufferRelease
+ */
 typedef void (*WGPUProcCommandBufferRelease)(WGPUCommandBuffer commandBuffer) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of CommandEncoder
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderBeginComputePass:
+ * > @copydoc wgpuCommandEncoderBeginComputePass
+ */
 typedef WGPUComputePassEncoder (*WGPUProcCommandEncoderBeginComputePass)(WGPUCommandEncoder commandEncoder, WGPU_NULLABLE WGPUComputePassDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderBeginRenderPass:
+ * > @copydoc wgpuCommandEncoderBeginRenderPass
+ */
 typedef WGPURenderPassEncoder (*WGPUProcCommandEncoderBeginRenderPass)(WGPUCommandEncoder commandEncoder, WGPURenderPassDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderClearBuffer:
+ * > @copydoc wgpuCommandEncoderClearBuffer
+ */
 typedef void (*WGPUProcCommandEncoderClearBuffer)(WGPUCommandEncoder commandEncoder, WGPUBuffer buffer, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderCopyBufferToBuffer:
+ * > @copydoc wgpuCommandEncoderCopyBufferToBuffer
+ */
 typedef void (*WGPUProcCommandEncoderCopyBufferToBuffer)(WGPUCommandEncoder commandEncoder, WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderCopyBufferToTexture:
+ * > @copydoc wgpuCommandEncoderCopyBufferToTexture
+ */
 typedef void (*WGPUProcCommandEncoderCopyBufferToTexture)(WGPUCommandEncoder commandEncoder, WGPUImageCopyBuffer const * source, WGPUImageCopyTexture const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderCopyTextureToBuffer:
+ * > @copydoc wgpuCommandEncoderCopyTextureToBuffer
+ */
 typedef void (*WGPUProcCommandEncoderCopyTextureToBuffer)(WGPUCommandEncoder commandEncoder, WGPUImageCopyTexture const * source, WGPUImageCopyBuffer const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderCopyTextureToTexture:
+ * > @copydoc wgpuCommandEncoderCopyTextureToTexture
+ */
 typedef void (*WGPUProcCommandEncoderCopyTextureToTexture)(WGPUCommandEncoder commandEncoder, WGPUImageCopyTexture const * source, WGPUImageCopyTexture const * destination, WGPUExtent3D const * copySize) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderFinish:
+ * > @copydoc wgpuCommandEncoderFinish
+ */
 typedef WGPUCommandBuffer (*WGPUProcCommandEncoderFinish)(WGPUCommandEncoder commandEncoder, WGPU_NULLABLE WGPUCommandBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderInsertDebugMarker:
+ * > @copydoc wgpuCommandEncoderInsertDebugMarker
+ */
 typedef void (*WGPUProcCommandEncoderInsertDebugMarker)(WGPUCommandEncoder commandEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderPopDebugGroup:
+ * > @copydoc wgpuCommandEncoderPopDebugGroup
+ */
 typedef void (*WGPUProcCommandEncoderPopDebugGroup)(WGPUCommandEncoder commandEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderPushDebugGroup:
+ * > @copydoc wgpuCommandEncoderPushDebugGroup
+ */
 typedef void (*WGPUProcCommandEncoderPushDebugGroup)(WGPUCommandEncoder commandEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderResolveQuerySet:
+ * > @copydoc wgpuCommandEncoderResolveQuerySet
+ */
 typedef void (*WGPUProcCommandEncoderResolveQuerySet)(WGPUCommandEncoder commandEncoder, WGPUQuerySet querySet, uint32_t firstQuery, uint32_t queryCount, WGPUBuffer destination, uint64_t destinationOffset) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderSetLabel:
+ * > @copydoc wgpuCommandEncoderSetLabel
+ */
 typedef void (*WGPUProcCommandEncoderSetLabel)(WGPUCommandEncoder commandEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderWriteTimestamp:
+ * > @copydoc wgpuCommandEncoderWriteTimestamp
+ */
 typedef void (*WGPUProcCommandEncoderWriteTimestamp)(WGPUCommandEncoder commandEncoder, WGPUQuerySet querySet, uint32_t queryIndex) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderAddRef.
+ * > @copydoc wgpuCommandEncoderAddRef
+ */
 typedef void (*WGPUProcCommandEncoderAddRef)(WGPUCommandEncoder commandEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuCommandEncoderRelease.
+ * > @copydoc wgpuCommandEncoderRelease
+ */
 typedef void (*WGPUProcCommandEncoderRelease)(WGPUCommandEncoder commandEncoder) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of ComputePassEncoder
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderDispatchWorkgroups:
+ * > @copydoc wgpuComputePassEncoderDispatchWorkgroups
+ */
 typedef void (*WGPUProcComputePassEncoderDispatchWorkgroups)(WGPUComputePassEncoder computePassEncoder, uint32_t workgroupCountX, uint32_t workgroupCountY, uint32_t workgroupCountZ) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderDispatchWorkgroupsIndirect:
+ * > @copydoc wgpuComputePassEncoderDispatchWorkgroupsIndirect
+ */
 typedef void (*WGPUProcComputePassEncoderDispatchWorkgroupsIndirect)(WGPUComputePassEncoder computePassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderEnd:
+ * > @copydoc wgpuComputePassEncoderEnd
+ */
 typedef void (*WGPUProcComputePassEncoderEnd)(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderInsertDebugMarker:
+ * > @copydoc wgpuComputePassEncoderInsertDebugMarker
+ */
 typedef void (*WGPUProcComputePassEncoderInsertDebugMarker)(WGPUComputePassEncoder computePassEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderPopDebugGroup:
+ * > @copydoc wgpuComputePassEncoderPopDebugGroup
+ */
 typedef void (*WGPUProcComputePassEncoderPopDebugGroup)(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderPushDebugGroup:
+ * > @copydoc wgpuComputePassEncoderPushDebugGroup
+ */
 typedef void (*WGPUProcComputePassEncoderPushDebugGroup)(WGPUComputePassEncoder computePassEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderSetBindGroup:
+ * > @copydoc wgpuComputePassEncoderSetBindGroup
+ */
 typedef void (*WGPUProcComputePassEncoderSetBindGroup)(WGPUComputePassEncoder computePassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderSetLabel:
+ * > @copydoc wgpuComputePassEncoderSetLabel
+ */
 typedef void (*WGPUProcComputePassEncoderSetLabel)(WGPUComputePassEncoder computePassEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderSetPipeline:
+ * > @copydoc wgpuComputePassEncoderSetPipeline
+ */
 typedef void (*WGPUProcComputePassEncoderSetPipeline)(WGPUComputePassEncoder computePassEncoder, WGPUComputePipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderAddRef.
+ * > @copydoc wgpuComputePassEncoderAddRef
+ */
 typedef void (*WGPUProcComputePassEncoderAddRef)(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePassEncoderRelease.
+ * > @copydoc wgpuComputePassEncoderRelease
+ */
 typedef void (*WGPUProcComputePassEncoderRelease)(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of ComputePipeline
+/**
+ * Proc pointer type for @ref wgpuComputePipelineGetBindGroupLayout:
+ * > @copydoc wgpuComputePipelineGetBindGroupLayout
+ */
 typedef WGPUBindGroupLayout (*WGPUProcComputePipelineGetBindGroupLayout)(WGPUComputePipeline computePipeline, uint32_t groupIndex) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePipelineSetLabel:
+ * > @copydoc wgpuComputePipelineSetLabel
+ */
 typedef void (*WGPUProcComputePipelineSetLabel)(WGPUComputePipeline computePipeline, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePipelineAddRef.
+ * > @copydoc wgpuComputePipelineAddRef
+ */
 typedef void (*WGPUProcComputePipelineAddRef)(WGPUComputePipeline computePipeline) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuComputePipelineRelease.
+ * > @copydoc wgpuComputePipelineRelease
+ */
 typedef void (*WGPUProcComputePipelineRelease)(WGPUComputePipeline computePipeline) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Device
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateBindGroup:
+ * > @copydoc wgpuDeviceCreateBindGroup
+ */
 typedef WGPUBindGroup (*WGPUProcDeviceCreateBindGroup)(WGPUDevice device, WGPUBindGroupDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateBindGroupLayout:
+ * > @copydoc wgpuDeviceCreateBindGroupLayout
+ */
 typedef WGPUBindGroupLayout (*WGPUProcDeviceCreateBindGroupLayout)(WGPUDevice device, WGPUBindGroupLayoutDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateBuffer:
+ * > @copydoc wgpuDeviceCreateBuffer
+ */
 typedef WGPUBuffer (*WGPUProcDeviceCreateBuffer)(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateCommandEncoder:
+ * > @copydoc wgpuDeviceCreateCommandEncoder
+ */
 typedef WGPUCommandEncoder (*WGPUProcDeviceCreateCommandEncoder)(WGPUDevice device, WGPU_NULLABLE WGPUCommandEncoderDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateComputePipeline:
+ * > @copydoc wgpuDeviceCreateComputePipeline
+ */
 typedef WGPUComputePipeline (*WGPUProcDeviceCreateComputePipeline)(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateComputePipelineAsync:
+ * > @copydoc wgpuDeviceCreateComputePipelineAsync
+ */
 typedef WGPUFuture (*WGPUProcDeviceCreateComputePipelineAsync)(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor, WGPUCreateComputePipelineAsyncCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreatePipelineLayout:
+ * > @copydoc wgpuDeviceCreatePipelineLayout
+ */
 typedef WGPUPipelineLayout (*WGPUProcDeviceCreatePipelineLayout)(WGPUDevice device, WGPUPipelineLayoutDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateQuerySet:
+ * > @copydoc wgpuDeviceCreateQuerySet
+ */
 typedef WGPUQuerySet (*WGPUProcDeviceCreateQuerySet)(WGPUDevice device, WGPUQuerySetDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateRenderBundleEncoder:
+ * > @copydoc wgpuDeviceCreateRenderBundleEncoder
+ */
 typedef WGPURenderBundleEncoder (*WGPUProcDeviceCreateRenderBundleEncoder)(WGPUDevice device, WGPURenderBundleEncoderDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateRenderPipeline:
+ * > @copydoc wgpuDeviceCreateRenderPipeline
+ */
 typedef WGPURenderPipeline (*WGPUProcDeviceCreateRenderPipeline)(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateRenderPipelineAsync:
+ * > @copydoc wgpuDeviceCreateRenderPipelineAsync
+ */
 typedef WGPUFuture (*WGPUProcDeviceCreateRenderPipelineAsync)(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor, WGPUCreateRenderPipelineAsyncCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateSampler:
+ * > @copydoc wgpuDeviceCreateSampler
+ */
 typedef WGPUSampler (*WGPUProcDeviceCreateSampler)(WGPUDevice device, WGPU_NULLABLE WGPUSamplerDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateShaderModule:
+ * > @copydoc wgpuDeviceCreateShaderModule
+ */
 typedef WGPUShaderModule (*WGPUProcDeviceCreateShaderModule)(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceCreateTexture:
+ * > @copydoc wgpuDeviceCreateTexture
+ */
 typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceDestroy:
+ * > @copydoc wgpuDeviceDestroy
+ */
 typedef void (*WGPUProcDeviceDestroy)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Get the list of @ref WGPUFeatureName values supported by the device.
+ * Proc pointer type for @ref wgpuDeviceGetFeatures:
+ * > @copydoc wgpuDeviceGetFeatures
  */
 typedef WGPUStatus (*WGPUProcDeviceGetFeatures)(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceGetLimits:
+ * > @copydoc wgpuDeviceGetLimits
+ */
 typedef WGPUBool (*WGPUProcDeviceGetLimits)(WGPUDevice device, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceGetQueue:
+ * > @copydoc wgpuDeviceGetQueue
+ */
 typedef WGPUQueue (*WGPUProcDeviceGetQueue)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceHasFeature:
+ * > @copydoc wgpuDeviceHasFeature
+ */
 typedef WGPUBool (*WGPUProcDeviceHasFeature)(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDevicePopErrorScope:
+ * > @copydoc wgpuDevicePopErrorScope
+ */
 typedef WGPUFuture (*WGPUProcDevicePopErrorScope)(WGPUDevice device, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDevicePushErrorScope:
+ * > @copydoc wgpuDevicePushErrorScope
+ */
 typedef void (*WGPUProcDevicePushErrorScope)(WGPUDevice device, WGPUErrorFilter filter) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceSetLabel:
+ * > @copydoc wgpuDeviceSetLabel
+ */
 typedef void (*WGPUProcDeviceSetLabel)(WGPUDevice device, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceAddRef.
+ * > @copydoc wgpuDeviceAddRef
+ */
 typedef void (*WGPUProcDeviceAddRef)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceRelease.
+ * > @copydoc wgpuDeviceRelease
+ */
 typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Instance
 /**
- * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
+ * Proc pointer type for @ref wgpuInstanceCreateSurface:
+ * > @copydoc wgpuInstanceCreateSurface
  */
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuInstanceHasWGSLLanguageFeature:
+ * > @copydoc wgpuInstanceHasWGSLLanguageFeature
+ */
 typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
- * 
- * See @ref Process-Events for more information.
+ * Proc pointer type for @ref wgpuInstanceProcessEvents:
+ * > @copydoc wgpuInstanceProcessEvents
  */
 typedef void (*WGPUProcInstanceProcessEvents)(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuInstanceRequestAdapter:
+ * > @copydoc wgpuInstanceRequestAdapter
+ */
 typedef WGPUFuture (*WGPUProcInstanceRequestAdapter)(WGPUInstance instance, WGPU_NULLABLE WGPURequestAdapterOptions const * options, WGPURequestAdapterCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Wait for at least one WGPUFuture in `futures` to complete, and call callbacks of the respective completed asynchronous operations.
- * 
- * See @ref Wait-Any for more information.
+ * Proc pointer type for @ref wgpuInstanceWaitAny:
+ * > @copydoc wgpuInstanceWaitAny
  */
 typedef WGPUWaitStatus (*WGPUProcInstanceWaitAny)(WGPUInstance instance, size_t futureCount, WGPU_NULLABLE WGPUFutureWaitInfo * futures, uint64_t timeoutNS) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuInstanceAddRef.
+ * > @copydoc wgpuInstanceAddRef
+ */
 typedef void (*WGPUProcInstanceAddRef)(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuInstanceRelease.
+ * > @copydoc wgpuInstanceRelease
+ */
 typedef void (*WGPUProcInstanceRelease)(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of PipelineLayout
+/**
+ * Proc pointer type for @ref wgpuPipelineLayoutSetLabel:
+ * > @copydoc wgpuPipelineLayoutSetLabel
+ */
 typedef void (*WGPUProcPipelineLayoutSetLabel)(WGPUPipelineLayout pipelineLayout, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuPipelineLayoutAddRef.
+ * > @copydoc wgpuPipelineLayoutAddRef
+ */
 typedef void (*WGPUProcPipelineLayoutAddRef)(WGPUPipelineLayout pipelineLayout) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuPipelineLayoutRelease.
+ * > @copydoc wgpuPipelineLayoutRelease
+ */
 typedef void (*WGPUProcPipelineLayoutRelease)(WGPUPipelineLayout pipelineLayout) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of QuerySet
+/**
+ * Proc pointer type for @ref wgpuQuerySetDestroy:
+ * > @copydoc wgpuQuerySetDestroy
+ */
 typedef void (*WGPUProcQuerySetDestroy)(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQuerySetGetCount:
+ * > @copydoc wgpuQuerySetGetCount
+ */
 typedef uint32_t (*WGPUProcQuerySetGetCount)(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQuerySetGetType:
+ * > @copydoc wgpuQuerySetGetType
+ */
 typedef WGPUQueryType (*WGPUProcQuerySetGetType)(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQuerySetSetLabel:
+ * > @copydoc wgpuQuerySetSetLabel
+ */
 typedef void (*WGPUProcQuerySetSetLabel)(WGPUQuerySet querySet, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQuerySetAddRef.
+ * > @copydoc wgpuQuerySetAddRef
+ */
 typedef void (*WGPUProcQuerySetAddRef)(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQuerySetRelease.
+ * > @copydoc wgpuQuerySetRelease
+ */
 typedef void (*WGPUProcQuerySetRelease)(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Queue
+/**
+ * Proc pointer type for @ref wgpuQueueOnSubmittedWorkDone:
+ * > @copydoc wgpuQueueOnSubmittedWorkDone
+ */
 typedef WGPUFuture (*WGPUProcQueueOnSubmittedWorkDone)(WGPUQueue queue, WGPUQueueWorkDoneCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQueueSetLabel:
+ * > @copydoc wgpuQueueSetLabel
+ */
 typedef void (*WGPUProcQueueSetLabel)(WGPUQueue queue, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQueueSubmit:
+ * > @copydoc wgpuQueueSubmit
+ */
 typedef void (*WGPUProcQueueSubmit)(WGPUQueue queue, size_t commandCount, WGPUCommandBuffer const * commands) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQueueWriteBuffer:
+ * > @copydoc wgpuQueueWriteBuffer
+ */
 typedef void (*WGPUProcQueueWriteBuffer)(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQueueWriteTexture:
+ * > @copydoc wgpuQueueWriteTexture
+ */
 typedef void (*WGPUProcQueueWriteTexture)(WGPUQueue queue, WGPUImageCopyTexture const * destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQueueAddRef.
+ * > @copydoc wgpuQueueAddRef
+ */
 typedef void (*WGPUProcQueueAddRef)(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuQueueRelease.
+ * > @copydoc wgpuQueueRelease
+ */
 typedef void (*WGPUProcQueueRelease)(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of RenderBundle
+/**
+ * Proc pointer type for @ref wgpuRenderBundleSetLabel:
+ * > @copydoc wgpuRenderBundleSetLabel
+ */
 typedef void (*WGPUProcRenderBundleSetLabel)(WGPURenderBundle renderBundle, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleAddRef.
+ * > @copydoc wgpuRenderBundleAddRef
+ */
 typedef void (*WGPUProcRenderBundleAddRef)(WGPURenderBundle renderBundle) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleRelease.
+ * > @copydoc wgpuRenderBundleRelease
+ */
 typedef void (*WGPUProcRenderBundleRelease)(WGPURenderBundle renderBundle) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of RenderBundleEncoder
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderDraw:
+ * > @copydoc wgpuRenderBundleEncoderDraw
+ */
 typedef void (*WGPUProcRenderBundleEncoderDraw)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderDrawIndexed:
+ * > @copydoc wgpuRenderBundleEncoderDrawIndexed
+ */
 typedef void (*WGPUProcRenderBundleEncoderDrawIndexed)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderDrawIndexedIndirect:
+ * > @copydoc wgpuRenderBundleEncoderDrawIndexedIndirect
+ */
 typedef void (*WGPUProcRenderBundleEncoderDrawIndexedIndirect)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderDrawIndirect:
+ * > @copydoc wgpuRenderBundleEncoderDrawIndirect
+ */
 typedef void (*WGPUProcRenderBundleEncoderDrawIndirect)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderFinish:
+ * > @copydoc wgpuRenderBundleEncoderFinish
+ */
 typedef WGPURenderBundle (*WGPUProcRenderBundleEncoderFinish)(WGPURenderBundleEncoder renderBundleEncoder, WGPU_NULLABLE WGPURenderBundleDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderInsertDebugMarker:
+ * > @copydoc wgpuRenderBundleEncoderInsertDebugMarker
+ */
 typedef void (*WGPUProcRenderBundleEncoderInsertDebugMarker)(WGPURenderBundleEncoder renderBundleEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderPopDebugGroup:
+ * > @copydoc wgpuRenderBundleEncoderPopDebugGroup
+ */
 typedef void (*WGPUProcRenderBundleEncoderPopDebugGroup)(WGPURenderBundleEncoder renderBundleEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderPushDebugGroup:
+ * > @copydoc wgpuRenderBundleEncoderPushDebugGroup
+ */
 typedef void (*WGPUProcRenderBundleEncoderPushDebugGroup)(WGPURenderBundleEncoder renderBundleEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderSetBindGroup:
+ * > @copydoc wgpuRenderBundleEncoderSetBindGroup
+ */
 typedef void (*WGPUProcRenderBundleEncoderSetBindGroup)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderSetIndexBuffer:
+ * > @copydoc wgpuRenderBundleEncoderSetIndexBuffer
+ */
 typedef void (*WGPUProcRenderBundleEncoderSetIndexBuffer)(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderSetLabel:
+ * > @copydoc wgpuRenderBundleEncoderSetLabel
+ */
 typedef void (*WGPUProcRenderBundleEncoderSetLabel)(WGPURenderBundleEncoder renderBundleEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderSetPipeline:
+ * > @copydoc wgpuRenderBundleEncoderSetPipeline
+ */
 typedef void (*WGPUProcRenderBundleEncoderSetPipeline)(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderSetVertexBuffer:
+ * > @copydoc wgpuRenderBundleEncoderSetVertexBuffer
+ */
 typedef void (*WGPUProcRenderBundleEncoderSetVertexBuffer)(WGPURenderBundleEncoder renderBundleEncoder, uint32_t slot, WGPU_NULLABLE WGPUBuffer buffer, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderAddRef.
+ * > @copydoc wgpuRenderBundleEncoderAddRef
+ */
 typedef void (*WGPUProcRenderBundleEncoderAddRef)(WGPURenderBundleEncoder renderBundleEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderBundleEncoderRelease.
+ * > @copydoc wgpuRenderBundleEncoderRelease
+ */
 typedef void (*WGPUProcRenderBundleEncoderRelease)(WGPURenderBundleEncoder renderBundleEncoder) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of RenderPassEncoder
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderBeginOcclusionQuery:
+ * > @copydoc wgpuRenderPassEncoderBeginOcclusionQuery
+ */
 typedef void (*WGPUProcRenderPassEncoderBeginOcclusionQuery)(WGPURenderPassEncoder renderPassEncoder, uint32_t queryIndex) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderDraw:
+ * > @copydoc wgpuRenderPassEncoderDraw
+ */
 typedef void (*WGPUProcRenderPassEncoderDraw)(WGPURenderPassEncoder renderPassEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderDrawIndexed:
+ * > @copydoc wgpuRenderPassEncoderDrawIndexed
+ */
 typedef void (*WGPUProcRenderPassEncoderDrawIndexed)(WGPURenderPassEncoder renderPassEncoder, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderDrawIndexedIndirect:
+ * > @copydoc wgpuRenderPassEncoderDrawIndexedIndirect
+ */
 typedef void (*WGPUProcRenderPassEncoderDrawIndexedIndirect)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderDrawIndirect:
+ * > @copydoc wgpuRenderPassEncoderDrawIndirect
+ */
 typedef void (*WGPUProcRenderPassEncoderDrawIndirect)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderEnd:
+ * > @copydoc wgpuRenderPassEncoderEnd
+ */
 typedef void (*WGPUProcRenderPassEncoderEnd)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderEndOcclusionQuery:
+ * > @copydoc wgpuRenderPassEncoderEndOcclusionQuery
+ */
 typedef void (*WGPUProcRenderPassEncoderEndOcclusionQuery)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderExecuteBundles:
+ * > @copydoc wgpuRenderPassEncoderExecuteBundles
+ */
 typedef void (*WGPUProcRenderPassEncoderExecuteBundles)(WGPURenderPassEncoder renderPassEncoder, size_t bundleCount, WGPURenderBundle const * bundles) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderInsertDebugMarker:
+ * > @copydoc wgpuRenderPassEncoderInsertDebugMarker
+ */
 typedef void (*WGPUProcRenderPassEncoderInsertDebugMarker)(WGPURenderPassEncoder renderPassEncoder, char const * markerLabel) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderPopDebugGroup:
+ * > @copydoc wgpuRenderPassEncoderPopDebugGroup
+ */
 typedef void (*WGPUProcRenderPassEncoderPopDebugGroup)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderPushDebugGroup:
+ * > @copydoc wgpuRenderPassEncoderPushDebugGroup
+ */
 typedef void (*WGPUProcRenderPassEncoderPushDebugGroup)(WGPURenderPassEncoder renderPassEncoder, char const * groupLabel) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetBindGroup:
+ * > @copydoc wgpuRenderPassEncoderSetBindGroup
+ */
 typedef void (*WGPUProcRenderPassEncoderSetBindGroup)(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetBlendConstant:
+ * > @copydoc wgpuRenderPassEncoderSetBlendConstant
+ */
 typedef void (*WGPUProcRenderPassEncoderSetBlendConstant)(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetIndexBuffer:
+ * > @copydoc wgpuRenderPassEncoderSetIndexBuffer
+ */
 typedef void (*WGPUProcRenderPassEncoderSetIndexBuffer)(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetLabel:
+ * > @copydoc wgpuRenderPassEncoderSetLabel
+ */
 typedef void (*WGPUProcRenderPassEncoderSetLabel)(WGPURenderPassEncoder renderPassEncoder, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetPipeline:
+ * > @copydoc wgpuRenderPassEncoderSetPipeline
+ */
 typedef void (*WGPUProcRenderPassEncoderSetPipeline)(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetScissorRect:
+ * > @copydoc wgpuRenderPassEncoderSetScissorRect
+ */
 typedef void (*WGPUProcRenderPassEncoderSetScissorRect)(WGPURenderPassEncoder renderPassEncoder, uint32_t x, uint32_t y, uint32_t width, uint32_t height) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetStencilReference:
+ * > @copydoc wgpuRenderPassEncoderSetStencilReference
+ */
 typedef void (*WGPUProcRenderPassEncoderSetStencilReference)(WGPURenderPassEncoder renderPassEncoder, uint32_t reference) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetVertexBuffer:
+ * > @copydoc wgpuRenderPassEncoderSetVertexBuffer
+ */
 typedef void (*WGPUProcRenderPassEncoderSetVertexBuffer)(WGPURenderPassEncoder renderPassEncoder, uint32_t slot, WGPU_NULLABLE WGPUBuffer buffer, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderSetViewport:
+ * > @copydoc wgpuRenderPassEncoderSetViewport
+ */
 typedef void (*WGPUProcRenderPassEncoderSetViewport)(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderAddRef.
+ * > @copydoc wgpuRenderPassEncoderAddRef
+ */
 typedef void (*WGPUProcRenderPassEncoderAddRef)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPassEncoderRelease.
+ * > @copydoc wgpuRenderPassEncoderRelease
+ */
 typedef void (*WGPUProcRenderPassEncoderRelease)(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of RenderPipeline
+/**
+ * Proc pointer type for @ref wgpuRenderPipelineGetBindGroupLayout:
+ * > @copydoc wgpuRenderPipelineGetBindGroupLayout
+ */
 typedef WGPUBindGroupLayout (*WGPUProcRenderPipelineGetBindGroupLayout)(WGPURenderPipeline renderPipeline, uint32_t groupIndex) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPipelineSetLabel:
+ * > @copydoc wgpuRenderPipelineSetLabel
+ */
 typedef void (*WGPUProcRenderPipelineSetLabel)(WGPURenderPipeline renderPipeline, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPipelineAddRef.
+ * > @copydoc wgpuRenderPipelineAddRef
+ */
 typedef void (*WGPUProcRenderPipelineAddRef)(WGPURenderPipeline renderPipeline) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuRenderPipelineRelease.
+ * > @copydoc wgpuRenderPipelineRelease
+ */
 typedef void (*WGPUProcRenderPipelineRelease)(WGPURenderPipeline renderPipeline) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Sampler
+/**
+ * Proc pointer type for @ref wgpuSamplerSetLabel:
+ * > @copydoc wgpuSamplerSetLabel
+ */
 typedef void (*WGPUProcSamplerSetLabel)(WGPUSampler sampler, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuSamplerAddRef.
+ * > @copydoc wgpuSamplerAddRef
+ */
 typedef void (*WGPUProcSamplerAddRef)(WGPUSampler sampler) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuSamplerRelease.
+ * > @copydoc wgpuSamplerRelease
+ */
 typedef void (*WGPUProcSamplerRelease)(WGPUSampler sampler) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of ShaderModule
+/**
+ * Proc pointer type for @ref wgpuShaderModuleGetCompilationInfo:
+ * > @copydoc wgpuShaderModuleGetCompilationInfo
+ */
 typedef WGPUFuture (*WGPUProcShaderModuleGetCompilationInfo)(WGPUShaderModule shaderModule, WGPUCompilationInfoCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuShaderModuleSetLabel:
+ * > @copydoc wgpuShaderModuleSetLabel
+ */
 typedef void (*WGPUProcShaderModuleSetLabel)(WGPUShaderModule shaderModule, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuShaderModuleAddRef.
+ * > @copydoc wgpuShaderModuleAddRef
+ */
 typedef void (*WGPUProcShaderModuleAddRef)(WGPUShaderModule shaderModule) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuShaderModuleRelease.
+ * > @copydoc wgpuShaderModuleRelease
+ */
 typedef void (*WGPUProcShaderModuleRelease)(WGPUShaderModule shaderModule) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of SupportedFeatures
+/**
+ * Proc pointer type for @ref wgpuSupportedFeaturesFreeMembers:
+ * > @copydoc wgpuSupportedFeaturesFreeMembers
+ */
 typedef void (*WGPUProcSupportedFeaturesFreeMembers)(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Surface
 /**
- * Configures parameters for rendering to `surface`.
- * See @ref Surface-Configuration for more details.
+ * Proc pointer type for @ref wgpuSurfaceConfigure:
+ * > @copydoc wgpuSurfaceConfigure
  */
 typedef void (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Provides information on how `adapter` is able to use `surface`.
- * See @ref Surface-Capabilities for more details.
+ * Proc pointer type for @ref wgpuSurfaceGetCapabilities:
+ * > @copydoc wgpuSurfaceGetCapabilities
  */
 typedef WGPUBool (*WGPUProcSurfaceGetCapabilities)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
- * See @ref Surface-Presenting for more details.
+ * Proc pointer type for @ref wgpuSurfaceGetCurrentTexture:
+ * > @copydoc wgpuSurfaceGetCurrentTexture
  */
 typedef void (*WGPUProcSurfaceGetCurrentTexture)(WGPUSurface surface, WGPUSurfaceTexture * surfaceTexture) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Shows `surface`'s current texture to the user.
- * See @ref Surface-Presenting for more details.
+ * Proc pointer type for @ref wgpuSurfacePresent:
+ * > @copydoc wgpuSurfacePresent
  */
 typedef void (*WGPUProcSurfacePresent)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Modifies the label used to refer to `surface`.
+ * Proc pointer type for @ref wgpuSurfaceSetLabel:
+ * > @copydoc wgpuSurfaceSetLabel
  */
 typedef void (*WGPUProcSurfaceSetLabel)(WGPUSurface surface, char const * label) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Removes the configuration for `surface`.
- * See @ref Surface-Configuration for more details.
+ * Proc pointer type for @ref wgpuSurfaceUnconfigure:
+ * > @copydoc wgpuSurfaceUnconfigure
  */
 typedef void (*WGPUProcSurfaceUnconfigure)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuSurfaceAddRef.
+ * > @copydoc wgpuSurfaceAddRef
+ */
 typedef void (*WGPUProcSurfaceAddRef)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuSurfaceRelease.
+ * > @copydoc wgpuSurfaceRelease
+ */
 typedef void (*WGPUProcSurfaceRelease)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of SurfaceCapabilities
+/**
+ * Proc pointer type for @ref wgpuSurfaceCapabilitiesFreeMembers:
+ * > @copydoc wgpuSurfaceCapabilitiesFreeMembers
+ */
 typedef void (*WGPUProcSurfaceCapabilitiesFreeMembers)(WGPUSurfaceCapabilities surfaceCapabilities) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Texture
+/**
+ * Proc pointer type for @ref wgpuTextureCreateView:
+ * > @copydoc wgpuTextureCreateView
+ */
 typedef WGPUTextureView (*WGPUProcTextureCreateView)(WGPUTexture texture, WGPU_NULLABLE WGPUTextureViewDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureDestroy:
+ * > @copydoc wgpuTextureDestroy
+ */
 typedef void (*WGPUProcTextureDestroy)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureGetDepthOrArrayLayers:
+ * > @copydoc wgpuTextureGetDepthOrArrayLayers
+ */
 typedef uint32_t (*WGPUProcTextureGetDepthOrArrayLayers)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureGetDimension:
+ * > @copydoc wgpuTextureGetDimension
+ */
 typedef WGPUTextureDimension (*WGPUProcTextureGetDimension)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureGetFormat:
+ * > @copydoc wgpuTextureGetFormat
+ */
 typedef WGPUTextureFormat (*WGPUProcTextureGetFormat)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureGetHeight:
+ * > @copydoc wgpuTextureGetHeight
+ */
 typedef uint32_t (*WGPUProcTextureGetHeight)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureGetMipLevelCount:
+ * > @copydoc wgpuTextureGetMipLevelCount
+ */
 typedef uint32_t (*WGPUProcTextureGetMipLevelCount)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureGetSampleCount:
+ * > @copydoc wgpuTextureGetSampleCount
+ */
 typedef uint32_t (*WGPUProcTextureGetSampleCount)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureGetUsage:
+ * > @copydoc wgpuTextureGetUsage
+ */
 typedef WGPUTextureUsage (*WGPUProcTextureGetUsage)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureGetWidth:
+ * > @copydoc wgpuTextureGetWidth
+ */
 typedef uint32_t (*WGPUProcTextureGetWidth)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureSetLabel:
+ * > @copydoc wgpuTextureSetLabel
+ */
 typedef void (*WGPUProcTextureSetLabel)(WGPUTexture texture, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureAddRef.
+ * > @copydoc wgpuTextureAddRef
+ */
 typedef void (*WGPUProcTextureAddRef)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureRelease.
+ * > @copydoc wgpuTextureRelease
+ */
 typedef void (*WGPUProcTextureRelease)(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of TextureView
+/**
+ * Proc pointer type for @ref wgpuTextureViewSetLabel:
+ * > @copydoc wgpuTextureViewSetLabel
+ */
 typedef void (*WGPUProcTextureViewSetLabel)(WGPUTextureView textureView, char const * label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureViewAddRef.
+ * > @copydoc wgpuTextureViewAddRef
+ */
 typedef void (*WGPUProcTextureViewAddRef)(WGPUTextureView textureView) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuTextureViewRelease.
+ * > @copydoc wgpuTextureViewRelease
+ */
 typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView) WGPU_FUNCTION_ATTRIBUTE;
 
 #endif  // !defined(WGPU_SKIP_PROCS)
@@ -2100,6 +2796,10 @@ WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor
  * Query the supported instance features
  */
 WGPU_EXPORT void wgpuGetInstanceFeatures(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Returns the "procedure address" (function pointer) of the named function.
+ * The result must be cast to the appropriate proc pointer type.
+ */
 WGPU_EXPORT WGPUProc wgpuGetProcAddress(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
 
 
@@ -2120,6 +2820,10 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(char const * procName) WGPU_FUNCTION_ATT
  */
 /**
  * Get the list of @ref WGPUFeatureName values supported by the adapter.
+ *
+ * @returns Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
+ *
+ * - `features` has an invalid struct chain.
  */
 WGPU_EXPORT WGPUStatus wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuAdapterGetInfo(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
@@ -2137,6 +2841,9 @@ WGPU_EXPORT void wgpuAdapterRelease(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE
  * \brief Functions whose first argument has type WGPUAdapterInfo.
  *
  * @{
+ */
+/**
+ * Frees array members of WGPUAdapterInfo which were allocated by the API.
  */
 WGPU_EXPORT void wgpuAdapterInfoFreeMembers(WGPUAdapterInfo adapterInfo) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */
@@ -2287,6 +2994,10 @@ WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDe
 WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Get the list of @ref WGPUFeatureName values supported by the device.
+ *
+ * @returns Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
+ *
+ * - `features` has an invalid struct chain.
  */
 WGPU_EXPORT WGPUStatus wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuDeviceGetLimits(WGPUDevice device, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
@@ -2309,19 +3020,21 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  */
 /**
  * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
+ *
+ * @returns A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
- * 
+ *
  * See @ref Process-Events for more information.
  */
 WGPU_EXPORT void wgpuInstanceProcessEvents(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuInstanceRequestAdapter(WGPUInstance instance, WGPU_NULLABLE WGPURequestAdapterOptions const * options, WGPURequestAdapterCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Wait for at least one WGPUFuture in `futures` to complete, and call callbacks of the respective completed asynchronous operations.
- * 
+ *
  * See @ref Wait-Any for more information.
  */
 WGPU_EXPORT WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance instance, size_t futureCount, WGPU_NULLABLE WGPUFutureWaitInfo * futures, uint64_t timeoutNS) WGPU_FUNCTION_ATTRIBUTE;
@@ -2494,6 +3207,9 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
  *
  * @{
  */
+/**
+ * Frees array members of WGPUSupportedFeatures which were allocated by the API.
+ */
 WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */
 
@@ -2513,6 +3229,8 @@ WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfigurat
 /**
  * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
+ *
+ * @returns TODO make this WGPUStatus instead of a boolean.
  */
 WGPU_EXPORT WGPUBool wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -2545,6 +3263,9 @@ WGPU_EXPORT void wgpuSurfaceRelease(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE
  * \brief Functions whose first argument has type WGPUSurfaceCapabilities.
  *
  * @{
+ */
+/**
+ * Frees array members of WGPUSurfaceCapabilities which were allocated by the API.
  */
 WGPU_EXPORT void wgpuSurfaceCapabilitiesFreeMembers(WGPUSurfaceCapabilities surfaceCapabilities) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */
