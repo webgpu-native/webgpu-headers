@@ -49,14 +49,14 @@
 #endif{{"\n" -}}
 
 {{- if ne .Name "webgpu"}}
-#if !defined(__WGPU_EXTEND_ENUM)
+#if !defined(WGPU_EXTEND_ENUM)
 #ifdef __cplusplus
-#define __WGPU_EXTEND_ENUM(E, N, V) static const E N = E(V)
+#define WGPU_EXTEND_ENUM(E, N, V) static const E N = E(V)
 #else
-#define __WGPU_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
+#define WGPU_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
 #endif
-#endif // !defined(__WGPU_EXTEND_ENUM)
-{{ end}}
+#endif // !defined(WGPU_EXTEND_ENUM)
+{{end}}
 
 {{- if eq .Name "webgpu"}}
 #include <stdint.h>
@@ -141,7 +141,7 @@ struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
 {{- range $enum := .Enums}}
 {{-   if .Extended}}
 {{-     range $entryIndex, $_ := .Entries}}
-__WGPU_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
+WGPU_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
 {{-     end}}
 {{-   else}}
 {{-     MComment .Doc 0}}
