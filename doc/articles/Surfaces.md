@@ -14,7 +14,7 @@ Sections below give more details about these operations, including the specifica
 A @ref WGPUSurface is child object of a @ref WGPUInstance and created using `::wgpuInstanceCreateSurface`.
 The description of a @ref WGPUSurface is a @ref WGPUSurfaceDescriptor with a sub-descriptor chained containing the environment-specific objects used to identify the surface.
 
-Surfaces that can be presented to using webgpu.h (but not necessarily by all implementations) are:
+Surfaces that can be presented to using `webgpu.h` (but not necessarily by all implementations) are:
 
  - `ANativeWindow` on Android with @ref WGPUSurfaceSourceAndroidNativeWindow
  - `CAMetalLayer` on various Apple OSes like macOS and iOS with @ref WGPUSurfaceSourceMetalLayer
@@ -39,7 +39,7 @@ WGPUSurfaceDescriptor desc {
 WGPUSurface surface = wgpuInstanceCreateSurface(myInstance, &desc);
 ```
 
-In addition, @ref WGPUSurfaces have a bunch of internal fields that could be represented like this (in C/Rust-like pseudocode):
+In addition, a @ref WGPUSurface has a bunch of internal fields that could be represented like this (in C/Rust-like pseudocode):
 
 ```cpp
 struct WGPUSurface {
@@ -49,7 +49,7 @@ struct WGPUSurface {
     // The current configuration
     Option<WGPUSurfaceConfiguration> config = None;
 
-    // The frame, if any.
+    // A reference to the frame's texture, if any.
     Option<WGPUTexture> currentFrame = None;
 };
 ```
@@ -70,7 +70,7 @@ Depending on the OS, GPU used, backing API for WebGPU and other factors, differe
 For this reason, negotiation is done between the WebGPU implementation and the application to choose how to use the @ref WGPUSurface.
 This first step of the negotiation is querying what capabilities are available using `::wgpuSurfaceGetCapabilities` that fills an @ref WGPUSurfaceCapabilities structure with the following information:
 
- - A bit set of supported @ref WGPUTextureUsage that are guaranteed to contains @ref WGPUTextureUsage_RenderAttachment.
+ - A bit set of supported @ref WGPUTextureUsage that are guaranteed to contain @ref WGPUTextureUsage_RenderAttachment.
  - A list of supported @ref WGPUTextureFormat values, in order of preference.
  - A list of supported @ref WGPUPresentMode values (guaranteed to contain @ref WGPUPresentMode_Fifo).
  - A list of supported @ref WGPUCompositeAlphaMode values (@ref WGPUCompositeAlphaMode_Auto is always supported but never listed in capabilities as it just lets the implementation decide what to use).
@@ -226,6 +226,10 @@ RenderTo(surfaceTexture.texture);
 
 // Present the texture, it is no longer accessible after that point.
 wgpuSurfacePresent(mySurface);
+
+// Release the reference we got to the now presented texture. (it can safely be done before present as well)
+wgpuTextureRelease(surfaceTexture.texture);
+
 ```
 
 The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, surfaceTexture)` is:
@@ -245,6 +249,8 @@ The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, surfaceTexture)` is:
  - Set `surface.currentFrame` to `t`.
  - If the implementation detects a reason why the current configuration is suboptimal, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal`.
    Otherwise, set it to `WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal`.
+ - Add a new reference to `t`.
+ - Set `surfaceTexture->texture` to a new reference to `t`.
 
 The behavior of `::wgpuSurfacePresent``(surface)` is:
 
