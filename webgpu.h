@@ -1012,7 +1012,7 @@ typedef struct WGPUChainedStructOut {
  */
 
 /**
- * Nullable value defining a pointer+length view into a string.
+ * Nullable value defining a pointer+length view into a UTF-8 encoded string.
  *
  * Values passed into the API may use the special length value @ref WGPU_STRLEN
  * to indicate a null-terminated string.
@@ -1028,6 +1028,9 @@ typedef struct WGPUChainedStructOut {
  * - `{any, 0}`: the empty string.
  * - `{NULL, non_zero_length}`: not allowed (null dereference).
  * - `{non_null_pointer, non_zero_length}`: an explictly-sized string view.
+ *
+ * To format explicitly-sized strings with `printf`, use `%.*s`
+ * (`%s` with a "precision" argument `.*` specifying a max length).
  */
 typedef struct WGPUStringView {
     char const * WGPU_NULLABLE data;
