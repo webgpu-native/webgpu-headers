@@ -55,6 +55,19 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#define WGPU_COMMA ,
+#if defined(__cplusplus)
+#  if __cplusplus >= 201103L
+#    define WGPU_MAKE_INIT_STRUCT(type, value) (type value)
+#  else
+#    define WGPU_MAKE_INIT_STRUCT(type, value) value
+#  endif
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#  define WGPU_MAKE_INIT_STRUCT(type, value) ((type) value)
+#else
+#  define WGPU_MAKE_INIT_STRUCT(type, value) value
+#endif
+
 
 /**
  * \defgroup Constants
@@ -997,6 +1010,34 @@ typedef struct WGPUChainedStructOut {
  *
  * @{
  */
+
+/**
+ * Nullable value defining a pointer+length view into a string.
+ *
+ * Values passed into the API may use the special length value @ref WGPU_STRLEN
+ * to indicate a null-terminated string.
+ * Non-null values passed out of the API (for example as callback arguments)
+ * always provide an explicit length and **may or may not be null-terminated**.
+ *
+ * Some inputs to the API accept null values. Those which do not accept null
+ * values "default" to the empty string when null values are passed.
+ *
+ * Values are encoded as follows:
+ * - `{NULL, WGPU_STRLEN}`: the null value.
+ * - `{non_null_pointer, WGPU_STRLEN}`: a null-terminated string view.
+ * - `{any, 0}`: the empty string.
+ * - `{NULL, non_zero_length}`: not allowed (null dereference).
+ * - `{non_null_pointer, non_zero_length}`: an explictly-sized string view.
+ */
+typedef struct WGPUStringView {
+    char const * WGPU_NULLABLE data;
+    size_t length;
+} WGPUStringView;
+
+#define WGPU_STRING_VIEW_INIT WGPU_MAKE_INIT_STRUCT(WGPUStringView, { \
+    /*.data=*/NULL WGPU_COMMA \
+    /*.length=*/WGPU_STRLEN WGPU_COMMA \
+})
 
  /**
  * \defgroup WGPUCallbackInfo
