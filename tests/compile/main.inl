@@ -3,6 +3,10 @@
 // Compile-test the instantiation of all of the macros, and spot-check types
 int main(void) {
     {
+        WGPUStringView s = WGPU_STRING_VIEW_INIT;
+        s.length = WGPU_STRLEN;
+        (void) s;
+    {
         WGPUTextureViewDescriptor a;
         a.mipLevelCount = WGPU_MIP_LEVEL_COUNT_UNDEFINED;
         a.arrayLayerCount = WGPU_ARRAY_LAYER_COUNT_UNDEFINED;
