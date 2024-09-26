@@ -17,6 +17,11 @@ int main(void) {
         (void) y;
     }
     {
+        WGPURenderPassColorAttachment a;
+        a.depthSlice = WGPU_DEPTH_SLICE_UNDEFINED;
+        (void) a;
+    }
+    {
         WGPUBindGroupEntry a;
         uint64_t x = a.size = WGPU_WHOLE_SIZE;
         (void) a;
