@@ -6,6 +6,7 @@ int main(void) {
         WGPUStringView s = WGPU_STRING_VIEW_INIT;
         s.length = WGPU_STRLEN;
         (void) s;
+    }
     {
         WGPUTextureViewDescriptor a;
         a.mipLevelCount = WGPU_MIP_LEVEL_COUNT_UNDEFINED;
