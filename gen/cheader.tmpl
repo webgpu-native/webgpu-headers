@@ -49,13 +49,13 @@
 #endif{{"\n" -}}
 
 {{- if ne .Name "webgpu"}}
-#if !defined(__WGPU_EXTEND_ENUM)
+#if !defined(_wgpu_EXTEND_ENUM)
 #ifdef __cplusplus
-#define __WGPU_EXTEND_ENUM(E, N, V) static const E N = E(V)
+#define _wgpu_EXTEND_ENUM(E, N, V) static const E N = E(V)
 #else
-#define __WGPU_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
+#define _wgpu_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
 #endif
-#endif // !defined(__WGPU_EXTEND_ENUM)
+#endif // !defined(_wgpu_EXTEND_ENUM)
 {{ end}}
 
 {{- if eq .Name "webgpu"}}
@@ -66,17 +66,17 @@
 {{end}}
 
 {{- if eq .Name "webgpu"}}
-#define WGPU_COMMA ,
+#define _wgpu_COMMA ,
 #if defined(__cplusplus)
 #  if __cplusplus >= 201103L
-#    define WGPU_MAKE_INIT_STRUCT(type, value) (type value)
+#    define _wgpu_MAKE_INIT_STRUCT(type, value) (type value)
 #  else
-#    define WGPU_MAKE_INIT_STRUCT(type, value) value
+#    define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #  endif
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-#  define WGPU_MAKE_INIT_STRUCT(type, value) ((type) value)
+#  define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
 #else
-#  define WGPU_MAKE_INIT_STRUCT(type, value) value
+#  define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #endif
 {{end}}
 
@@ -156,7 +156,7 @@ struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
 {{- range $enum := .Enums}}
 {{-   if .Extended}}
 {{-     range $entryIndex, $_ := .Entries}}
-__WGPU_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
+_wgpu_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
 {{-     end}}
 {{-   else}}
 {{-     MComment .Doc 0}}
@@ -262,9 +262,9 @@ typedef struct WGPUStringView {
     size_t length;
 } WGPUStringView;
 
-#define WGPU_STRING_VIEW_INIT WGPU_MAKE_INIT_STRUCT(WGPUStringView, { \
-    /*.data=*/NULL WGPU_COMMA \
-    /*.length=*/WGPU_STRLEN WGPU_COMMA \
+#define WGPU_STRING_VIEW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStringView, { \
+    /*.data=*/NULL _wgpu_COMMA \
+    /*.length=*/WGPU_STRLEN _wgpu_COMMA \
 })
 
  /**

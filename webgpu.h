@@ -55,17 +55,17 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#define WGPU_COMMA ,
+#define _wgpu_COMMA ,
 #if defined(__cplusplus)
 #  if __cplusplus >= 201103L
-#    define WGPU_MAKE_INIT_STRUCT(type, value) (type value)
+#    define _wgpu_MAKE_INIT_STRUCT(type, value) (type value)
 #  else
-#    define WGPU_MAKE_INIT_STRUCT(type, value) value
+#    define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #  endif
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-#  define WGPU_MAKE_INIT_STRUCT(type, value) ((type) value)
+#  define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
 #else
-#  define WGPU_MAKE_INIT_STRUCT(type, value) value
+#  define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #endif
 
 
@@ -1037,9 +1037,9 @@ typedef struct WGPUStringView {
     size_t length;
 } WGPUStringView;
 
-#define WGPU_STRING_VIEW_INIT WGPU_MAKE_INIT_STRUCT(WGPUStringView, { \
-    /*.data=*/NULL WGPU_COMMA \
-    /*.length=*/WGPU_STRLEN WGPU_COMMA \
+#define WGPU_STRING_VIEW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStringView, { \
+    /*.data=*/NULL _wgpu_COMMA \
+    /*.length=*/WGPU_STRLEN _wgpu_COMMA \
 })
 
  /**
