@@ -1027,7 +1027,8 @@ typedef struct WGPUChainedStructOut {
  * - `{non_null_pointer, WGPU_STRLEN}`: a null-terminated string view.
  * - `{any, 0}`: the empty string.
  * - `{NULL, non_zero_length}`: not allowed (null dereference).
- * - `{non_null_pointer, non_zero_length}`: an explictly-sized string view.
+ * - `{non_null_pointer, non_zero_length}`: an explictly-sized string view with
+ *   size `non_zero_length` (in bytes).
  *
  * To format explicitly-sized strings with `printf`, use `%.*s`
  * (`%s` with a "precision" argument `.*` specifying a max length).
@@ -1036,6 +1037,12 @@ typedef struct WGPUStringView {
     char const * WGPU_NULLABLE data;
     size_t length;
 } WGPUStringView;
+
+/**
+ * Sentinel value used in @link WGPUStringView to indicate that the pointer
+ * is to a null-terminated string, rather than an explicitly-sized string.
+ */
+#define WGPU_STRLEN SIZE_MAX
 
 #define WGPU_STRING_VIEW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStringView, { \
     /*.data=*/NULL _wgpu_COMMA \
