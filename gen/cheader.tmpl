@@ -267,7 +267,7 @@ typedef struct WGPUStringView {
  * Sentinel value used in @link WGPUStringView to indicate that the pointer
  * is to a null-terminated string, rather than an explicitly-sized string.
  */
-#define WGPU_STRLEN
+#define WGPU_STRLEN SIZE_MAX
 
 /** Default value definition for @link WGPUStringView. */
 #define WGPU_STRING_VIEW_INIT WGPU_MAKE_INIT_STRUCT(WGPUStringView, { \
