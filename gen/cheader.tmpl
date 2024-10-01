@@ -309,7 +309,7 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
-    {{- MComment .Doc 4 }}
+    {{- MCommentWithTypeInfo .Doc .Type 4 }}
     {{  StructMember $struct $memberIndex}}
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
@@ -335,7 +335,7 @@ typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}}{{$.ExtSuffix}})({
  * Proc pointer type for @ref wgpuGetProcAddress:
  * > @copydoc wgpuGetProcAddress
  */
-typedef WGPUProc (*WGPUProcGetProcAddress)(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUStringView procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
 {{- range $object := .Objects}}
@@ -381,7 +381,7 @@ WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{Fu
  * Returns the "procedure address" (function pointer) of the named function.
  * The result must be cast to the appropriate proc pointer type.
  */
-WGPU_EXPORT WGPUProc wgpuGetProcAddress(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
 /** @} */
