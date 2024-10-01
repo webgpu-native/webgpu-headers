@@ -34,7 +34,7 @@ WGPUSurfaceSourceWindowsHWND hwndDesc = {
 };
 WGPUSurfaceDescriptor desc {
     .nextInChain = &hwndDesc.chain,
-    .label = "Main window",
+    .label = {.data = "Main window", .length = WGPU_STRLEN},
 };
 WGPUSurface surface = wgpuInstanceCreateSurface(myInstance, &desc);
 ```
@@ -151,7 +151,7 @@ WGPUTextureDescriptor GetSurfaceEquivalentTextureDescriptor(const WGPUSurfaceCon
 
         // Parameters that cannot be changed.
         .nextInChain = nullptr,
-        .label = "",
+        .label = {.data = "", .length = WGPU_STRLEN},
         .dimension = WGPUTextureDimension_2D,
         .sampleCount = 1,
         .mipLevelCount = 1,

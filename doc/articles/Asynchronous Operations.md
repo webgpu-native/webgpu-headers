@@ -13,7 +13,7 @@ All asynchronous operations start when the application calls an asynchronous web
    ```c
    typedef void (*WGPUBufferMapCallback)(
        WGPUMapAsyncStatus status,
-       char const * message,
+       WGPUStringView message,
        WGPU_NULLABLE void* userdata1,
        WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
    ```

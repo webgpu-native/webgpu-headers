@@ -52,6 +52,25 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
 			},
+			"MCommentWithTypeInfo": func(srcDoc string, typ string, indent int) string {
+				var s string
+				srcDoc = strings.TrimSpace(srcDoc)
+				if srcDoc != "" && srcDoc != "TODO" {
+					s += srcDoc
+				}
+			
+				switch typ {
+				case "nullable_string":
+					s += "\n\nThis string is nullable."
+				case "string_with_default_empty":
+					s += "\n\nIf the null value is passed, this defaults to the empty string."
+				case "out_string":
+					s += "\n\nThis output string is guaranteed to always be explicitly sized. The data may or may not also be null-terminated."
+				default:
+					s += ""
+				}
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,
 			"CamelCase":    CamelCase,
@@ -141,8 +160,8 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 	switch typ {
 	case "bool":
 		return appendModifiers("WGPUBool", pointerType)
-	case "string":
-		return appendModifiers("char", PointerTypeImmutable)
+	case "nullable_string", "string_with_default_empty", "out_string":
+		return "WGPUStringView"
 	case "uint16":
 		return appendModifiers("uint16_t", pointerType)
 	case "uint32":

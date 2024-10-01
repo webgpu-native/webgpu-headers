@@ -1456,19 +1456,19 @@ structs:
       - name: vendor
         doc: |
           TODO
-        type: string
+        type: out_string
       - name: architecture
         doc: |
           TODO
-        type: string
+        type: out_string
       - name: device
         doc: |
           TODO
-        type: string
+        type: out_string
       - name: description
         doc: |
           TODO
-        type: string
+        type: out_string
       - name: backend_type
         doc: |
           TODO
@@ -1493,8 +1493,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: layout
         doc: |
           TODO
@@ -1544,8 +1543,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: entries
         doc: |
           TODO
@@ -1635,8 +1633,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: usage
         doc: |
           TODO
@@ -1697,8 +1694,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
   - name: command_encoder_descriptor
     doc: |
       TODO
@@ -1707,8 +1703,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
   - name: compilation_info
     doc: |
       TODO
@@ -1727,8 +1722,7 @@ structs:
       - name: message
         doc: |
           TODO
-        type: string
-        optional: true
+        type: out_string
       - name: type
         doc: |
           TODO
@@ -1769,8 +1763,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: timestamp_writes
         doc: |
           TODO
@@ -1802,8 +1795,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: layout
         doc: |
           TODO
@@ -1821,7 +1813,7 @@ structs:
       - name: key
         doc: |
           TODO
-        type: string
+        type: string_with_default_empty
       - name: value
         doc: |
           TODO
@@ -1879,8 +1871,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: required_features
         doc: |
           TODO
@@ -1933,8 +1924,7 @@ structs:
       - name: entry_point
         doc: |
           TODO
-        type: string
-        optional: true
+        type: nullable_string
       - name: constants
         doc: |
           TODO
@@ -2186,8 +2176,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: bind_group_layouts
         doc: |
           TODO
@@ -2230,8 +2219,7 @@ structs:
       - name: entry_point
         doc: |
           TODO
-        type: string
-        optional: true
+        type: nullable_string
       - name: constants
         doc: |
           TODO
@@ -2245,8 +2233,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: type
         doc: |
           TODO
@@ -2263,8 +2250,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
   - name: render_bundle_descriptor
     doc: |
       TODO
@@ -2273,8 +2259,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
   - name: render_bundle_encoder_descriptor
     doc: |
       TODO
@@ -2283,8 +2268,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: color_formats
         doc: |
           TODO
@@ -2386,8 +2370,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: color_attachments
         doc: |
           TODO
@@ -2446,8 +2429,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: layout
         doc: |
           TODO
@@ -2525,8 +2507,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: address_mode_u
         doc: |
           TODO
@@ -2575,8 +2556,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
   - name: shader_source_SPIRV
     doc: |
       TODO
@@ -2603,7 +2583,7 @@ structs:
       - name: code
         doc: |
           TODO
-        type: string
+        type: string_with_default_empty
   - name: stencil_face_state
     doc: |
       TODO
@@ -2728,8 +2708,7 @@ structs:
     members:
       - name: label
         doc: Label used to refer to the object.
-        type: string
-        optional: true
+        type: string_with_default_empty
   - name: surface_source_android_native_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an Android [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window).
     type: extension_in
@@ -2860,8 +2839,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: usage
         doc: |
           TODO
@@ -2899,8 +2877,7 @@ structs:
       - name: label
         doc: |
           TODO
-        type: string
-        optional: true
+        type: string_with_default_empty
       - name: format
         doc: |
           TODO
@@ -2980,8 +2957,7 @@ structs:
       - name: entry_point
         doc: |
           TODO
-        type: string
-        optional: true
+        type: nullable_string
       - name: constants
         doc: |
           TODO
@@ -3005,7 +2981,7 @@ callbacks:
       - name: message
         doc: |
           TODO
-        type: string
+        type: out_string
   - name: compilation_info
     doc: |
       TODO
@@ -3036,7 +3012,7 @@ callbacks:
       - name: message
         doc: |
           TODO
-        type: string
+        type: out_string
   - name: create_render_pipeline_async
     doc: |
       TODO
@@ -3053,7 +3029,7 @@ callbacks:
       - name: message
         doc: |
           TODO
-        type: string
+        type: out_string
   - name: device_lost
     doc: TODO
     style: callback_mode
@@ -3070,7 +3046,7 @@ callbacks:
       - name: message
         doc: |
           TODO
-        type: string
+        type: out_string
   - name: pop_error_scope
     doc: |
       TODO
@@ -3087,7 +3063,7 @@ callbacks:
       - name: message
         doc: |
           TODO
-        type: string
+        type: out_string
   - name: queue_work_done
     doc: |
       TODO
@@ -3113,7 +3089,7 @@ callbacks:
       - name: message
         doc: |
           TODO
-        type: string
+        type: out_string
   - name: request_device
     doc: |
       TODO
@@ -3130,7 +3106,7 @@ callbacks:
       - name: message
         doc: |
           TODO
-        type: string
+        type: out_string
   - name: uncaptured_error
     doc: |
       TODO
@@ -3148,7 +3124,7 @@ callbacks:
       - name: message
         doc: |
           TODO
-        type: string
+        type: out_string
 functions:
   - name: create_instance
     doc: Create a WGPUInstance
@@ -3246,7 +3222,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: bind_group_layout
     doc: |
       TODO
@@ -3258,7 +3234,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: buffer
     doc: |
       TODO
@@ -3321,7 +3297,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: get_usage
         doc: |
           TODO
@@ -3360,7 +3336,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: command_encoder
     doc: |
       TODO
@@ -3510,7 +3486,7 @@ objects:
           - name: marker_label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: pop_debug_group
         doc: |
           TODO
@@ -3521,7 +3497,7 @@ objects:
           - name: group_label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: resolve_query_set
         doc: |
           TODO
@@ -3565,7 +3541,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: compute_pass_encoder
     doc: |
       TODO
@@ -3577,7 +3553,7 @@ objects:
           - name: marker_label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: pop_debug_group
         doc: |
           TODO
@@ -3588,7 +3564,7 @@ objects:
           - name: group_label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: set_pipeline
         doc: |
           TODO
@@ -3653,7 +3629,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: compute_pipeline
     doc: |
       TODO
@@ -3677,7 +3653,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: device
     doc: |
       TODO
@@ -3929,7 +3905,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: instance
     doc: |
       TODO
@@ -4007,7 +3983,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: query_set
     doc: |
       TODO
@@ -4019,7 +3995,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: get_type
         doc: |
           TODO
@@ -4110,7 +4086,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: render_bundle
     doc: |
       TODO
@@ -4122,7 +4098,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: render_bundle_encoder
     doc: |
       TODO
@@ -4228,7 +4204,7 @@ objects:
           - name: marker_label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: pop_debug_group
         doc: |
           TODO
@@ -4239,7 +4215,7 @@ objects:
           - name: group_label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: set_vertex_buffer
         doc: |
           TODO
@@ -4302,7 +4278,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: render_pass_encoder
     doc: |
       TODO
@@ -4417,7 +4393,7 @@ objects:
           - name: marker_label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: pop_debug_group
         doc: |
           TODO
@@ -4428,7 +4404,7 @@ objects:
           - name: group_label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: set_stencil_reference
         doc: |
           TODO
@@ -4556,7 +4532,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: render_pipeline
     doc: |
       TODO
@@ -4580,7 +4556,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: sampler
     doc: |
       TODO
@@ -4592,7 +4568,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: shader_module
     doc: |
       TODO
@@ -4608,7 +4584,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
   - name: surface
     doc: An object used to continuously present image data to the user, see @ref Surfaces for more details.
     methods:
@@ -4660,7 +4636,7 @@ objects:
         args:
           - name: label
             doc: The new label.
-            type: string
+            type: string_with_default_empty
   - name: texture
     doc: |
       TODO
@@ -4686,7 +4662,7 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty
       - name: get_width
         doc: |
           TODO
@@ -4757,4 +4733,4 @@ objects:
           - name: label
             doc: |
               TODO
-            type: string
+            type: string_with_default_empty

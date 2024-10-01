@@ -33,7 +33,9 @@
             "enum": [
                 "c_void",
                 "bool",
-                "string",
+                "nullable_string",
+                "string_with_default_empty",
+                "out_string",
                 "uint16",
                 "uint32",
                 "uint64",
