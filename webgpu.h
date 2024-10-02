@@ -1561,7 +1561,7 @@ typedef struct WGPUSurfaceConfiguration {
      *
      * The only value that implementations are required to support is @ref WGPUColorSpace_Undefined,
      * which may be either "unmanaged" or "sRGB".
-     * Wasm implementations should support @ref WGPUColorSpace_sRGB and @ref WGPUColorSpace_DisplayP3.
+     * Wasm implementations should support @ref WGPUColorSpace_SRGB and @ref WGPUColorSpace_DisplayP3.
      */
     WGPUColorSpace colorSpace;
 } WGPUSurfaceConfiguration WGPU_STRUCTURE_ATTRIBUTE;
