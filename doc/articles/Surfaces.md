@@ -90,7 +90,7 @@ if (!wgpuSurfaceGetCapabilities(mySurface, myAdapter, &caps)) {
 
 // Do things with capabilities
 bool canSampleSurface = caps.usages & WGPUTextureUsage_TextureBinding;
-WGPUTextureFormat preferredFormat = caps.format[0];
+WGPUTextureFormat preferredFormat = caps.formats[0];
 
 bool supportsMailbox = false;
 for (size_t i = 0; i < caps.presentModeCount; i++) {

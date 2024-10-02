@@ -43,6 +43,13 @@ constants:
       TODO
 typedefs: []
 enums:
+  - name: color_space
+    doc: Predefined sets of color space parameters.
+    entries:
+      - name: sRGB
+        doc: The color space defined by [`srgb`](https://www.w3.org/TR/css-color-4/#predefined-sRGB) in CSS.
+      - name: display_p3
+        doc: The color space defined by [`display-p3`](https://www.w3.org/TR/css-color-4/#predefined-display-p3) in CSS.
   - name: adapter_type
     doc: |
       TODO
@@ -2699,6 +2706,14 @@ structs:
       - name: present_mode
         doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
+      - name: color_space
+        doc: |
+          Color space to display the surface with.
+
+          The only value that implementations are required to support is @ref WGPUColorSpace_Undefined,
+          which may be either "unmanaged" or "sRGB".
+          Wasm implementations should support @ref WGPUColorSpace_sRGB and @ref WGPUColorSpace_DisplayP3.
+        type: enum.color_space
   - name: surface_descriptor
     doc: |
       The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
