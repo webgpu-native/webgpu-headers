@@ -43,13 +43,6 @@ constants:
       TODO
 typedefs: []
 enums:
-  - name: color_space
-    doc: Predefined sets of color space parameters.
-    entries:
-      - name: sRGB
-        doc: The color space defined by [`srgb`](https://www.w3.org/TR/css-color-4/#predefined-sRGB) in CSS.
-      - name: display_p3
-        doc: The color space defined by [`display-p3`](https://www.w3.org/TR/css-color-4/#predefined-display-p3) in CSS.
   - name: adapter_type
     doc: |
       TODO
@@ -226,6 +219,13 @@ enums:
             Implementations _should_ fire spontaneous callbacks as soon as possible.
 
           @note Because spontaneous callbacks may fire at an arbitrary time on an arbitrary thread, applications should take extra care when acquiring locks or mutating state inside the callback. It undefined behavior to re-entrantly call into the webgpu.h API if the callback fires while inside the callstack of another webgpu.h function that is not `wgpuInstanceWaitAny` or `wgpuInstanceProcessEvents`.
+  - name: color_space
+    doc: Predefined sets of color space parameters.
+    entries:
+      - name: sRGB
+        doc: The color space defined by [`srgb`](https://www.w3.org/TR/css-color-4/#predefined-sRGB) in CSS.
+      - name: display_p3
+        doc: The color space defined by [`display-p3`](https://www.w3.org/TR/css-color-4/#predefined-display-p3) in CSS.
   - name: compare_function
     doc: |
       TODO
