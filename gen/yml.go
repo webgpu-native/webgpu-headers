@@ -35,10 +35,10 @@ type Typedef struct {
 }
 
 type Enum struct {
-	Name     string      `yaml:"name"`
-	Doc      string      `yaml:"doc"`
-	Entries  []EnumEntry `yaml:"entries"`
-	Extended bool        `yaml:"extended"`
+	Name     string       `yaml:"name"`
+	Doc      string       `yaml:"doc"`
+	Entries  []*EnumEntry `yaml:"entries"`
+	Extended bool         `yaml:"extended"`
 }
 type EnumEntry struct {
 	Name  string `yaml:"name"`

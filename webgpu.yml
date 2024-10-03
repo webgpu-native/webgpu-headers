@@ -47,6 +47,7 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: discrete_GPU
         doc: |
           TODO
@@ -194,6 +195,7 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: unmapped
         doc: |
           TODO
@@ -206,20 +208,18 @@ enums:
   - name: callback_mode
     doc: The callback mode controls how a callback for an asynchronous operation may be fired. See @ref Asynchronous-Operations for how these are used.
     entries:
+      - null
       - name: wait_any_only
-        value: 0x0001
         doc: |
           Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
           - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
             AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
       - name: allow_process_events
-        value: 0x0002
         doc: |
           Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
           - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
           - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
       - name: allow_spontaneous
-        value: 0x0003
         doc: |
           Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
           - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
@@ -262,30 +262,27 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: error
-        value: 0x0003
         doc: |
           TODO
       - name: device_lost
-        value: 0x0004
         doc: |
           TODO
       - name: unknown
-        value: 0x0005
         doc: |
           TODO
   - name: compilation_message_type
     doc: |
       TODO
     entries:
+      - null
       - name: error
         doc: |
           TODO
@@ -312,32 +309,26 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: validation_error
-        value: 0x0003
         doc: |
           TODO
       - name: internal_error
-        value: 0x0004
         doc: |
           TODO
       - name: device_lost
-        value: 0x0005
         doc: |
           TODO
       - name: device_destroyed
-        value: 0x0006
         doc: |
           TODO
       - name: unknown
-        value: 0x0007
         doc: |
           TODO
   - name: cull_mode
@@ -359,26 +350,24 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: unknown
-        value: 0x0001
         doc: |
           TODO
       - name: destroyed
-        value: 0x0002
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0003
         doc: |
           TODO
       - name: failed_creation
-        value: 0x0004
         doc: |
           TODO
   - name: error_filter
     doc: |
       TODO
     entries:
+      - null
       - name: validation
         doc: |
           TODO
@@ -392,6 +381,7 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: no_error
         doc: |
           TODO
@@ -508,24 +498,20 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: error
-        value: 0x0003
         doc: |
           TODO
       - name: aborted
-        value: 0x0004
         doc: |
           TODO
       - name: unknown
-        value: 0x0005
         doc: |
           TODO
   - name: mipmap_filter_mode
@@ -557,12 +543,11 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
   - name: power_preference
@@ -626,6 +611,7 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: occlusion
         doc: |
           TODO
@@ -636,77 +622,64 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: error
-        value: 0x0003
         doc: |
           TODO
       - name: unknown
-        value: 0x0004
         doc: |
           TODO
       - name: device_lost
-        value: 0x0005
         doc: |
           TODO
   - name: request_adapter_status
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: unavailable
-        value: 0x0003
         doc: |
           TODO
       - name: error
-        value: 0x0004
         doc: |
           TODO
       - name: unknown
-        value: 0x0005
         doc: |
           TODO
   - name: request_device_status
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: error
-        value: 0x0003
         doc: |
           TODO
       - name: unknown
-        value: 0x0004
         doc: |
           TODO
   - name: s_type
     doc: |
       TODO
     entries:
-      - name: invalid
-        doc: |
-          TODO
+      - null
       - name: shader_source_SPIRV
         doc: |
           TODO
@@ -761,6 +734,7 @@ enums:
       indicates an invalid input like an unknown enum value or struct chaining
       error. Read the function's documentation for specific error conditions.
     entries:
+      - null
       - name: success
         doc: ""
       - name: error
@@ -830,6 +804,7 @@ enums:
   - name: surface_get_current_texture_status
     doc: The status enum for `::wgpuSurfaceGetCurrentTexture`.
     entries:
+      - null
       - name: success_optimal
         doc: Yay! Everything is good and we can render this frame.
       - name: success_suboptimal
@@ -1219,9 +1194,7 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
-        doc: |
-          TODO
+      - null
       - name: uint8x2
         doc: |
           TODO
@@ -1334,6 +1307,7 @@ enums:
   - name: wait_status
     doc: Status returned from a call to ::wgpuInstanceWaitAny.
     entries:
+      - null
       - name: success
         doc: At least one WGPUFuture completed successfully.
       - name: timed_out
@@ -1348,9 +1322,7 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
-        doc: |
-          TODO
+      - null
       - name: readonly_and_readwrite_storage_textures
         doc: |
           TODO
