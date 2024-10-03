@@ -2,3 +2,4 @@
 
 - \subpage Asynchronous-Operations
 - \subpage Surfaces
+- \subpage SentinelValues
