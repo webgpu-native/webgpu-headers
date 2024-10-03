@@ -77,8 +77,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No value. See @ref SentinelValues.
       - name: "null"
         doc: |
           TODO
@@ -224,8 +223,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No value. See @ref SentinelValues.
       - name: never
         doc: |
           TODO
@@ -471,8 +469,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No value. See @ref SentinelValues.
       - name: uint16
         doc: |
           TODO
@@ -484,8 +481,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No value. See @ref SentinelValues.
       - name: load
         doc: |
           TODO
@@ -556,8 +552,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No preference. (See also @ref SentinelValues.)
       - name: low_power
         doc: |
           TODO
@@ -795,8 +790,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No value. See @ref SentinelValues.
       - name: store
         doc: |
           TODO
@@ -851,8 +845,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No value. See @ref SentinelValues.
       - name: R8_unorm
         doc: |
           TODO
@@ -1165,8 +1158,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No value. See @ref SentinelValues.
       - name: 1D
         doc: |
           TODO
@@ -1674,7 +1666,9 @@ structs:
     members:
       - name: format
         doc: |
-          TODO
+          The texture format of the target. If @ref WGPUTextureFormat_Undefined,
+          indicates a "hole" in the parent @ref WGPUFragmentState `targets` array:
+          the pipeline does not output a value at this `location`.
         type: enum.texture_format
       - name: blend
         doc: |
@@ -2932,14 +2926,16 @@ structs:
       TODO
     type: standalone
     members:
+      - name: step_mode
+        doc: |
+          The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
+          indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
+          the pipeline does not use a vertex buffer at this `location`.
+        type: enum.vertex_step_mode
       - name: array_stride
         doc: |
           TODO
         type: uint64
-      - name: step_mode
-        doc: |
-          TODO
-        type: enum.vertex_step_mode
       - name: attributes
         doc: |
           TODO

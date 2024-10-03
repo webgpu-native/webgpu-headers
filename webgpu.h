@@ -281,6 +281,10 @@ typedef enum WGPUAddressMode {
 } WGPUAddressMode WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUBackendType {
+    /**
+     * `0x00000000`.
+     * No value. See @ref SentinelValues.
+     */
     WGPUBackendType_Undefined = 0x00000000,
     WGPUBackendType_Null = 0x00000001,
     WGPUBackendType_WebGPU = 0x00000002,
@@ -367,6 +371,10 @@ typedef enum WGPUCallbackMode {
 } WGPUCallbackMode WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUCompareFunction {
+    /**
+     * `0x00000000`.
+     * No value. See @ref SentinelValues.
+     */
     WGPUCompareFunction_Undefined = 0x00000000,
     WGPUCompareFunction_Never = 0x00000001,
     WGPUCompareFunction_Less = 0x00000002,
@@ -501,6 +509,10 @@ typedef enum WGPUFrontFace {
 } WGPUFrontFace WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUIndexFormat {
+    /**
+     * `0x00000000`.
+     * No value. See @ref SentinelValues.
+     */
     WGPUIndexFormat_Undefined = 0x00000000,
     WGPUIndexFormat_Uint16 = 0x00000001,
     WGPUIndexFormat_Uint32 = 0x00000002,
@@ -508,6 +520,10 @@ typedef enum WGPUIndexFormat {
 } WGPUIndexFormat WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPULoadOp {
+    /**
+     * `0x00000000`.
+     * No value. See @ref SentinelValues.
+     */
     WGPULoadOp_Undefined = 0x00000000,
     WGPULoadOp_Load = 0x00000001,
     WGPULoadOp_Clear = 0x00000002,
@@ -543,6 +559,10 @@ typedef enum WGPUPopErrorScopeStatus {
 } WGPUPopErrorScopeStatus WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUPowerPreference {
+    /**
+     * `0x00000000`.
+     * No preference. (See also @ref SentinelValues.)
+     */
     WGPUPowerPreference_Undefined = 0x00000000,
     WGPUPowerPreference_LowPower = 0x00000001,
     WGPUPowerPreference_HighPerformance = 0x00000002,
@@ -682,6 +702,10 @@ typedef enum WGPUStorageTextureAccess {
 } WGPUStorageTextureAccess WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUStoreOp {
+    /**
+     * `0x00000000`.
+     * No value. See @ref SentinelValues.
+     */
     WGPUStoreOp_Undefined = 0x00000000,
     WGPUStoreOp_Store = 0x00000001,
     WGPUStoreOp_Discard = 0x00000002,
@@ -745,6 +769,10 @@ typedef enum WGPUTextureDimension {
 } WGPUTextureDimension WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUTextureFormat {
+    /**
+     * `0x00000000`.
+     * No value. See @ref SentinelValues.
+     */
     WGPUTextureFormat_Undefined = 0x00000000,
     WGPUTextureFormat_R8Unorm = 0x00000001,
     WGPUTextureFormat_R8Snorm = 0x00000002,
@@ -855,6 +883,10 @@ typedef enum WGPUTextureSampleType {
 } WGPUTextureSampleType WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUTextureViewDimension {
+    /**
+     * `0x00000000`.
+     * No value. See @ref SentinelValues.
+     */
     WGPUTextureViewDimension_Undefined = 0x00000000,
     WGPUTextureViewDimension_1D = 0x00000001,
     WGPUTextureViewDimension_2D = 0x00000002,
@@ -1829,8 +1861,13 @@ typedef struct WGPUTextureDescriptor {
 } WGPUTextureDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUVertexBufferLayout {
-    uint64_t arrayStride;
+    /**
+     * The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
+     * indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
+     * the pipeline does not use a vertex buffer at this `location`.
+     */
     WGPUVertexStepMode stepMode;
+    uint64_t arrayStride;
     size_t attributeCount;
     WGPUVertexAttribute const * attributes;
 } WGPUVertexBufferLayout WGPU_STRUCTURE_ATTRIBUTE;
@@ -1847,6 +1884,11 @@ typedef struct WGPUBindGroupLayoutDescriptor {
 
 typedef struct WGPUColorTargetState {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * The texture format of the target. If @ref WGPUTextureFormat_Undefined,
+     * indicates a "hole" in the parent @ref WGPUFragmentState `targets` array:
+     * the pipeline does not output a value at this `location`.
+     */
     WGPUTextureFormat format;
     WGPU_NULLABLE WGPUBlendState const * blend;
     WGPUColorWriteMask writeMask;
