@@ -324,10 +324,21 @@ typedef enum WGPUBlendOperation {
 } WGPUBlendOperation WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUBufferBindingType {
-    WGPUBufferBindingType_Undefined = 0x00000000,
-    WGPUBufferBindingType_Uniform = 0x00000001,
-    WGPUBufferBindingType_Storage = 0x00000002,
-    WGPUBufferBindingType_ReadOnlyStorage = 0x00000003,
+    /**
+     * `0x00000000`.
+     * Indicates that this @ref WGPUBufferBindingLayout member of
+     * its parent @ref WGPUBindGroupLayoutEntry is not used.
+     * (See also @ref SentinelValues.)
+     */
+    WGPUBufferBindingType_BindingNotUsed = 0x00000000,
+    /**
+     * `0x00000001`.
+     * No value. See @ref SentinelValues.
+     */
+    WGPUBufferBindingType_Undefined = 0x00000001,
+    WGPUBufferBindingType_Uniform = 0x00000002,
+    WGPUBufferBindingType_Storage = 0x00000003,
+    WGPUBufferBindingType_ReadOnlyStorage = 0x00000004,
     WGPUBufferBindingType_Force32 = 0x7FFFFFFF
 } WGPUBufferBindingType WGPU_ENUM_ATTRIBUTE;
 
@@ -663,10 +674,21 @@ typedef enum WGPUSType {
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUSamplerBindingType {
-    WGPUSamplerBindingType_Undefined = 0x00000000,
-    WGPUSamplerBindingType_Filtering = 0x00000001,
-    WGPUSamplerBindingType_NonFiltering = 0x00000002,
-    WGPUSamplerBindingType_Comparison = 0x00000003,
+    /**
+     * `0x00000000`.
+     * Indicates that this @ref WGPUSamplerBindingLayout member of
+     * its parent @ref WGPUBindGroupLayoutEntry is not used.
+     * (See also @ref SentinelValues.)
+     */
+    WGPUSamplerBindingType_BindingNotUsed = 0x00000000,
+    /**
+     * `0x00000001`.
+     * No value. See @ref SentinelValues.
+     */
+    WGPUSamplerBindingType_Undefined = 0x00000001,
+    WGPUSamplerBindingType_Filtering = 0x00000002,
+    WGPUSamplerBindingType_NonFiltering = 0x00000003,
+    WGPUSamplerBindingType_Comparison = 0x00000004,
     WGPUSamplerBindingType_Force32 = 0x7FFFFFFF
 } WGPUSamplerBindingType WGPU_ENUM_ATTRIBUTE;
 
@@ -694,10 +716,21 @@ typedef enum WGPUStencilOperation {
 } WGPUStencilOperation WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUStorageTextureAccess {
-    WGPUStorageTextureAccess_Undefined = 0x00000000,
-    WGPUStorageTextureAccess_WriteOnly = 0x00000001,
-    WGPUStorageTextureAccess_ReadOnly = 0x00000002,
-    WGPUStorageTextureAccess_ReadWrite = 0x00000003,
+    /**
+     * `0x00000000`.
+     * Indicates that this @ref WGPUStorageTextureBindingLayout member of
+     * its parent @ref WGPUBindGroupLayoutEntry is not used.
+     * (See also @ref SentinelValues.)
+     */
+    WGPUStorageTextureAccess_BindingNotUsed = 0x00000000,
+    /**
+     * `0x00000001`.
+     * No value. See @ref SentinelValues.
+     */
+    WGPUStorageTextureAccess_Undefined = 0x00000001,
+    WGPUStorageTextureAccess_WriteOnly = 0x00000002,
+    WGPUStorageTextureAccess_ReadOnly = 0x00000003,
+    WGPUStorageTextureAccess_ReadWrite = 0x00000004,
     WGPUStorageTextureAccess_Force32 = 0x7FFFFFFF
 } WGPUStorageTextureAccess WGPU_ENUM_ATTRIBUTE;
 
@@ -873,12 +906,23 @@ typedef enum WGPUTextureFormat {
 } WGPUTextureFormat WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUTextureSampleType {
-    WGPUTextureSampleType_Undefined = 0x00000000,
-    WGPUTextureSampleType_Float = 0x00000001,
-    WGPUTextureSampleType_UnfilterableFloat = 0x00000002,
-    WGPUTextureSampleType_Depth = 0x00000003,
-    WGPUTextureSampleType_Sint = 0x00000004,
-    WGPUTextureSampleType_Uint = 0x00000005,
+    /**
+     * `0x00000000`.
+     * Indicates that this @ref WGPUTextureBindingLayout member of
+     * its parent @ref WGPUBindGroupLayoutEntry is not used.
+     * (See also @ref SentinelValues.)
+     */
+    WGPUTextureSampleType_BindingNotUsed = 0x00000000,
+    /**
+     * `0x00000001`.
+     * No value. See @ref SentinelValues.
+     */
+    WGPUTextureSampleType_Undefined = 0x00000001,
+    WGPUTextureSampleType_Float = 0x00000002,
+    WGPUTextureSampleType_UnfilterableFloat = 0x00000003,
+    WGPUTextureSampleType_Depth = 0x00000004,
+    WGPUTextureSampleType_Sint = 0x00000005,
+    WGPUTextureSampleType_Uint = 0x00000006,
     WGPUTextureSampleType_Force32 = 0x7FFFFFFF
 } WGPUTextureSampleType WGPU_ENUM_ATTRIBUTE;
 
@@ -934,9 +978,19 @@ typedef enum WGPUVertexFormat {
 } WGPUVertexFormat WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUVertexStepMode {
-    WGPUVertexStepMode_Vertex = 0x00000000,
-    WGPUVertexStepMode_Instance = 0x00000001,
-    WGPUVertexStepMode_VertexBufferNotUsed = 0x00000002,
+    /**
+     * `0x00000000`.
+     * This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
+     * (See also @ref SentinelValues.)
+     */
+    WGPUVertexStepMode_VertexBufferNotUsed = 0x00000000,
+    /**
+     * `0x00000001`.
+     * No value. See @ref SentinelValues.
+     */
+    WGPUVertexStepMode_Undefined = 0x00000001,
+    WGPUVertexStepMode_Vertex = 0x00000002,
+    WGPUVertexStepMode_Instance = 0x00000003,
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
 

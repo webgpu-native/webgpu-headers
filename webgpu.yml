@@ -168,9 +168,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: binding_not_used
         doc: |
-          TODO
+          Indicates that this @ref WGPUBufferBindingLayout member of
+          its parent @ref WGPUBindGroupLayoutEntry is not used.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: uniform
         doc: |
           TODO
@@ -719,9 +723,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: binding_not_used
         doc: |
-          TODO
+          Indicates that this @ref WGPUSamplerBindingLayout member of
+          its parent @ref WGPUBindGroupLayoutEntry is not used.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: filtering
         doc: |
           TODO
@@ -773,9 +781,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: binding_not_used
         doc: |
-          TODO
+          Indicates that this @ref WGPUStorageTextureBindingLayout member of
+          its parent @ref WGPUBindGroupLayoutEntry is not used.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: write_only
         doc: |
           TODO
@@ -1135,9 +1147,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: binding_not_used
         doc: |
-          TODO
+          Indicates that this @ref WGPUTextureBindingLayout member of
+          its parent @ref WGPUBindGroupLayoutEntry is not used.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: float
         doc: |
           TODO
@@ -1281,13 +1297,16 @@ enums:
     doc: |
       TODO
     entries:
+      - name: vertex_buffer_not_used
+        doc: |
+          This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: vertex
         doc: |
           TODO
       - name: instance
-        doc: |
-          TODO
-      - name: vertex_buffer_not_used
         doc: |
           TODO
   - name: wait_status
