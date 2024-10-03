@@ -820,6 +820,21 @@ enums:
         doc: The system ran out of memory.
       - name: device_lost
         doc: The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
+  - name: surface_tone_mapping_mode
+    doc: Specifies how color values are displayed to the screen.
+    entries:
+      - name: undefined
+        doc: Use the default tone mapping mode (@ref WGPUSurfaceToneMappingMode_Standard).
+      - name: standard
+        doc: |
+          Color values within the standard dynamic range of the screen are
+          unchanged, and all other color values are projected to the standard
+          dynamic range of the screen.
+      - name: extended
+        doc: |
+          Color values in the extended dynamic range of the screen are
+          unchanged, and all other color values are projected to the extended
+          dynamic range of the screen.
   - name: texture_aspect
     doc: |
       TODO
@@ -2699,6 +2714,12 @@ structs:
       - name: present_mode
         doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
+      - name: tone_mapping_mode
+        doc: |
+          Specifies how color values are displayed to the screen.
+
+          Implementation support is not required for @ref WGPUSurfaceToneMappping_Extended.
+        type: enum.surface_tone_mapping_mode
   - name: surface_descriptor
     doc: |
       The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
