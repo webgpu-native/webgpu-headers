@@ -63,6 +63,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: repeat
         doc: |
           TODO
@@ -106,6 +108,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: zero
         doc: |
           TODO
@@ -149,6 +153,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: add
         doc: |
           TODO
@@ -338,6 +344,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: none
         doc: |
           TODO
@@ -452,6 +460,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: nearest
         doc: |
           TODO
@@ -462,6 +472,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: CCW
         doc: |
           TODO
@@ -520,6 +532,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: nearest
         doc: |
           TODO
@@ -591,6 +605,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: point_list
         doc: |
           TODO
@@ -753,6 +769,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: keep
         doc: |
           TODO
@@ -830,6 +848,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: all
         doc: |
           TODO
@@ -843,6 +863,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: No value. See @ref SentinelValues.
       - name: 1D
         doc: |
           TODO
