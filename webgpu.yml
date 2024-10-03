@@ -66,13 +66,13 @@ enums:
     entries:
       - name: undefined
         doc: No value. See @ref SentinelValues.
+      - name: clamp_to_edge
+        doc: |
+          TODO
       - name: repeat
         doc: |
           TODO
       - name: mirror_repeat
-        doc: |
-          TODO
-      - name: clamp_to_edge
         doc: |
           TODO
   - name: backend_type
@@ -240,19 +240,19 @@ enums:
       - name: less
         doc: |
           TODO
+      - name: equal
+        doc: |
+          TODO
       - name: less_equal
         doc: |
           TODO
       - name: greater
         doc: |
           TODO
-      - name: greater_equal
-        doc: |
-          TODO
-      - name: equal
-        doc: |
-          TODO
       - name: not_equal
+        doc: |
+          TODO
+      - name: greater_equal
         doc: |
           TODO
       - name: always
