@@ -222,6 +222,8 @@ enums:
   - name: color_space
     doc: Predefined sets of color space parameters.
     entries:
+      - name: undefined
+        doc: Use the default color space.
       - name: sRGB
         doc: The color space defined by [`srgb`](https://www.w3.org/TR/css-color-4/#predefined-sRGB) in CSS.
       - name: display_p3
