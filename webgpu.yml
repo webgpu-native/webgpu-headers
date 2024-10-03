@@ -65,7 +65,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: clamp_to_edge
         doc: |
           TODO
@@ -80,7 +80,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: "null"
         doc: |
           TODO
@@ -110,7 +110,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: zero
         doc: |
           TODO
@@ -155,7 +155,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: add
         doc: |
           TODO
@@ -181,7 +181,7 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: uniform
         doc: |
           TODO
@@ -233,7 +233,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: never
         doc: |
           TODO
@@ -336,7 +336,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: none
         doc: |
           TODO
@@ -451,7 +451,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: nearest
         doc: |
           TODO
@@ -463,7 +463,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: CCW
         doc: |
           TODO
@@ -475,7 +475,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: uint16
         doc: |
           TODO
@@ -487,7 +487,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: load
         doc: |
           TODO
@@ -519,7 +519,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: nearest
         doc: |
           TODO
@@ -591,7 +591,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: point_list
         doc: |
           TODO
@@ -718,7 +718,7 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: filtering
         doc: |
           TODO
@@ -744,7 +744,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: keep
         doc: |
           TODO
@@ -779,7 +779,7 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: write_only
         doc: |
           TODO
@@ -794,7 +794,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: store
         doc: |
           TODO
@@ -824,7 +824,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: all
         doc: |
           TODO
@@ -839,7 +839,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: 1D
         doc: |
           TODO
@@ -854,7 +854,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: R8_unorm
         doc: |
           TODO
@@ -1150,7 +1150,7 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: float
         doc: |
           TODO
@@ -1171,7 +1171,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: 1D
         doc: |
           TODO
@@ -1297,7 +1297,7 @@ enums:
           This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: No value. See @ref SentinelValues.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: vertex
         doc: |
           TODO

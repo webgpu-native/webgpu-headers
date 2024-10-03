@@ -276,7 +276,7 @@ typedef enum WGPUAdapterType {
 typedef enum WGPUAddressMode {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUAddressMode_Undefined = 0x00000000,
     WGPUAddressMode_ClampToEdge = 0x00000001,
@@ -288,7 +288,7 @@ typedef enum WGPUAddressMode {
 typedef enum WGPUBackendType {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUBackendType_Undefined = 0x00000000,
     WGPUBackendType_Null = 0x00000001,
@@ -305,7 +305,7 @@ typedef enum WGPUBackendType {
 typedef enum WGPUBlendFactor {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUBlendFactor_Undefined = 0x00000000,
     WGPUBlendFactor_Zero = 0x00000001,
@@ -327,7 +327,7 @@ typedef enum WGPUBlendFactor {
 typedef enum WGPUBlendOperation {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUBlendOperation_Undefined = 0x00000000,
     WGPUBlendOperation_Add = 0x00000001,
@@ -348,7 +348,7 @@ typedef enum WGPUBufferBindingType {
     WGPUBufferBindingType_BindingNotUsed = 0x00000000,
     /**
      * `0x00000001`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUBufferBindingType_Undefined = 0x00000001,
     WGPUBufferBindingType_Uniform = 0x00000002,
@@ -399,7 +399,7 @@ typedef enum WGPUCallbackMode {
 typedef enum WGPUCompareFunction {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUCompareFunction_Undefined = 0x00000000,
     WGPUCompareFunction_Never = 0x00000001,
@@ -475,7 +475,7 @@ typedef enum WGPUCreatePipelineAsyncStatus {
 typedef enum WGPUCullMode {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUCullMode_Undefined = 0x00000000,
     WGPUCullMode_None = 0x00000001,
@@ -530,7 +530,7 @@ typedef enum WGPUFeatureName {
 typedef enum WGPUFilterMode {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUFilterMode_Undefined = 0x00000000,
     WGPUFilterMode_Nearest = 0x00000001,
@@ -541,7 +541,7 @@ typedef enum WGPUFilterMode {
 typedef enum WGPUFrontFace {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUFrontFace_Undefined = 0x00000000,
     WGPUFrontFace_CCW = 0x00000001,
@@ -552,7 +552,7 @@ typedef enum WGPUFrontFace {
 typedef enum WGPUIndexFormat {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUIndexFormat_Undefined = 0x00000000,
     WGPUIndexFormat_Uint16 = 0x00000001,
@@ -563,7 +563,7 @@ typedef enum WGPUIndexFormat {
 typedef enum WGPULoadOp {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPULoadOp_Undefined = 0x00000000,
     WGPULoadOp_Load = 0x00000001,
@@ -583,7 +583,7 @@ typedef enum WGPUMapAsyncStatus {
 typedef enum WGPUMipmapFilterMode {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUMipmapFilterMode_Undefined = 0x00000000,
     WGPUMipmapFilterMode_Nearest = 0x00000001,
@@ -656,7 +656,7 @@ typedef enum WGPUPresentMode {
 typedef enum WGPUPrimitiveTopology {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUPrimitiveTopology_Undefined = 0x00000000,
     WGPUPrimitiveTopology_PointList = 0x00000001,
@@ -722,7 +722,7 @@ typedef enum WGPUSamplerBindingType {
     WGPUSamplerBindingType_BindingNotUsed = 0x00000000,
     /**
      * `0x00000001`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUSamplerBindingType_Undefined = 0x00000001,
     WGPUSamplerBindingType_Filtering = 0x00000002,
@@ -745,7 +745,7 @@ typedef enum WGPUStatus {
 typedef enum WGPUStencilOperation {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUStencilOperation_Undefined = 0x00000000,
     WGPUStencilOperation_Keep = 0x00000001,
@@ -769,7 +769,7 @@ typedef enum WGPUStorageTextureAccess {
     WGPUStorageTextureAccess_BindingNotUsed = 0x00000000,
     /**
      * `0x00000001`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUStorageTextureAccess_Undefined = 0x00000001,
     WGPUStorageTextureAccess_WriteOnly = 0x00000002,
@@ -781,7 +781,7 @@ typedef enum WGPUStorageTextureAccess {
 typedef enum WGPUStoreOp {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUStoreOp_Undefined = 0x00000000,
     WGPUStoreOp_Store = 0x00000001,
@@ -834,7 +834,7 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
 typedef enum WGPUTextureAspect {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureAspect_Undefined = 0x00000000,
     WGPUTextureAspect_All = 0x00000001,
@@ -846,7 +846,7 @@ typedef enum WGPUTextureAspect {
 typedef enum WGPUTextureDimension {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureDimension_Undefined = 0x00000000,
     WGPUTextureDimension_1D = 0x00000001,
@@ -858,7 +858,7 @@ typedef enum WGPUTextureDimension {
 typedef enum WGPUTextureFormat {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureFormat_Undefined = 0x00000000,
     WGPUTextureFormat_R8Unorm = 0x00000001,
@@ -969,7 +969,7 @@ typedef enum WGPUTextureSampleType {
     WGPUTextureSampleType_BindingNotUsed = 0x00000000,
     /**
      * `0x00000001`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureSampleType_Undefined = 0x00000001,
     WGPUTextureSampleType_Float = 0x00000002,
@@ -983,7 +983,7 @@ typedef enum WGPUTextureSampleType {
 typedef enum WGPUTextureViewDimension {
     /**
      * `0x00000000`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureViewDimension_Undefined = 0x00000000,
     WGPUTextureViewDimension_1D = 0x00000001,
@@ -1039,7 +1039,7 @@ typedef enum WGPUVertexStepMode {
     WGPUVertexStepMode_VertexBufferNotUsed = 0x00000000,
     /**
      * `0x00000001`.
-     * No value. See @ref SentinelValues.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUVertexStepMode_Undefined = 0x00000001,
     WGPUVertexStepMode_Vertex = 0x00000002,
