@@ -266,10 +266,10 @@ struct WGPUUncapturedErrorCallbackInfo;
  * @{
  */
 typedef enum WGPUAdapterType {
-    WGPUAdapterType_DiscreteGPU = 0x00000000,
-    WGPUAdapterType_IntegratedGPU = 0x00000001,
-    WGPUAdapterType_CPU = 0x00000002,
-    WGPUAdapterType_Unknown = 0x00000003,
+    WGPUAdapterType_DiscreteGPU = 0x00000001,
+    WGPUAdapterType_IntegratedGPU = 0x00000002,
+    WGPUAdapterType_CPU = 0x00000003,
+    WGPUAdapterType_Unknown = 0x00000004,
     WGPUAdapterType_Force32 = 0x7FFFFFFF
 } WGPUAdapterType WGPU_ENUM_ATTRIBUTE;
 
@@ -358,9 +358,9 @@ typedef enum WGPUBufferBindingType {
 } WGPUBufferBindingType WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUBufferMapState {
-    WGPUBufferMapState_Unmapped = 0x00000000,
-    WGPUBufferMapState_Pending = 0x00000001,
-    WGPUBufferMapState_Mapped = 0x00000002,
+    WGPUBufferMapState_Unmapped = 0x00000001,
+    WGPUBufferMapState_Pending = 0x00000002,
+    WGPUBufferMapState_Mapped = 0x00000003,
     WGPUBufferMapState_Force32 = 0x7FFFFFFF
 } WGPUBufferMapState WGPU_ENUM_ATTRIBUTE;
 
@@ -423,9 +423,9 @@ typedef enum WGPUCompilationInfoRequestStatus {
 } WGPUCompilationInfoRequestStatus WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUCompilationMessageType {
-    WGPUCompilationMessageType_Error = 0x00000000,
-    WGPUCompilationMessageType_Warning = 0x00000001,
-    WGPUCompilationMessageType_Info = 0x00000002,
+    WGPUCompilationMessageType_Error = 0x00000001,
+    WGPUCompilationMessageType_Warning = 0x00000002,
+    WGPUCompilationMessageType_Info = 0x00000003,
     WGPUCompilationMessageType_Force32 = 0x7FFFFFFF
 } WGPUCompilationMessageType WGPU_ENUM_ATTRIBUTE;
 
@@ -493,19 +493,19 @@ typedef enum WGPUDeviceLostReason {
 } WGPUDeviceLostReason WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUErrorFilter {
-    WGPUErrorFilter_Validation = 0x00000000,
-    WGPUErrorFilter_OutOfMemory = 0x00000001,
-    WGPUErrorFilter_Internal = 0x00000002,
+    WGPUErrorFilter_Validation = 0x00000001,
+    WGPUErrorFilter_OutOfMemory = 0x00000002,
+    WGPUErrorFilter_Internal = 0x00000003,
     WGPUErrorFilter_Force32 = 0x7FFFFFFF
 } WGPUErrorFilter WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUErrorType {
-    WGPUErrorType_NoError = 0x00000000,
-    WGPUErrorType_Validation = 0x00000001,
-    WGPUErrorType_OutOfMemory = 0x00000002,
-    WGPUErrorType_Internal = 0x00000003,
-    WGPUErrorType_Unknown = 0x00000004,
-    WGPUErrorType_DeviceLost = 0x00000005,
+    WGPUErrorType_NoError = 0x00000001,
+    WGPUErrorType_Validation = 0x00000002,
+    WGPUErrorType_OutOfMemory = 0x00000003,
+    WGPUErrorType_Internal = 0x00000004,
+    WGPUErrorType_Unknown = 0x00000005,
+    WGPUErrorType_DeviceLost = 0x00000006,
     WGPUErrorType_Force32 = 0x7FFFFFFF
 } WGPUErrorType WGPU_ENUM_ATTRIBUTE;
 
@@ -668,8 +668,8 @@ typedef enum WGPUPrimitiveTopology {
 } WGPUPrimitiveTopology WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUQueryType {
-    WGPUQueryType_Occlusion = 0x00000000,
-    WGPUQueryType_Timestamp = 0x00000001,
+    WGPUQueryType_Occlusion = 0x00000001,
+    WGPUQueryType_Timestamp = 0x00000002,
     WGPUQueryType_Force32 = 0x7FFFFFFF
 } WGPUQueryType WGPU_ENUM_ATTRIBUTE;
 
@@ -700,7 +700,6 @@ typedef enum WGPURequestDeviceStatus {
 } WGPURequestDeviceStatus WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUSType {
-    WGPUSType_Invalid = 0x00000000,
     WGPUSType_ShaderSourceSPIRV = 0x00000001,
     WGPUSType_ShaderSourceWGSL = 0x00000002,
     WGPUSType_RenderPassMaxDrawCount = 0x00000003,
@@ -738,8 +737,8 @@ typedef enum WGPUSamplerBindingType {
  * error. Read the function's documentation for specific error conditions.
  */
 typedef enum WGPUStatus {
-    WGPUStatus_Success = 0x00000000,
-    WGPUStatus_Error = 0x00000001,
+    WGPUStatus_Success = 0x00000001,
+    WGPUStatus_Error = 0x00000002,
     WGPUStatus_Force32 = 0x7FFFFFFF
 } WGPUStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -795,40 +794,40 @@ typedef enum WGPUStoreOp {
  */
 typedef enum WGPUSurfaceGetCurrentTextureStatus {
     /**
-     * `0x00000000`.
+     * `0x00000001`.
      * Yay! Everything is good and we can render this frame.
      */
-    WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal = 0x00000000,
-    /**
-     * `0x00000001`.
-     * Still OK - the surface can present the frame, but in a suboptimal way. The surface may need reconfiguration.
-     */
-    WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal = 0x00000001,
+    WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal = 0x00000001,
     /**
      * `0x00000002`.
-     * Some operation timed out while trying to acquire the frame.
+     * Still OK - the surface can present the frame, but in a suboptimal way. The surface may need reconfiguration.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Timeout = 0x00000002,
+    WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal = 0x00000002,
     /**
      * `0x00000003`.
-     * The surface is too different to be used, compared to when it was originally created.
+     * Some operation timed out while trying to acquire the frame.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000003,
+    WGPUSurfaceGetCurrentTextureStatus_Timeout = 0x00000003,
     /**
      * `0x00000004`.
-     * The connection to whatever owns the surface was lost.
+     * The surface is too different to be used, compared to when it was originally created.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000004,
+    WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000004,
     /**
      * `0x00000005`.
-     * The system ran out of memory.
+     * The connection to whatever owns the surface was lost.
      */
-    WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000005,
+    WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000005,
     /**
      * `0x00000006`.
+     * The system ran out of memory.
+     */
+    WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000006,
+    /**
+     * `0x00000007`.
      * The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
      */
-    WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000006,
+    WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000007,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -997,7 +996,6 @@ typedef enum WGPUTextureViewDimension {
 } WGPUTextureViewDimension WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUVertexFormat {
-    WGPUVertexFormat_Undefined = 0x00000000,
     WGPUVertexFormat_Uint8x2 = 0x00000001,
     WGPUVertexFormat_Uint8x4 = 0x00000002,
     WGPUVertexFormat_Sint8x2 = 0x00000003,
@@ -1050,7 +1048,6 @@ typedef enum WGPUVertexStepMode {
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUWGSLFeatureName {
-    WGPUWGSLFeatureName_Undefined = 0x00000000,
     WGPUWGSLFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
     WGPUWGSLFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
     WGPUWGSLFeatureName_UnrestrictedPointerParameters = 0x00000003,
@@ -1063,30 +1060,30 @@ typedef enum WGPUWGSLFeatureName {
  */
 typedef enum WGPUWaitStatus {
     /**
-     * `0x00000000`.
+     * `0x00000001`.
      * At least one WGPUFuture completed successfully.
      */
-    WGPUWaitStatus_Success = 0x00000000,
-    /**
-     * `0x00000001`.
-     * No WGPUFutures completed within the timeout.
-     */
-    WGPUWaitStatus_TimedOut = 0x00000001,
+    WGPUWaitStatus_Success = 0x00000001,
     /**
      * `0x00000002`.
-     * A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
+     * No WGPUFutures completed within the timeout.
      */
-    WGPUWaitStatus_UnsupportedTimeout = 0x00000002,
+    WGPUWaitStatus_TimedOut = 0x00000002,
     /**
      * `0x00000003`.
-     * The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
+     * A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
      */
-    WGPUWaitStatus_UnsupportedCount = 0x00000003,
+    WGPUWaitStatus_UnsupportedTimeout = 0x00000003,
     /**
      * `0x00000004`.
+     * The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
+     */
+    WGPUWaitStatus_UnsupportedCount = 0x00000004,
+    /**
+     * `0x00000005`.
      * An invalid wait was performed with @ref Mixed-Sources.
      */
-    WGPUWaitStatus_UnsupportedMixedSources = 0x00000004,
+    WGPUWaitStatus_UnsupportedMixedSources = 0x00000005,
     WGPUWaitStatus_Force32 = 0x7FFFFFFF
 } WGPUWaitStatus WGPU_ENUM_ATTRIBUTE;
 

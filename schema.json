@@ -282,23 +282,31 @@
                     "entries": {
                         "type": "array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "$ref": "#/definitions/Name",
-                                    "description": "Name of the enum entry"
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "description": "Reserves a space in the enum numbering"
                                 },
-                                "doc": {
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "$ref": "#/definitions/Value16",
-                                    "description": "Optional property, a 16-bit unsigned integer"
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "$ref": "#/definitions/Name",
+                                            "description": "Name of the enum entry"
+                                        },
+                                        "doc": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "$ref": "#/definitions/Value16",
+                                            "description": "Optional property, a 16-bit unsigned integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "doc"
+                                    ]
                                 }
-                            },
-                            "required": [
-                                "name",
-                                "doc"
                             ]
                         }
                     }
