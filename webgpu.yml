@@ -1955,7 +1955,7 @@ structs:
   - name: image_copy_buffer
     doc: |
       TODO
-    type: base_in
+    type: standalone
     members:
       - name: layout
         doc: |
@@ -1968,7 +1968,7 @@ structs:
   - name: image_copy_texture
     doc: |
       TODO
-    type: base_in
+    type: standalone
     members:
       - name: texture
         doc: |
@@ -2817,7 +2817,7 @@ structs:
   - name: texture_data_layout
     doc: |
       TODO
-    type: base_in
+    type: standalone
     members:
       - name: offset
         doc: |
