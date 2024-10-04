@@ -193,14 +193,18 @@ struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
 {{- range $enum := .Enums}}
 {{-   if .Extended}}
 {{-     range $entryIndex, $_ := .Entries}}
+{{-       if .}}
 _wgpu_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
+{{-       end}}
 {{-     end}}
 {{-   else}}
 {{-     MComment .Doc 0}}
 typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-     range $entryIndex, $_ := .Entries}}
-{{-       MCommentEnum .Doc 4 $.EnumPrefix $enum $entryIndex }}
+{{-       if .}}
+{{-         MCommentEnum .Doc 4 $.EnumPrefix $enum $entryIndex }}
     WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{EnumValue $.EnumPrefix $enum $entryIndex}},
+{{-       end}}
 {{-     end}}
     WGPU{{$enum.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF
 } WGPU{{$enum.Name | PascalCase}}{{$.ExtSuffix}} WGPU_ENUM_ATTRIBUTE;
