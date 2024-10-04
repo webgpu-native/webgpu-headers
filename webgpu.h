@@ -831,6 +831,32 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
 
+/**
+ * Specifies how color values are displayed to the screen.
+ */
+typedef enum WGPUSurfaceToneMappingMode {
+    /**
+     * `0x00000000`.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     */
+    WGPUSurfaceToneMappingMode_Undefined = 0x00000000,
+    /**
+     * `0x00000001`.
+     * Color values within the standard dynamic range of the screen are
+     * unchanged, and all other color values are projected to the standard
+     * dynamic range of the screen.
+     */
+    WGPUSurfaceToneMappingMode_Standard = 0x00000001,
+    /**
+     * `0x00000002`.
+     * Color values in the extended dynamic range of the screen are
+     * unchanged, and all other color values are projected to the extended
+     * dynamic range of the screen.
+     */
+    WGPUSurfaceToneMappingMode_Extended = 0x00000002,
+    WGPUSurfaceToneMappingMode_Force32 = 0x7FFFFFFF
+} WGPUSurfaceToneMappingMode WGPU_ENUM_ATTRIBUTE;
+
 typedef enum WGPUTextureAspect {
     /**
      * `0x00000000`.
@@ -1677,6 +1703,13 @@ typedef struct WGPUSurfaceConfiguration {
      * When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
      */
     WGPUPresentMode presentMode;
+    /**
+     * Specifies how color values are displayed to the screen.
+     * If @ref WGPUSurfaceToneMappingMode_Undefined, defaults to @ref WGPUSurfaceToneMappingMode_Standard.
+     *
+     * Implementation support is not required for @ref WGPUSurfaceToneMappingMode_Extended.
+     */
+    WGPUSurfaceToneMappingMode toneMappingMode;
 } WGPUSurfaceConfiguration WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
