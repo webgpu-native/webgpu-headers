@@ -232,7 +232,7 @@ enums:
     doc: Predefined sets of color space parameters.
     entries:
       - name: undefined
-        doc: Use the default color space.
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: sRGB
         doc: The color space defined by [`srgb`](https://www.w3.org/TR/css-color-4/#predefined-sRGB) in CSS.
       - name: display_p3
@@ -2720,7 +2720,7 @@ structs:
           Color space to display the surface with.
 
           The only value that implementations are required to support is @ref WGPUColorSpace_Undefined,
-          which may be either "unmanaged" or "sRGB".
+          which may be either "unmanaged" or "sRGB" in native (translates to the default `"srgb"` in Wasm).
           Wasm implementations should support @ref WGPUColorSpace_SRGB and @ref WGPUColorSpace_DisplayP3.
         type: enum.color_space
   - name: surface_descriptor
