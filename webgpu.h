@@ -402,7 +402,7 @@ typedef enum WGPUCallbackMode {
 typedef enum WGPUColorSpace {
     /**
      * `0x00000000`.
-     * Use the default color space.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUColorSpace_Undefined = 0x00000000,
     /**
@@ -1703,7 +1703,7 @@ typedef struct WGPUSurfaceConfiguration {
      * Color space to display the surface with.
      *
      * The only value that implementations are required to support is @ref WGPUColorSpace_Undefined,
-     * which may be either "unmanaged" or "sRGB".
+     * which may be either "unmanaged" or "sRGB" in native (translates to the default `"srgb"` in Wasm).
      * Wasm implementations should support @ref WGPUColorSpace_SRGB and @ref WGPUColorSpace_DisplayP3.
      */
     WGPUColorSpace colorSpace;
