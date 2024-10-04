@@ -58,7 +58,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 				if srcDoc != "" && srcDoc != "TODO" {
 					s += srcDoc
 				}
-			
+
 				switch typ {
 				case "nullable_string":
 					s += "\n\nThis string is nullable."

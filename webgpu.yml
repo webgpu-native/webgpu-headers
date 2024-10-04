@@ -47,6 +47,7 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: discrete_GPU
         doc: |
           TODO
@@ -63,13 +64,15 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+      - name: clamp_to_edge
+        doc: |
+          TODO
       - name: repeat
         doc: |
           TODO
       - name: mirror_repeat
-        doc: |
-          TODO
-      - name: clamp_to_edge
         doc: |
           TODO
   - name: backend_type
@@ -77,8 +80,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: "null"
         doc: |
           TODO
@@ -107,6 +109,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: zero
         doc: |
           TODO
@@ -150,6 +154,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: add
         doc: |
           TODO
@@ -169,9 +175,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: binding_not_used
         doc: |
-          TODO
+          Indicates that this @ref WGPUBufferBindingLayout member of
+          its parent @ref WGPUBindGroupLayoutEntry is not used.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: uniform
         doc: |
           TODO
@@ -185,6 +195,7 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: unmapped
         doc: |
           TODO
@@ -197,20 +208,18 @@ enums:
   - name: callback_mode
     doc: The callback mode controls how a callback for an asynchronous operation may be fired. See @ref Asynchronous-Operations for how these are used.
     entries:
+      - null
       - name: wait_any_only
-        value: 0x0001
         doc: |
           Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
           - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
             AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
       - name: allow_process_events
-        value: 0x0002
         doc: |
           Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
           - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
           - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
       - name: allow_spontaneous
-        value: 0x0003
         doc: |
           Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
           - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
@@ -224,12 +233,14 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: never
         doc: |
           TODO
       - name: less
+        doc: |
+          TODO
+      - name: equal
         doc: |
           TODO
       - name: less_equal
@@ -238,13 +249,10 @@ enums:
       - name: greater
         doc: |
           TODO
-      - name: greater_equal
-        doc: |
-          TODO
-      - name: equal
-        doc: |
-          TODO
       - name: not_equal
+        doc: |
+          TODO
+      - name: greater_equal
         doc: |
           TODO
       - name: always
@@ -254,30 +262,27 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: error
-        value: 0x0003
         doc: |
           TODO
       - name: device_lost
-        value: 0x0004
         doc: |
           TODO
       - name: unknown
-        value: 0x0005
         doc: |
           TODO
   - name: compilation_message_type
     doc: |
       TODO
     entries:
+      - null
       - name: error
         doc: |
           TODO
@@ -304,38 +309,34 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: validation_error
-        value: 0x0003
         doc: |
           TODO
       - name: internal_error
-        value: 0x0004
         doc: |
           TODO
       - name: device_lost
-        value: 0x0005
         doc: |
           TODO
       - name: device_destroyed
-        value: 0x0006
         doc: |
           TODO
       - name: unknown
-        value: 0x0007
         doc: |
           TODO
   - name: cull_mode
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: none
         doc: |
           TODO
@@ -349,26 +350,24 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: unknown
-        value: 0x0001
         doc: |
           TODO
       - name: destroyed
-        value: 0x0002
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0003
         doc: |
           TODO
       - name: failed_creation
-        value: 0x0004
         doc: |
           TODO
   - name: error_filter
     doc: |
       TODO
     entries:
+      - null
       - name: validation
         doc: |
           TODO
@@ -382,6 +381,7 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: no_error
         doc: |
           TODO
@@ -450,6 +450,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: nearest
         doc: |
           TODO
@@ -460,6 +462,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: CCW
         doc: |
           TODO
@@ -471,8 +475,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: uint16
         doc: |
           TODO
@@ -484,8 +487,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: load
         doc: |
           TODO
@@ -496,30 +498,28 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: error
-        value: 0x0003
         doc: |
           TODO
       - name: aborted
-        value: 0x0004
         doc: |
           TODO
       - name: unknown
-        value: 0x0005
         doc: |
           TODO
   - name: mipmap_filter_mode
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: nearest
         doc: |
           TODO
@@ -543,12 +543,11 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
   - name: power_preference
@@ -556,8 +555,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: No preference. (See also @ref SentinelValues.)
       - name: low_power
         doc: |
           TODO
@@ -592,6 +590,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: point_list
         doc: |
           TODO
@@ -611,6 +611,7 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: occlusion
         doc: |
           TODO
@@ -621,77 +622,64 @@ enums:
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: error
-        value: 0x0003
         doc: |
           TODO
       - name: unknown
-        value: 0x0004
         doc: |
           TODO
       - name: device_lost
-        value: 0x0005
         doc: |
           TODO
   - name: request_adapter_status
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: unavailable
-        value: 0x0003
         doc: |
           TODO
       - name: error
-        value: 0x0004
         doc: |
           TODO
       - name: unknown
-        value: 0x0005
         doc: |
           TODO
   - name: request_device_status
     doc: |
       TODO
     entries:
+      - null
       - name: success
-        value: 0x0001
         doc: |
           TODO
       - name: instance_dropped
-        value: 0x0002
         doc: |
           TODO
       - name: error
-        value: 0x0003
         doc: |
           TODO
       - name: unknown
-        value: 0x0004
         doc: |
           TODO
   - name: s_type
     doc: |
       TODO
     entries:
-      - name: invalid
-        doc: |
-          TODO
+      - null
       - name: shader_source_SPIRV
         doc: |
           TODO
@@ -724,9 +712,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: binding_not_used
         doc: |
-          TODO
+          Indicates that this @ref WGPUSamplerBindingLayout member of
+          its parent @ref WGPUBindGroupLayoutEntry is not used.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: filtering
         doc: |
           TODO
@@ -742,6 +734,7 @@ enums:
       indicates an invalid input like an unknown enum value or struct chaining
       error. Read the function's documentation for specific error conditions.
     entries:
+      - null
       - name: success
         doc: ""
       - name: error
@@ -750,6 +743,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: keep
         doc: |
           TODO
@@ -778,9 +773,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: binding_not_used
         doc: |
-          TODO
+          Indicates that this @ref WGPUStorageTextureBindingLayout member of
+          its parent @ref WGPUBindGroupLayoutEntry is not used.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: write_only
         doc: |
           TODO
@@ -795,8 +794,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: store
         doc: |
           TODO
@@ -806,6 +804,7 @@ enums:
   - name: surface_get_current_texture_status
     doc: The status enum for `::wgpuSurfaceGetCurrentTexture`.
     entries:
+      - null
       - name: success_optimal
         doc: Yay! Everything is good and we can render this frame.
       - name: success_suboptimal
@@ -839,6 +838,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: all
         doc: |
           TODO
@@ -852,6 +853,8 @@ enums:
     doc: |
       TODO
     entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: 1D
         doc: |
           TODO
@@ -866,8 +869,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: R8_unorm
         doc: |
           TODO
@@ -1157,9 +1159,13 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
+      - name: binding_not_used
         doc: |
-          TODO
+          Indicates that this @ref WGPUTextureBindingLayout member of
+          its parent @ref WGPUBindGroupLayoutEntry is not used.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: float
         doc: |
           TODO
@@ -1180,8 +1186,7 @@ enums:
       TODO
     entries:
       - name: undefined
-        doc: |
-          TODO
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: 1D
         doc: |
           TODO
@@ -1204,9 +1209,7 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
-        doc: |
-          TODO
+      - null
       - name: uint8x2
         doc: |
           TODO
@@ -1304,18 +1307,22 @@ enums:
     doc: |
       TODO
     entries:
+      - name: vertex_buffer_not_used
+        doc: |
+          This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
+          (See also @ref SentinelValues.)
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: vertex
         doc: |
           TODO
       - name: instance
         doc: |
           TODO
-      - name: vertex_buffer_not_used
-        doc: |
-          TODO
   - name: wait_status
     doc: Status returned from a call to ::wgpuInstanceWaitAny.
     entries:
+      - null
       - name: success
         doc: At least one WGPUFuture completed successfully.
       - name: timed_out
@@ -1330,9 +1337,7 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
-        doc: |
-          TODO
+      - null
       - name: readonly_and_readwrite_storage_textures
         doc: |
           TODO
@@ -1689,7 +1694,9 @@ structs:
     members:
       - name: format
         doc: |
-          TODO
+          The texture format of the target. If @ref WGPUTextureFormat_Undefined,
+          indicates a "hole" in the parent @ref WGPUFragmentState `targets` array:
+          the pipeline does not output a value at this `location`.
         type: enum.texture_format
       - name: blend
         doc: |
@@ -1970,7 +1977,7 @@ structs:
   - name: image_copy_buffer
     doc: |
       TODO
-    type: base_in
+    type: standalone
     members:
       - name: layout
         doc: |
@@ -1983,7 +1990,7 @@ structs:
   - name: image_copy_texture
     doc: |
       TODO
-    type: base_in
+    type: standalone
     members:
       - name: texture
         doc: |
@@ -2838,7 +2845,7 @@ structs:
   - name: texture_data_layout
     doc: |
       TODO
-    type: base_in
+    type: standalone
     members:
       - name: offset
         doc: |
@@ -2953,14 +2960,16 @@ structs:
       TODO
     type: standalone
     members:
+      - name: step_mode
+        doc: |
+          The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
+          indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
+          the pipeline does not use a vertex buffer at this `location`.
+        type: enum.vertex_step_mode
       - name: array_stride
         doc: |
           TODO
         type: uint64
-      - name: step_mode
-        doc: |
-          TODO
-        type: enum.vertex_step_mode
       - name: attributes
         doc: |
           TODO
