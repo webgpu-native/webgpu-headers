@@ -228,6 +228,15 @@ enums:
             Implementations _should_ fire spontaneous callbacks as soon as possible.
 
           @note Because spontaneous callbacks may fire at an arbitrary time on an arbitrary thread, applications should take extra care when acquiring locks or mutating state inside the callback. It undefined behavior to re-entrantly call into the webgpu.h API if the callback fires while inside the callstack of another webgpu.h function that is not `wgpuInstanceWaitAny` or `wgpuInstanceProcessEvents`.
+  - name: color_space
+    doc: Predefined sets of color space parameters.
+    entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+      - name: sRGB
+        doc: The color space defined by [`srgb`](https://www.w3.org/TR/css-color-4/#predefined-sRGB) in CSS.
+      - name: display_p3
+        doc: The color space defined by [`display-p3`](https://www.w3.org/TR/css-color-4/#predefined-display-p3) in CSS.
   - name: compare_function
     doc: |
       TODO
@@ -2706,6 +2715,14 @@ structs:
       - name: present_mode
         doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
+      - name: color_space
+        doc: |
+          Color space to display the surface with.
+
+          The only value that implementations are required to support is @ref WGPUColorSpace_Undefined,
+          which may be either "unmanaged" or "sRGB" in native (translates to the default `"srgb"` in Wasm).
+          Wasm implementations should support @ref WGPUColorSpace_SRGB and @ref WGPUColorSpace_DisplayP3.
+        type: enum.color_space
   - name: surface_descriptor
     doc: |
       The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.

@@ -396,6 +396,28 @@ typedef enum WGPUCallbackMode {
     WGPUCallbackMode_Force32 = 0x7FFFFFFF
 } WGPUCallbackMode WGPU_ENUM_ATTRIBUTE;
 
+/**
+ * Predefined sets of color space parameters.
+ */
+typedef enum WGPUColorSpace {
+    /**
+     * `0x00000000`.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     */
+    WGPUColorSpace_Undefined = 0x00000000,
+    /**
+     * `0x00000001`.
+     * The color space defined by [`srgb`](https://www.w3.org/TR/css-color-4/#predefined-sRGB) in CSS.
+     */
+    WGPUColorSpace_SRGB = 0x00000001,
+    /**
+     * `0x00000002`.
+     * The color space defined by [`display-p3`](https://www.w3.org/TR/css-color-4/#predefined-display-p3) in CSS.
+     */
+    WGPUColorSpace_DisplayP3 = 0x00000002,
+    WGPUColorSpace_Force32 = 0x7FFFFFFF
+} WGPUColorSpace WGPU_ENUM_ATTRIBUTE;
+
 typedef enum WGPUCompareFunction {
     /**
      * `0x00000000`.
@@ -1677,6 +1699,14 @@ typedef struct WGPUSurfaceConfiguration {
      * When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
      */
     WGPUPresentMode presentMode;
+    /**
+     * Color space to display the surface with.
+     *
+     * The only value that implementations are required to support is @ref WGPUColorSpace_Undefined,
+     * which may be either "unmanaged" or "sRGB" in native (translates to the default `"srgb"` in Wasm).
+     * Wasm implementations should support @ref WGPUColorSpace_SRGB and @ref WGPUColorSpace_DisplayP3.
+     */
+    WGPUColorSpace colorSpace;
 } WGPUSurfaceConfiguration WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
