@@ -837,7 +837,7 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
 typedef enum WGPUSurfaceToneMappingMode {
     /**
      * `0x00000000`.
-     * Use the default tone mapping mode (@ref WGPUSurfaceToneMappingMode_Standard).
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUSurfaceToneMappingMode_Undefined = 0x00000000,
     /**
@@ -1705,8 +1705,9 @@ typedef struct WGPUSurfaceConfiguration {
     WGPUPresentMode presentMode;
     /**
      * Specifies how color values are displayed to the screen.
+     * If @ref WGPUSurfaceToneMappingMode_Undefined, defaults to @ref WGPUSurfaceToneMappingMode_Standard.
      *
-     * Implementation support is not required for @ref WGPUSurfaceToneMappping_Extended.
+     * Implementation support is not required for @ref WGPUSurfaceToneMappingMode_Extended.
      */
     WGPUSurfaceToneMappingMode toneMappingMode;
 } WGPUSurfaceConfiguration WGPU_STRUCTURE_ATTRIBUTE;

@@ -823,7 +823,7 @@ enums:
     doc: Specifies how color values are displayed to the screen.
     entries:
       - name: undefined
-        doc: Use the default tone mapping mode (@ref WGPUSurfaceToneMappingMode_Standard).
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: standard
         doc: |
           Color values within the standard dynamic range of the screen are
@@ -2724,8 +2724,9 @@ structs:
       - name: tone_mapping_mode
         doc: |
           Specifies how color values are displayed to the screen.
+          If @ref WGPUSurfaceToneMappingMode_Undefined, defaults to @ref WGPUSurfaceToneMappingMode_Standard.
 
-          Implementation support is not required for @ref WGPUSurfaceToneMappping_Extended.
+          Implementation support is not required for @ref WGPUSurfaceToneMappingMode_Extended.
         type: enum.surface_tone_mapping_mode
   - name: surface_descriptor
     doc: |
