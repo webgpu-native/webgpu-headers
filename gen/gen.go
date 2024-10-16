@@ -68,7 +68,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 				if fn.Returns != nil {
 					returnsDoc := strings.TrimSpace(fn.Returns.Doc)
 					if returnsDoc != "" && returnsDoc != "TODO" {
-						s += "\n\n@returns\n\n" + returnsDoc
+						s += "\n\n@returns\n" + returnsDoc
 					}
 				}
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)

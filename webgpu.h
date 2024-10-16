@@ -3167,7 +3167,6 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
- *
  * Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
  *
  * - `features` has an invalid struct chain.
@@ -3350,7 +3349,6 @@ WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
- *
  * Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
  *
  * - `features` has an invalid struct chain.
@@ -3381,7 +3379,6 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  * The description of the @ref WGPUSurface to create.
  *
  * @returns
- *
  * A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
@@ -3603,7 +3600,6 @@ WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfigurat
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
- *
  * TODO make this WGPUStatus instead of a boolean.
  */
 WGPU_EXPORT WGPUBool wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
