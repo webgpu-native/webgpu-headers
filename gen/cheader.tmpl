@@ -242,7 +242,7 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
  */
 
 {{- range .Callbacks}}
-{{-   MComment .Doc 0}}
+{{-   MCommentCallback . 0}}
 typedef void (*WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}})({{CallbackArgs .}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 
@@ -312,7 +312,7 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
-    {{- MCommentWithTypeInfo .Doc .Type 4 }}
+    {{- MCommentMember . 4 }}
     {{  StructMember $struct $memberIndex}}
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
@@ -376,7 +376,7 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
  */
 
 {{- range .Functions}}
-{{-   MCommentFunction .Doc 0 .Returns}}
+{{-   MCommentFunction . 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
@@ -405,7 +405,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
  * @{
  */
 {{-   range $object.Methods}}
-{{-     MCommentFunction .Doc 0 .Returns}}
+{{-     MCommentFunction . 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{-   if not (or .IsStruct .Extended)}}

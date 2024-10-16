@@ -38,37 +38,91 @@ func (g *Generator) Gen(dst io.Writer) error {
 				value, _ := g.BitflagValue(b, entryIndex)
 				return Comment("`"+value+"`.\n"+v, CommentTypeMultiLine, indent, true)
 			},
-			"MCommentFunction": func(funcDoc string, indent int, returns *ParameterType) string {
+			"MCommentFunction": func(fn *Function, indent int) string {
 				var s string
-				funcDoc = strings.TrimSpace(funcDoc)
-				if funcDoc != "" && funcDoc != "TODO" {
-					s += funcDoc
+				{
+					var funcDoc = strings.TrimSpace(fn.Doc)
+					if funcDoc != "" && funcDoc != "TODO" {
+						s += funcDoc
+					}
 				}
-				if returns != nil {
-					returnsDoc := strings.TrimSpace(returns.Doc)
+				for _, arg := range fn.Args {
+					var argDoc = strings.TrimSpace(arg.Doc)
+					var sArg string
+					if argDoc != "" && argDoc != "TODO" {
+						sArg += argDoc
+					}
+
+					switch arg.OwnershipDoc {
+					case "with":
+						sArg += "\nThis parameter is @ref ReturnedWithOwnership."
+					case "without":
+						panic("invalid")
+					}
+
+					sArg = strings.TrimSpace(sArg)
+					if sArg != "" {
+						s += "\n\n@param " + arg.Name + "\n" + sArg
+					}
+				}
+				if fn.Returns != nil {
+					returnsDoc := strings.TrimSpace(fn.Returns.Doc)
 					if returnsDoc != "" && returnsDoc != "TODO" {
-						s += "\n\n@returns " + returnsDoc
+						s += "\n\n@returns\n\n" + returnsDoc
 					}
 				}
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
 			},
-			"MCommentWithTypeInfo": func(srcDoc string, typ string, indent int) string {
+			"MCommentCallback": func(cb *Callback, indent int) string {
 				var s string
-				srcDoc = strings.TrimSpace(srcDoc)
+				{
+					var funcDoc = strings.TrimSpace(cb.Doc)
+					if funcDoc != "" && funcDoc != "TODO" {
+						s += funcDoc
+					}
+				}
+				for _, arg := range cb.Args {
+					var argDoc = strings.TrimSpace(arg.Doc)
+					var sArg string
+					if argDoc != "" && argDoc != "TODO" {
+						sArg += argDoc
+					}
+
+					switch arg.OwnershipDoc {
+					case "with":
+						sArg += "\nThis parameter is @ref PassedWithOwnership."
+					case "without":
+						sArg += "\nThis parameter is @ref PassedWithoutOwnership."
+					}
+
+					sArg = strings.TrimSpace(sArg)
+					if sArg != "" {
+						s += "\n\n@param " + arg.Name + "\n" + sArg
+					}
+				}
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
+			"MCommentMember": func(member *ParameterType, indent int) string {
+				var s string
+
+				var srcDoc = strings.TrimSpace(member.Doc)
 				if srcDoc != "" && srcDoc != "TODO" {
 					s += srcDoc
 				}
 
-				switch typ {
+				switch member.Type {
 				case "nullable_string":
 					s += "\n\nThis is a \\ref NullableInputString."
 				case "string_with_default_empty":
 					s += "\n\nThis is a \\ref NonNullInputString."
 				case "out_string":
 					s += "\n\nThis is an \\ref OutputString."
-				default:
-					s += ""
 				}
+
+				if member.OwnershipDoc != "" {
+					panic("invalid")
+				}
+
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
 			},
 			"ConstantCase": ConstantCase,
