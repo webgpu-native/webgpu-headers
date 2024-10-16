@@ -27,7 +27,7 @@ Usually, object arguments passed to callbacks start with one application-owned r
 
 A.k.a. "pass by reference".
 
-Sometimes, object arguments passed to callbacks are non-owning - the application doesn't need to free them.
+Sometimes, object arguments passed to callbacks are non-owning (such as the \ref WGPUDevice in \ref WGPUDeviceLostCallback) - the application doesn't need to free them.
 
 Variable-sized outputs passed from the API to callbacks (such as message strings in most callbacks) are always owned by the API and guaranteed to be valid only during the callback's execution, after which the pointers passed to the callback are no longer valid.
 
