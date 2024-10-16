@@ -150,6 +150,18 @@ enums:
       - name: one_minus_constant
         doc: |
           TODO
+      - name: src1
+        doc: |
+          TODO
+      - name: one_minus_src1
+        doc: |
+          TODO
+      - name: src1_alpha
+        doc: |
+          TODO
+      - name: one_minus_src1_alpha
+        doc: |
+          TODO
   - name: blend_operation
     doc: |
       TODO
@@ -444,6 +456,15 @@ enums:
         doc: |
           TODO
       - name: float32_filterable
+        doc: |
+          TODO
+      - name: float32_blendable
+        doc: |
+          TODO
+      - name: clip_distances
+        doc: |
+          TODO
+      - name: dual_source_blending
         doc: |
           TODO
   - name: filter_mode
