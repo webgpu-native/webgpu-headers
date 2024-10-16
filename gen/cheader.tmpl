@@ -125,8 +125,7 @@ typedef uint32_t WGPUBool;
  * - `{non_null_pointer, non_zero_length}`: an explictly-sized string view with
  *   size `non_zero_length` (in bytes).
  *
- * To format explicitly-sized strings with `printf`, use `%.*s`
- * (`%s` with a "precision" argument `.*` specifying a max length).
+ * For info on how this is used in various places, see \ref Strings.
  */
 typedef struct WGPUStringView {
     char const * WGPU_NULLABLE data;
