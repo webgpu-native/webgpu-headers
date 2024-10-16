@@ -61,11 +61,11 @@ func (g *Generator) Gen(dst io.Writer) error {
 
 				switch typ {
 				case "nullable_string":
-					s += "\n\nThis string is nullable."
+					s += "\n\nThis is a \\ref NullableInputString."
 				case "string_with_default_empty":
-					s += "\n\nIf the null value is passed, this defaults to the empty string."
+					s += "\n\nThis is a \\ref NonNullInputString."
 				case "out_string":
-					s += "\n\nThis output string is guaranteed to always be explicitly sized. The data may or may not also be null-terminated."
+					s += "\n\nThis is an \\ref OutputString."
 				default:
 					s += ""
 				}

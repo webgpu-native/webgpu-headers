@@ -115,8 +115,7 @@ typedef uint32_t WGPUBool;
  * - `{non_null_pointer, non_zero_length}`: an explictly-sized string view with
  *   size `non_zero_length` (in bytes).
  *
- * To format explicitly-sized strings with `printf`, use `%.*s`
- * (`%s` with a "precision" argument `.*` specifying a max length).
+ * For info on how this is used in various places, see \ref Strings.
  */
 typedef struct WGPUStringView {
     char const * WGPU_NULLABLE data;
@@ -1267,19 +1266,19 @@ typedef struct WGPUUncapturedErrorCallbackInfo {
 typedef struct WGPUAdapterInfo {
     WGPUChainedStructOut * nextInChain;
     /**
-     * This output string is guaranteed to always be explicitly sized. The data may or may not also be null-terminated.
+     * This is an \ref OutputString.
      */
     WGPUStringView vendor;
     /**
-     * This output string is guaranteed to always be explicitly sized. The data may or may not also be null-terminated.
+     * This is an \ref OutputString.
      */
     WGPUStringView architecture;
     /**
-     * This output string is guaranteed to always be explicitly sized. The data may or may not also be null-terminated.
+     * This is an \ref OutputString.
      */
     WGPUStringView device;
     /**
-     * This output string is guaranteed to always be explicitly sized. The data may or may not also be null-terminated.
+     * This is an \ref OutputString.
      */
     WGPUStringView description;
     WGPUBackendType backendType;
@@ -1314,7 +1313,7 @@ typedef struct WGPUBufferBindingLayout {
 typedef struct WGPUBufferDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPUBufferUsage usage;
@@ -1332,7 +1331,7 @@ typedef struct WGPUColor {
 typedef struct WGPUCommandBufferDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
 } WGPUCommandBufferDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -1340,7 +1339,7 @@ typedef struct WGPUCommandBufferDescriptor {
 typedef struct WGPUCommandEncoderDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
 } WGPUCommandEncoderDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -1348,7 +1347,7 @@ typedef struct WGPUCommandEncoderDescriptor {
 typedef struct WGPUCompilationMessage {
     WGPUChainedStruct const * nextInChain;
     /**
-     * This output string is guaranteed to always be explicitly sized. The data may or may not also be null-terminated.
+     * This is an \ref OutputString.
      */
     WGPUStringView message;
     WGPUCompilationMessageType type;
@@ -1370,7 +1369,7 @@ typedef struct WGPUComputePassTimestampWrites {
 typedef struct WGPUConstantEntry {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView key;
     double value;
@@ -1457,7 +1456,7 @@ typedef struct WGPUOrigin3D {
 typedef struct WGPUPipelineLayoutDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     size_t bindGroupLayoutCount;
@@ -1476,7 +1475,7 @@ typedef struct WGPUPrimitiveState {
 typedef struct WGPUQuerySetDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPUQueryType type;
@@ -1486,7 +1485,7 @@ typedef struct WGPUQuerySetDescriptor {
 typedef struct WGPUQueueDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
 } WGPUQueueDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -1494,7 +1493,7 @@ typedef struct WGPUQueueDescriptor {
 typedef struct WGPURenderBundleDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
 } WGPURenderBundleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -1502,7 +1501,7 @@ typedef struct WGPURenderBundleDescriptor {
 typedef struct WGPURenderBundleEncoderDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     size_t colorFormatCount;
@@ -1552,7 +1551,7 @@ typedef struct WGPUSamplerBindingLayout {
 typedef struct WGPUSamplerDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPUAddressMode addressModeU;
@@ -1570,7 +1569,7 @@ typedef struct WGPUSamplerDescriptor {
 typedef struct WGPUShaderModuleDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
 } WGPUShaderModuleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -1584,7 +1583,7 @@ typedef struct WGPUShaderSourceSPIRV {
 typedef struct WGPUShaderSourceWGSL {
     WGPUChainedStruct chain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView code;
 } WGPUShaderSourceWGSL WGPU_STRUCTURE_ATTRIBUTE;
@@ -1689,7 +1688,7 @@ typedef struct WGPUSurfaceDescriptor {
     /**
      * Label used to refer to the object.
      *
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
 } WGPUSurfaceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -1808,7 +1807,7 @@ typedef struct WGPUTextureDataLayout {
 typedef struct WGPUTextureViewDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPUTextureFormat format;
@@ -1830,7 +1829,7 @@ typedef struct WGPUVertexAttribute {
 typedef struct WGPUBindGroupDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPUBindGroupLayout layout;
@@ -1862,7 +1861,7 @@ typedef struct WGPUCompilationInfo {
 typedef struct WGPUComputePassDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPU_NULLABLE WGPUComputePassTimestampWrites const * timestampWrites;
@@ -1920,7 +1919,7 @@ typedef struct WGPUProgrammableStageDescriptor {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     /**
-     * This string is nullable.
+     * This is a \ref NullableInputString.
      */
     WGPUStringView entryPoint;
     size_t constantCount;
@@ -1950,7 +1949,7 @@ typedef struct WGPUSupportedLimits {
 typedef struct WGPUTextureDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPUTextureUsage usage;
@@ -1978,7 +1977,7 @@ typedef struct WGPUVertexBufferLayout {
 typedef struct WGPUBindGroupLayoutDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     size_t entryCount;
@@ -2000,7 +1999,7 @@ typedef struct WGPUColorTargetState {
 typedef struct WGPUComputePipelineDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPU_NULLABLE WGPUPipelineLayout layout;
@@ -2010,7 +2009,7 @@ typedef struct WGPUComputePipelineDescriptor {
 typedef struct WGPUDeviceDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     size_t requiredFeatureCount;
@@ -2024,7 +2023,7 @@ typedef struct WGPUDeviceDescriptor {
 typedef struct WGPURenderPassDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     size_t colorAttachmentCount;
@@ -2038,7 +2037,7 @@ typedef struct WGPUVertexState {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     /**
-     * This string is nullable.
+     * This is a \ref NullableInputString.
      */
     WGPUStringView entryPoint;
     size_t constantCount;
@@ -2051,7 +2050,7 @@ typedef struct WGPUFragmentState {
     WGPUChainedStruct const * nextInChain;
     WGPUShaderModule module;
     /**
-     * This string is nullable.
+     * This is a \ref NullableInputString.
      */
     WGPUStringView entryPoint;
     size_t constantCount;
@@ -2063,7 +2062,7 @@ typedef struct WGPUFragmentState {
 typedef struct WGPURenderPipelineDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * If the null value is passed, this defaults to the empty string.
+     * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
     WGPU_NULLABLE WGPUPipelineLayout layout;
