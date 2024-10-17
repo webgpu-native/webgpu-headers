@@ -2820,7 +2820,9 @@ structs:
     type: standalone
     members:
       - name: texture
-        doc: The @ref WGPUTexture representing the frame that will be shown on the surface.
+        doc: |
+          The @ref WGPUTexture representing the frame that will be shown on the surface.
+          It is @ref ReturnedWithOwnership from @ref wgpuSurfaceGetCurrentTexture.
         type: object.texture
       - name: status
         doc: Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
@@ -3012,6 +3014,7 @@ callbacks:
         doc: |
           TODO
         type: out_string
+        ownership_doc: without
   - name: compilation_info
     doc: |
       TODO
@@ -3026,6 +3029,7 @@ callbacks:
           TODO
         type: struct.compilation_info
         pointer: immutable
+        ownership_doc: without
   - name: create_compute_pipeline_async
     doc: |
       TODO
@@ -3039,6 +3043,7 @@ callbacks:
         doc: |
           TODO
         type: object.compute_pipeline
+        ownership_doc: with
       - name: message
         doc: |
           TODO
@@ -3056,6 +3061,7 @@ callbacks:
         doc: |
           TODO
         type: object.render_pipeline
+        ownership_doc: with
       - name: message
         doc: |
           TODO
@@ -3069,6 +3075,7 @@ callbacks:
           TODO
         type: object.device
         pointer: immutable
+        ownership_doc: without
       - name: reason
         doc: |
           TODO
@@ -3077,6 +3084,7 @@ callbacks:
         doc: |
           TODO
         type: out_string
+        ownership_doc: without
   - name: pop_error_scope
     doc: |
       TODO
@@ -3094,6 +3102,7 @@ callbacks:
         doc: |
           TODO
         type: out_string
+        ownership_doc: without
   - name: queue_work_done
     doc: |
       TODO
@@ -3116,10 +3125,12 @@ callbacks:
         doc: |
           TODO
         type: object.adapter
+        ownership_doc: with
       - name: message
         doc: |
           TODO
         type: out_string
+        ownership_doc: without
   - name: request_device
     doc: |
       TODO
@@ -3133,10 +3144,12 @@ callbacks:
         doc: |
           TODO
         type: object.device
+        ownership_doc: with
       - name: message
         doc: |
           TODO
         type: out_string
+        ownership_doc: without
   - name: uncaptured_error
     doc: |
       TODO
@@ -3147,6 +3160,7 @@ callbacks:
           TODO
         type: object.device
         pointer: immutable
+        ownership_doc: without
       - name: type
         doc: |
           TODO
@@ -3155,6 +3169,7 @@ callbacks:
         doc: |
           TODO
         type: out_string
+        ownership_doc: without
 functions:
   - name: create_instance
     doc: Create a WGPUInstance
@@ -3162,6 +3177,7 @@ functions:
       doc: |
         TODO
       type: object.instance
+      ownership_doc: with
     args:
       - name: descriptor
         doc: |
@@ -3221,6 +3237,7 @@ objects:
               TODO
             type: struct.supported_features
             pointer: mutable
+            ownership_doc: with
       - name: get_info
         doc: |
           TODO
@@ -3230,6 +3247,7 @@ objects:
               TODO
             type: struct.adapter_info
             pointer: mutable
+            ownership_doc: with
       - name: request_device
         doc: |
           TODO
@@ -3378,6 +3396,7 @@ objects:
           doc: |
             TODO
           type: object.command_buffer
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3392,6 +3411,7 @@ objects:
           doc: |
             TODO
           type: object.compute_pass_encoder
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3406,6 +3426,7 @@ objects:
           doc: |
             TODO
           type: object.render_pass_encoder
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3671,6 +3692,7 @@ objects:
           doc: |
             TODO
           type: object.bind_group_layout
+          ownership_doc: with
         args:
           - name: group_index
             doc: |
@@ -3695,6 +3717,7 @@ objects:
           doc: |
             TODO
           type: object.bind_group
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3708,6 +3731,7 @@ objects:
           doc: |
             TODO
           type: object.bind_group_layout
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3721,6 +3745,7 @@ objects:
           doc: |
             TODO
           type: object.buffer
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3734,6 +3759,7 @@ objects:
           doc: |
             TODO
           type: object.command_encoder
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3748,6 +3774,7 @@ objects:
           doc: |
             TODO
           type: object.compute_pipeline
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3771,6 +3798,7 @@ objects:
           doc: |
             TODO
           type: object.pipeline_layout
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3784,6 +3812,7 @@ objects:
           doc: |
             TODO
           type: object.query_set
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3807,6 +3836,7 @@ objects:
           doc: |
             TODO
           type: object.render_bundle_encoder
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3820,6 +3850,7 @@ objects:
           doc: |
             TODO
           type: object.render_pipeline
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3833,6 +3864,7 @@ objects:
           doc: |
             TODO
           type: object.sampler
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3847,6 +3879,7 @@ objects:
           doc: |
             TODO
           type: object.shader_module
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3860,6 +3893,7 @@ objects:
           doc: |
             TODO
           type: object.texture
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -3909,6 +3943,7 @@ objects:
               TODO
             type: struct.supported_features
             pointer: mutable
+            ownership_doc: with
       - name: get_queue
         doc: |
           TODO
@@ -3916,6 +3951,7 @@ objects:
           doc: |
             TODO
           type: object.queue
+          ownership_doc: with
       - name: push_error_scope
         doc: |
           TODO
@@ -3945,6 +3981,7 @@ objects:
         returns:
           doc: A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
           type: object.surface
+          ownership_doc: with
         args:
           - name: descriptor
             doc: The description of the @ref WGPUSurface to create.
@@ -4294,6 +4331,7 @@ objects:
           doc: |
             TODO
           type: object.render_bundle
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |
@@ -4574,6 +4612,7 @@ objects:
           doc: |
             TODO
           type: object.bind_group_layout
+          ownership_doc: with
         args:
           - name: group_index
             doc: |
@@ -4644,6 +4683,7 @@ objects:
               It may contain memory allocations so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid memory leaks.
             type: struct.surface_capabilities
             pointer: mutable
+            ownership_doc: with
       - name: get_current_texture
         doc: |
           Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
@@ -4678,6 +4718,7 @@ objects:
           doc: |
             TODO
           type: object.texture_view
+          ownership_doc: with
         args:
           - name: descriptor
             doc: |

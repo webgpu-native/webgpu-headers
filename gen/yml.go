@@ -12,14 +12,14 @@ type Yml struct {
 	Name       string `yaml:"name"`
 	EnumPrefix string `yaml:"enum_prefix"`
 
-	Constants     []Constant `yaml:"constants"`
-	Typedefs      []Typedef  `yaml:"typedefs"`
-	Enums         []Enum     `yaml:"enums"`
-	Bitflags      []Bitflag  `yaml:"bitflags"`
-	Structs       []Struct   `yaml:"structs"`
-	Callbacks     []Callback `yaml:"callbacks"`
-	Functions     []Function `yaml:"functions"`
-	Objects       []Object   `yaml:"objects"`
+	Constants []Constant `yaml:"constants"`
+	Typedefs  []Typedef  `yaml:"typedefs"`
+	Enums     []Enum     `yaml:"enums"`
+	Bitflags  []Bitflag  `yaml:"bitflags"`
+	Structs   []Struct   `yaml:"structs"`
+	Callbacks []Callback `yaml:"callbacks"`
+	Functions []Function `yaml:"functions"`
+	Objects   []Object   `yaml:"objects"`
 }
 
 type Constant struct {
@@ -67,27 +67,28 @@ const (
 )
 
 type ParameterType struct {
-	Name      string      `yaml:"name"`
-	Doc       string      `yaml:"doc"`
-	Type      string      `yaml:"type"`
-	Pointer   PointerType `yaml:"pointer"`
-	Optional  bool        `yaml:"optional"`
-	Namespace string      `yaml:"namespace"`
+	Name         string      `yaml:"name"`
+	Doc          string      `yaml:"doc"`
+	Type         string      `yaml:"type"`
+	OwnershipDoc string      `yaml:"ownership_doc"`
+	Pointer      PointerType `yaml:"pointer"`
+	Optional     bool        `yaml:"optional"`
+	Namespace    string      `yaml:"namespace"`
 }
 
 type Callback struct {
-	Name string          `yaml:"name"`
-	Doc  string          `yaml:"doc"`
-	Style string         `yaml:"type"`
-	Args []ParameterType `yaml:"args"`
+	Name  string          `yaml:"name"`
+	Doc   string          `yaml:"doc"`
+	Style string          `yaml:"type"`
+	Args  []ParameterType `yaml:"args"`
 }
 
 type Function struct {
-	Name         string          `yaml:"name"`
-	Doc          string          `yaml:"doc"`
-	Returns      *ParameterType  `yaml:"returns"`
-	Callback     *string         `yaml:"callback"`
-	Args         []ParameterType `yaml:"args"`
+	Name     string          `yaml:"name"`
+	Doc      string          `yaml:"doc"`
+	Returns  *ParameterType  `yaml:"returns"`
+	Callback *string         `yaml:"callback"`
+	Args     []ParameterType `yaml:"args"`
 }
 
 type Struct struct {

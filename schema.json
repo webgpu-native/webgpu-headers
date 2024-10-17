@@ -109,7 +109,7 @@
                     "type": "array",
                     "description": "Optional property, list of callback arguments",
                     "items": {
-                        "$ref": "#/definitions/ParameterType"
+                        "$ref": "#/definitions/FunctionParameterType"
                     }
                 }
             },
@@ -133,6 +133,14 @@
                     "$ref": "#/definitions/Type",
                     "description": "Parameter type"
                 },
+                "ownership": {
+                    "type": "string",
+                    "description": "Ownership of the value",
+                    "enum": [
+                        "with",
+                        "without"
+                    ]
+                },
                 "pointer": {
                     "$ref": "#/definitions/Pointer",
                     "description": "Optional property, specifies if a parameter type is a pointer"
@@ -151,6 +159,23 @@
                 "name",
                 "doc",
                 "type"
+            ]
+        },
+        "FunctionParameterType": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ParameterType"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "doc": {
+                            "type": "string",
+                            "$comment": "Doxygen doesn't support multi-paragraph param docs (containing \\n\\n)",
+                            "pattern": "^\n?.+(\n.+)*\n?$"
+                        }
+                    }
+                }
             ]
         },
         "Function": {
@@ -174,6 +199,13 @@
                             "$ref": "#/definitions/Type",
                             "description": "Return type of the function"
                         },
+                        "ownership": {
+                            "type": "string",
+                            "description": "Ownership of the value",
+                            "enum": [
+                                "with"
+                            ]
+                        },
                         "pointer": {
                             "$ref": "#/definitions/Pointer",
                             "description": "Optional property, specifies if a method return type is a pointer"
@@ -192,7 +224,7 @@
                     "type": "array",
                     "description": "Optional property, list of function arguments",
                     "items": {
-                        "$ref": "#/definitions/ParameterType"
+                        "$ref": "#/definitions/FunctionParameterType"
                     }
                 }
             },

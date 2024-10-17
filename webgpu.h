@@ -1153,15 +1153,63 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
  *
  * @{
  */
+/**
+ * @param message
+ * This parameter is @ref PassedWithoutOwnership.
+ */
 typedef void (*WGPUBufferMapCallback)(WGPUMapAsyncStatus status, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param compilationInfo
+ * This parameter is @ref PassedWithoutOwnership.
+ */
 typedef void (*WGPUCompilationInfoCallback)(WGPUCompilationInfoRequestStatus status, struct WGPUCompilationInfo const * compilationInfo, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param pipeline
+ * This parameter is @ref PassedWithOwnership.
+ */
 typedef void (*WGPUCreateComputePipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPUComputePipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param pipeline
+ * This parameter is @ref PassedWithOwnership.
+ */
 typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param device
+ * This parameter is @ref PassedWithoutOwnership.
+ *
+ * @param message
+ * This parameter is @ref PassedWithoutOwnership.
+ */
 typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLostReason reason, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param message
+ * This parameter is @ref PassedWithoutOwnership.
+ */
 typedef void (*WGPUPopErrorScopeCallback)(WGPUPopErrorScopeStatus status, WGPUErrorType type, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param adapter
+ * This parameter is @ref PassedWithOwnership.
+ *
+ * @param message
+ * This parameter is @ref PassedWithoutOwnership.
+ */
 typedef void (*WGPURequestAdapterCallback)(WGPURequestAdapterStatus status, WGPUAdapter adapter, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param device
+ * This parameter is @ref PassedWithOwnership.
+ *
+ * @param message
+ * This parameter is @ref PassedWithoutOwnership.
+ */
 typedef void (*WGPURequestDeviceCallback)(WGPURequestDeviceStatus status, WGPUDevice device, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param device
+ * This parameter is @ref PassedWithoutOwnership.
+ *
+ * @param message
+ * This parameter is @ref PassedWithoutOwnership.
+ */
 typedef void (*WGPUUncapturedErrorCallback)(WGPUDevice const * device, WGPUErrorType type, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 
 /** @} */
@@ -1790,6 +1838,7 @@ typedef struct WGPUSurfaceSourceXlibWindow {
 typedef struct WGPUSurfaceTexture {
     /**
      * The @ref WGPUTexture representing the frame that will be shown on the surface.
+     * It is @ref ReturnedWithOwnership from @ref wgpuSurfaceGetCurrentTexture.
      */
     WGPUTexture texture;
     /**
@@ -3084,6 +3133,9 @@ typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView) WGPU_FUN
 WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Query the supported instance features
+ *
+ * @param features
+ * The supported instance features
  */
 WGPU_EXPORT void wgpuGetInstanceFeatures(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -3111,11 +3163,19 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
 /**
  * Get the list of @ref WGPUFeatureName values supported by the adapter.
  *
- * @returns Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
+ * @param features
+ * This parameter is @ref ReturnedWithOwnership.
+ *
+ * @returns
+ * Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
  *
  * - `features` has an invalid struct chain.
  */
 WGPU_EXPORT WGPUStatus wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param info
+ * This parameter is @ref ReturnedWithOwnership.
+ */
 WGPU_EXPORT void wgpuAdapterGetInfo(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuAdapterGetLimits(WGPUAdapter adapter, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
@@ -3285,7 +3345,11 @@ WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Get the list of @ref WGPUFeatureName values supported by the device.
  *
- * @returns Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
+ * @param features
+ * This parameter is @ref ReturnedWithOwnership.
+ *
+ * @returns
+ * Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
  *
  * - `features` has an invalid struct chain.
  */
@@ -3311,7 +3375,11 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Creates a @ref WGPUSurface, see @ref Surface-Creation for more details.
  *
- * @returns A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
+ * @param descriptor
+ * The description of the @ref WGPUSurface to create.
+ *
+ * @returns
+ * A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
@@ -3514,18 +3582,33 @@ WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supporte
 /**
  * Configures parameters for rendering to `surface`.
  * See @ref Surface-Configuration for more details.
+ *
+ * @param config
+ * The new configuration to use.
  */
 WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
  *
- * @returns TODO make this WGPUStatus instead of a boolean.
+ * @param adapter
+ * The @ref WGPUAdapter to get capabilities for presenting to this @ref WGPUSurface.
+ *
+ * @param capabilities
+ * The structure to fill capabilities in.
+ * It may contain memory allocations so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid memory leaks.
+ * This parameter is @ref ReturnedWithOwnership.
+ *
+ * @returns
+ * TODO make this WGPUStatus instead of a boolean.
  */
 WGPU_EXPORT WGPUBool wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
  * See @ref Surface-Presenting for more details.
+ *
+ * @param surfaceTexture
+ * The structure to fill the @ref WGPUTexture and metadata in.
  */
 WGPU_EXPORT void wgpuSurfaceGetCurrentTexture(WGPUSurface surface, WGPUSurfaceTexture * surfaceTexture) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -3535,6 +3618,9 @@ WGPU_EXPORT void wgpuSurfaceGetCurrentTexture(WGPUSurface surface, WGPUSurfaceTe
 WGPU_EXPORT void wgpuSurfacePresent(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Modifies the label used to refer to `surface`.
+ *
+ * @param label
+ * The new label.
  */
 WGPU_EXPORT void wgpuSurfaceSetLabel(WGPUSurface surface, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 /**
