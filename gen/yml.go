@@ -67,13 +67,13 @@ const (
 )
 
 type ParameterType struct {
-	Name         string      `yaml:"name"`
-	Doc          string      `yaml:"doc"`
-	Type         string      `yaml:"type"`
-	OwnershipDoc string      `yaml:"ownership_doc"`
-	Pointer      PointerType `yaml:"pointer"`
-	Optional     bool        `yaml:"optional"`
-	Namespace    string      `yaml:"namespace"`
+	Name                string      `yaml:"name"`
+	Doc                 string      `yaml:"doc"`
+	Type                string      `yaml:"type"`
+	PassedWithOwnership *bool       `yaml:"passed_with_ownership"`
+	Pointer             PointerType `yaml:"pointer"`
+	Optional            bool        `yaml:"optional"`
+	Namespace           string      `yaml:"namespace"`
 }
 
 type Callback struct {

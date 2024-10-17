@@ -6,7 +6,7 @@ Strings are represented using the \ref WGPUStringView struct:
 
 ## Nullable Input String {#NullableInputString}
 
-An input string where the null value may be treated separately from the 
+An input string where the null value may be treated separately from the empty string (e.g. to indicate the absence of a string, or to run some non-trivial defaulting algorithm).
 
 ## Non-Null Input String {#NonNullInputString}
 

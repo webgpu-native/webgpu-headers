@@ -53,11 +53,12 @@ func (g *Generator) Gen(dst io.Writer) error {
 						sArg += argDoc
 					}
 
-					switch arg.OwnershipDoc {
-					case "with":
-						sArg += "\nThis parameter is @ref ReturnedWithOwnership."
-					case "without":
-						panic("invalid")
+					if arg.PassedWithOwnership != nil {
+						if *arg.PassedWithOwnership {
+							sArg += "\nThis parameter is @ref ReturnedWithOwnership."
+						} else {
+							panic("invalid")
+						}
 					}
 
 					sArg = strings.TrimSpace(sArg)
@@ -88,11 +89,12 @@ func (g *Generator) Gen(dst io.Writer) error {
 						sArg += argDoc
 					}
 
-					switch arg.OwnershipDoc {
-					case "with":
-						sArg += "\nThis parameter is @ref PassedWithOwnership."
-					case "without":
-						sArg += "\nThis parameter is @ref PassedWithoutOwnership."
+					if arg.PassedWithOwnership != nil {
+						if *arg.PassedWithOwnership {
+							sArg += "\nThis parameter is @ref PassedWithOwnership."
+						} else {
+							sArg += "\nThis parameter is @ref PassedWithoutOwnership."
+						}
 					}
 
 					sArg = strings.TrimSpace(sArg)
@@ -119,7 +121,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 					s += "\n\nThis is an \\ref OutputString."
 				}
 
-				if member.OwnershipDoc != "" {
+				if member.PassedWithOwnership != nil {
 					panic("invalid")
 				}
 
