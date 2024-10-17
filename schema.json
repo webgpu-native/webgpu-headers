@@ -199,12 +199,9 @@
                             "$ref": "#/definitions/Type",
                             "description": "Return type of the function"
                         },
-                        "ownership": {
-                            "type": "string",
-                            "description": "Ownership of the value",
-                            "enum": [
-                                "with"
-                            ]
+                        "passed_with_ownership": {
+                            "type": "boolean",
+                            "description": "Whether the value is passed with ownership or without ownership"
                         },
                         "pointer": {
                             "$ref": "#/definitions/Pointer",
