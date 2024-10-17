@@ -62,7 +62,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 
 					sArg = strings.TrimSpace(sArg)
 					if sArg != "" {
-						s += "\n\n@param " + arg.Name + "\n" + sArg
+						s += "\n\n@param " + CamelCase(arg.Name) + "\n" + sArg
 					}
 				}
 				if fn.Returns != nil {
@@ -97,7 +97,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 
 					sArg = strings.TrimSpace(sArg)
 					if sArg != "" {
-						s += "\n\n@param " + arg.Name + "\n" + sArg
+						s += "\n\n@param " + CamelCase(arg.Name) + "\n" + sArg
 					}
 				}
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)

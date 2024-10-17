@@ -1159,7 +1159,7 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
  */
 typedef void (*WGPUBufferMapCallback)(WGPUMapAsyncStatus status, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * @param compilation_info
+ * @param compilationInfo
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUCompilationInfoCallback)(WGPUCompilationInfoRequestStatus status, struct WGPUCompilationInfo const * compilationInfo, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
@@ -3607,7 +3607,7 @@ WGPU_EXPORT WGPUBool wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter
  * Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
  * See @ref Surface-Presenting for more details.
  *
- * @param surface_texture
+ * @param surfaceTexture
  * The structure to fill the @ref WGPUTexture and metadata in.
  */
 WGPU_EXPORT void wgpuSurfaceGetCurrentTexture(WGPUSurface surface, WGPUSurfaceTexture * surfaceTexture) WGPU_FUNCTION_ATTRIBUTE;
