@@ -1,0 +1,20 @@
+# Strings {#Strings}
+
+Strings are represented using the \ref WGPUStringView struct:
+
+> \copydoc WGPUStringView
+
+## Nullable Input String {#NullableInputString}
+
+An input string where the null value may be treated separately from the 
+
+## Non-Null Input String {#NonNullInputString}
+
+This input string is non-nullable.
+If the null value is passed, it is treated as the empty string.
+
+## Output String {#OutputString}
+
+This output string is always explicitly sized and never the null value. There is no null terminator inside the string; there may or may not be one after the end. If empty, the data pointer may or may not be null.
+
+To format explicitly-sized strings with `printf`, use `%.*s` (`%s` with a "precision" argument `.*` specifying the max number of bytes to read from the pointer).
