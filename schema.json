@@ -417,8 +417,10 @@
                         "enum": [
                             "base_in",
                             "base_out",
+                            "base_in_or_out",
                             "extension_in",
                             "extension_out",
+                            "extension_in_or_out",
                             "standalone"
                         ]
                     },

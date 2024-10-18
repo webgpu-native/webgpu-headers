@@ -1908,7 +1908,7 @@ structs:
       - name: required_limits
         doc: |
           TODO
-        type: struct.required_limits
+        type: struct.limits
         pointer: immutable
         optional: true
       - name: default_queue
@@ -2025,7 +2025,7 @@ structs:
   - name: instance_features
     doc: |
       Features enabled on the WGPUInstance
-    type: base_in
+    type: base_in_or_out
     members:
       - name: timed_wait_any_enable
         doc: Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
@@ -2036,7 +2036,7 @@ structs:
   - name: limits
     doc: |
       TODO
-    type: standalone
+    type: base_in_or_out
     members:
       - name: max_texture_dimension_1D
         doc: |
@@ -2509,15 +2509,6 @@ structs:
         doc: |
           TODO
         type: bool
-  - name: required_limits
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: limits
-        doc: |
-          TODO
-        type: struct.limits
   - name: sampler_binding_layout
     doc: |
       TODO
@@ -2661,15 +2652,6 @@ structs:
           TODO
         type: array<enum.feature_name>
         pointer: immutable
-  - name: supported_limits
-    doc: |
-      TODO
-    type: base_out
-    members:
-      - name: limits
-        doc: |
-          TODO
-        type: struct.limits
   - name: surface_capabilities
     doc: Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
     type: base_out
@@ -3208,7 +3190,7 @@ objects:
           - name: limits
             doc: |
               TODO
-            type: struct.supported_limits
+            type: struct.limits
             pointer: mutable
       - name: has_feature
         doc: |
@@ -3914,7 +3896,7 @@ objects:
           - name: limits
             doc: |
               TODO
-            type: struct.supported_limits
+            type: struct.limits
             pointer: mutable
       - name: has_feature
         doc: |
