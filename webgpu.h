@@ -1223,10 +1223,10 @@ typedef struct WGPUChainedStruct {
     WGPUSType sType;
 } WGPUChainedStruct WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUChainedStructOut {
-    struct WGPUChainedStructOut * next;
+typedef struct WGPUChainedStructMut {
+    struct WGPUChainedStructMut * next;
     WGPUSType sType;
-} WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUChainedStructMut WGPU_STRUCTURE_ATTRIBUTE;
 
 /** @} */
 
@@ -1317,7 +1317,7 @@ typedef struct WGPUUncapturedErrorCallbackInfo {
 /** @} */
 
 typedef struct WGPUAdapterInfo {
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStructMut * nextInChain;
     /**
      * This is an \ref OutputString.
      */
@@ -1449,7 +1449,7 @@ typedef struct WGPUFuture {
  */
 typedef struct WGPUInstanceFeatures {
     /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStructMut * nextInChain;
     /**
      * Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
      */
@@ -1462,7 +1462,7 @@ typedef struct WGPUInstanceFeatures {
 
 typedef struct WGPULimits {
     /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStructMut * nextInChain;
     uint32_t maxTextureDimension1D;
     uint32_t maxTextureDimension2D;
     uint32_t maxTextureDimension3D;
@@ -1659,7 +1659,7 @@ typedef struct WGPUStorageTextureBindingLayout {
 } WGPUStorageTextureBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSupportedFeatures {
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStructMut * nextInChain;
     size_t featureCount;
     WGPUFeatureName const * features;
 } WGPUSupportedFeatures WGPU_STRUCTURE_ATTRIBUTE;
@@ -1668,7 +1668,7 @@ typedef struct WGPUSupportedFeatures {
  * Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
  */
 typedef struct WGPUSurfaceCapabilities {
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStructMut * nextInChain;
     /**
      * The bit set of supported @ref WGPUTextureUsage bits.
      * Guaranteed to contain @ref WGPUTextureUsage_RenderAttachment.

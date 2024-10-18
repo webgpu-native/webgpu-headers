@@ -261,10 +261,10 @@ typedef struct WGPUChainedStruct {
     WGPUSType sType;
 } WGPUChainedStruct WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUChainedStructOut {
-    struct WGPUChainedStructOut * next;
+typedef struct WGPUChainedStructMut {
+    struct WGPUChainedStructMut * next;
     WGPUSType sType;
-} WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUChainedStructMut WGPU_STRUCTURE_ATTRIBUTE;
 
 /** @} */
 {{  end}}
@@ -305,17 +305,17 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-   if eq .Type "base_in" }}
     WGPUChainedStruct const * nextInChain;
 {{-   else if eq .Type "base_out" }}
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStructMut * nextInChain;
 {{-   else if eq .Type "base_in_or_out" }}
     /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStructMut * nextInChain;
 {{-   else if eq .Type "extension_in"}}
     WGPUChainedStruct chain;
 {{-   else if eq .Type "extension_out"}}
-    WGPUChainedStructOut chain;
+    WGPUChainedStructMut chain;
 {{-   else if eq .Type "extension_in_or_out"}}
     /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut chain;
+    WGPUChainedStructMut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
     {{- MCommentMember . 4 }}
