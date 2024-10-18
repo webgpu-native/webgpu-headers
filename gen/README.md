@@ -32,13 +32,15 @@ Since the generator does some duplication validation, the order of the files mat
 | `float64`       |
 | `c_void`        |
 
-| Structure types |                                                         |
-| --------------- | ------------------------------------------------------- |
-| `base_in`       | in-structs that can be extended                         |
-| `base_out`      | out-structs that can be extended                        |
-| `extension_in`  | in-structs that are extensions                          |
-| `extension_out` | out-structs that are extensions                         |
-| `standalone`    | structs that are niether extensions nor can be extended |
+| Structure types       |                                                         |
+| --------------------- | ------------------------------------------------------- |
+| `base_in`             | in-structs that can be extended                         |
+| `base_out`            | out-structs that can be extended                        |
+| `base_in_or_out`      | extensible structs used as either input or output       |
+| `extension_in`        | extension structs used in `base_in` chains              |
+| `extension_out`       | extension structs used in `base_out` chains             |
+| `extension_in_or_out` | extension structs used `base_in_or_out` chains          |
+| `standalone`          | structs that are niether extensions nor can be extended |
 
 #### Arrays
 

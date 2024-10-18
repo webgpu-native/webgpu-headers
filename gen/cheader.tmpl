@@ -306,9 +306,15 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     WGPUChainedStruct const * nextInChain;
 {{-   else if eq .Type "base_out" }}
     WGPUChainedStructOut * nextInChain;
+{{-   else if eq .Type "base_in_or_out" }}
+    /** This struct chain is used as mutable in some places and immutable in others. */
+    WGPUChainedStructOut * nextInChain;
 {{-   else if eq .Type "extension_in"}}
     WGPUChainedStruct chain;
 {{-   else if eq .Type "extension_out"}}
+    WGPUChainedStructOut chain;
+{{-   else if eq .Type "extension_in_or_out"}}
+    /** This struct chain is used as mutable in some places and immutable in others. */
     WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}

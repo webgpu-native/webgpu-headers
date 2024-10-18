@@ -226,20 +226,18 @@ struct WGPUBlendState;
 struct WGPUCompilationInfo;
 struct WGPUComputePassDescriptor;
 struct WGPUDepthStencilState;
+struct WGPUDeviceDescriptor;
 struct WGPUFutureWaitInfo;
 struct WGPUImageCopyBuffer;
 struct WGPUImageCopyTexture;
 struct WGPUInstanceDescriptor;
 struct WGPUProgrammableStageDescriptor;
 struct WGPURenderPassColorAttachment;
-struct WGPURequiredLimits;
-struct WGPUSupportedLimits;
 struct WGPUTextureDescriptor;
 struct WGPUVertexBufferLayout;
 struct WGPUBindGroupLayoutDescriptor;
 struct WGPUColorTargetState;
 struct WGPUComputePipelineDescriptor;
-struct WGPUDeviceDescriptor;
 struct WGPURenderPassDescriptor;
 struct WGPUVertexState;
 struct WGPUFragmentState;
@@ -1450,7 +1448,8 @@ typedef struct WGPUFuture {
  * Features enabled on the WGPUInstance
  */
 typedef struct WGPUInstanceFeatures {
-    WGPUChainedStruct const * nextInChain;
+    /** This struct chain is used as mutable in some places and immutable in others. */
+    WGPUChainedStructOut * nextInChain;
     /**
      * Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
      */
@@ -1462,6 +1461,8 @@ typedef struct WGPUInstanceFeatures {
 } WGPUInstanceFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPULimits {
+    /** This struct chain is used as mutable in some places and immutable in others. */
+    WGPUChainedStructOut * nextInChain;
     uint32_t maxTextureDimension1D;
     uint32_t maxTextureDimension2D;
     uint32_t maxTextureDimension3D;
@@ -1937,6 +1938,20 @@ typedef struct WGPUDepthStencilState {
     float depthBiasClamp;
 } WGPUDepthStencilState WGPU_STRUCTURE_ATTRIBUTE;
 
+typedef struct WGPUDeviceDescriptor {
+    WGPUChainedStruct const * nextInChain;
+    /**
+     * This is a \ref NonNullInputString.
+     */
+    WGPUStringView label;
+    size_t requiredFeatureCount;
+    WGPUFeatureName const * requiredFeatures;
+    WGPU_NULLABLE WGPULimits const * requiredLimits;
+    WGPUQueueDescriptor defaultQueue;
+    WGPUDeviceLostCallbackInfo deviceLostCallbackInfo;
+    WGPUUncapturedErrorCallbackInfo uncapturedErrorCallbackInfo;
+} WGPUDeviceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
 /**
  * Struct holding a future to wait on, and a `completed` boolean flag.
  */
@@ -1991,16 +2006,6 @@ typedef struct WGPURenderPassColorAttachment {
     WGPUStoreOp storeOp;
     WGPUColor clearValue;
 } WGPURenderPassColorAttachment WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPURequiredLimits {
-    WGPUChainedStruct const * nextInChain;
-    WGPULimits limits;
-} WGPURequiredLimits WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPUSupportedLimits {
-    WGPUChainedStructOut * nextInChain;
-    WGPULimits limits;
-} WGPUSupportedLimits WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUTextureDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -2061,20 +2066,6 @@ typedef struct WGPUComputePipelineDescriptor {
     WGPU_NULLABLE WGPUPipelineLayout layout;
     WGPUProgrammableStageDescriptor compute;
 } WGPUComputePipelineDescriptor WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPUDeviceDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    /**
-     * This is a \ref NonNullInputString.
-     */
-    WGPUStringView label;
-    size_t requiredFeatureCount;
-    WGPUFeatureName const * requiredFeatures;
-    WGPU_NULLABLE WGPURequiredLimits const * requiredLimits;
-    WGPUQueueDescriptor defaultQueue;
-    WGPUDeviceLostCallbackInfo deviceLostCallbackInfo;
-    WGPUUncapturedErrorCallbackInfo uncapturedErrorCallbackInfo;
-} WGPUDeviceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassDescriptor {
     WGPUChainedStruct const * nextInChain;
@@ -2168,7 +2159,7 @@ typedef void (*WGPUProcAdapterGetInfo)(WGPUAdapter adapter, WGPUAdapterInfo * in
  * Proc pointer type for @ref wgpuAdapterGetLimits:
  * > @copydoc wgpuAdapterGetLimits
  */
-typedef WGPUBool (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUBool (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuAdapterHasFeature:
  * > @copydoc wgpuAdapterHasFeature
@@ -2551,7 +2542,7 @@ typedef WGPUStatus (*WGPUProcDeviceGetFeatures)(WGPUDevice device, WGPUSupported
  * Proc pointer type for @ref wgpuDeviceGetLimits:
  * > @copydoc wgpuDeviceGetLimits
  */
-typedef WGPUBool (*WGPUProcDeviceGetLimits)(WGPUDevice device, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUBool (*WGPUProcDeviceGetLimits)(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceGetQueue:
  * > @copydoc wgpuDeviceGetQueue
@@ -3177,7 +3168,7 @@ WGPU_EXPORT WGPUStatus wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupported
  * This parameter is @ref ReturnedWithOwnership.
  */
 WGPU_EXPORT void wgpuAdapterGetInfo(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBool wgpuAdapterGetLimits(WGPUAdapter adapter, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUBool wgpuAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPU_NULLABLE WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuAdapterAddRef(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
@@ -3354,7 +3345,7 @@ WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  * - `features` has an invalid struct chain.
  */
 WGPU_EXPORT WGPUStatus wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBool wgpuDeviceGetLimits(WGPUDevice device, WGPUSupportedLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUBool wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuDeviceHasFeature(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuDevicePopErrorScope(WGPUDevice device, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
