@@ -2014,15 +2014,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_aspect
-  - name: instance_descriptor
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: features
-        doc: Instance features to enable
-        type: struct.instance_features
-  - name: instance_features
+  - name: instance_capabilities
     doc: |
       Features enabled on the WGPUInstance
     type: base_in_or_out
@@ -2033,6 +2025,14 @@ structs:
       - name: timed_wait_any_max_count
         doc: The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
         type: usize
+  - name: instance_descriptor
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: capabilities
+        doc: Instance capabilities to enable
+        type: struct.instance_capabilities
   - name: limits
     doc: |
       TODO
@@ -3167,12 +3167,12 @@ functions:
         type: struct.instance_descriptor
         pointer: immutable
         optional: true
-  - name: get_instance_features
-    doc: Query the supported instance features
+  - name: get_instance_capabilities
+    doc: Query the supported instance capabilities
     args:
-      - name: features
-        doc: The supported instance features
-        type: struct.instance_features
+      - name: capabilities
+        doc: The supported instance capabilities
+        type: struct.instance_capabilities
         pointer: mutable
 objects:
   - name: adapter

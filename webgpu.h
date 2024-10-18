@@ -184,7 +184,7 @@ struct WGPUComputePassTimestampWrites;
 struct WGPUConstantEntry;
 struct WGPUExtent3D;
 struct WGPUFuture;
-struct WGPUInstanceFeatures;
+struct WGPUInstanceCapabilities;
 struct WGPULimits;
 struct WGPUMultisampleState;
 struct WGPUOrigin3D;
@@ -1447,7 +1447,7 @@ typedef struct WGPUFuture {
 /**
  * Features enabled on the WGPUInstance
  */
-typedef struct WGPUInstanceFeatures {
+typedef struct WGPUInstanceCapabilities {
     /** This struct chain is used as mutable in some places and immutable in others. */
     WGPUChainedStructOut * nextInChain;
     /**
@@ -1458,7 +1458,7 @@ typedef struct WGPUInstanceFeatures {
      * The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
      */
     size_t timedWaitAnyMaxCount;
-} WGPUInstanceFeatures WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUInstanceCapabilities WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPULimits {
     /** This struct chain is used as mutable in some places and immutable in others. */
@@ -1981,9 +1981,9 @@ typedef struct WGPUImageCopyTexture {
 typedef struct WGPUInstanceDescriptor {
     WGPUChainedStruct const * nextInChain;
     /**
-     * Instance features to enable
+     * Instance capabilities to enable
      */
-    WGPUInstanceFeatures features;
+    WGPUInstanceCapabilities capabilities;
 } WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUProgrammableStageDescriptor {
@@ -2134,10 +2134,10 @@ extern "C" {
  */
 typedef WGPUInstance (*WGPUProcCreateInstance)(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Proc pointer type for @ref wgpuGetInstanceFeatures:
- * > @copydoc wgpuGetInstanceFeatures
+ * Proc pointer type for @ref wgpuGetInstanceCapabilities:
+ * > @copydoc wgpuGetInstanceCapabilities
  */
-typedef void (*WGPUProcGetInstanceFeatures)(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcGetInstanceCapabilities)(WGPUInstanceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuGetProcAddress:
  * > @copydoc wgpuGetProcAddress
@@ -3123,12 +3123,12 @@ typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView) WGPU_FUN
  */
 WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Query the supported instance features
+ * Query the supported instance capabilities
  *
- * @param features
- * The supported instance features
+ * @param capabilities
+ * The supported instance capabilities
  */
-WGPU_EXPORT void wgpuGetInstanceFeatures(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuGetInstanceCapabilities(WGPUInstanceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns the "procedure address" (function pointer) of the named function.
  * The result must be cast to the appropriate proc pointer type.
