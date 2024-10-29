@@ -752,7 +752,7 @@ enums:
   - name: status
     doc: |
       Status code returned (synchronously) from many operations. Generally
-      indicates an invalid input like an unknown enum value or @ref StructChainingError.
+      indicates an invalid input like an unknown enum value or @ref OutStructChainError.
       Read the function's documentation for specific error conditions.
     entries:
       - null
@@ -841,7 +841,7 @@ enums:
       - name: device_lost
         doc: The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
       - name: error
-        doc: The surface is not configured, or there was a @ref StructChainingError.
+        doc: The surface is not configured, or there was an @ref OutStructChainError.
   - name: texture_aspect
     doc: |
       TODO
@@ -3172,8 +3172,7 @@ functions:
   - name: get_instance_features
     doc: Query the supported instance features
     returns:
-      doc: |
-        Returns @ref WGPUStatus_Error (and leaves `features` unchanged) if there was a @ref StructChainingError.
+      doc: Indicates if there was an @ref OutStructChainError.
       type: enum.status
     args:
       - name: features
@@ -3189,8 +3188,7 @@ objects:
         doc: |
           TODO
         returns:
-          doc: |
-            Returns @ref WGPUStatus_Error (and leaves `limits` unchanged) if there was a @ref StructChainingError.
+          doc: Indicates if there was an @ref OutStructChainError.
           type: enum.status
         args:
           - name: limits
@@ -3214,8 +3212,7 @@ objects:
         doc: |
           Get the list of @ref WGPUFeatureName values supported by the adapter.
         returns:
-          doc: |
-            Returns @ref WGPUStatus_Error (and leaves `features` unchanged) if there was a @ref StructChainingError.
+          doc: Indicates if there was an @ref OutStructChainError.
           type: enum.status
         args:
           - name: features
@@ -3228,8 +3225,7 @@ objects:
         doc: |
           TODO
         returns:
-          doc: |
-            Returns @ref WGPUStatus_Error (and leaves `info` unchanged) if there was a @ref StructChainingError.
+          doc: Indicates if there was an @ref OutStructChainError.
           type: enum.status
         args:
           - name: info
@@ -3300,7 +3296,6 @@ objects:
         returns:
           doc: |
             Returns a mutable pointer to beginning of the mapped range.
-            It may be written, but reading is undefined behavior unless the buffer was also mapped with @ref WGPUMapMode_Read.
             Returns `NULL` with @ref ImplementationDefinedLogging if:
 
             - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
@@ -3906,8 +3901,7 @@ objects:
         doc: |
           TODO
         returns:
-          doc: |
-            Returns @ref WGPUStatus_Error (and leaves `limits` unchanged) if there was a @ref StructChainingError.
+          doc: Indicates if there was an @ref OutStructChainError.
           type: enum.status
         args:
           - name: limits
@@ -3931,8 +3925,7 @@ objects:
         doc: |
           Get the list of @ref WGPUFeatureName values supported by the device.
         returns:
-          doc: |
-            Returns @ref WGPUStatus_Error (and leaves `features` unchanged) if there was a @ref StructChainingError.
+          doc: Indicates if there was an @ref OutStructChainError.
           type: enum.status
         args:
           - name: features
@@ -4096,8 +4089,8 @@ objects:
         callback: callback.queue_work_done
       - name: write_buffer
         doc: |
-          Produces a @ref DeviceError if `size` is not a multiple of 4
-          (in addition to device-timeline errors defined by the WebGPU specification).
+          Produces a @ref DeviceError both content-timeline (`size` alignment) and device-timeline
+          errors defined by the WebGPU specification.
         args:
           - name: buffer
             doc: |
@@ -4658,14 +4651,9 @@ objects:
       - name: configure
         doc: |
           Configures parameters for rendering to `surface`.
-          Produces a @ref DeviceError for all content-timeline errors defined by the WebGPU specification
-          (formats that are not supported by the surface or not enabled on the device).
+          Produces a @ref DeviceError for all content-timeline errors defined by the WebGPU specification.
 
           See @ref Surface-Configuration for more details.
-        returns:
-          doc: |
-            Returns @ref WGPUStatus_Error if there was a @ref StructChainingError.
-          type: enum.status
         args:
           - name: config
             doc: The new configuration to use.
@@ -4677,7 +4665,7 @@ objects:
           See @ref Surface-Capabilities for more details.
         returns:
           doc: |
-            Returns @ref WGPUStatus_Error (and leaves `capabilities` unchanged) if there was a @ref StructChainingError.
+            Returns @ref WGPUStatus_Error (and leaves `capabilities` unchanged) if there was an @ref OutStructChainError.
           type: enum.status
         args:
           - name: adapter

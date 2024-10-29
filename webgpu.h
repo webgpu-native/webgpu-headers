@@ -737,7 +737,7 @@ typedef enum WGPUSamplerBindingType {
 
 /**
  * Status code returned (synchronously) from many operations. Generally
- * indicates an invalid input like an unknown enum value or @ref StructChainingError.
+ * indicates an invalid input like an unknown enum value or @ref OutStructChainError.
  * Read the function's documentation for specific error conditions.
  */
 typedef enum WGPUStatus {
@@ -834,7 +834,7 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000007,
     /**
      * `0x00000008`.
-     * The surface is not configured, or there was a @ref StructChainingError.
+     * The surface is not configured, or there was an @ref OutStructChainError.
      */
     WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000008,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
@@ -2986,7 +2986,7 @@ typedef void (*WGPUProcSupportedFeaturesFreeMembers)(WGPUSupportedFeatures suppo
  * Proc pointer type for @ref wgpuSurfaceConfigure:
  * > @copydoc wgpuSurfaceConfigure
  */
-typedef WGPUStatus (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuSurfaceGetCapabilities:
  * > @copydoc wgpuSurfaceGetCapabilities
@@ -3134,7 +3134,7 @@ WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor
  * The supported instance features
  *
  * @returns
- * Returns @ref WGPUStatus_Error (and leaves `features` unchanged) if there was a @ref StructChainingError.
+ * Indicates if there was an @ref OutStructChainError.
  */
 WGPU_EXPORT WGPUStatus wgpuGetInstanceFeatures(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -3166,7 +3166,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
- * Returns @ref WGPUStatus_Error (and leaves `features` unchanged) if there was a @ref StructChainingError.
+ * Indicates if there was an @ref OutStructChainError.
  */
 WGPU_EXPORT WGPUStatus wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -3174,12 +3174,12 @@ WGPU_EXPORT WGPUStatus wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupported
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
- * Returns @ref WGPUStatus_Error (and leaves `info` unchanged) if there was a @ref StructChainingError.
+ * Indicates if there was an @ref OutStructChainError.
  */
 WGPU_EXPORT WGPUStatus wgpuAdapterGetInfo(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @returns
- * Returns @ref WGPUStatus_Error (and leaves `limits` unchanged) if there was a @ref StructChainingError.
+ * Indicates if there was an @ref OutStructChainError.
  */
 WGPU_EXPORT WGPUStatus wgpuAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
@@ -3262,7 +3262,6 @@ WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUN
  *
  * @returns
  * Returns a mutable pointer to beginning of the mapped range.
- * It may be written, but reading is undefined behavior unless the buffer was also mapped with @ref WGPUMapMode_Read.
  * Returns `NULL` with @ref ImplementationDefinedLogging if:
  *
  * - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
@@ -3382,12 +3381,12 @@ WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
- * Returns @ref WGPUStatus_Error (and leaves `features` unchanged) if there was a @ref StructChainingError.
+ * Indicates if there was an @ref OutStructChainError.
  */
 WGPU_EXPORT WGPUStatus wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @returns
- * Returns @ref WGPUStatus_Error (and leaves `limits` unchanged) if there was a @ref StructChainingError.
+ * Indicates if there was an @ref OutStructChainError.
  */
 WGPU_EXPORT WGPUStatus wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
@@ -3476,8 +3475,8 @@ WGPU_EXPORT WGPUFuture wgpuQueueOnSubmittedWorkDone(WGPUQueue queue, WGPUQueueWo
 WGPU_EXPORT void wgpuQueueSetLabel(WGPUQueue queue, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueSubmit(WGPUQueue queue, size_t commandCount, WGPUCommandBuffer const * commands) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Produces a @ref DeviceError if `size` is not a multiple of 4
- * (in addition to device-timeline errors defined by the WebGPU specification).
+ * Produces a @ref DeviceError both content-timeline (`size` alignment) and device-timeline
+ * errors defined by the WebGPU specification.
  */
 WGPU_EXPORT void wgpuQueueWriteBuffer(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueWriteTexture(WGPUQueue queue, WGPUImageCopyTexture const * destination, void const * data, size_t dataSize, WGPUTextureDataLayout const * dataLayout, WGPUExtent3D const * writeSize) WGPU_FUNCTION_ATTRIBUTE;
@@ -3620,18 +3619,14 @@ WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supporte
  */
 /**
  * Configures parameters for rendering to `surface`.
- * Produces a @ref DeviceError for all content-timeline errors defined by the WebGPU specification
- * (formats that are not supported by the surface or not enabled on the device).
+ * Produces a @ref DeviceError for all content-timeline errors defined by the WebGPU specification.
  *
  * See @ref Surface-Configuration for more details.
  *
  * @param config
  * The new configuration to use.
- *
- * @returns
- * Returns @ref WGPUStatus_Error if there was a @ref StructChainingError.
  */
-WGPU_EXPORT WGPUStatus wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfiguration const * config) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Provides information on how `adapter` is able to use `surface`.
  * See @ref Surface-Capabilities for more details.
@@ -3645,7 +3640,7 @@ WGPU_EXPORT WGPUStatus wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConf
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
- * Returns @ref WGPUStatus_Error (and leaves `capabilities` unchanged) if there was a @ref StructChainingError.
+ * Returns @ref WGPUStatus_Error (and leaves `capabilities` unchanged) if there was an @ref OutStructChainError.
  */
 WGPU_EXPORT WGPUStatus wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
