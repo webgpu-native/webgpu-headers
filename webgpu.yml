@@ -4664,8 +4664,7 @@ objects:
           Provides information on how `adapter` is able to use `surface`.
           See @ref Surface-Capabilities for more details.
         returns:
-          doc: |
-            Returns @ref WGPUStatus_Error (and leaves `capabilities` unchanged) if there was an @ref OutStructChainError.
+          doc: Indicates if there was an @ref OutStructChainError.
           type: enum.status
         args:
           - name: adapter
