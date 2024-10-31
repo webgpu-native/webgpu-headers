@@ -2534,6 +2534,11 @@ typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextur
  */
 typedef void (*WGPUProcDeviceDestroy)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * Proc pointer type for @ref wgpuDeviceGetAdapterInfo:
+ * > @copydoc wgpuDeviceGetAdapterInfo
+ */
+typedef WGPUAdapterInfo (*WGPUProcDeviceGetAdapterInfo)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+/**
  * Proc pointer type for @ref wgpuDeviceGetFeatures:
  * > @copydoc wgpuDeviceGetFeatures
  */
@@ -3333,6 +3338,7 @@ WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPU_NULLABLE
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUAdapterInfo wgpuDeviceGetAdapterInfo(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Get the list of @ref WGPUFeatureName values supported by the device.
  *
