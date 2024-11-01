@@ -1216,10 +1216,16 @@ enums:
       TODO
     entries:
       - null
+      - name: uint8
+        doc: |
+          TODO
       - name: uint8x2
         doc: |
           TODO
       - name: uint8x4
+        doc: |
+          TODO
+      - name: sint8
         doc: |
           TODO
       - name: sint8x2
@@ -1228,10 +1234,16 @@ enums:
       - name: sint8x4
         doc: |
           TODO
+      - name: unorm8
+        doc: |
+          TODO
       - name: unorm8x2
         doc: |
           TODO
       - name: unorm8x4
+        doc: |
+          TODO
+      - name: snorm8
         doc: |
           TODO
       - name: snorm8x2
@@ -1240,10 +1252,16 @@ enums:
       - name: snorm8x4
         doc: |
           TODO
+      - name: uint16
+        doc: |
+          TODO
       - name: uint16x2
         doc: |
           TODO
       - name: uint16x4
+        doc: |
+          TODO
+      - name: sint16
         doc: |
           TODO
       - name: sint16x2
@@ -1252,16 +1270,25 @@ enums:
       - name: sint16x4
         doc: |
           TODO
+      - name: unorm16
+        doc: |
+          TODO
       - name: unorm16x2
         doc: |
           TODO
       - name: unorm16x4
         doc: |
           TODO
+      - name: snorm16
+        doc: |
+          TODO
       - name: snorm16x2
         doc: |
           TODO
       - name: snorm16x4
+        doc: |
+          TODO
+      - name: float16
         doc: |
           TODO
       - name: float16x2
@@ -1307,6 +1334,9 @@ enums:
         doc: |
           TODO
       - name: unorm10__10__10__2
+        doc: |
+          TODO
+      - name: unorm8x4_B_G_R_A
         doc: |
           TODO
   - name: vertex_step_mode
