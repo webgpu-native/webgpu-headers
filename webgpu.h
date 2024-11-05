@@ -1000,37 +1000,47 @@ typedef enum WGPUTextureViewDimension {
 } WGPUTextureViewDimension WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUVertexFormat {
-    WGPUVertexFormat_Uint8x2 = 0x00000001,
-    WGPUVertexFormat_Uint8x4 = 0x00000002,
-    WGPUVertexFormat_Sint8x2 = 0x00000003,
-    WGPUVertexFormat_Sint8x4 = 0x00000004,
-    WGPUVertexFormat_Unorm8x2 = 0x00000005,
-    WGPUVertexFormat_Unorm8x4 = 0x00000006,
-    WGPUVertexFormat_Snorm8x2 = 0x00000007,
-    WGPUVertexFormat_Snorm8x4 = 0x00000008,
-    WGPUVertexFormat_Uint16x2 = 0x00000009,
-    WGPUVertexFormat_Uint16x4 = 0x0000000A,
-    WGPUVertexFormat_Sint16x2 = 0x0000000B,
-    WGPUVertexFormat_Sint16x4 = 0x0000000C,
-    WGPUVertexFormat_Unorm16x2 = 0x0000000D,
-    WGPUVertexFormat_Unorm16x4 = 0x0000000E,
-    WGPUVertexFormat_Snorm16x2 = 0x0000000F,
-    WGPUVertexFormat_Snorm16x4 = 0x00000010,
-    WGPUVertexFormat_Float16x2 = 0x00000011,
-    WGPUVertexFormat_Float16x4 = 0x00000012,
-    WGPUVertexFormat_Float32 = 0x00000013,
-    WGPUVertexFormat_Float32x2 = 0x00000014,
-    WGPUVertexFormat_Float32x3 = 0x00000015,
-    WGPUVertexFormat_Float32x4 = 0x00000016,
-    WGPUVertexFormat_Uint32 = 0x00000017,
-    WGPUVertexFormat_Uint32x2 = 0x00000018,
-    WGPUVertexFormat_Uint32x3 = 0x00000019,
-    WGPUVertexFormat_Uint32x4 = 0x0000001A,
-    WGPUVertexFormat_Sint32 = 0x0000001B,
-    WGPUVertexFormat_Sint32x2 = 0x0000001C,
-    WGPUVertexFormat_Sint32x3 = 0x0000001D,
-    WGPUVertexFormat_Sint32x4 = 0x0000001E,
-    WGPUVertexFormat_Unorm10_10_10_2 = 0x0000001F,
+    WGPUVertexFormat_Uint8 = 0x00000001,
+    WGPUVertexFormat_Uint8x2 = 0x00000002,
+    WGPUVertexFormat_Uint8x4 = 0x00000003,
+    WGPUVertexFormat_Sint8 = 0x00000004,
+    WGPUVertexFormat_Sint8x2 = 0x00000005,
+    WGPUVertexFormat_Sint8x4 = 0x00000006,
+    WGPUVertexFormat_Unorm8 = 0x00000007,
+    WGPUVertexFormat_Unorm8x2 = 0x00000008,
+    WGPUVertexFormat_Unorm8x4 = 0x00000009,
+    WGPUVertexFormat_Snorm8 = 0x0000000A,
+    WGPUVertexFormat_Snorm8x2 = 0x0000000B,
+    WGPUVertexFormat_Snorm8x4 = 0x0000000C,
+    WGPUVertexFormat_Uint16 = 0x0000000D,
+    WGPUVertexFormat_Uint16x2 = 0x0000000E,
+    WGPUVertexFormat_Uint16x4 = 0x0000000F,
+    WGPUVertexFormat_Sint16 = 0x00000010,
+    WGPUVertexFormat_Sint16x2 = 0x00000011,
+    WGPUVertexFormat_Sint16x4 = 0x00000012,
+    WGPUVertexFormat_Unorm16 = 0x00000013,
+    WGPUVertexFormat_Unorm16x2 = 0x00000014,
+    WGPUVertexFormat_Unorm16x4 = 0x00000015,
+    WGPUVertexFormat_Snorm16 = 0x00000016,
+    WGPUVertexFormat_Snorm16x2 = 0x00000017,
+    WGPUVertexFormat_Snorm16x4 = 0x00000018,
+    WGPUVertexFormat_Float16 = 0x00000019,
+    WGPUVertexFormat_Float16x2 = 0x0000001A,
+    WGPUVertexFormat_Float16x4 = 0x0000001B,
+    WGPUVertexFormat_Float32 = 0x0000001C,
+    WGPUVertexFormat_Float32x2 = 0x0000001D,
+    WGPUVertexFormat_Float32x3 = 0x0000001E,
+    WGPUVertexFormat_Float32x4 = 0x0000001F,
+    WGPUVertexFormat_Uint32 = 0x00000020,
+    WGPUVertexFormat_Uint32x2 = 0x00000021,
+    WGPUVertexFormat_Uint32x3 = 0x00000022,
+    WGPUVertexFormat_Uint32x4 = 0x00000023,
+    WGPUVertexFormat_Sint32 = 0x00000024,
+    WGPUVertexFormat_Sint32x2 = 0x00000025,
+    WGPUVertexFormat_Sint32x3 = 0x00000026,
+    WGPUVertexFormat_Sint32x4 = 0x00000027,
+    WGPUVertexFormat_Unorm10_10_10_2 = 0x00000028,
+    WGPUVertexFormat_Unorm8x4BGRA = 0x00000029,
     WGPUVertexFormat_Force32 = 0x7FFFFFFF
 } WGPUVertexFormat WGPU_ENUM_ATTRIBUTE;
 
@@ -1659,7 +1669,6 @@ typedef struct WGPUStorageTextureBindingLayout {
 } WGPUStorageTextureBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSupportedFeatures {
-    WGPUChainedStructOut * nextInChain;
     size_t featureCount;
     WGPUFeatureName const * features;
 } WGPUSupportedFeatures WGPU_STRUCTURE_ATTRIBUTE;
@@ -2149,7 +2158,7 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUStringView procName) WGPU_FUNCTIO
  * Proc pointer type for @ref wgpuAdapterGetFeatures:
  * > @copydoc wgpuAdapterGetFeatures
  */
-typedef WGPUStatus (*WGPUProcAdapterGetFeatures)(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcAdapterGetFeatures)(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuAdapterGetInfo:
  * > @copydoc wgpuAdapterGetInfo
@@ -2542,7 +2551,7 @@ typedef WGPUAdapterInfo (*WGPUProcDeviceGetAdapterInfo)(WGPUDevice device) WGPU_
  * Proc pointer type for @ref wgpuDeviceGetFeatures:
  * > @copydoc wgpuDeviceGetFeatures
  */
-typedef WGPUStatus (*WGPUProcDeviceGetFeatures)(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcDeviceGetFeatures)(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceGetLimits:
  * > @copydoc wgpuDeviceGetLimits
@@ -3161,13 +3170,8 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
  *
  * @param features
  * This parameter is @ref ReturnedWithOwnership.
- *
- * @returns
- * Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
- *
- * - `features` has an invalid struct chain.
  */
-WGPU_EXPORT WGPUStatus wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @param info
  * This parameter is @ref ReturnedWithOwnership.
@@ -3344,13 +3348,8 @@ WGPU_EXPORT WGPUAdapterInfo wgpuDeviceGetAdapterInfo(WGPUDevice device) WGPU_FUN
  *
  * @param features
  * This parameter is @ref ReturnedWithOwnership.
- *
- * @returns
- * Return @ref WGPUStatus_Error (and leaves `features` uninitialized) if:
- *
- * - `features` has an invalid struct chain.
  */
-WGPU_EXPORT WGPUStatus wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuDeviceHasFeature(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
