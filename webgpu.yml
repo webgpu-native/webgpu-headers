@@ -3944,6 +3944,14 @@ objects:
             type: struct.supported_features
             pointer: mutable
             passed_with_ownership: true
+      - name: get_adapter_info
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: struct.adapter_info
+          passed_with_ownership: true
       - name: get_queue
         doc: |
           TODO
