@@ -14,7 +14,7 @@ int main(void) {
         (void) a;
     }
     {
-        WGPUTextureDataLayout a;
+        WGPUTexelCopyBufferLayout a;
         uint32_t x = a.bytesPerRow = WGPU_COPY_STRIDE_UNDEFINED;
         uint32_t y = a.rowsPerImage = WGPU_COPY_STRIDE_UNDEFINED;
         (void) a;

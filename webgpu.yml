@@ -2010,40 +2010,6 @@ structs:
       - name: completed
         doc: Whether or not the future completed.
         type: bool
-  - name: image_copy_buffer
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: layout
-        doc: |
-          TODO
-        type: struct.texture_data_layout
-      - name: buffer
-        doc: |
-          TODO
-        type: object.buffer
-  - name: image_copy_texture
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: texture
-        doc: |
-          TODO
-        type: object.texture
-      - name: mip_level
-        doc: |
-          TODO
-        type: uint32
-      - name: origin
-        doc: |
-          TODO
-        type: struct.origin_3D
-      - name: aspect
-        doc: |
-          TODO
-        type: enum.texture_aspect
   - name: instance_descriptor
     doc: |
       TODO
@@ -2839,6 +2805,57 @@ structs:
       - name: status
         doc: Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
         type: enum.surface_get_current_texture_status
+  - name: texel_copy_buffer_info
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: layout
+        doc: |
+          TODO
+        type: struct.texel_copy_buffer_layout
+      - name: buffer
+        doc: |
+          TODO
+        type: object.buffer
+  - name: texel_copy_buffer_layout
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: offset
+        doc: |
+          TODO
+        type: uint64
+      - name: bytes_per_row
+        doc: |
+          TODO
+        type: uint32
+      - name: rows_per_image
+        doc: |
+          TODO
+        type: uint32
+  - name: texel_copy_texture_info
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: texture
+        doc: |
+          TODO
+        type: object.texture
+      - name: mip_level
+        doc: |
+          TODO
+        type: uint32
+      - name: origin
+        doc: |
+          TODO
+        type: struct.origin_3D
+      - name: aspect
+        doc: |
+          TODO
+        type: enum.texture_aspect
   - name: texture_binding_layout
     doc: |
       TODO
@@ -2856,23 +2873,6 @@ structs:
         doc: |
           TODO
         type: bool
-  - name: texture_data_layout
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: offset
-        doc: |
-          TODO
-        type: uint64
-      - name: bytes_per_row
-        doc: |
-          TODO
-        type: uint32
-      - name: rows_per_image
-        doc: |
-          TODO
-        type: uint32
   - name: texture_descriptor
     doc: |
       TODO
@@ -3470,12 +3470,12 @@ objects:
           - name: source
             doc: |
               TODO
-            type: struct.image_copy_buffer
+            type: struct.texel_copy_buffer_info
             pointer: immutable
           - name: destination
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: copy_size
             doc: |
@@ -3489,12 +3489,12 @@ objects:
           - name: source
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: destination
             doc: |
               TODO
-            type: struct.image_copy_buffer
+            type: struct.texel_copy_buffer_info
             pointer: immutable
           - name: copy_size
             doc: |
@@ -3508,12 +3508,12 @@ objects:
           - name: source
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: destination
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: copy_size
             doc: |
@@ -4133,7 +4133,7 @@ objects:
           - name: destination
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: data
             doc: |
@@ -4147,7 +4147,7 @@ objects:
           - name: data_layout
             doc: |
               TODO
-            type: struct.texture_data_layout
+            type: struct.texel_copy_buffer_layout
             pointer: immutable
           - name: write_size
             doc: |
