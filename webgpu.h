@@ -1410,17 +1410,31 @@ typedef struct WGPUCommandEncoderDescriptor {
 typedef struct WGPUCompilationMessage {
     WGPUChainedStruct const * nextInChain;
     /**
+     * Human-readable message text (non-computer-readable; may be locale dependent!). UTF-8 encoded.
+     *
      * This is an \ref OutputString.
      */
     WGPUStringView message;
+    /**
+     * Severity level of the message.
+     */
     WGPUCompilationMessageType type;
+    /**
+     * Line number where the message is attached, starting at 1.
+     */
     uint64_t lineNum;
+    /**
+     * Offset in UTF-8 code units (bytes) from the beginning of the line, starting at 1.
+     */
     uint64_t linePos;
+    /**
+     * Offset in UTF-8 code units (bytes) from the beginning of the shader code, starting at 0.
+     */
     uint64_t offset;
+    /**
+     * Length in UTF-8 code units (bytes) of the span the message corresponds to.
+     */
     uint64_t length;
-    uint64_t utf16LinePos;
-    uint64_t utf16Offset;
-    uint64_t utf16Length;
 } WGPUCompilationMessage WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUComputePassTimestampWrites {
