@@ -1218,10 +1218,16 @@ enums:
       TODO
     entries:
       - null
+      - name: uint8
+        doc: |
+          TODO
       - name: uint8x2
         doc: |
           TODO
       - name: uint8x4
+        doc: |
+          TODO
+      - name: sint8
         doc: |
           TODO
       - name: sint8x2
@@ -1230,10 +1236,16 @@ enums:
       - name: sint8x4
         doc: |
           TODO
+      - name: unorm8
+        doc: |
+          TODO
       - name: unorm8x2
         doc: |
           TODO
       - name: unorm8x4
+        doc: |
+          TODO
+      - name: snorm8
         doc: |
           TODO
       - name: snorm8x2
@@ -1242,10 +1254,16 @@ enums:
       - name: snorm8x4
         doc: |
           TODO
+      - name: uint16
+        doc: |
+          TODO
       - name: uint16x2
         doc: |
           TODO
       - name: uint16x4
+        doc: |
+          TODO
+      - name: sint16
         doc: |
           TODO
       - name: sint16x2
@@ -1254,16 +1272,25 @@ enums:
       - name: sint16x4
         doc: |
           TODO
+      - name: unorm16
+        doc: |
+          TODO
       - name: unorm16x2
         doc: |
           TODO
       - name: unorm16x4
         doc: |
           TODO
+      - name: snorm16
+        doc: |
+          TODO
       - name: snorm16x2
         doc: |
           TODO
       - name: snorm16x4
+        doc: |
+          TODO
+      - name: float16
         doc: |
           TODO
       - name: float16x2
@@ -1309,6 +1336,9 @@ enums:
         doc: |
           TODO
       - name: unorm10__10__10__2
+        doc: |
+          TODO
+      - name: unorm8x4_B_G_R_A
         doc: |
           TODO
   - name: vertex_step_mode
@@ -1982,40 +2012,6 @@ structs:
       - name: completed
         doc: Whether or not the future completed.
         type: bool
-  - name: image_copy_buffer
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: layout
-        doc: |
-          TODO
-        type: struct.texture_data_layout
-      - name: buffer
-        doc: |
-          TODO
-        type: object.buffer
-  - name: image_copy_texture
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: texture
-        doc: |
-          TODO
-        type: object.texture
-      - name: mip_level
-        doc: |
-          TODO
-        type: uint32
-      - name: origin
-        doc: |
-          TODO
-        type: struct.origin_3D
-      - name: aspect
-        doc: |
-          TODO
-        type: enum.texture_aspect
   - name: instance_descriptor
     doc: |
       TODO
@@ -2646,7 +2642,7 @@ structs:
   - name: supported_features
     doc: |
       TODO
-    type: base_out
+    type: standalone
     free_members: true
     members:
       - name: features
@@ -2811,6 +2807,57 @@ structs:
       - name: status
         doc: Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
         type: enum.surface_get_current_texture_status
+  - name: texel_copy_buffer_info
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: layout
+        doc: |
+          TODO
+        type: struct.texel_copy_buffer_layout
+      - name: buffer
+        doc: |
+          TODO
+        type: object.buffer
+  - name: texel_copy_buffer_layout
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: offset
+        doc: |
+          TODO
+        type: uint64
+      - name: bytes_per_row
+        doc: |
+          TODO
+        type: uint32
+      - name: rows_per_image
+        doc: |
+          TODO
+        type: uint32
+  - name: texel_copy_texture_info
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: texture
+        doc: |
+          TODO
+        type: object.texture
+      - name: mip_level
+        doc: |
+          TODO
+        type: uint32
+      - name: origin
+        doc: |
+          TODO
+        type: struct.origin_3D
+      - name: aspect
+        doc: |
+          TODO
+        type: enum.texture_aspect
   - name: texture_binding_layout
     doc: |
       TODO
@@ -2828,23 +2875,6 @@ structs:
         doc: |
           TODO
         type: bool
-  - name: texture_data_layout
-    doc: |
-      TODO
-    type: standalone
-    members:
-      - name: offset
-        doc: |
-          TODO
-        type: uint64
-      - name: bytes_per_row
-        doc: |
-          TODO
-        type: uint32
-      - name: rows_per_image
-        doc: |
-          TODO
-        type: uint32
   - name: texture_descriptor
     doc: |
       TODO
@@ -3211,9 +3241,6 @@ objects:
       - name: get_features
         doc: |
           Get the list of @ref WGPUFeatureName values supported by the adapter.
-        returns:
-          doc: Indicates if there was an @ref OutStructChainError.
-          type: enum.status
         args:
           - name: features
             doc: |
@@ -3458,12 +3485,12 @@ objects:
           - name: source
             doc: |
               TODO
-            type: struct.image_copy_buffer
+            type: struct.texel_copy_buffer_info
             pointer: immutable
           - name: destination
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: copy_size
             doc: |
@@ -3477,12 +3504,12 @@ objects:
           - name: source
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: destination
             doc: |
               TODO
-            type: struct.image_copy_buffer
+            type: struct.texel_copy_buffer_info
             pointer: immutable
           - name: copy_size
             doc: |
@@ -3496,12 +3523,12 @@ objects:
           - name: source
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: destination
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: copy_size
             doc: |
@@ -3924,9 +3951,6 @@ objects:
       - name: get_features
         doc: |
           Get the list of @ref WGPUFeatureName values supported by the device.
-        returns:
-          doc: Indicates if there was an @ref OutStructChainError.
-          type: enum.status
         args:
           - name: features
             doc: |
@@ -3934,6 +3958,14 @@ objects:
             type: struct.supported_features
             pointer: mutable
             passed_with_ownership: true
+      - name: get_adapter_info
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: struct.adapter_info
+          passed_with_ownership: true
       - name: get_queue
         doc: |
           TODO
@@ -4116,7 +4148,7 @@ objects:
           - name: destination
             doc: |
               TODO
-            type: struct.image_copy_texture
+            type: struct.texel_copy_texture_info
             pointer: immutable
           - name: data
             doc: |
@@ -4130,7 +4162,7 @@ objects:
           - name: data_layout
             doc: |
               TODO
-            type: struct.texture_data_layout
+            type: struct.texel_copy_buffer_layout
             pointer: immutable
           - name: write_size
             doc: |
