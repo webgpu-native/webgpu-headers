@@ -3348,6 +3348,8 @@ objects:
             Returns `NULL` with @ref ImplementationDefinedLogging if:
 
             - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
+              **except** for overlaps with other *const* ranges, which are allowed in C.
+              (JS does not allow this because const ranges do not exist.)
           type: c_void
           pointer: immutable
         args:
