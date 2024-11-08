@@ -3926,6 +3926,12 @@ objects:
       - name: destroy
         doc: |
           TODO
+      - name: get_lost_future
+        doc: ""
+        returns:
+          doc: |
+            The @ref WGPUFuture for the device-lost event of the device.
+          type: struct.future
       - name: get_limits
         doc: |
           TODO

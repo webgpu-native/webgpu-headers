@@ -2563,6 +2563,11 @@ typedef void (*WGPUProcDeviceGetFeatures)(WGPUDevice device, WGPUSupportedFeatur
  */
 typedef WGPUStatus (*WGPUProcDeviceGetLimits)(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * Proc pointer type for @ref wgpuDeviceGetLostFuture:
+ * > @copydoc wgpuDeviceGetLostFuture
+ */
+typedef WGPUFuture (*WGPUProcDeviceGetLostFuture)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+/**
  * Proc pointer type for @ref wgpuDeviceGetQueue:
  * > @copydoc wgpuDeviceGetQueue
  */
@@ -3400,6 +3405,11 @@ WGPU_EXPORT void wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures 
  * Indicates if there was an @ref OutStructChainError.
  */
 WGPU_EXPORT WGPUStatus wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @returns
+ * The @ref WGPUFuture for the device-lost event of the device.
+ */
+WGPU_EXPORT WGPUFuture wgpuDeviceGetLostFuture(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuDeviceHasFeature(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuDevicePopErrorScope(WGPUDevice device, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
