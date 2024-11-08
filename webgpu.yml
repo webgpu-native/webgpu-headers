@@ -752,8 +752,8 @@ enums:
   - name: status
     doc: |
       Status code returned (synchronously) from many operations. Generally
-      indicates an invalid input like an unknown enum value or struct chaining
-      error. Read the function's documentation for specific error conditions.
+      indicates an invalid input like an unknown enum value or @ref OutStructChainError.
+      Read the function's documentation for specific error conditions.
     entries:
       - null
       - name: success
@@ -840,6 +840,8 @@ enums:
         doc: The system ran out of memory.
       - name: device_lost
         doc: The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
+      - name: error
+        doc: The surface is not configured, or there was an @ref OutStructChainError.
   - name: texture_aspect
     doc: |
       TODO
@@ -3199,6 +3201,9 @@ functions:
         optional: true
   - name: get_instance_features
     doc: Query the supported instance features
+    returns:
+      doc: Indicates if there was an @ref OutStructChainError.
+      type: enum.status
     args:
       - name: features
         doc: The supported instance features
@@ -3213,9 +3218,8 @@ objects:
         doc: |
           TODO
         returns:
-          doc: |
-            TODO
-          type: bool
+          doc: Indicates if there was an @ref OutStructChainError.
+          type: enum.status
         args:
           - name: limits
             doc: |
@@ -3247,6 +3251,9 @@ objects:
       - name: get_info
         doc: |
           TODO
+        returns:
+          doc: Indicates if there was an @ref OutStructChainError.
+          type: enum.status
         args:
           - name: info
             doc: |
@@ -3315,34 +3322,44 @@ objects:
           TODO
         returns:
           doc: |
-            TODO
+            Returns a mutable pointer to beginning of the mapped range.
+            Returns `NULL` with @ref ImplementationDefinedLogging if:
+
+            - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
+            - The buffer is not mapped with @ref WGPUMapMode_Write.
           type: c_void
           pointer: mutable
         args:
           - name: offset
             doc: |
-              TODO
+              Byte offset relative to the beginning of the buffer.
             type: usize
           - name: size
             doc: |
-              TODO
+              Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
             type: usize
       - name: get_const_mapped_range
         doc: |
           TODO
         returns:
           doc: |
-            TODO
+            Returns a const pointer to beginning of the mapped range.
+            It must not be written; writing to this range causes undefined behavior.
+            Returns `NULL` with @ref ImplementationDefinedLogging if:
+
+            - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
+              **except** for overlaps with other *const* ranges, which are allowed in C.
+              (JS does not allow this because const ranges do not exist.)
           type: c_void
           pointer: immutable
         args:
           - name: offset
             doc: |
-              TODO
+              Byte offset relative to the beginning of the buffer.
             type: usize
           - name: size
             doc: |
-              TODO
+              Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
             type: usize
       - name: set_label
         doc: |
@@ -3919,9 +3936,8 @@ objects:
         doc: |
           TODO
         returns:
-          doc: |
-            TODO
-          type: bool
+          doc: Indicates if there was an @ref OutStructChainError.
+          type: enum.status
         args:
           - name: limits
             doc: |
@@ -4113,7 +4129,8 @@ objects:
         callback: callback.queue_work_done
       - name: write_buffer
         doc: |
-          TODO
+          Produces a @ref DeviceError both content-timeline (`size` alignment) and device-timeline
+          errors defined by the WebGPU specification.
         args:
           - name: buffer
             doc: |
@@ -4674,6 +4691,8 @@ objects:
       - name: configure
         doc: |
           Configures parameters for rendering to `surface`.
+          Produces a @ref DeviceError for all content-timeline errors defined by the WebGPU specification.
+
           See @ref Surface-Configuration for more details.
         args:
           - name: config
@@ -4685,8 +4704,8 @@ objects:
           Provides information on how `adapter` is able to use `surface`.
           See @ref Surface-Capabilities for more details.
         returns:
-          doc: TODO make this WGPUStatus instead of a boolean.
-          type: bool
+          doc: Indicates if there was an @ref OutStructChainError.
+          type: enum.status
         args:
           - name: adapter
             doc: The @ref WGPUAdapter to get capabilities for presenting to this @ref WGPUSurface.
@@ -4701,6 +4720,8 @@ objects:
       - name: get_current_texture
         doc: |
           Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
+          Returns `NULL` and @ref WGPUSurfaceGetCurrentTextureStatus_Error if the surface is not configured.
+
           See @ref Surface-Presenting for more details.
         args:
           - name: surface_texture
@@ -4711,6 +4732,10 @@ objects:
         doc: |
           Shows `surface`'s current texture to the user.
           See @ref Surface-Presenting for more details.
+        returns:
+          doc: |
+            Returns @ref WGPUStatus_Error if the surface doesn't have a current texture.
+          type: enum.status
       - name: unconfigure
         doc: |
           Removes the configuration for `surface`.
