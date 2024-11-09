@@ -419,8 +419,7 @@ typedef enum WGPUCompilationInfoRequestStatus {
     WGPUCompilationInfoRequestStatus_Success = 0x00000001,
     WGPUCompilationInfoRequestStatus_InstanceDropped = 0x00000002,
     WGPUCompilationInfoRequestStatus_Error = 0x00000003,
-    WGPUCompilationInfoRequestStatus_DeviceLost = 0x00000004,
-    WGPUCompilationInfoRequestStatus_Unknown = 0x00000005,
+    WGPUCompilationInfoRequestStatus_Unknown = 0x00000004,
     WGPUCompilationInfoRequestStatus_Force32 = 0x7FFFFFFF
 } WGPUCompilationInfoRequestStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -468,9 +467,7 @@ typedef enum WGPUCreatePipelineAsyncStatus {
     WGPUCreatePipelineAsyncStatus_InstanceDropped = 0x00000002,
     WGPUCreatePipelineAsyncStatus_ValidationError = 0x00000003,
     WGPUCreatePipelineAsyncStatus_InternalError = 0x00000004,
-    WGPUCreatePipelineAsyncStatus_DeviceLost = 0x00000005,
-    WGPUCreatePipelineAsyncStatus_DeviceDestroyed = 0x00000006,
-    WGPUCreatePipelineAsyncStatus_Unknown = 0x00000007,
+    WGPUCreatePipelineAsyncStatus_Unknown = 0x00000005,
     WGPUCreatePipelineAsyncStatus_Force32 = 0x7FFFFFFF
 } WGPUCreatePipelineAsyncStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -507,7 +504,6 @@ typedef enum WGPUErrorType {
     WGPUErrorType_OutOfMemory = 0x00000003,
     WGPUErrorType_Internal = 0x00000004,
     WGPUErrorType_Unknown = 0x00000005,
-    WGPUErrorType_DeviceLost = 0x00000006,
     WGPUErrorType_Force32 = 0x7FFFFFFF
 } WGPUErrorType WGPU_ENUM_ATTRIBUTE;
 
@@ -683,7 +679,6 @@ typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_InstanceDropped = 0x00000002,
     WGPUQueueWorkDoneStatus_Error = 0x00000003,
     WGPUQueueWorkDoneStatus_Unknown = 0x00000004,
-    WGPUQueueWorkDoneStatus_DeviceLost = 0x00000005,
     WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
 } WGPUQueueWorkDoneStatus WGPU_ENUM_ATTRIBUTE;
 
