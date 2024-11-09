@@ -33,7 +33,9 @@
             "enum": [
                 "c_void",
                 "bool",
-                "string",
+                "nullable_string",
+                "string_with_default_empty",
+                "out_string",
                 "uint16",
                 "uint32",
                 "uint64",
@@ -107,7 +109,7 @@
                     "type": "array",
                     "description": "Optional property, list of callback arguments",
                     "items": {
-                        "$ref": "#/definitions/ParameterType"
+                        "$ref": "#/definitions/FunctionParameterType"
                     }
                 }
             },
@@ -131,6 +133,14 @@
                     "$ref": "#/definitions/Type",
                     "description": "Parameter type"
                 },
+                "ownership": {
+                    "type": "string",
+                    "description": "Ownership of the value",
+                    "enum": [
+                        "with",
+                        "without"
+                    ]
+                },
                 "pointer": {
                     "$ref": "#/definitions/Pointer",
                     "description": "Optional property, specifies if a parameter type is a pointer"
@@ -149,6 +159,23 @@
                 "name",
                 "doc",
                 "type"
+            ]
+        },
+        "FunctionParameterType": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ParameterType"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "doc": {
+                            "type": "string",
+                            "$comment": "Doxygen doesn't support multi-paragraph param docs (containing \\n\\n)",
+                            "pattern": "^\n?.+(\n.+)*\n?$"
+                        }
+                    }
+                }
             ]
         },
         "Function": {
@@ -172,6 +199,10 @@
                             "$ref": "#/definitions/Type",
                             "description": "Return type of the function"
                         },
+                        "passed_with_ownership": {
+                            "type": "boolean",
+                            "description": "Whether the value is passed with ownership or without ownership"
+                        },
                         "pointer": {
                             "$ref": "#/definitions/Pointer",
                             "description": "Optional property, specifies if a method return type is a pointer"
@@ -190,7 +221,7 @@
                     "type": "array",
                     "description": "Optional property, list of function arguments",
                     "items": {
-                        "$ref": "#/definitions/ParameterType"
+                        "$ref": "#/definitions/FunctionParameterType"
                     }
                 }
             },
@@ -280,23 +311,31 @@
                     "entries": {
                         "type": "array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "$ref": "#/definitions/Name",
-                                    "description": "Name of the enum entry"
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "description": "Reserves a space in the enum numbering"
                                 },
-                                "doc": {
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "$ref": "#/definitions/Value16",
-                                    "description": "Optional property, a 16-bit unsigned integer"
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "$ref": "#/definitions/Name",
+                                            "description": "Name of the enum entry"
+                                        },
+                                        "doc": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "$ref": "#/definitions/Value16",
+                                            "description": "Optional property, a 16-bit unsigned integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "doc"
+                                    ]
                                 }
-                            },
-                            "required": [
-                                "name",
-                                "doc"
                             ]
                         }
                     }
@@ -378,8 +417,10 @@
                         "enum": [
                             "base_in",
                             "base_out",
+                            "base_in_or_out",
                             "extension_in",
                             "extension_out",
+                            "extension_in_or_out",
                             "standalone"
                         ]
                     },

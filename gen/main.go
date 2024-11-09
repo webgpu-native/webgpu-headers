@@ -120,7 +120,10 @@ func SortAndTransform(yml *Yml) {
 			yml.Objects = append(yml.Objects, Object{
 				IsStruct: true,
 				Name:     s.Name,
-				Methods:  []Function{{Name: "free_members"}},
+				Methods: []Function{{
+					Name: "free_members",
+					Doc:  "Frees array members of WGPU" + PascalCase(s.Name) + " which were allocated by the API.",
+				}},
 			})
 		}
 	}

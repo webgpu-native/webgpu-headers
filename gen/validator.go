@@ -70,10 +70,12 @@ func mergeAndValidateDuplicates(yamlPaths []string) (errs error) {
 					errs = errors.Join(errs, fmt.Errorf("merge: enums.%s in %s is being extended but isn't marked as one", e.Name, yamlPath))
 				}
 				for _, entry := range e.Entries {
-					if slices.ContainsFunc(prevEnum.Entries, func(e EnumEntry) bool { return e.Name == entry.Name }) {
-						errs = errors.Join(errs, fmt.Errorf("merge: enums.%s.%s in %s was already found previously while parsing, duplicates are not allowed", e.Name, entry.Name, yamlPath))
+					if entry != nil {
+						if slices.ContainsFunc(prevEnum.Entries, func(e *EnumEntry) bool { return e != nil && e.Name == entry.Name }) {
+							errs = errors.Join(errs, fmt.Errorf("merge: enums.%s.%s in %s was already found previously while parsing, duplicates are not allowed", e.Name, entry.Name, yamlPath))
+						}
+						prevEnum.Entries = append(prevEnum.Entries, entry)
 					}
-					prevEnum.Entries = append(prevEnum.Entries, entry)
 				}
 				enums[e.Name] = prevEnum
 			} else {

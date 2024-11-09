@@ -38,6 +38,95 @@ func (g *Generator) Gen(dst io.Writer) error {
 				value, _ := g.BitflagValue(b, entryIndex)
 				return Comment("`"+value+"`.\n"+v, CommentTypeMultiLine, indent, true)
 			},
+			"MCommentFunction": func(fn *Function, indent int) string {
+				var s string
+				{
+					var funcDoc = strings.TrimSpace(fn.Doc)
+					if funcDoc != "" && funcDoc != "TODO" {
+						s += funcDoc
+					}
+				}
+				for _, arg := range fn.Args {
+					var argDoc = strings.TrimSpace(arg.Doc)
+					var sArg string
+					if argDoc != "" && argDoc != "TODO" {
+						sArg += argDoc
+					}
+
+					if arg.PassedWithOwnership != nil {
+						if *arg.PassedWithOwnership {
+							sArg += "\nThis parameter is @ref ReturnedWithOwnership."
+						} else {
+							panic("invalid")
+						}
+					}
+
+					sArg = strings.TrimSpace(sArg)
+					if sArg != "" {
+						s += "\n\n@param " + CamelCase(arg.Name) + "\n" + sArg
+					}
+				}
+				if fn.Returns != nil {
+					returnsDoc := strings.TrimSpace(fn.Returns.Doc)
+					if returnsDoc != "" && returnsDoc != "TODO" {
+						s += "\n\n@returns\n" + returnsDoc
+					}
+				}
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
+			"MCommentCallback": func(cb *Callback, indent int) string {
+				var s string
+				{
+					var funcDoc = strings.TrimSpace(cb.Doc)
+					if funcDoc != "" && funcDoc != "TODO" {
+						s += funcDoc
+					}
+				}
+				for _, arg := range cb.Args {
+					var argDoc = strings.TrimSpace(arg.Doc)
+					var sArg string
+					if argDoc != "" && argDoc != "TODO" {
+						sArg += argDoc
+					}
+
+					if arg.PassedWithOwnership != nil {
+						if *arg.PassedWithOwnership {
+							sArg += "\nThis parameter is @ref PassedWithOwnership."
+						} else {
+							sArg += "\nThis parameter is @ref PassedWithoutOwnership."
+						}
+					}
+
+					sArg = strings.TrimSpace(sArg)
+					if sArg != "" {
+						s += "\n\n@param " + CamelCase(arg.Name) + "\n" + sArg
+					}
+				}
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
+			"MCommentMember": func(member *ParameterType, indent int) string {
+				var s string
+
+				var srcDoc = strings.TrimSpace(member.Doc)
+				if srcDoc != "" && srcDoc != "TODO" {
+					s += srcDoc
+				}
+
+				switch member.Type {
+				case "nullable_string":
+					s += "\n\nThis is a \\ref NullableInputString."
+				case "string_with_default_empty":
+					s += "\n\nThis is a \\ref NonNullInputString."
+				case "out_string":
+					s += "\n\nThis is an \\ref OutputString."
+				}
+
+				if member.PassedWithOwnership != nil {
+					panic("invalid")
+				}
+
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
 			"ConstantCase": ConstantCase,
 			"PascalCase":   PascalCase,
 			"CamelCase":    CamelCase,
@@ -127,8 +216,8 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 	switch typ {
 	case "bool":
 		return appendModifiers("WGPUBool", pointerType)
-	case "string":
-		return appendModifiers("char", PointerTypeImmutable)
+	case "nullable_string", "string_with_default_empty", "out_string":
+		return "WGPUStringView"
 	case "uint16":
 		return appendModifiers("uint16_t", pointerType)
 	case "uint32":

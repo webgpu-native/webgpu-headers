@@ -49,13 +49,13 @@
 #endif{{"\n" -}}
 
 {{- if ne .Name "webgpu"}}
-#if !defined(__WGPU_EXTEND_ENUM)
+#if !defined(_wgpu_EXTEND_ENUM)
 #ifdef __cplusplus
-#define __WGPU_EXTEND_ENUM(E, N, V) static const E N = E(V)
+#define _wgpu_EXTEND_ENUM(E, N, V) static const E N = E(V)
 #else
-#define __WGPU_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
+#define _wgpu_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
 #endif
-#endif // !defined(__WGPU_EXTEND_ENUM)
+#endif // !defined(_wgpu_EXTEND_ENUM)
 {{ end}}
 
 {{- if eq .Name "webgpu"}}
@@ -63,6 +63,21 @@
 #include <stddef.h>
 {{else}}
 #include "webgpu.h"
+{{end}}
+
+{{- if eq .Name "webgpu"}}
+#define _wgpu_COMMA ,
+#if defined(__cplusplus)
+#  if __cplusplus >= 201103L
+#    define _wgpu_MAKE_INIT_STRUCT(type, value) (type value)
+#  else
+#    define _wgpu_MAKE_INIT_STRUCT(type, value) value
+#  endif
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#  define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
+#else
+#  define _wgpu_MAKE_INIT_STRUCT(type, value) value
+#endif
 {{end}}
 
 /**
@@ -82,8 +97,7 @@
 /** @} */
 
 /**
- * \defgroup Typedefs
- * \brief Utility typedefs.
+ * \defgroup UtilityTypes Utility Types
  *
  * @{
  */
@@ -91,6 +105,43 @@
 {{- if eq .Name "webgpu"}}
 typedef uint64_t WGPUFlags;
 typedef uint32_t WGPUBool;
+
+/**
+ * Nullable value defining a pointer+length view into a UTF-8 encoded string.
+ *
+ * Values passed into the API may use the special length value @ref WGPU_STRLEN
+ * to indicate a null-terminated string.
+ * Non-null values passed out of the API (for example as callback arguments)
+ * always provide an explicit length and **may or may not be null-terminated**.
+ *
+ * Some inputs to the API accept null values. Those which do not accept null
+ * values "default" to the empty string when null values are passed.
+ *
+ * Values are encoded as follows:
+ * - `{NULL, WGPU_STRLEN}`: the null value.
+ * - `{non_null_pointer, WGPU_STRLEN}`: a null-terminated string view.
+ * - `{any, 0}`: the empty string.
+ * - `{NULL, non_zero_length}`: not allowed (null dereference).
+ * - `{non_null_pointer, non_zero_length}`: an explictly-sized string view with
+ *   size `non_zero_length` (in bytes).
+ *
+ * For info on how this is used in various places, see \ref Strings.
+ */
+typedef struct WGPUStringView {
+    char const * WGPU_NULLABLE data;
+    size_t length;
+} WGPUStringView;
+
+/**
+ * Sentinel value used in @ref WGPUStringView to indicate that the pointer
+ * is to a null-terminated string, rather than an explicitly-sized string.
+ */
+#define WGPU_STRLEN SIZE_MAX
+
+#define WGPU_STRING_VIEW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStringView, { \
+    /*.data=*/NULL _wgpu_COMMA \
+    /*.length=*/WGPU_STRLEN _wgpu_COMMA \
+})
 {{  end}}
 {{- range .Typedefs}}
 {{-   MComment .Doc 0}}
@@ -141,14 +192,18 @@ struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
 {{- range $enum := .Enums}}
 {{-   if .Extended}}
 {{-     range $entryIndex, $_ := .Entries}}
-__WGPU_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
+{{-       if .}}
+_wgpu_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
+{{-       end}}
 {{-     end}}
 {{-   else}}
 {{-     MComment .Doc 0}}
 typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-     range $entryIndex, $_ := .Entries}}
-{{-       MCommentEnum .Doc 4 $.EnumPrefix $enum $entryIndex }}
+{{-       if .}}
+{{-         MCommentEnum .Doc 4 $.EnumPrefix $enum $entryIndex }}
     WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{EnumValue $.EnumPrefix $enum $entryIndex}},
+{{-       end}}
 {{-     end}}
     WGPU{{$enum.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF
 } WGPU{{$enum.Name | PascalCase}}{{$.ExtSuffix}} WGPU_ENUM_ATTRIBUTE;
@@ -159,7 +214,7 @@ typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 
 /**
  * \defgroup Bitflags
- * \brief Enum used as bit flags.
+ * \brief Type and constant definitions for bitflag types.
  *
  * @{
  */
@@ -187,7 +242,7 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
  */
 
 {{- range .Callbacks}}
-{{-   MComment .Doc 0}}
+{{-   MCommentCallback . 0}}
 typedef void (*WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}})({{CallbackArgs .}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 
@@ -251,13 +306,19 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     WGPUChainedStruct const * nextInChain;
 {{-   else if eq .Type "base_out" }}
     WGPUChainedStructOut * nextInChain;
+{{-   else if eq .Type "base_in_or_out" }}
+    /** This struct chain is used as mutable in some places and immutable in others. */
+    WGPUChainedStructOut * nextInChain;
 {{-   else if eq .Type "extension_in"}}
     WGPUChainedStruct chain;
 {{-   else if eq .Type "extension_out"}}
     WGPUChainedStructOut chain;
+{{-   else if eq .Type "extension_in_or_out"}}
+    /** This struct chain is used as mutable in some places and immutable in others. */
+    WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
-    {{- MComment .Doc 4 }}
+    {{- MCommentMember . 4 }}
     {{  StructMember $struct $memberIndex}}
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
@@ -272,21 +333,39 @@ extern "C" {
 #if !defined(WGPU_SKIP_PROCS){{"\n" -}}
 
 {{- range .Functions}}
-{{-   MComment .Doc 0}}
+/**
+ * Proc pointer type for @ref wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}:
+ * > @copydoc wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}
+ */
 typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
-typedef WGPUProc (*WGPUProcGetProcAddress)(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuGetProcAddress:
+ * > @copydoc wgpuGetProcAddress
+ */
+typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUStringView procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
 {{- range $object := .Objects}}
 // Procs of {{$object.Name | PascalCase}}
 {{-   range $object.Methods}}
-{{-     MComment .Doc 0}}
+/**
+ * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}:
+ * > @copydoc wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}
+ */
 typedef {{FunctionReturns .}} (*WGPUProc{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{-   if not (or .IsStruct .Extended)}}
+/**
+ * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}AddRef{{$.ExtSuffix}}.
+ * > @copydoc wgpu{{$object.Name | PascalCase}}AddRef{{$.ExtSuffix}}
+ */
 typedef void (*WGPUProc{{.Name | PascalCase}}AddRef{{$.ExtSuffix}})(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}Release{{$.ExtSuffix}}.
+ * > @copydoc wgpu{{$object.Name | PascalCase}}Release{{$.ExtSuffix}}
+ */
 typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{  end}}{{"\n" -}}
@@ -303,11 +382,15 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
  */
 
 {{- range .Functions}}
-{{-   MComment .Doc 0}}
+{{-   MCommentFunction . 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
-WGPU_EXPORT WGPUProc wgpuGetProcAddress(char const * procName) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Returns the "procedure address" (function pointer) of the named function.
+ * The result must be cast to the appropriate proc pointer type.
+ */
+WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
 /** @} */
@@ -328,7 +411,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(char const * procName) WGPU_FUNCTION_ATT
  * @{
  */
 {{-   range $object.Methods}}
-{{-     MComment .Doc 0}}
+{{-     MCommentFunction . 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{-   if not (or .IsStruct .Extended)}}

@@ -1,3 +1,5 @@
+# Makefile for GNU make
+
 # Always rebuild all targets.
 .PHONY: all clean main-c.out main-cpp.out
 
@@ -6,7 +8,24 @@ all: main-c.out main-cpp.out
 clean:
 	rm -f main-c.out main-cpp.out
 
-CLANG_WARNINGS = -Werror -Weverything -Wno-padded -Wno-poison-system-directories -Wno-c++98-compat-pedantic
+# Enable all but a few warnings, then also enable a few extras that clang on Mac
+# forces off by default even with -Weverything
+CLANG_WARNINGS = -Werror -Weverything \
+	-Wno-padded -Wno-poison-system-directories -Wno-c++98-compat-pedantic \
+	-Wc99-designator \
+	-Welaborated-enum-base \
+	-Wenum-enum-conversion \
+	-Wenum-float-conversion \
+	-Wextra-semi-stmt \
+	-Wfinal-dtor-non-final-class \
+	-Wgnu-folding-constant \
+	-Wimplicit-fallthrough \
+	-Wimplicit-int-float-conversion \
+	-Wmisleading-indentation \
+	-Wquoted-include-in-framework-header \
+	-Wreorder-init-list \
+	-Wreserved-identifier \
+	# phew.
 GCC_WARNINGS   = -Werror -Wall -Wextra
 
 main-c.out: main.c main.inl ../../webgpu.h Makefile
