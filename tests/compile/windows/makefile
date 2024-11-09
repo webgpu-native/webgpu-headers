@@ -13,6 +13,7 @@ build-c: ../main.c ../main.inl ../../../webgpu.h Makefile
 	cl.exe /Fe:main-c.exe ../main.c /std:c11 $(MSVC_WARNINGS)
 	cl.exe /Fe:main-c.exe ../main.c /std:c17 $(MSVC_WARNINGS)
 	cl.exe /Fe:main-c.exe ../main.c $(MSVC_WARNINGS)
+#	Docs say /std:clatest should work but it does not in VS2022.
 #	cl.exe /Fe:main-c.exe ../main.c /std:clatest $(MSVC_WARNINGS)
 
 build-cpp: ../main.cpp ../main.inl ../../../webgpu.h Makefile
