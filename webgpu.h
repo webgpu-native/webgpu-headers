@@ -206,6 +206,7 @@ struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
 struct WGPUStorageTextureBindingLayout;
 struct WGPUSupportedFeatures;
+struct WGPUSupportedWGSLLanguageFeatures;
 struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceConfiguration;
 struct WGPUSurfaceDescriptor;
@@ -1066,13 +1067,13 @@ typedef enum WGPUVertexStepMode {
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
 
-typedef enum WGPUWGSLFeatureName {
-    WGPUWGSLFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
-    WGPUWGSLFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
-    WGPUWGSLFeatureName_UnrestrictedPointerParameters = 0x00000003,
-    WGPUWGSLFeatureName_PointerCompositeAccess = 0x00000004,
-    WGPUWGSLFeatureName_Force32 = 0x7FFFFFFF
-} WGPUWGSLFeatureName WGPU_ENUM_ATTRIBUTE;
+typedef enum WGPUWGSLLanguageFeatureName {
+    WGPUWGSLLanguageFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
+    WGPUWGSLLanguageFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
+    WGPUWGSLLanguageFeatureName_UnrestrictedPointerParameters = 0x00000003,
+    WGPUWGSLLanguageFeatureName_PointerCompositeAccess = 0x00000004,
+    WGPUWGSLLanguageFeatureName_Force32 = 0x7FFFFFFF
+} WGPUWGSLLanguageFeatureName WGPU_ENUM_ATTRIBUTE;
 
 /**
  * Status returned from a call to ::wgpuInstanceWaitAny.
@@ -1677,6 +1678,11 @@ typedef struct WGPUSupportedFeatures {
     size_t featureCount;
     WGPUFeatureName const * features;
 } WGPUSupportedFeatures WGPU_STRUCTURE_ATTRIBUTE;
+
+typedef struct WGPUSupportedWGSLLanguageFeatures {
+    size_t featureCount;
+    WGPUWGSLLanguageFeatureName const * features;
+} WGPUSupportedWGSLLanguageFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
@@ -2610,10 +2616,15 @@ typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE
  */
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * Proc pointer type for @ref wgpuInstanceGetWGSLLanguageFeatures:
+ * > @copydoc wgpuInstanceGetWGSLLanguageFeatures
+ */
+typedef WGPUStatus (*WGPUProcInstanceGetWGSLLanguageFeatures)(WGPUInstance instance, WGPUSupportedWGSLLanguageFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
  * Proc pointer type for @ref wgpuInstanceHasWGSLLanguageFeature:
  * > @copydoc wgpuInstanceHasWGSLLanguageFeature
  */
-typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLLanguageFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuInstanceProcessEvents:
  * > @copydoc wgpuInstanceProcessEvents
@@ -2999,6 +3010,13 @@ typedef void (*WGPUProcShaderModuleRelease)(WGPUShaderModule shaderModule) WGPU_
  * > @copydoc wgpuSupportedFeaturesFreeMembers
  */
 typedef void (*WGPUProcSupportedFeaturesFreeMembers)(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
+
+// Procs of SupportedWGSLLanguageFeatures
+/**
+ * Proc pointer type for @ref wgpuSupportedWGSLLanguageFeaturesFreeMembers:
+ * > @copydoc wgpuSupportedWGSLLanguageFeaturesFreeMembers
+ */
+typedef void (*WGPUProcSupportedWGSLLanguageFeaturesFreeMembers)(WGPUSupportedWGSLLanguageFeatures supportedWGSLLanguageFeatures) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Surface
 /**
@@ -3437,7 +3455,11 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  * A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Get the list of @ref WGPUWGSLLanguageFeatureName values supported by the instance.
+ */
+WGPU_EXPORT WGPUStatus wgpuInstanceGetWGSLLanguageFeatures(WGPUInstance instance, WGPUSupportedWGSLLanguageFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLLanguageFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
  *
@@ -3628,6 +3650,20 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
  * Frees array members of WGPUSupportedFeatures which were allocated by the API.
  */
 WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
+/** @} */
+
+
+
+/**
+ * \defgroup WGPUSupportedWGSLLanguageFeaturesMethods WGPUSupportedWGSLLanguageFeatures methods
+ * \brief Functions whose first argument has type WGPUSupportedWGSLLanguageFeatures.
+ *
+ * @{
+ */
+/**
+ * Frees array members of WGPUSupportedWGSLLanguageFeatures which were allocated by the API.
+ */
+WGPU_EXPORT void wgpuSupportedWGSLLanguageFeaturesFreeMembers(WGPUSupportedWGSLLanguageFeatures supportedWGSLLanguageFeatures) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */
 
 
