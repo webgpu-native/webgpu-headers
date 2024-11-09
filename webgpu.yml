@@ -4516,11 +4516,18 @@ objects:
         doc: |
           TODO
         args:
-          - name: color
-            doc: |
-              TODO
-            type: struct.color
-            pointer: immutable
+          - name: r
+            doc: ''
+            type: float32
+          - name: g
+            doc: ''
+            type: float32
+          - name: b
+            doc: ''
+            type: float32
+          - name: a
+            doc: ''
+            type: float32
       - name: set_viewport
         doc: |
           TODO

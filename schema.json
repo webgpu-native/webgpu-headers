@@ -172,7 +172,7 @@
                         "doc": {
                             "type": "string",
                             "$comment": "Doxygen doesn't support multi-paragraph param docs (containing \\n\\n)",
-                            "pattern": "^\n?.+(\n.+)*\n?$"
+                            "pattern": "^$|^\n?.+(\n.+)*\n?$"
                         }
                     }
                 }
