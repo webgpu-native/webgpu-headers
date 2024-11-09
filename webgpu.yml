@@ -2654,7 +2654,7 @@ structs:
   - name: supported_WGSL_language_features
     doc: |
       TODO
-    type: base_out
+    type: standalone
     free_members: true
     members:
       - name: features
