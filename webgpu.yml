@@ -835,11 +835,9 @@ enums:
       - name: outdated
         doc: The surface is too different to be used, compared to when it was originally created.
       - name: lost
-        doc: The connection to whatever owns the surface was lost.
+        doc: The connection to whatever owns the surface, or the device, was lost.
       - name: out_of_memory
         doc: The system ran out of memory.
-      - name: device_lost
-        doc: The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
       - name: error
         doc: The surface is not configured, or there was an @ref OutStructChainError.
   - name: texture_aspect
