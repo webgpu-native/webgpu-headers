@@ -1680,7 +1680,6 @@ typedef struct WGPUSupportedFeatures {
 } WGPUSupportedFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSupportedWGSLLanguageFeatures {
-    WGPUChainedStructOut * nextInChain;
     size_t featureCount;
     WGPUWGSLLanguageFeatureName const * features;
 } WGPUSupportedWGSLLanguageFeatures WGPU_STRUCTURE_ATTRIBUTE;
