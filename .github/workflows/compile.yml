@@ -16,5 +16,5 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Build something requiring CL.EXE
         run: |
-          cd "${{ github.workspace }}/tests/compile"
+          cd "${{ github.workspace }}/tests/compile/windows"
           nmake
