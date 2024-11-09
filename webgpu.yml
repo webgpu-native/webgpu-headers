@@ -1779,7 +1779,7 @@ structs:
     members:
       - name: message
         doc: |
-          Human-readable message text (non-computer-readable; may be locale dependent!). UTF-8 encoded.
+          A @ref LocalizableHumanReadableMessageString.
         type: out_string
       - name: type
         doc: |
