@@ -284,9 +284,6 @@ enums:
       - name: error
         doc: |
           TODO
-      - name: device_lost
-        doc: |
-          TODO
       - name: unknown
         doc: |
           TODO
@@ -332,12 +329,6 @@ enums:
         doc: |
           TODO
       - name: internal_error
-        doc: |
-          TODO
-      - name: device_lost
-        doc: |
-          TODO
-      - name: device_destroyed
         doc: |
           TODO
       - name: unknown
@@ -407,9 +398,6 @@ enums:
         doc: |
           TODO
       - name: unknown
-        doc: |
-          TODO
-      - name: device_lost
         doc: |
           TODO
   - name: feature_name
@@ -654,9 +642,6 @@ enums:
         doc: |
           TODO
       - name: unknown
-        doc: |
-          TODO
-      - name: device_lost
         doc: |
           TODO
   - name: request_adapter_status
