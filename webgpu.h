@@ -820,7 +820,7 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000004,
     /**
      * `0x00000005`.
-     * The connection to whatever owns the surface was lost.
+     * The connection to whatever owns the surface, or the device, was lost.
      */
     WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000005,
     /**
@@ -830,14 +830,9 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000006,
     /**
      * `0x00000007`.
-     * The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
-     */
-    WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000007,
-    /**
-     * `0x00000008`.
      * The surface is not configured, or there was an @ref OutStructChainError.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000008,
+    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000007,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
 
