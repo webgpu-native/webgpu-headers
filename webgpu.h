@@ -820,7 +820,7 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000004,
     /**
      * `0x00000005`.
-     * The connection to whatever owns the surface, or the device, was lost.
+     * The device was lost, or the connection to whatever owns the surface was lost.
      */
     WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000005,
     /**

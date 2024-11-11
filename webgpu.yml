@@ -835,7 +835,7 @@ enums:
       - name: outdated
         doc: The surface is too different to be used, compared to when it was originally created.
       - name: lost
-        doc: The connection to whatever owns the surface, or the device, was lost.
+        doc: The device was lost, or the connection to whatever owns the surface was lost.
       - name: out_of_memory
         doc: The system ran out of memory.
       - name: error
