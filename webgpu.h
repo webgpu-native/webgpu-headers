@@ -1411,7 +1411,7 @@ typedef struct WGPUCommandEncoderDescriptor {
 typedef struct WGPUCompilationMessage {
     WGPUChainedStruct const * nextInChain;
     /**
-     * Human-readable message text (non-computer-readable; may be locale dependent!). UTF-8 encoded.
+     * A @ref LocalizableHumanReadableMessageString.
      *
      * This is an \ref OutputString.
      */
