@@ -284,9 +284,6 @@ enums:
       - name: error
         doc: |
           TODO
-      - name: device_lost
-        doc: |
-          TODO
       - name: unknown
         doc: |
           TODO
@@ -332,12 +329,6 @@ enums:
         doc: |
           TODO
       - name: internal_error
-        doc: |
-          TODO
-      - name: device_lost
-        doc: |
-          TODO
-      - name: device_destroyed
         doc: |
           TODO
       - name: unknown
@@ -407,9 +398,6 @@ enums:
         doc: |
           TODO
       - name: unknown
-        doc: |
-          TODO
-      - name: device_lost
         doc: |
           TODO
   - name: feature_name
@@ -657,9 +645,6 @@ enums:
         doc: |
           TODO
       - name: unknown
-        doc: |
-          TODO
-      - name: device_lost
         doc: |
           TODO
   - name: request_adapter_status
@@ -1374,7 +1359,7 @@ enums:
         doc: The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
       - name: unsupported_mixed_sources
         doc: An invalid wait was performed with @ref Mixed-Sources.
-  - name: WGSL_feature_name
+  - name: WGSL_language_feature_name
     doc: |
       TODO
     entries:
@@ -1784,39 +1769,27 @@ structs:
     members:
       - name: message
         doc: |
-          TODO
+          A @ref LocalizableHumanReadableMessageString.
         type: out_string
       - name: type
         doc: |
-          TODO
+          Severity level of the message.
         type: enum.compilation_message_type
       - name: line_num
         doc: |
-          TODO
+          Line number where the message is attached, starting at 1.
         type: uint64
       - name: line_pos
         doc: |
-          TODO
+          Offset in UTF-8 code units (bytes) from the beginning of the line, starting at 1.
         type: uint64
       - name: offset
         doc: |
-          TODO
+          Offset in UTF-8 code units (bytes) from the beginning of the shader code, starting at 0.
         type: uint64
       - name: length
         doc: |
-          TODO
-        type: uint64
-      - name: utf16_line_pos
-        doc: |
-          TODO
-        type: uint64
-      - name: utf16_offset
-        doc: |
-          TODO
-        type: uint64
-      - name: utf16_length
-        doc: |
-          TODO
+          Length in UTF-8 code units (bytes) of the span the message corresponds to.
         type: uint64
   - name: compute_pass_descriptor
     doc: |
@@ -2652,6 +2625,17 @@ structs:
         doc: |
           TODO
         type: array<enum.feature_name>
+        pointer: immutable
+  - name: supported_WGSL_language_features
+    doc: |
+      TODO
+    type: standalone
+    free_members: true
+    members:
+      - name: features
+        doc: |
+          TODO
+        type: array<enum.WGSL_language_feature_name>
         pointer: immutable
   - name: surface_capabilities
     doc: Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
@@ -4022,6 +4006,19 @@ objects:
             doc: The description of the @ref WGPUSurface to create.
             type: struct.surface_descriptor
             pointer: immutable
+      - name: get_WGSL_language_features
+        doc: |
+          Get the list of @ref WGPUWGSLLanguageFeatureName values supported by the instance.
+        returns:
+          doc: |
+            TODO
+          type: enum.status
+        args:
+          - name: features
+            doc: |
+              TODO
+            type: struct.supported_WGSL_language_features
+            pointer: mutable
       - name: has_WGSL_language_feature
         doc: |
           TODO
@@ -4033,7 +4030,7 @@ objects:
           - name: feature
             doc: |
               TODO
-            type: enum.WGSL_feature_name
+            type: enum.WGSL_language_feature_name
       - name: process_events
         doc: |
           Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
