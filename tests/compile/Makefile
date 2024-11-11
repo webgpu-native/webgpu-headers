@@ -1,3 +1,5 @@
+# Makefile for GNU make
+
 # Always rebuild all targets.
 .PHONY: all clean main-c.out main-cpp.out
 

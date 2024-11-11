@@ -184,7 +184,7 @@ struct WGPUComputePassTimestampWrites;
 struct WGPUConstantEntry;
 struct WGPUExtent3D;
 struct WGPUFuture;
-struct WGPUInstanceFeatures;
+struct WGPUInstanceCapabilities;
 struct WGPULimits;
 struct WGPUMultisampleState;
 struct WGPUOrigin3D;
@@ -206,6 +206,7 @@ struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
 struct WGPUStorageTextureBindingLayout;
 struct WGPUSupportedFeatures;
+struct WGPUSupportedWGSLLanguageFeatures;
 struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceConfiguration;
 struct WGPUSurfaceDescriptor;
@@ -418,8 +419,7 @@ typedef enum WGPUCompilationInfoRequestStatus {
     WGPUCompilationInfoRequestStatus_Success = 0x00000001,
     WGPUCompilationInfoRequestStatus_InstanceDropped = 0x00000002,
     WGPUCompilationInfoRequestStatus_Error = 0x00000003,
-    WGPUCompilationInfoRequestStatus_DeviceLost = 0x00000004,
-    WGPUCompilationInfoRequestStatus_Unknown = 0x00000005,
+    WGPUCompilationInfoRequestStatus_Unknown = 0x00000004,
     WGPUCompilationInfoRequestStatus_Force32 = 0x7FFFFFFF
 } WGPUCompilationInfoRequestStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -467,9 +467,7 @@ typedef enum WGPUCreatePipelineAsyncStatus {
     WGPUCreatePipelineAsyncStatus_InstanceDropped = 0x00000002,
     WGPUCreatePipelineAsyncStatus_ValidationError = 0x00000003,
     WGPUCreatePipelineAsyncStatus_InternalError = 0x00000004,
-    WGPUCreatePipelineAsyncStatus_DeviceLost = 0x00000005,
-    WGPUCreatePipelineAsyncStatus_DeviceDestroyed = 0x00000006,
-    WGPUCreatePipelineAsyncStatus_Unknown = 0x00000007,
+    WGPUCreatePipelineAsyncStatus_Unknown = 0x00000005,
     WGPUCreatePipelineAsyncStatus_Force32 = 0x7FFFFFFF
 } WGPUCreatePipelineAsyncStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -506,7 +504,6 @@ typedef enum WGPUErrorType {
     WGPUErrorType_OutOfMemory = 0x00000003,
     WGPUErrorType_Internal = 0x00000004,
     WGPUErrorType_Unknown = 0x00000005,
-    WGPUErrorType_DeviceLost = 0x00000006,
     WGPUErrorType_Force32 = 0x7FFFFFFF
 } WGPUErrorType WGPU_ENUM_ATTRIBUTE;
 
@@ -682,7 +679,6 @@ typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_InstanceDropped = 0x00000002,
     WGPUQueueWorkDoneStatus_Error = 0x00000003,
     WGPUQueueWorkDoneStatus_Unknown = 0x00000004,
-    WGPUQueueWorkDoneStatus_DeviceLost = 0x00000005,
     WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
 } WGPUQueueWorkDoneStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -737,8 +733,8 @@ typedef enum WGPUSamplerBindingType {
 
 /**
  * Status code returned (synchronously) from many operations. Generally
- * indicates an invalid input like an unknown enum value or struct chaining
- * error. Read the function's documentation for specific error conditions.
+ * indicates an invalid input like an unknown enum value or @ref OutStructChainError.
+ * Read the function's documentation for specific error conditions.
  */
 typedef enum WGPUStatus {
     WGPUStatus_Success = 0x00000001,
@@ -832,6 +828,11 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
      * The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
      */
     WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000007,
+    /**
+     * `0x00000008`.
+     * The surface is not configured, or there was an @ref OutStructChainError.
+     */
+    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000008,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1061,13 +1062,13 @@ typedef enum WGPUVertexStepMode {
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
 
-typedef enum WGPUWGSLFeatureName {
-    WGPUWGSLFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
-    WGPUWGSLFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
-    WGPUWGSLFeatureName_UnrestrictedPointerParameters = 0x00000003,
-    WGPUWGSLFeatureName_PointerCompositeAccess = 0x00000004,
-    WGPUWGSLFeatureName_Force32 = 0x7FFFFFFF
-} WGPUWGSLFeatureName WGPU_ENUM_ATTRIBUTE;
+typedef enum WGPUWGSLLanguageFeatureName {
+    WGPUWGSLLanguageFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
+    WGPUWGSLLanguageFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
+    WGPUWGSLLanguageFeatureName_UnrestrictedPointerParameters = 0x00000003,
+    WGPUWGSLLanguageFeatureName_PointerCompositeAccess = 0x00000004,
+    WGPUWGSLLanguageFeatureName_Force32 = 0x7FFFFFFF
+} WGPUWGSLLanguageFeatureName WGPU_ENUM_ATTRIBUTE;
 
 /**
  * Status returned from a call to ::wgpuInstanceWaitAny.
@@ -1471,7 +1472,7 @@ typedef struct WGPUFuture {
 /**
  * Features enabled on the WGPUInstance
  */
-typedef struct WGPUInstanceFeatures {
+typedef struct WGPUInstanceCapabilities {
     /** This struct chain is used as mutable in some places and immutable in others. */
     WGPUChainedStructOut * nextInChain;
     /**
@@ -1482,7 +1483,7 @@ typedef struct WGPUInstanceFeatures {
      * The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
      */
     size_t timedWaitAnyMaxCount;
-} WGPUInstanceFeatures WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUInstanceCapabilities WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPULimits {
     /** This struct chain is used as mutable in some places and immutable in others. */
@@ -1686,6 +1687,11 @@ typedef struct WGPUSupportedFeatures {
     size_t featureCount;
     WGPUFeatureName const * features;
 } WGPUSupportedFeatures WGPU_STRUCTURE_ATTRIBUTE;
+
+typedef struct WGPUSupportedWGSLLanguageFeatures {
+    size_t featureCount;
+    WGPUWGSLLanguageFeatureName const * features;
+} WGPUSupportedWGSLLanguageFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
@@ -1994,7 +2000,7 @@ typedef struct WGPUInstanceDescriptor {
     /**
      * Instance features to enable
      */
-    WGPUInstanceFeatures features;
+    WGPUInstanceCapabilities features;
 } WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUProgrammableStageDescriptor {
@@ -2157,10 +2163,10 @@ extern "C" {
  */
 typedef WGPUInstance (*WGPUProcCreateInstance)(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Proc pointer type for @ref wgpuGetInstanceFeatures:
- * > @copydoc wgpuGetInstanceFeatures
+ * Proc pointer type for @ref wgpuGetInstanceCapabilities:
+ * > @copydoc wgpuGetInstanceCapabilities
  */
-typedef void (*WGPUProcGetInstanceFeatures)(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcGetInstanceCapabilities)(WGPUInstanceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuGetProcAddress:
  * > @copydoc wgpuGetProcAddress
@@ -2177,12 +2183,12 @@ typedef void (*WGPUProcAdapterGetFeatures)(WGPUAdapter adapter, WGPUSupportedFea
  * Proc pointer type for @ref wgpuAdapterGetInfo:
  * > @copydoc wgpuAdapterGetInfo
  */
-typedef void (*WGPUProcAdapterGetInfo)(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcAdapterGetInfo)(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuAdapterGetLimits:
  * > @copydoc wgpuAdapterGetLimits
  */
-typedef WGPUBool (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuAdapterHasFeature:
  * > @copydoc wgpuAdapterHasFeature
@@ -2570,7 +2576,12 @@ typedef void (*WGPUProcDeviceGetFeatures)(WGPUDevice device, WGPUSupportedFeatur
  * Proc pointer type for @ref wgpuDeviceGetLimits:
  * > @copydoc wgpuDeviceGetLimits
  */
-typedef WGPUBool (*WGPUProcDeviceGetLimits)(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcDeviceGetLimits)(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuDeviceGetLostFuture:
+ * > @copydoc wgpuDeviceGetLostFuture
+ */
+typedef WGPUFuture (*WGPUProcDeviceGetLostFuture)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceGetQueue:
  * > @copydoc wgpuDeviceGetQueue
@@ -2614,10 +2625,15 @@ typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE
  */
 typedef WGPUSurface (*WGPUProcInstanceCreateSurface)(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * Proc pointer type for @ref wgpuInstanceGetWGSLLanguageFeatures:
+ * > @copydoc wgpuInstanceGetWGSLLanguageFeatures
+ */
+typedef WGPUStatus (*WGPUProcInstanceGetWGSLLanguageFeatures)(WGPUInstance instance, WGPUSupportedWGSLLanguageFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
  * Proc pointer type for @ref wgpuInstanceHasWGSLLanguageFeature:
  * > @copydoc wgpuInstanceHasWGSLLanguageFeature
  */
-typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUBool (*WGPUProcInstanceHasWGSLLanguageFeature)(WGPUInstance instance, WGPUWGSLLanguageFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuInstanceProcessEvents:
  * > @copydoc wgpuInstanceProcessEvents
@@ -3004,6 +3020,13 @@ typedef void (*WGPUProcShaderModuleRelease)(WGPUShaderModule shaderModule) WGPU_
  */
 typedef void (*WGPUProcSupportedFeaturesFreeMembers)(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
 
+// Procs of SupportedWGSLLanguageFeatures
+/**
+ * Proc pointer type for @ref wgpuSupportedWGSLLanguageFeaturesFreeMembers:
+ * > @copydoc wgpuSupportedWGSLLanguageFeaturesFreeMembers
+ */
+typedef void (*WGPUProcSupportedWGSLLanguageFeaturesFreeMembers)(WGPUSupportedWGSLLanguageFeatures supportedWGSLLanguageFeatures) WGPU_FUNCTION_ATTRIBUTE;
+
 // Procs of Surface
 /**
  * Proc pointer type for @ref wgpuSurfaceConfigure:
@@ -3014,7 +3037,7 @@ typedef void (*WGPUProcSurfaceConfigure)(WGPUSurface surface, WGPUSurfaceConfigu
  * Proc pointer type for @ref wgpuSurfaceGetCapabilities:
  * > @copydoc wgpuSurfaceGetCapabilities
  */
-typedef WGPUBool (*WGPUProcSurfaceGetCapabilities)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcSurfaceGetCapabilities)(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuSurfaceGetCurrentTexture:
  * > @copydoc wgpuSurfaceGetCurrentTexture
@@ -3024,7 +3047,7 @@ typedef void (*WGPUProcSurfaceGetCurrentTexture)(WGPUSurface surface, WGPUSurfac
  * Proc pointer type for @ref wgpuSurfacePresent:
  * > @copydoc wgpuSurfacePresent
  */
-typedef void (*WGPUProcSurfacePresent)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcSurfacePresent)(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuSurfaceSetLabel:
  * > @copydoc wgpuSurfaceSetLabel
@@ -3151,12 +3174,15 @@ typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView) WGPU_FUN
  */
 WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Query the supported instance features
+ * Query the supported instance capabilities.
  *
- * @param features
- * The supported instance features
+ * @param capabilities
+ * The supported instance capabilities
+ *
+ * @returns
+ * Indicates if there was an @ref OutStructChainError.
  */
-WGPU_EXPORT void wgpuGetInstanceFeatures(WGPUInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUStatus wgpuGetInstanceCapabilities(WGPUInstanceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns the "procedure address" (function pointer) of the named function.
  * The result must be cast to the appropriate proc pointer type.
@@ -3189,9 +3215,16 @@ WGPU_EXPORT void wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupportedFeatur
 /**
  * @param info
  * This parameter is @ref ReturnedWithOwnership.
+ *
+ * @returns
+ * Indicates if there was an @ref OutStructChainError.
  */
-WGPU_EXPORT void wgpuAdapterGetInfo(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBool wgpuAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUStatus wgpuAdapterGetInfo(WGPUAdapter adapter, WGPUAdapterInfo * info) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @returns
+ * Indicates if there was an @ref OutStructChainError.
+ */
+WGPU_EXPORT WGPUStatus wgpuAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPU_NULLABLE WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuAdapterAddRef(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
@@ -3247,8 +3280,38 @@ WGPU_EXPORT void wgpuBindGroupLayoutRelease(WGPUBindGroupLayout bindGroupLayout)
  * @{
  */
 WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param offset
+ * Byte offset relative to the beginning of the buffer.
+ *
+ * @param size
+ * Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+ *
+ * @returns
+ * Returns a const pointer to beginning of the mapped range.
+ * It must not be written; writing to this range causes undefined behavior.
+ * Returns `NULL` with @ref ImplementationDefinedLogging if:
+ *
+ * - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
+ *   **except** for overlaps with other *const* ranges, which are allowed in C.
+ *   (JS does not allow this because const ranges do not exist.)
+ */
 WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param offset
+ * Byte offset relative to the beginning of the buffer.
+ *
+ * @param size
+ * Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+ *
+ * @returns
+ * Returns a mutable pointer to beginning of the mapped range.
+ * Returns `NULL` with @ref ImplementationDefinedLogging if:
+ *
+ * - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
+ * - The buffer is not mapped with @ref WGPUMapMode_Write.
+ */
 WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferUsage wgpuBufferGetUsage(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
@@ -3364,7 +3427,16 @@ WGPU_EXPORT WGPUAdapterInfo wgpuDeviceGetAdapterInfo(WGPUDevice device) WGPU_FUN
  * This parameter is @ref ReturnedWithOwnership.
  */
 WGPU_EXPORT void wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBool wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @returns
+ * Indicates if there was an @ref OutStructChainError.
+ */
+WGPU_EXPORT WGPUStatus wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @returns
+ * The @ref WGPUFuture for the device-lost event of the device.
+ */
+WGPU_EXPORT WGPUFuture wgpuDeviceGetLostFuture(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuDeviceHasFeature(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuDevicePopErrorScope(WGPUDevice device, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
@@ -3392,7 +3464,11 @@ WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  * A new @ref WGPUSurface for this descriptor (or an error @ref WGPUSurface).
  */
 WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Get the list of @ref WGPUWGSLLanguageFeatureName values supported by the instance.
+ */
+WGPU_EXPORT WGPUStatus wgpuInstanceGetWGSLLanguageFeatures(WGPUInstance instance, WGPUSupportedWGSLLanguageFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLLanguageFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
  *
@@ -3450,6 +3526,10 @@ WGPU_EXPORT void wgpuQuerySetRelease(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIB
 WGPU_EXPORT WGPUFuture wgpuQueueOnSubmittedWorkDone(WGPUQueue queue, WGPUQueueWorkDoneCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueSetLabel(WGPUQueue queue, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueSubmit(WGPUQueue queue, size_t commandCount, WGPUCommandBuffer const * commands) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Produces a @ref DeviceError both content-timeline (`size` alignment) and device-timeline
+ * errors defined by the WebGPU specification.
+ */
 WGPU_EXPORT void wgpuQueueWriteBuffer(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueWriteTexture(WGPUQueue queue, WGPUTexelCopyTextureInfo const * destination, void const * data, size_t dataSize, WGPUTexelCopyBufferLayout const * dataLayout, WGPUExtent3D const * writeSize) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueAddRef(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
@@ -3584,6 +3664,20 @@ WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supporte
 
 
 /**
+ * \defgroup WGPUSupportedWGSLLanguageFeaturesMethods WGPUSupportedWGSLLanguageFeatures methods
+ * \brief Functions whose first argument has type WGPUSupportedWGSLLanguageFeatures.
+ *
+ * @{
+ */
+/**
+ * Frees array members of WGPUSupportedWGSLLanguageFeatures which were allocated by the API.
+ */
+WGPU_EXPORT void wgpuSupportedWGSLLanguageFeaturesFreeMembers(WGPUSupportedWGSLLanguageFeatures supportedWGSLLanguageFeatures) WGPU_FUNCTION_ATTRIBUTE;
+/** @} */
+
+
+
+/**
  * \defgroup WGPUSurfaceMethods WGPUSurface methods
  * \brief Functions whose first argument has type WGPUSurface.
  *
@@ -3591,6 +3685,8 @@ WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supporte
  */
 /**
  * Configures parameters for rendering to `surface`.
+ * Produces a @ref DeviceError for all content-timeline errors defined by the WebGPU specification.
+ *
  * See @ref Surface-Configuration for more details.
  *
  * @param config
@@ -3610,11 +3706,13 @@ WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfigurat
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
- * TODO make this WGPUStatus instead of a boolean.
+ * Indicates if there was an @ref OutStructChainError.
  */
-WGPU_EXPORT WGPUBool wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUStatus wgpuSurfaceGetCapabilities(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns the @ref WGPUTexture to render to `surface` this frame along with metadata on the frame.
+ * Returns `NULL` and @ref WGPUSurfaceGetCurrentTextureStatus_Error if the surface is not configured.
+ *
  * See @ref Surface-Presenting for more details.
  *
  * @param surfaceTexture
@@ -3624,8 +3722,11 @@ WGPU_EXPORT void wgpuSurfaceGetCurrentTexture(WGPUSurface surface, WGPUSurfaceTe
 /**
  * Shows `surface`'s current texture to the user.
  * See @ref Surface-Presenting for more details.
+ *
+ * @returns
+ * Returns @ref WGPUStatus_Error if the surface doesn't have a current texture.
  */
-WGPU_EXPORT void wgpuSurfacePresent(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUStatus wgpuSurfacePresent(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Modifies the label used to refer to `surface`.
  *
