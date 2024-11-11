@@ -1642,13 +1642,19 @@ typedef struct WGPURequestAdapterOptions {
      */
     WGPUFeatureLevel featureLevel;
     WGPUPowerPreference powerPreference;
+    /**
+     * If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
+     * If this is not possible, the request returns null.
+     */
     WGPUBool forceFallbackAdapter;
     /**
-     * If set, requires the adapter to have a particular backend type. If this is not possible, the request returns null.
+     * If set, requires the adapter to have a particular backend type.
+     * If this is not possible, the request returns null.
      */
     WGPUBackendType backendType;
     /**
-     * If set, requires the adapter to be able to output to a particular surface. If this is not possible, the request returns null.
+     * If set, requires the adapter to be able to output to a particular surface.
+     * If this is not possible, the request returns null.
      */
     WGPU_NULLABLE WGPUSurface compatibleSurface;
 } WGPURequestAdapterOptions WGPU_STRUCTURE_ATTRIBUTE;

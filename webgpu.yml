@@ -2486,15 +2486,18 @@ structs:
         type: enum.power_preference
       - name: force_fallback_adapter
         doc: |
-          TODO
+          If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
+          If this is not possible, the request returns null.
         type: bool
       - name: backend_type
         doc: |
-          If set, requires the adapter to have a particular backend type. If this is not possible, the request returns null.
+          If set, requires the adapter to have a particular backend type.
+          If this is not possible, the request returns null.
         type: enum.backend_type
       - name: compatible_surface
         doc: |
-          If set, requires the adapter to be able to output to a particular surface. If this is not possible, the request returns null.
+          If set, requires the adapter to be able to output to a particular surface.
+          If this is not possible, the request returns null.
         type: object.surface
         optional: true
   - name: sampler_binding_layout
