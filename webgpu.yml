@@ -1766,39 +1766,27 @@ structs:
     members:
       - name: message
         doc: |
-          TODO
+          A @ref LocalizableHumanReadableMessageString.
         type: out_string
       - name: type
         doc: |
-          TODO
+          Severity level of the message.
         type: enum.compilation_message_type
       - name: line_num
         doc: |
-          TODO
+          Line number where the message is attached, starting at 1.
         type: uint64
       - name: line_pos
         doc: |
-          TODO
+          Offset in UTF-8 code units (bytes) from the beginning of the line, starting at 1.
         type: uint64
       - name: offset
         doc: |
-          TODO
+          Offset in UTF-8 code units (bytes) from the beginning of the shader code, starting at 0.
         type: uint64
       - name: length
         doc: |
-          TODO
-        type: uint64
-      - name: utf16_line_pos
-        doc: |
-          TODO
-        type: uint64
-      - name: utf16_offset
-        doc: |
-          TODO
-        type: uint64
-      - name: utf16_length
-        doc: |
-          TODO
+          Length in UTF-8 code units (bytes) of the span the message corresponds to.
         type: uint64
   - name: compute_pass_descriptor
     doc: |
