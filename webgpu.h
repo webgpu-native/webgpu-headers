@@ -617,8 +617,17 @@ typedef enum WGPUOptionalBool {
 } WGPUOptionalBool WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUPopErrorScopeStatus {
+    /**
+     * `0x00000001`.
+     * The error scope stack was successfully popped and a result was reported.
+     */
     WGPUPopErrorScopeStatus_Success = 0x00000001,
     WGPUPopErrorScopeStatus_InstanceDropped = 0x00000002,
+    /**
+     * `0x00000003`.
+     * The error scope stack could not be popped, because it was empty.
+     */
+    WGPUPopErrorScopeStatus_EmptyStack = 0x00000003,
     WGPUPopErrorScopeStatus_Force32 = 0x7FFFFFFF
 } WGPUPopErrorScopeStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1201,6 +1210,7 @@ typedef void (*WGPUCreateComputePipelineAsyncCallback)(WGPUCreatePipelineAsyncSt
 typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @param device
+ * Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
  * This parameter is @ref PassedWithoutOwnership.
  *
  * @param message
@@ -1208,7 +1218,16 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
  */
 typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLostReason reason, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * @param status
+ * See @ref WGPUPopErrorScopeStatus.
+ *
+ * @param type
+ * The type of the error caught by the scope, or @ref WGPUErrorType_NoError if there was none.
+ * If the `status` is not @ref WGPUPopErrorScopeStatus_Success, this is @ref WGPUErrorType_NoError.
+ *
  * @param message
+ * If the `type` is not @ref WGPUErrorType_NoError, this is a non-empty @ref LocalizableHumanReadableMessageString;
+ * otherwise, this is an empty string.
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUPopErrorScopeCallback)(WGPUPopErrorScopeStatus status, WGPUErrorType type, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;

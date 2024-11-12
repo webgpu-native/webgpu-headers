@@ -566,10 +566,13 @@ enums:
       - null
       - name: success
         doc: |
-          TODO
+          The error scope stack was successfully popped and a result was reported.
       - name: instance_dropped
         doc: |
           TODO
+      - name: empty_stack
+        doc: |
+          The error scope stack could not be popped, because it was empty.
   - name: power_preference
     doc: |
       TODO
@@ -3090,7 +3093,7 @@ callbacks:
     args:
       - name: device
         doc: |
-          TODO
+          Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
         type: object.device
         pointer: immutable
         passed_with_ownership: false
@@ -3110,15 +3113,17 @@ callbacks:
     args:
       - name: status
         doc: |
-          TODO
+          See @ref WGPUPopErrorScopeStatus.
         type: enum.pop_error_scope_status
       - name: type
         doc: |
-          TODO
+          The type of the error caught by the scope, or @ref WGPUErrorType_NoError if there was none.
+          If the `status` is not @ref WGPUPopErrorScopeStatus_Success, this is @ref WGPUErrorType_NoError.
         type: enum.error_type
       - name: message
         doc: |
-          TODO
+          If the `type` is not @ref WGPUErrorType_NoError, this is a non-empty @ref LocalizableHumanReadableMessageString;
+          otherwise, this is an empty string.
         type: out_string
         passed_with_ownership: false
   - name: queue_work_done
