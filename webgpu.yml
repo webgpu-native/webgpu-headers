@@ -3073,7 +3073,7 @@ callbacks:
     args:
       - name: device
         doc: |
-          TODO
+          Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
         type: object.device
         pointer: immutable
         passed_with_ownership: false

@@ -1193,6 +1193,7 @@ typedef void (*WGPUCreateComputePipelineAsyncCallback)(WGPUCreatePipelineAsyncSt
 typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @param device
+ * Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
  * This parameter is @ref PassedWithoutOwnership.
  *
  * @param message
