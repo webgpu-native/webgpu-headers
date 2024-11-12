@@ -1804,16 +1804,14 @@ structs:
         doc: |
           TODO
         type: struct.compute_pass_timestamp_writes
-        pointer: immutable
-        optional: true
   - name: compute_pass_timestamp_writes
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: query_set
         doc: |
-          TODO
+          Query set to write timestamps to. Null if timestamps should not be recorded.
         type: object.query_set
       - name: beginning_of_pass_write_index
         doc: |
@@ -2393,8 +2391,6 @@ structs:
         doc: |
           TODO
         type: struct.render_pass_timestamp_writes
-        pointer: immutable
-        optional: true
   - name: render_pass_max_draw_count
     doc: |
       TODO
@@ -2409,11 +2405,11 @@ structs:
   - name: render_pass_timestamp_writes
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: query_set
         doc: |
-          TODO
+          Query set to write timestamps to. Null if timestamps should not be recorded.
         type: object.query_set
       - name: beginning_of_pass_write_index
         doc: |
