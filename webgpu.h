@@ -1929,6 +1929,7 @@ typedef struct WGPUSurfaceSourceXlibWindow {
  * See @ref Surface-Presenting for more details.
  */
 typedef struct WGPUSurfaceTexture {
+    WGPUChainedStructOut * nextInChain;
     /**
      * The @ref WGPUTexture representing the frame that will be shown on the surface.
      * It is @ref ReturnedWithOwnership from @ref wgpuSurfaceGetCurrentTexture.
