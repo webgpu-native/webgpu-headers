@@ -2964,7 +2964,7 @@ structs:
   - name: vertex_attribute
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: format
         doc: |
@@ -2981,7 +2981,7 @@ structs:
   - name: vertex_buffer_layout
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: step_mode
         doc: |
