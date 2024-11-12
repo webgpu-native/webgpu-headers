@@ -1630,6 +1630,9 @@ typedef struct WGPURenderBundleEncoderDescriptor {
 } WGPURenderBundleEncoderDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassDepthStencilAttachment {
+    /**
+     * Texture view to use as a depth/stencil attachment. Null indicates there is no attachment; other fields are ignored.
+     */
     WGPUTextureView view;
     WGPULoadOp depthLoadOp;
     WGPUStoreOp depthStoreOp;
@@ -2158,7 +2161,7 @@ typedef struct WGPURenderPassDescriptor {
     WGPUStringView label;
     size_t colorAttachmentCount;
     WGPURenderPassColorAttachment const * colorAttachments;
-    WGPU_NULLABLE WGPURenderPassDepthStencilAttachment const * depthStencilAttachment;
+    WGPURenderPassDepthStencilAttachment depthStencilAttachment;
     WGPU_NULLABLE WGPUQuerySet occlusionQuerySet;
     WGPU_NULLABLE WGPURenderPassTimestampWrites const * timestampWrites;
 } WGPURenderPassDescriptor WGPU_STRUCTURE_ATTRIBUTE;

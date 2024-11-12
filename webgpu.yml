@@ -2341,7 +2341,7 @@ structs:
     members:
       - name: view
         doc: |
-          TODO
+          Texture view to use as a depth/stencil attachment. Null indicates there is no attachment; other fields are ignored.
         type: object.texture_view
       - name: depth_load_op
         doc: |
@@ -2393,8 +2393,6 @@ structs:
         doc: |
           TODO
         type: struct.render_pass_depth_stencil_attachment
-        pointer: immutable
-        optional: true
       - name: occlusion_query_set
         doc: |
           TODO
