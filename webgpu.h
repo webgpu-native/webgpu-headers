@@ -1275,6 +1275,7 @@ typedef struct WGPUChainedStructOut {
  */
 typedef struct WGPUBufferMapCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUBufferMapCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1282,6 +1283,7 @@ typedef struct WGPUBufferMapCallbackInfo {
 
 typedef struct WGPUCompilationInfoCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUCompilationInfoCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1289,6 +1291,7 @@ typedef struct WGPUCompilationInfoCallbackInfo {
 
 typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUCreateComputePipelineAsyncCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1296,6 +1299,7 @@ typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
 
 typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUCreateRenderPipelineAsyncCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1303,6 +1307,7 @@ typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
 
 typedef struct WGPUDeviceLostCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUDeviceLostCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1310,6 +1315,7 @@ typedef struct WGPUDeviceLostCallbackInfo {
 
 typedef struct WGPUPopErrorScopeCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUPopErrorScopeCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1317,6 +1323,7 @@ typedef struct WGPUPopErrorScopeCallbackInfo {
 
 typedef struct WGPUQueueWorkDoneCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUQueueWorkDoneCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1324,6 +1331,7 @@ typedef struct WGPUQueueWorkDoneCallbackInfo {
 
 typedef struct WGPURequestAdapterCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPURequestAdapterCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1331,6 +1339,7 @@ typedef struct WGPURequestAdapterCallbackInfo {
 
 typedef struct WGPURequestDeviceCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPURequestDeviceCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
