@@ -400,6 +400,17 @@ enums:
       - name: unknown
         doc: |
           TODO
+  - name: feature_level
+    doc: |
+      See @ref WGPURequestAdapterOptions::featureLevel.
+    entries:
+      - null
+      - name: compatibility
+        doc: |
+          "Compatibility" profile which can be supported on OpenGL ES 3.1.
+      - name: core
+        doc: |
+          "Core" profile which can be supported on Vulkan/Metal/D3D12.
   - name: feature_name
     doc: |
       TODO
@@ -2466,23 +2477,32 @@ structs:
       TODO
     type: base_in
     members:
-      - name: compatible_surface
+      - name: feature_level
         doc: |
-          TODO
-        type: object.surface
-        optional: true
+          "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
+
+          Implementations may ignore @ref WGPUFeatureLevel_Compatibility and provide @ref WGPUFeatureLevel_Core instead. @ref WGPUFeatureLevel_Core is the default in the JS API, but in C, this field is **required** (must not be undefined).
+        type: enum.feature_level
       - name: power_preference
         doc: |
           TODO
         type: enum.power_preference
-      - name: backend_type
-        doc: |
-          TODO
-        type: enum.backend_type
       - name: force_fallback_adapter
         doc: |
-          TODO
+          If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
+          If this is not possible, the request returns null.
         type: bool
+      - name: backend_type
+        doc: |
+          If set, requires the adapter to have a particular backend type.
+          If this is not possible, the request returns null.
+        type: enum.backend_type
+      - name: compatible_surface
+        doc: |
+          If set, requires the adapter to be able to output to a particular surface.
+          If this is not possible, the request returns null.
+        type: object.surface
+        optional: true
   - name: sampler_binding_layout
     doc: |
       TODO
