@@ -79,7 +79,7 @@ type ParameterType struct {
 type Callback struct {
 	Name  string          `yaml:"name"`
 	Doc   string          `yaml:"doc"`
-	Style string          `yaml:"type"`
+	Style string          `yaml:"style"`
 	Args  []ParameterType `yaml:"args"`
 }
 

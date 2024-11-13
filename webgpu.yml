@@ -2804,7 +2804,7 @@ structs:
     doc: |
       Queried each frame from a @ref WGPUSurface to get a @ref WGPUTexture to render to along with some metadata.
       See @ref Surface-Presenting for more details.
-    type: standalone
+    type: base_out
     members:
       - name: texture
         doc: |
