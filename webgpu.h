@@ -1971,6 +1971,7 @@ typedef struct WGPUTextureViewDescriptor {
 } WGPUTextureViewDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUVertexAttribute {
+    WGPUChainedStruct const * nextInChain;
     WGPUVertexFormat format;
     uint64_t offset;
     uint32_t shaderLocation;
@@ -2117,6 +2118,7 @@ typedef struct WGPUTextureDescriptor {
 } WGPUTextureDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUVertexBufferLayout {
+    WGPUChainedStruct const * nextInChain;
     /**
      * The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
      * indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
