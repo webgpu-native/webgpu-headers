@@ -81,6 +81,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 					if funcDoc != "" && funcDoc != "TODO" {
 						s += funcDoc
 					}
+					s += "\n\nSee also @ref CallbackError."
 				}
 				for _, arg := range cb.Args {
 					var argDoc = strings.TrimSpace(arg.Doc)

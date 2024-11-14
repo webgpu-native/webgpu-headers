@@ -401,10 +401,10 @@ enums:
       - null
       - name: compatibility
         doc: |
-          "Compatibility" profile which can be supported on OpenGL ES 3.1.
+          "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
       - name: core
         doc: |
-          "Core" profile which can be supported on Vulkan/Metal/D3D12.
+          "Core" profile which can be supported on Vulkan/Metal/D3D12 (at least).
   - name: feature_name
     doc: |
       TODO
@@ -819,8 +819,6 @@ enums:
         doc: The connection to whatever owns the surface was lost.
       - name: out_of_memory
         doc: The system ran out of memory.
-      - name: device_lost
-        doc: The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
       - name: error
         doc: The surface is not configured, or there was an @ref OutStructChainError.
   - name: texture_aspect
@@ -1549,29 +1547,35 @@ structs:
     members:
       - name: binding
         doc: |
-          TODO
+          Binding index in the bind group.
         type: uint32
       - name: buffer
         doc: |
-          TODO
+          Set this if the binding is a buffer object.
+          Otherwise must be null.
         type: object.buffer
         optional: true
       - name: offset
         doc: |
-          TODO
+          If the binding is a buffer, this is the byte offset of the binding range.
+          Otherwise ignored.
         type: uint64
       - name: size
         doc: |
-          TODO
+          If the binding is a buffer, this is the byte size of the binding range
+          (@ref WGPU_WHOLE_SIZE means the binding ends at the end of the buffer).
+          Otherwise ignored.
         type: uint64
       - name: sampler
         doc: |
-          TODO
+          Set this if the binding is a sampler object.
+          Otherwise must be null.
         type: object.sampler
         optional: true
       - name: texture_view
         doc: |
-          TODO
+          Set this if the binding is a texture view object.
+          Otherwise must be null.
         type: object.texture_view
         optional: true
   - name: bind_group_layout_descriptor
@@ -1831,7 +1835,25 @@ structs:
       - name: compute
         doc: |
           TODO
-        type: struct.programmable_stage_descriptor
+        type: struct.compute_stage
+  - name: compute_stage
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: nullable_string
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
   - name: constant_entry
     doc: |
       TODO
@@ -2200,24 +2222,6 @@ structs:
         doc: |
           TODO
         type: bool
-  - name: programmable_stage_descriptor
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: module
-        doc: |
-          TODO
-        type: object.shader_module
-      - name: entry_point
-        doc: |
-          TODO
-        type: nullable_string
-      - name: constants
-        doc: |
-          TODO
-        type: array<struct.constant_entry>
-        pointer: immutable
   - name: query_set_descriptor
     doc: |
       TODO
@@ -2317,7 +2321,7 @@ structs:
   - name: render_pass_depth_stencil_attachment
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: view
         doc: |
@@ -3957,10 +3961,15 @@ objects:
         doc: |
           TODO
         returns:
-          doc: |
-            TODO
-          type: struct.adapter_info
-          passed_with_ownership: true
+          doc: Indicates if there was an @ref OutStructChainError.
+          type: enum.status
+        args:
+          - name: adapter_info
+            doc: |
+              TODO
+            type: struct.adapter_info
+            pointer: mutable
+            passed_with_ownership: true
       - name: get_queue
         doc: |
           TODO
