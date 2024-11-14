@@ -234,23 +234,24 @@ wgpuTextureRelease(surfaceTexture.texture);
 
 The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, surfaceTexture)` is:
 
- - Set `surfaceTexture->texture` to `NULL`.
+1. Set `surfaceTexture->texture` to `NULL`.
+1. If any of these validation steps fails, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_Error` and return (TODO send error to device?).
+    1. Validate that `surface` is not an error.
+    1. Validate that `surface.config` is not `None`.
+    1. Validate that `surface.currentFrame` is `None`.
+1. Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(surface.config)`.
+1. If `surface.config.device` is alive:
+    1. If the implementation detects any other problem preventing use of the surface, set `surfaceTexture->status` to an appropriate status (something other than `SuccessOptimal`, `SuccessSuboptimal`, or `Error`) and return.
+    1. Create a new @ref WGPUTexture `t`, as if calling `wgpuDeviceCreateTexture(surface.config.device, &textureDesc)`, but wrapping the appropriate backing resource.
+    1. If the implementation detects a reason why the current configuration is suboptimal, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal`.
+        Otherwise, set it to `WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal`.
 
- - If any of these validation steps fails, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_Error` and return (TODO send error to device?).
-
-   - Validate that `surface` is not an error.
-   - Validate that `surface.config` is not `None`.
-   - Validate that `surface.currentFrame` is `None`.
-
- - If `surface.config.device` is not alive, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_Success`, set `surfaceTexture->texture` to a new invalid `WGPUTexture`, and return.
- - If the implementation detects any other problem preventing use of the surface, set `surfaceTexture->status` to an appropriate status (something other than `SuccessOptimal`, `SuccessSuboptimal`, or `Error`) and return.
- - Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(surface.config)`.
- - Create a new @ref WGPUTexture `t`, as if calling `wgpuDeviceCreateTexture(surface.config.device, &textureDesc)`, but wrapping the appropriate backing resource.
- - Set `surface.currentFrame` to `t`.
- - If the implementation detects a reason why the current configuration is suboptimal, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal`.
-   Otherwise, set it to `WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal`.
- - Add a new reference to `t`.
- - Set `surfaceTexture->texture` to a new reference to `t`.
+    Otherwise:
+    1. Create a new invalid @ref WGPUTexture `t`, as if calling `wgpuDeviceCreateTexture(surface.config.device, &texturedesc)`.
+    1. Set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal`.
+1. Set `surface.currentFrame` to `t`.
+1. Add a new reference to `t`.
+1. Set `surfaceTexture->texture` to a new reference to `t`.
 
 The behavior of `::wgpuSurfacePresent``(surface)` is:
 
