@@ -837,8 +837,6 @@ enums:
         doc: The connection to whatever owns the surface was lost.
       - name: out_of_memory
         doc: The system ran out of memory.
-      - name: device_lost
-        doc: The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
       - name: error
         doc: The surface is not configured, or there was an @ref OutStructChainError.
   - name: texture_aspect
