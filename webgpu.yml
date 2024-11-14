@@ -3975,10 +3975,15 @@ objects:
         doc: |
           TODO
         returns:
-          doc: |
-            TODO
-          type: struct.adapter_info
-          passed_with_ownership: true
+          doc: Indicates if there was an @ref OutStructChainError.
+          type: enum.status
+        args:
+          - name: adapter_info
+            doc: |
+              TODO
+            type: struct.adapter_info
+            pointer: mutable
+            passed_with_ownership: true
       - name: get_queue
         doc: |
           TODO
