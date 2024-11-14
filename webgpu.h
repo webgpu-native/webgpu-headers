@@ -419,7 +419,6 @@ typedef enum WGPUCompilationInfoRequestStatus {
     WGPUCompilationInfoRequestStatus_Success = 0x00000001,
     WGPUCompilationInfoRequestStatus_InstanceDropped = 0x00000002,
     WGPUCompilationInfoRequestStatus_Error = 0x00000003,
-    WGPUCompilationInfoRequestStatus_Unknown = 0x00000004,
     WGPUCompilationInfoRequestStatus_Force32 = 0x7FFFFFFF
 } WGPUCompilationInfoRequestStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -467,7 +466,6 @@ typedef enum WGPUCreatePipelineAsyncStatus {
     WGPUCreatePipelineAsyncStatus_InstanceDropped = 0x00000002,
     WGPUCreatePipelineAsyncStatus_ValidationError = 0x00000003,
     WGPUCreatePipelineAsyncStatus_InternalError = 0x00000004,
-    WGPUCreatePipelineAsyncStatus_Unknown = 0x00000005,
     WGPUCreatePipelineAsyncStatus_Force32 = 0x7FFFFFFF
 } WGPUCreatePipelineAsyncStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -594,7 +592,6 @@ typedef enum WGPUMapAsyncStatus {
     WGPUMapAsyncStatus_InstanceDropped = 0x00000002,
     WGPUMapAsyncStatus_Error = 0x00000003,
     WGPUMapAsyncStatus_Aborted = 0x00000004,
-    WGPUMapAsyncStatus_Unknown = 0x00000005,
     WGPUMapAsyncStatus_Force32 = 0x7FFFFFFF
 } WGPUMapAsyncStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -704,7 +701,6 @@ typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_Success = 0x00000001,
     WGPUQueueWorkDoneStatus_InstanceDropped = 0x00000002,
     WGPUQueueWorkDoneStatus_Error = 0x00000003,
-    WGPUQueueWorkDoneStatus_Unknown = 0x00000004,
     WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
 } WGPUQueueWorkDoneStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -713,7 +709,6 @@ typedef enum WGPURequestAdapterStatus {
     WGPURequestAdapterStatus_InstanceDropped = 0x00000002,
     WGPURequestAdapterStatus_Unavailable = 0x00000003,
     WGPURequestAdapterStatus_Error = 0x00000004,
-    WGPURequestAdapterStatus_Unknown = 0x00000005,
     WGPURequestAdapterStatus_Force32 = 0x7FFFFFFF
 } WGPURequestAdapterStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -721,7 +716,6 @@ typedef enum WGPURequestDeviceStatus {
     WGPURequestDeviceStatus_Success = 0x00000001,
     WGPURequestDeviceStatus_InstanceDropped = 0x00000002,
     WGPURequestDeviceStatus_Error = 0x00000003,
-    WGPURequestDeviceStatus_Unknown = 0x00000004,
     WGPURequestDeviceStatus_Force32 = 0x7FFFFFFF
 } WGPURequestDeviceStatus WGPU_ENUM_ATTRIBUTE;
 
