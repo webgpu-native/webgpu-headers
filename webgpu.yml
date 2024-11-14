@@ -585,6 +585,17 @@ enums:
       - name: high_performance
         doc: |
           TODO
+  - name: predefined_color_space
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: SRGB
+        doc: |
+          TODO
+      - name: display_p3
+        doc: |
+          TODO
   - name: present_mode
     doc: Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
     entries:
@@ -726,6 +737,9 @@ enums:
         doc: |
           TODO
       - name: surface_source_XCB_window
+        doc: |
+          TODO
+      - name: surface_color_management
         doc: |
           TODO
   - name: sampler_binding_type
@@ -1208,6 +1222,17 @@ enums:
         doc: |
           TODO
       - name: 3D
+        doc: |
+          TODO
+  - name: tone_mapping_mode
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: standard
+        doc: |
+          TODO
+      - name: extended
         doc: |
           TODO
   - name: vertex_format
@@ -2677,6 +2702,17 @@ structs:
           @ref WGPUCompositeAlphaMode_Auto will be an alias for the first element and will never be present in this array.
         type: array<enum.composite_alpha_mode>
         pointer: immutable
+  - name: surface_color_management
+    doc: |
+      Extension of @ref WGPUSurfaceConfiguration for color spaces and HDR.
+    type: extension_in
+    members:
+      - name: color_space
+        doc: TODO
+        type: enum.predefined_color_space
+      - name: tone_mapping_mode
+        doc: TODO
+        type: enum.tone_mapping_mode
   - name: surface_configuration
     doc: |
       Options to `::wgpuSurfaceConfigure` for defining how a @ref WGPUSurface will be rendered to and presented to the user.
