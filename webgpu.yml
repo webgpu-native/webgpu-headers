@@ -2333,7 +2333,7 @@ structs:
   - name: render_pass_depth_stencil_attachment
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: view
         doc: |

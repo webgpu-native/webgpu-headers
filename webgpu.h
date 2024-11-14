@@ -1659,6 +1659,7 @@ typedef struct WGPURenderBundleEncoderDescriptor {
 } WGPURenderBundleEncoderDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassDepthStencilAttachment {
+    WGPUChainedStruct const * nextInChain;
     WGPUTextureView view;
     WGPULoadOp depthLoadOp;
     WGPUStoreOp depthStoreOp;
