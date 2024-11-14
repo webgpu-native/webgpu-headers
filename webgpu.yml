@@ -407,10 +407,10 @@ enums:
       - null
       - name: compatibility
         doc: |
-          "Compatibility" profile which can be supported on OpenGL ES 3.1.
+          "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
       - name: core
         doc: |
-          "Core" profile which can be supported on Vulkan/Metal/D3D12.
+          "Core" profile which can be supported on Vulkan/Metal/D3D12 (at least).
   - name: feature_name
     doc: |
       TODO
