@@ -10,7 +10,7 @@ import (
 type Yml struct {
 	Copyright  string `yaml:"copyright"`
 	Name       string `yaml:"name"`
-	EnumPrefix string `yaml:"enum_prefix"`
+	EnumPrefix uint16 `yaml:"enum_prefix"`
 
 	Constants []Constant `yaml:"constants"`
 	Typedefs  []Typedef  `yaml:"typedefs"`
@@ -41,9 +41,10 @@ type Enum struct {
 	Extended bool         `yaml:"extended"`
 }
 type EnumEntry struct {
-	Name  string `yaml:"name"`
-	Doc   string `yaml:"doc"`
-	Value string `yaml:"value"`
+	Name  string  `yaml:"name"`
+	Doc   string  `yaml:"doc"`
+	Block *uint16 `yaml:"block"`
+	Value *uint16 `yaml:"value"`
 }
 
 type Bitflag struct {

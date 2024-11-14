@@ -24,7 +24,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 			"MComment":  func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, true) },
 			"SCommentN": func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, false) },
 			"MCommentN": func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, false) },
-			"MCommentEnum": func(v string, indent int, prefix string, e Enum, entryIndex int) string {
+			"MCommentEnum": func(v string, indent int, prefix uint16, e Enum, entryIndex int) string {
 				if v == "" || strings.TrimSpace(v) == "TODO" {
 					return ""
 				}
@@ -335,28 +335,19 @@ func (g *Generator) CallbackArgs(f Callback) string {
 	return sb.String()
 }
 
-func (g *Generator) EnumValue(prefix string, e Enum, entryIndex int) (string, error) {
-	var entryValue uint16
+func (g *Generator) EnumValue(prefix uint16, e Enum, entryIndex int) (string, error) {
+	var entryValue uint32
 	entry := e.Entries[entryIndex]
-	if entry.Value == "" {
-		entryValue = uint16(entryIndex)
+	if entry.Value == nil && entry.Block == nil {
+		entryValue = uint32(entryIndex)
 	} else {
-		var num string
-		var base int
-		if strings.HasPrefix(entry.Value, "0x") {
-			base = 16
-			num = strings.TrimPrefix(entry.Value, "0x")
-		} else {
-			base = 10
-			num = entry.Value
+		entryValue = uint32(*entry.Value)
+		if entry.Block != nil {
+			entryValue |= uint32(*entry.Block) << 16
 		}
-		value, err := strconv.ParseUint(num, base, 16)
-		if err != nil {
-			return "", err
-		}
-		entryValue = uint16(value)
 	}
-	return fmt.Sprintf("%s%.4X", prefix, entryValue), nil
+	entryValue |= uint32(prefix) << 16
+	return fmt.Sprintf("0x%.8X", entryValue), nil
 }
 
 func bitflagEntryValue(entry BitflagEntry, entryIndex int) (uint64, error) {

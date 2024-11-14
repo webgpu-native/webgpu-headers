@@ -3,7 +3,7 @@ copyright: |
 
   SPDX-License-Identifier: BSD-3-Clause
 name: webgpu
-enum_prefix: '0x0000'
+enum_prefix: 0x0000
 constants:
   - name: array_layer_count_undefined
     value: uint32_max
@@ -585,6 +585,21 @@ enums:
       - name: high_performance
         doc: |
           TODO
+  - name: predefined_color_space
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: SRGB
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0001
+      - name: display_p3
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0002
   - name: present_mode
     doc: Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
     entries:
@@ -728,6 +743,11 @@ enums:
       - name: surface_source_XCB_window
         doc: |
           TODO
+      - name: surface_color_management
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0000
   - name: sampler_binding_type
     doc: |
       TODO
@@ -1212,6 +1232,21 @@ enums:
       - name: 3D
         doc: |
           TODO
+  - name: tone_mapping_mode
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: standard
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0001
+      - name: extended
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0002
   - name: vertex_format
     doc: |
       TODO
@@ -2679,6 +2714,17 @@ structs:
           @ref WGPUCompositeAlphaMode_Auto will be an alias for the first element and will never be present in this array.
         type: array<enum.composite_alpha_mode>
         pointer: immutable
+  - name: surface_color_management
+    doc: |
+      Extension of @ref WGPUSurfaceConfiguration for color spaces and HDR.
+    type: extension_in
+    members:
+      - name: color_space
+        doc: TODO
+        type: enum.predefined_color_space
+      - name: tone_mapping_mode
+        doc: TODO
+        type: enum.tone_mapping_mode
   - name: surface_configuration
     doc: |
       Options to `::wgpuSurfaceConfigure` for defining how a @ref WGPUSurface will be rendered to and presented to the user.

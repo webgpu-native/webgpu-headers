@@ -241,8 +241,7 @@
             "description": "The name/namespace of the specification"
         },
         "enum_prefix": {
-            "type": "string",
-            "pattern": "^0x[0-9]{4}$",
+            "$ref": "#/definitions/Value16",
             "description": "The dedicated enum prefix for the implementation specific header to avoid collisions"
         },
         "typedefs": {
@@ -328,11 +327,37 @@
                                         },
                                         "value": {
                                             "$ref": "#/definitions/Value16",
-                                            "description": "Optional property, a 16-bit unsigned integer"
+                                            "description": "Optional override for the value of the enum entry, a 16-bit unsigned integer"
                                         }
                                     },
                                     "required": [
                                         "name",
+                                        "doc"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "$ref": "#/definitions/Name",
+                                            "description": "Name of the enum entry"
+                                        },
+                                        "doc": {
+                                            "type": "string"
+                                        },
+                                        "block": {
+                                            "$ref": "#/definitions/Value16",
+                                            "description": "Block for the enum entry, a 16-bit unsigned integer"
+                                        },
+                                        "value": {
+                                            "$ref": "#/definitions/Value16",
+                                            "description": "Value for the enum entry, a 16-bit unsigned integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "block",
+                                        "value",
                                         "doc"
                                     ]
                                 }
