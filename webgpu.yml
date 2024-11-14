@@ -715,39 +715,52 @@ enums:
       TODO
     entries:
       - null
-      - name: shader_source_SPIRV
-        doc: |
-          TODO
       - name: shader_source_WGSL
         doc: |
           TODO
       - name: render_pass_max_draw_count
         doc: |
           TODO
-      # TODO(#214): Move all of the surface sources into block 0x0001
-      - name: surface_source_metal_layer
-        doc: |
-          TODO
-      - name: surface_source_windows_HWND
-        doc: |
-          TODO
-      - name: surface_source_xlib_window
-        doc: |
-          TODO
-      - name: surface_source_wayland_surface
-        doc: |
-          TODO
-      - name: surface_source_android_native_window
-        doc: |
-          TODO
-      - name: surface_source_XCB_window
-        doc: |
-          TODO
-      - name: surface_color_management
+      - name: shader_source_SPIRV
         doc: |
           TODO
         block: 0x0001
         value: 0x0000
+      - name: surface_source_metal_layer
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0001
+      - name: surface_source_windows_HWND
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0002
+      - name: surface_source_xlib_window
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0003
+      - name: surface_source_wayland_surface
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0004
+      - name: surface_source_android_native_window
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0006
+      - name: surface_source_XCB_window
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0007
+      - name: surface_color_management
+        doc: |
+          TODO
+        block: 0x0001
+        value: 0x0008
   - name: sampler_binding_type
     doc: |
       TODO
