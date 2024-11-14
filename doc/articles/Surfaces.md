@@ -24,6 +24,8 @@ Surfaces that can be presented to using `webgpu.h` (but not necessarily by all i
  - `wl_surface` on Wayland systems with @ref WGPUSurfaceSourceWaylandSurface
  - `xcb_window_t` using XCB windows with @ref WGPUSurfaceSourceXCBWindow
 
+Note, if the same environment-specific object is used as the output of two different things simultaneously (two different `WGPUSurface`s, or one `WGPUSurface` and something else outside `webgpu.h`), the behavior is undefined.
+
 For example, creating an @ref WGPUSurface from an `HWND` is done like so:
 
 ```c

@@ -226,11 +226,11 @@ struct WGPUBindGroupLayoutEntry;
 struct WGPUBlendState;
 struct WGPUCompilationInfo;
 struct WGPUComputePassDescriptor;
+struct WGPUComputeStage;
 struct WGPUDepthStencilState;
 struct WGPUDeviceDescriptor;
 struct WGPUFutureWaitInfo;
 struct WGPUInstanceDescriptor;
-struct WGPUProgrammableStageDescriptor;
 struct WGPURenderPassColorAttachment;
 struct WGPUTexelCopyBufferInfo;
 struct WGPUTexelCopyTextureInfo;
@@ -419,8 +419,7 @@ typedef enum WGPUCompilationInfoRequestStatus {
     WGPUCompilationInfoRequestStatus_Success = 0x00000001,
     WGPUCompilationInfoRequestStatus_InstanceDropped = 0x00000002,
     WGPUCompilationInfoRequestStatus_Error = 0x00000003,
-    WGPUCompilationInfoRequestStatus_DeviceLost = 0x00000004,
-    WGPUCompilationInfoRequestStatus_Unknown = 0x00000005,
+    WGPUCompilationInfoRequestStatus_Unknown = 0x00000004,
     WGPUCompilationInfoRequestStatus_Force32 = 0x7FFFFFFF
 } WGPUCompilationInfoRequestStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -468,9 +467,7 @@ typedef enum WGPUCreatePipelineAsyncStatus {
     WGPUCreatePipelineAsyncStatus_InstanceDropped = 0x00000002,
     WGPUCreatePipelineAsyncStatus_ValidationError = 0x00000003,
     WGPUCreatePipelineAsyncStatus_InternalError = 0x00000004,
-    WGPUCreatePipelineAsyncStatus_DeviceLost = 0x00000005,
-    WGPUCreatePipelineAsyncStatus_DeviceDestroyed = 0x00000006,
-    WGPUCreatePipelineAsyncStatus_Unknown = 0x00000007,
+    WGPUCreatePipelineAsyncStatus_Unknown = 0x00000005,
     WGPUCreatePipelineAsyncStatus_Force32 = 0x7FFFFFFF
 } WGPUCreatePipelineAsyncStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -507,9 +504,25 @@ typedef enum WGPUErrorType {
     WGPUErrorType_OutOfMemory = 0x00000003,
     WGPUErrorType_Internal = 0x00000004,
     WGPUErrorType_Unknown = 0x00000005,
-    WGPUErrorType_DeviceLost = 0x00000006,
     WGPUErrorType_Force32 = 0x7FFFFFFF
 } WGPUErrorType WGPU_ENUM_ATTRIBUTE;
+
+/**
+ * See @ref WGPURequestAdapterOptions::featureLevel.
+ */
+typedef enum WGPUFeatureLevel {
+    /**
+     * `0x00000001`.
+     * "Compatibility" profile which can be supported on OpenGL ES 3.1.
+     */
+    WGPUFeatureLevel_Compatibility = 0x00000001,
+    /**
+     * `0x00000002`.
+     * "Core" profile which can be supported on Vulkan/Metal/D3D12.
+     */
+    WGPUFeatureLevel_Core = 0x00000002,
+    WGPUFeatureLevel_Force32 = 0x7FFFFFFF
+} WGPUFeatureLevel WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUFeatureName {
     WGPUFeatureName_Undefined = 0x00000000,
@@ -604,8 +617,17 @@ typedef enum WGPUOptionalBool {
 } WGPUOptionalBool WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUPopErrorScopeStatus {
+    /**
+     * `0x00000001`.
+     * The error scope stack was successfully popped and a result was reported.
+     */
     WGPUPopErrorScopeStatus_Success = 0x00000001,
     WGPUPopErrorScopeStatus_InstanceDropped = 0x00000002,
+    /**
+     * `0x00000003`.
+     * The error scope stack could not be popped, because it was empty.
+     */
+    WGPUPopErrorScopeStatus_EmptyStack = 0x00000003,
     WGPUPopErrorScopeStatus_Force32 = 0x7FFFFFFF
 } WGPUPopErrorScopeStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -683,7 +705,6 @@ typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_InstanceDropped = 0x00000002,
     WGPUQueueWorkDoneStatus_Error = 0x00000003,
     WGPUQueueWorkDoneStatus_Unknown = 0x00000004,
-    WGPUQueueWorkDoneStatus_DeviceLost = 0x00000005,
     WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
 } WGPUQueueWorkDoneStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1184,6 +1205,7 @@ typedef void (*WGPUCreateComputePipelineAsyncCallback)(WGPUCreatePipelineAsyncSt
 typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @param device
+ * Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
  * This parameter is @ref PassedWithoutOwnership.
  *
  * @param message
@@ -1191,7 +1213,16 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
  */
 typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLostReason reason, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * @param status
+ * See @ref WGPUPopErrorScopeStatus.
+ *
+ * @param type
+ * The type of the error caught by the scope, or @ref WGPUErrorType_NoError if there was none.
+ * If the `status` is not @ref WGPUPopErrorScopeStatus_Success, this is @ref WGPUErrorType_NoError.
+ *
  * @param message
+ * If the `type` is not @ref WGPUErrorType_NoError, this is a non-empty @ref LocalizableHumanReadableMessageString;
+ * otherwise, this is an empty string.
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUPopErrorScopeCallback)(WGPUPopErrorScopeStatus status, WGPUErrorType type, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
@@ -1257,6 +1288,7 @@ typedef struct WGPUChainedStructOut {
  */
 typedef struct WGPUBufferMapCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUBufferMapCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1264,6 +1296,7 @@ typedef struct WGPUBufferMapCallbackInfo {
 
 typedef struct WGPUCompilationInfoCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUCompilationInfoCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1271,6 +1304,7 @@ typedef struct WGPUCompilationInfoCallbackInfo {
 
 typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUCreateComputePipelineAsyncCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1278,6 +1312,7 @@ typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
 
 typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUCreateRenderPipelineAsyncCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1285,6 +1320,7 @@ typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
 
 typedef struct WGPUDeviceLostCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUDeviceLostCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1292,6 +1328,7 @@ typedef struct WGPUDeviceLostCallbackInfo {
 
 typedef struct WGPUPopErrorScopeCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUPopErrorScopeCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1299,6 +1336,7 @@ typedef struct WGPUPopErrorScopeCallbackInfo {
 
 typedef struct WGPUQueueWorkDoneCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPUQueueWorkDoneCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1306,6 +1344,7 @@ typedef struct WGPUQueueWorkDoneCallbackInfo {
 
 typedef struct WGPURequestAdapterCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPURequestAdapterCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1313,6 +1352,7 @@ typedef struct WGPURequestAdapterCallbackInfo {
 
 typedef struct WGPURequestDeviceCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    WGPUCallbackMode mode;
     WGPURequestDeviceCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
@@ -1411,20 +1451,38 @@ typedef struct WGPUCommandEncoderDescriptor {
 typedef struct WGPUCompilationMessage {
     WGPUChainedStruct const * nextInChain;
     /**
+     * A @ref LocalizableHumanReadableMessageString.
+     *
      * This is an \ref OutputString.
      */
     WGPUStringView message;
+    /**
+     * Severity level of the message.
+     */
     WGPUCompilationMessageType type;
+    /**
+     * Line number where the message is attached, starting at 1.
+     */
     uint64_t lineNum;
+    /**
+     * Offset in UTF-8 code units (bytes) from the beginning of the line, starting at 1.
+     */
     uint64_t linePos;
+    /**
+     * Offset in UTF-8 code units (bytes) from the beginning of the shader code, starting at 0.
+     */
     uint64_t offset;
+    /**
+     * Length in UTF-8 code units (bytes) of the span the message corresponds to.
+     */
     uint64_t length;
-    uint64_t utf16LinePos;
-    uint64_t utf16Offset;
-    uint64_t utf16Length;
 } WGPUCompilationMessage WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUComputePassTimestampWrites {
+    WGPUChainedStruct const * nextInChain;
+    /**
+     * Query set to write timestamps to. Null if timestamps should not be recorded.
+     */
     WGPUQuerySet querySet;
     uint32_t beginningOfPassWriteIndex;
     uint32_t endOfPassWriteIndex;
@@ -1597,6 +1655,10 @@ typedef struct WGPURenderPassMaxDrawCount {
 } WGPURenderPassMaxDrawCount WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassTimestampWrites {
+    WGPUChainedStruct const * nextInChain;
+    /**
+     * Query set to write timestamps to. Null if timestamps should not be recorded.
+     */
     WGPUQuerySet querySet;
     uint32_t beginningOfPassWriteIndex;
     uint32_t endOfPassWriteIndex;
@@ -1604,10 +1666,28 @@ typedef struct WGPURenderPassTimestampWrites {
 
 typedef struct WGPURequestAdapterOptions {
     WGPUChainedStruct const * nextInChain;
-    WGPU_NULLABLE WGPUSurface compatibleSurface;
+    /**
+     * "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
+     *
+     * Implementations may ignore @ref WGPUFeatureLevel_Compatibility and provide @ref WGPUFeatureLevel_Core instead. @ref WGPUFeatureLevel_Core is the default in the JS API, but in C, this field is **required** (must not be undefined).
+     */
+    WGPUFeatureLevel featureLevel;
     WGPUPowerPreference powerPreference;
-    WGPUBackendType backendType;
+    /**
+     * If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
+     * If this is not possible, the request returns null.
+     */
     WGPUBool forceFallbackAdapter;
+    /**
+     * If set, requires the adapter to have a particular backend type.
+     * If this is not possible, the request returns null.
+     */
+    WGPUBackendType backendType;
+    /**
+     * If set, requires the adapter to be able to output to a particular surface.
+     * If this is not possible, the request returns null.
+     */
+    WGPU_NULLABLE WGPUSurface compatibleSurface;
 } WGPURequestAdapterOptions WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUSamplerBindingLayout {
@@ -1852,6 +1932,7 @@ typedef struct WGPUSurfaceSourceXlibWindow {
  * See @ref Surface-Presenting for more details.
  */
 typedef struct WGPUSurfaceTexture {
+    WGPUChainedStructOut * nextInChain;
     /**
      * The @ref WGPUTexture representing the frame that will be shown on the surface.
      * It is @ref ReturnedWithOwnership from @ref wgpuSurfaceGetCurrentTexture.
@@ -1893,6 +1974,7 @@ typedef struct WGPUTextureViewDescriptor {
 } WGPUTextureViewDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUVertexAttribute {
+    WGPUChainedStruct const * nextInChain;
     WGPUVertexFormat format;
     uint64_t offset;
     uint32_t shaderLocation;
@@ -1936,8 +2018,19 @@ typedef struct WGPUComputePassDescriptor {
      * This is a \ref NonNullInputString.
      */
     WGPUStringView label;
-    WGPU_NULLABLE WGPUComputePassTimestampWrites const * timestampWrites;
+    WGPUComputePassTimestampWrites timestampWrites;
 } WGPUComputePassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+typedef struct WGPUComputeStage {
+    WGPUChainedStruct const * nextInChain;
+    WGPUShaderModule module;
+    /**
+     * This is a \ref NullableInputString.
+     */
+    WGPUStringView entryPoint;
+    size_t constantCount;
+    WGPUConstantEntry const * constants;
+} WGPUComputeStage WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUDepthStencilState {
     WGPUChainedStruct const * nextInChain;
@@ -1989,17 +2082,6 @@ typedef struct WGPUInstanceDescriptor {
     WGPUInstanceCapabilities features;
 } WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
-typedef struct WGPUProgrammableStageDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    WGPUShaderModule module;
-    /**
-     * This is a \ref NullableInputString.
-     */
-    WGPUStringView entryPoint;
-    size_t constantCount;
-    WGPUConstantEntry const * constants;
-} WGPUProgrammableStageDescriptor WGPU_STRUCTURE_ATTRIBUTE;
-
 typedef struct WGPURenderPassColorAttachment {
     WGPUChainedStruct const * nextInChain;
     WGPU_NULLABLE WGPUTextureView view;
@@ -2039,6 +2121,7 @@ typedef struct WGPUTextureDescriptor {
 } WGPUTextureDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUVertexBufferLayout {
+    WGPUChainedStruct const * nextInChain;
     /**
      * The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
      * indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
@@ -2079,7 +2162,7 @@ typedef struct WGPUComputePipelineDescriptor {
      */
     WGPUStringView label;
     WGPU_NULLABLE WGPUPipelineLayout layout;
-    WGPUProgrammableStageDescriptor compute;
+    WGPUComputeStage compute;
 } WGPUComputePipelineDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassDescriptor {
@@ -2092,7 +2175,7 @@ typedef struct WGPURenderPassDescriptor {
     WGPURenderPassColorAttachment const * colorAttachments;
     WGPU_NULLABLE WGPURenderPassDepthStencilAttachment const * depthStencilAttachment;
     WGPU_NULLABLE WGPUQuerySet occlusionQuerySet;
-    WGPU_NULLABLE WGPURenderPassTimestampWrites const * timestampWrites;
+    WGPURenderPassTimestampWrites timestampWrites;
 } WGPURenderPassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPUVertexState {

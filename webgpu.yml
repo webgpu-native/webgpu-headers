@@ -284,9 +284,6 @@ enums:
       - name: error
         doc: |
           TODO
-      - name: device_lost
-        doc: |
-          TODO
       - name: unknown
         doc: |
           TODO
@@ -332,12 +329,6 @@ enums:
         doc: |
           TODO
       - name: internal_error
-        doc: |
-          TODO
-      - name: device_lost
-        doc: |
-          TODO
-      - name: device_destroyed
         doc: |
           TODO
       - name: unknown
@@ -409,9 +400,17 @@ enums:
       - name: unknown
         doc: |
           TODO
-      - name: device_lost
+  - name: feature_level
+    doc: |
+      See @ref WGPURequestAdapterOptions::featureLevel.
+    entries:
+      - null
+      - name: compatibility
         doc: |
-          TODO
+          "Compatibility" profile which can be supported on OpenGL ES 3.1.
+      - name: core
+        doc: |
+          "Core" profile which can be supported on Vulkan/Metal/D3D12.
   - name: feature_name
     doc: |
       TODO
@@ -567,10 +566,13 @@ enums:
       - null
       - name: success
         doc: |
-          TODO
+          The error scope stack was successfully popped and a result was reported.
       - name: instance_dropped
         doc: |
           TODO
+      - name: empty_stack
+        doc: |
+          The error scope stack could not be popped, because it was empty.
   - name: power_preference
     doc: |
       TODO
@@ -654,9 +656,6 @@ enums:
         doc: |
           TODO
       - name: unknown
-        doc: |
-          TODO
-      - name: device_lost
         doc: |
           TODO
   - name: request_adapter_status
@@ -1779,39 +1778,27 @@ structs:
     members:
       - name: message
         doc: |
-          TODO
+          A @ref LocalizableHumanReadableMessageString.
         type: out_string
       - name: type
         doc: |
-          TODO
+          Severity level of the message.
         type: enum.compilation_message_type
       - name: line_num
         doc: |
-          TODO
+          Line number where the message is attached, starting at 1.
         type: uint64
       - name: line_pos
         doc: |
-          TODO
+          Offset in UTF-8 code units (bytes) from the beginning of the line, starting at 1.
         type: uint64
       - name: offset
         doc: |
-          TODO
+          Offset in UTF-8 code units (bytes) from the beginning of the shader code, starting at 0.
         type: uint64
       - name: length
         doc: |
-          TODO
-        type: uint64
-      - name: utf16_line_pos
-        doc: |
-          TODO
-        type: uint64
-      - name: utf16_offset
-        doc: |
-          TODO
-        type: uint64
-      - name: utf16_length
-        doc: |
-          TODO
+          Length in UTF-8 code units (bytes) of the span the message corresponds to.
         type: uint64
   - name: compute_pass_descriptor
     doc: |
@@ -1826,16 +1813,14 @@ structs:
         doc: |
           TODO
         type: struct.compute_pass_timestamp_writes
-        pointer: immutable
-        optional: true
   - name: compute_pass_timestamp_writes
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: query_set
         doc: |
-          TODO
+          Query set to write timestamps to. Null if timestamps should not be recorded.
         type: object.query_set
       - name: beginning_of_pass_write_index
         doc: |
@@ -1862,7 +1847,25 @@ structs:
       - name: compute
         doc: |
           TODO
-        type: struct.programmable_stage_descriptor
+        type: struct.compute_stage
+  - name: compute_stage
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: nullable_string
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
   - name: constant_entry
     doc: |
       TODO
@@ -2231,24 +2234,6 @@ structs:
         doc: |
           TODO
         type: bool
-  - name: programmable_stage_descriptor
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: module
-        doc: |
-          TODO
-        type: object.shader_module
-      - name: entry_point
-        doc: |
-          TODO
-        type: nullable_string
-      - name: constants
-        doc: |
-          TODO
-        type: array<struct.constant_entry>
-        pointer: immutable
   - name: query_set_descriptor
     doc: |
       TODO
@@ -2415,8 +2400,6 @@ structs:
         doc: |
           TODO
         type: struct.render_pass_timestamp_writes
-        pointer: immutable
-        optional: true
   - name: render_pass_max_draw_count
     doc: |
       TODO
@@ -2431,11 +2414,11 @@ structs:
   - name: render_pass_timestamp_writes
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: query_set
         doc: |
-          TODO
+          Query set to write timestamps to. Null if timestamps should not be recorded.
         type: object.query_set
       - name: beginning_of_pass_write_index
         doc: |
@@ -2488,23 +2471,32 @@ structs:
       TODO
     type: base_in
     members:
-      - name: compatible_surface
+      - name: feature_level
         doc: |
-          TODO
-        type: object.surface
-        optional: true
+          "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
+
+          Implementations may ignore @ref WGPUFeatureLevel_Compatibility and provide @ref WGPUFeatureLevel_Core instead. @ref WGPUFeatureLevel_Core is the default in the JS API, but in C, this field is **required** (must not be undefined).
+        type: enum.feature_level
       - name: power_preference
         doc: |
           TODO
         type: enum.power_preference
-      - name: backend_type
-        doc: |
-          TODO
-        type: enum.backend_type
       - name: force_fallback_adapter
         doc: |
-          TODO
+          If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
+          If this is not possible, the request returns null.
         type: bool
+      - name: backend_type
+        doc: |
+          If set, requires the adapter to have a particular backend type.
+          If this is not possible, the request returns null.
+        type: enum.backend_type
+      - name: compatible_surface
+        doc: |
+          If set, requires the adapter to be able to output to a particular surface.
+          If this is not possible, the request returns null.
+        type: object.surface
+        optional: true
   - name: sampler_binding_layout
     doc: |
       TODO
@@ -2806,7 +2798,7 @@ structs:
     doc: |
       Queried each frame from a @ref WGPUSurface to get a @ref WGPUTexture to render to along with some metadata.
       See @ref Surface-Presenting for more details.
-    type: standalone
+    type: base_out
     members:
       - name: texture
         doc: |
@@ -2966,7 +2958,7 @@ structs:
   - name: vertex_attribute
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: format
         doc: |
@@ -2983,7 +2975,7 @@ structs:
   - name: vertex_buffer_layout
     doc: |
       TODO
-    type: standalone
+    type: base_in
     members:
       - name: step_mode
         doc: |
@@ -3095,7 +3087,7 @@ callbacks:
     args:
       - name: device
         doc: |
-          TODO
+          Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
         type: object.device
         pointer: immutable
         passed_with_ownership: false
@@ -3115,15 +3107,17 @@ callbacks:
     args:
       - name: status
         doc: |
-          TODO
+          See @ref WGPUPopErrorScopeStatus.
         type: enum.pop_error_scope_status
       - name: type
         doc: |
-          TODO
+          The type of the error caught by the scope, or @ref WGPUErrorType_NoError if there was none.
+          If the `status` is not @ref WGPUPopErrorScopeStatus_Success, this is @ref WGPUErrorType_NoError.
         type: enum.error_type
       - name: message
         doc: |
-          TODO
+          If the `type` is not @ref WGPUErrorType_NoError, this is a non-empty @ref LocalizableHumanReadableMessageString;
+          otherwise, this is an empty string.
         type: out_string
         passed_with_ownership: false
   - name: queue_work_done
