@@ -284,9 +284,6 @@ enums:
       - name: error
         doc: |
           TODO
-      - name: unknown
-        doc: |
-          TODO
   - name: compilation_message_type
     doc: |
       TODO
@@ -329,9 +326,6 @@ enums:
         doc: |
           TODO
       - name: internal_error
-        doc: |
-          TODO
-      - name: unknown
         doc: |
           TODO
   - name: cull_mode
@@ -531,9 +525,6 @@ enums:
       - name: aborted
         doc: |
           TODO
-      - name: unknown
-        doc: |
-          TODO
   - name: mipmap_filter_mode
     doc: |
       TODO
@@ -655,9 +646,6 @@ enums:
       - name: error
         doc: |
           TODO
-      - name: unknown
-        doc: |
-          TODO
   - name: request_adapter_status
     doc: |
       TODO
@@ -675,9 +663,6 @@ enums:
       - name: error
         doc: |
           TODO
-      - name: unknown
-        doc: |
-          TODO
   - name: request_device_status
     doc: |
       TODO
@@ -690,9 +675,6 @@ enums:
         doc: |
           TODO
       - name: error
-        doc: |
-          TODO
-      - name: unknown
         doc: |
           TODO
   - name: s_type
