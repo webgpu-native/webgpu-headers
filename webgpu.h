@@ -513,12 +513,12 @@ typedef enum WGPUErrorType {
 typedef enum WGPUFeatureLevel {
     /**
      * `0x00000001`.
-     * "Compatibility" profile which can be supported on OpenGL ES 3.1.
+     * "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
      */
     WGPUFeatureLevel_Compatibility = 0x00000001,
     /**
      * `0x00000002`.
-     * "Core" profile which can be supported on Vulkan/Metal/D3D12.
+     * "Core" profile which can be supported on Vulkan/Metal/D3D12 (at least).
      */
     WGPUFeatureLevel_Core = 0x00000002,
     WGPUFeatureLevel_Force32 = 0x7FFFFFFF
@@ -851,14 +851,9 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000006,
     /**
      * `0x00000007`.
-     * The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
-     */
-    WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000007,
-    /**
-     * `0x00000008`.
      * The surface is not configured, or there was an @ref OutStructChainError.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000008,
+    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000007,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1189,26 +1184,36 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
  * @{
  */
 /**
+ * See also @ref CallbackError.
+ *
  * @param message
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUBufferMapCallback)(WGPUMapAsyncStatus status, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param compilationInfo
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUCompilationInfoCallback)(WGPUCompilationInfoRequestStatus status, struct WGPUCompilationInfo const * compilationInfo, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param pipeline
  * This parameter is @ref PassedWithOwnership.
  */
 typedef void (*WGPUCreateComputePipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPUComputePipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param pipeline
  * This parameter is @ref PassedWithOwnership.
  */
 typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param device
  * Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
  * This parameter is @ref PassedWithoutOwnership.
@@ -1218,6 +1223,8 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
  */
 typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLostReason reason, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param status
  * See @ref WGPUPopErrorScopeStatus.
  *
@@ -1231,8 +1238,13 @@ typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLost
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUPopErrorScopeCallback)(WGPUPopErrorScopeStatus status, WGPUErrorType type, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * See also @ref CallbackError.
+ */
 typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param adapter
  * This parameter is @ref PassedWithOwnership.
  *
@@ -1241,6 +1253,8 @@ typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, WGPU_N
  */
 typedef void (*WGPURequestAdapterCallback)(WGPURequestAdapterStatus status, WGPUAdapter adapter, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param device
  * This parameter is @ref PassedWithOwnership.
  *
@@ -1249,6 +1263,8 @@ typedef void (*WGPURequestAdapterCallback)(WGPURequestAdapterStatus status, WGPU
  */
 typedef void (*WGPURequestDeviceCallback)(WGPURequestDeviceStatus status, WGPUDevice device, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param device
  * This parameter is @ref PassedWithoutOwnership.
  *

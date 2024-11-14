@@ -407,10 +407,10 @@ enums:
       - null
       - name: compatibility
         doc: |
-          "Compatibility" profile which can be supported on OpenGL ES 3.1.
+          "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
       - name: core
         doc: |
-          "Core" profile which can be supported on Vulkan/Metal/D3D12.
+          "Core" profile which can be supported on Vulkan/Metal/D3D12 (at least).
   - name: feature_name
     doc: |
       TODO
@@ -837,8 +837,6 @@ enums:
         doc: The connection to whatever owns the surface was lost.
       - name: out_of_memory
         doc: The system ran out of memory.
-      - name: device_lost
-        doc: The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
       - name: error
         doc: The surface is not configured, or there was an @ref OutStructChainError.
   - name: texture_aspect
