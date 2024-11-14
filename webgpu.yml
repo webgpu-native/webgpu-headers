@@ -1567,29 +1567,35 @@ structs:
     members:
       - name: binding
         doc: |
-          TODO
+          Binding index in the bind group.
         type: uint32
       - name: buffer
         doc: |
-          TODO
+          Set this if the binding is a buffer object.
+          Otherwise must be null.
         type: object.buffer
         optional: true
       - name: offset
         doc: |
-          TODO
+          If the binding is a buffer, this is the byte offset of the binding range.
+          Otherwise ignored.
         type: uint64
       - name: size
         doc: |
-          TODO
+          If the binding is a buffer, this is the byte size of the binding range
+          (@ref WGPU_WHOLE_SIZE means the binding ends at the end of the buffer).
+          Otherwise ignored.
         type: uint64
       - name: sampler
         doc: |
-          TODO
+          Set this if the binding is a sampler object.
+          Otherwise must be null.
         type: object.sampler
         optional: true
       - name: texture_view
         doc: |
-          TODO
+          Set this if the binding is a texture view object.
+          Otherwise must be null.
         type: object.texture_view
         optional: true
   - name: bind_group_layout_descriptor
