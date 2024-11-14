@@ -1849,7 +1849,25 @@ structs:
       - name: compute
         doc: |
           TODO
-        type: struct.programmable_stage_descriptor
+        type: struct.compute_stage
+  - name: compute_stage
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: nullable_string
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
   - name: constant_entry
     doc: |
       TODO
@@ -2218,24 +2236,6 @@ structs:
         doc: |
           TODO
         type: bool
-  - name: programmable_stage_descriptor
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: module
-        doc: |
-          TODO
-        type: object.shader_module
-      - name: entry_point
-        doc: |
-          TODO
-        type: nullable_string
-      - name: constants
-        doc: |
-          TODO
-        type: array<struct.constant_entry>
-        pointer: immutable
   - name: query_set_descriptor
     doc: |
       TODO
