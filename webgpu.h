@@ -1414,11 +1414,35 @@ typedef struct WGPUAdapterInfo {
 
 typedef struct WGPUBindGroupEntry {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Binding index in the bind group.
+     */
     uint32_t binding;
+    /**
+     * Set this if the binding is a buffer object.
+     * Otherwise must be null.
+     */
     WGPU_NULLABLE WGPUBuffer buffer;
+    /**
+     * If the binding is a buffer, this is the byte offset of the binding range.
+     * Otherwise ignored.
+     */
     uint64_t offset;
+    /**
+     * If the binding is a buffer, this is the byte size of the binding range
+     * (@ref WGPU_WHOLE_SIZE means the binding ends at the end of the buffer).
+     * Otherwise ignored.
+     */
     uint64_t size;
+    /**
+     * Set this if the binding is a sampler object.
+     * Otherwise must be null.
+     */
     WGPU_NULLABLE WGPUSampler sampler;
+    /**
+     * Set this if the binding is a texture view object.
+     * Otherwise must be null.
+     */
     WGPU_NULLABLE WGPUTextureView textureView;
 } WGPUBindGroupEntry WGPU_STRUCTURE_ATTRIBUTE;
 
