@@ -28,6 +28,7 @@ The `callback` function pointer is called when the application _observes complet
 > @copydoc ::WGPUCallbackMode_AllowSpontaneous
 
 ## wgpuInstanceWaitAny {#Wait-Any}
+
 `WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance, size_t futureCount, WGPUFutureWaitInfo * futures, uint64_t timeoutNS)`
 
 Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nanoseconds. Returns when at least one `WGPUFuture` is completed or `timeoutNS` elapses, whichever is first. If `timeoutNS` is zero, all `futures` are polled once, without blocking.
@@ -69,3 +70,19 @@ Device events are slightly different in that their callback info (`WGPUDeviceLos
 The `WGPUUncapturedErrorCallbackInfo` _does not_ have a callback mode member. It is always as-if it were `::WGPUCallbackMode_AllowSpontaneous`. Note also that the uncaptured error callback is a _repeating_ callback that fires multiple times, unlike other callbacks in webgpu.h.
 
 The uncaptured error callback is guaranteed not to fire after the device becomes lost. When the device is lost, it is an appropriate time for the application to free userdata variables for the uncaptured error callback. Note that the device becomes lost _before_ the actual device lost callback fires. First the device state transitions to lost, then the device lost callback fires. The timing of the callback depends on the device lost callback mode.
+
+## Callback Re-Entrancy {#Callback-Re-Entrancy}
+
+There are two cases of async/callback re-entrancy:
+
+- Calls to the API are made inside callbacks from the API.
+- Two threads are doing things in parallel and so calls to the API are made while callbacks (or API functions in general) are running on another thread.
+
+With regard to asynchronous operations, it's unsafe to operate on the same future re-entrantly.
+
+- It is unsafe to use @ref wgpuInstanceWaitAny on the same future more than once at a time (nested or in parallel).
+- If a future is @ref WGPUCallbackMode_AllowProcessEvents, then it is unsafe to simultaneously execute @ref wgpuInstanceWaitAny on that future and any call to @ref wgpuInstanceProcessEvents on that instance, until after it has completed.
+  - If is safe to use @ref wgpuInstanceProcessEvents more than once at a time (nested or in parallel). (It synchronizes its critical section, including removing completing futures from its tracked list, before calling any callbacks.)
+- If a future is @ref WGPUCallbackMode_AllowSpontaneous, then it is unsafe to use @ref wgpuInstanceWaitAny on that future at all, until after it has completed.
+
+For general multithreading concerns, see @ref Multithreading.
