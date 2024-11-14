@@ -226,11 +226,11 @@ struct WGPUBindGroupLayoutEntry;
 struct WGPUBlendState;
 struct WGPUCompilationInfo;
 struct WGPUComputePassDescriptor;
+struct WGPUComputeStage;
 struct WGPUDepthStencilState;
 struct WGPUDeviceDescriptor;
 struct WGPUFutureWaitInfo;
 struct WGPUInstanceDescriptor;
-struct WGPUProgrammableStageDescriptor;
 struct WGPURenderPassColorAttachment;
 struct WGPUTexelCopyBufferInfo;
 struct WGPUTexelCopyTextureInfo;
@@ -513,12 +513,12 @@ typedef enum WGPUErrorType {
 typedef enum WGPUFeatureLevel {
     /**
      * `0x00000001`.
-     * "Compatibility" profile which can be supported on OpenGL ES 3.1.
+     * "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
      */
     WGPUFeatureLevel_Compatibility = 0x00000001,
     /**
      * `0x00000002`.
-     * "Core" profile which can be supported on Vulkan/Metal/D3D12.
+     * "Core" profile which can be supported on Vulkan/Metal/D3D12 (at least).
      */
     WGPUFeatureLevel_Core = 0x00000002,
     WGPUFeatureLevel_Force32 = 0x7FFFFFFF
@@ -851,14 +851,9 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000006,
     /**
      * `0x00000007`.
-     * The @ref WGPUDevice configured on the @ref WGPUSurface was lost.
-     */
-    WGPUSurfaceGetCurrentTextureStatus_DeviceLost = 0x00000007,
-    /**
-     * `0x00000008`.
      * The surface is not configured, or there was an @ref OutStructChainError.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000008,
+    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000007,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1189,26 +1184,36 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
  * @{
  */
 /**
+ * See also @ref CallbackError.
+ *
  * @param message
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUBufferMapCallback)(WGPUMapAsyncStatus status, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param compilationInfo
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUCompilationInfoCallback)(WGPUCompilationInfoRequestStatus status, struct WGPUCompilationInfo const * compilationInfo, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param pipeline
  * This parameter is @ref PassedWithOwnership.
  */
 typedef void (*WGPUCreateComputePipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPUComputePipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param pipeline
  * This parameter is @ref PassedWithOwnership.
  */
 typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param device
  * Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
  * This parameter is @ref PassedWithoutOwnership.
@@ -1218,6 +1223,8 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
  */
 typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLostReason reason, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param status
  * See @ref WGPUPopErrorScopeStatus.
  *
@@ -1231,8 +1238,13 @@ typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLost
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUPopErrorScopeCallback)(WGPUPopErrorScopeStatus status, WGPUErrorType type, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * See also @ref CallbackError.
+ */
 typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param adapter
  * This parameter is @ref PassedWithOwnership.
  *
@@ -1241,6 +1253,8 @@ typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, WGPU_N
  */
 typedef void (*WGPURequestAdapterCallback)(WGPURequestAdapterStatus status, WGPUAdapter adapter, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param device
  * This parameter is @ref PassedWithOwnership.
  *
@@ -1249,6 +1263,8 @@ typedef void (*WGPURequestAdapterCallback)(WGPURequestAdapterStatus status, WGPU
  */
 typedef void (*WGPURequestDeviceCallback)(WGPURequestDeviceStatus status, WGPUDevice device, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * See also @ref CallbackError.
+ *
  * @param device
  * This parameter is @ref PassedWithoutOwnership.
  *
@@ -1667,6 +1683,7 @@ typedef struct WGPURenderBundleEncoderDescriptor {
 } WGPURenderBundleEncoderDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassDepthStencilAttachment {
+    WGPUChainedStruct const * nextInChain;
     WGPUTextureView view;
     WGPULoadOp depthLoadOp;
     WGPUStoreOp depthStoreOp;
@@ -2050,6 +2067,17 @@ typedef struct WGPUComputePassDescriptor {
     WGPUComputePassTimestampWrites timestampWrites;
 } WGPUComputePassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
+typedef struct WGPUComputeStage {
+    WGPUChainedStruct const * nextInChain;
+    WGPUShaderModule module;
+    /**
+     * This is a \ref NullableInputString.
+     */
+    WGPUStringView entryPoint;
+    size_t constantCount;
+    WGPUConstantEntry const * constants;
+} WGPUComputeStage WGPU_STRUCTURE_ATTRIBUTE;
+
 typedef struct WGPUDepthStencilState {
     WGPUChainedStruct const * nextInChain;
     WGPUTextureFormat format;
@@ -2099,17 +2127,6 @@ typedef struct WGPUInstanceDescriptor {
      */
     WGPUInstanceCapabilities features;
 } WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPUProgrammableStageDescriptor {
-    WGPUChainedStruct const * nextInChain;
-    WGPUShaderModule module;
-    /**
-     * This is a \ref NullableInputString.
-     */
-    WGPUStringView entryPoint;
-    size_t constantCount;
-    WGPUConstantEntry const * constants;
-} WGPUProgrammableStageDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassColorAttachment {
     WGPUChainedStruct const * nextInChain;
@@ -2191,7 +2208,7 @@ typedef struct WGPUComputePipelineDescriptor {
      */
     WGPUStringView label;
     WGPU_NULLABLE WGPUPipelineLayout layout;
-    WGPUProgrammableStageDescriptor compute;
+    WGPUComputeStage compute;
 } WGPUComputePipelineDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 typedef struct WGPURenderPassDescriptor {
@@ -2664,7 +2681,7 @@ typedef void (*WGPUProcDeviceDestroy)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE
  * Proc pointer type for @ref wgpuDeviceGetAdapterInfo:
  * > @copydoc wgpuDeviceGetAdapterInfo
  */
-typedef WGPUAdapterInfo (*WGPUProcDeviceGetAdapterInfo)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcDeviceGetAdapterInfo)(WGPUDevice device, WGPUAdapterInfo * adapterInfo) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceGetFeatures:
  * > @copydoc wgpuDeviceGetFeatures
@@ -3517,7 +3534,14 @@ WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPU_NULLABLE
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUAdapterInfo wgpuDeviceGetAdapterInfo(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param adapterInfo
+ * This parameter is @ref ReturnedWithOwnership.
+ *
+ * @returns
+ * Indicates if there was an @ref OutStructChainError.
+ */
+WGPU_EXPORT WGPUStatus wgpuDeviceGetAdapterInfo(WGPUDevice device, WGPUAdapterInfo * adapterInfo) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Get the list of @ref WGPUFeatureName values supported by the device.
  *
