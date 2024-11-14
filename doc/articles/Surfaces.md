@@ -242,7 +242,7 @@ The behavior of `::wgpuSurfaceGetCurrentTexture``(surface, surfaceTexture)` is:
    - Validate that `surface.config` is not `None`.
    - Validate that `surface.currentFrame` is `None`.
 
- - If `surface.config.device` is not alive, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_Lost` and return.
+ - If `surface.config.device` is not alive, set `surfaceTexture->status` to `WGPUSurfaceGetCurrentTextureStatus_Success`, set `surfaceTexture->texture` to a new invalid `WGPUTexture`, and return.
  - If the implementation detects any other problem preventing use of the surface, set `surfaceTexture->status` to an appropriate status (something other than `SuccessOptimal`, `SuccessSuboptimal`, or `Error`) and return.
  - Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(surface.config)`.
  - Create a new @ref WGPUTexture `t`, as if calling `wgpuDeviceCreateTexture(surface.config.device, &textureDesc)`, but wrapping the appropriate backing resource.
