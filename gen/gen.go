@@ -29,7 +29,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 					return ""
 				}
 				value, _ := g.EnumValue(prefix, e, entryIndex)
-				return Comment("`"+value+"`.\n"+v, CommentTypeMultiLine, indent, true)
+				return Comment("`"+value+"`.\n"+strings.TrimSpace(v), CommentTypeMultiLine, indent, true)
 			},
 			"MCommentBitflag": func(v string, indent int, b Bitflag, entryIndex int) string {
 				if v == "" || strings.TrimSpace(v) == "TODO" {

@@ -346,7 +346,6 @@ typedef enum WGPUBlendOperation {
 typedef enum WGPUBufferBindingType {
     /**
      * `0x00000000`.
-     *
      * Indicates that this @ref WGPUBufferBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
      * (See also @ref SentinelValues.)
@@ -376,7 +375,6 @@ typedef enum WGPUBufferMapState {
 typedef enum WGPUCallbackMode {
     /**
      * `0x00000001`.
-     *
      * Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
      * - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
      *   AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
@@ -384,7 +382,6 @@ typedef enum WGPUCallbackMode {
     WGPUCallbackMode_WaitAnyOnly = 0x00000001,
     /**
      * `0x00000002`.
-     *
      * Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
      * - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
@@ -392,7 +389,6 @@ typedef enum WGPUCallbackMode {
     WGPUCallbackMode_AllowProcessEvents = 0x00000002,
     /**
      * `0x00000003`.
-     *
      * Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
      * - **may** fire spontaneously on an arbitrary or application thread, when the WebGPU implementations discovers that the asynchronous operation is complete.
@@ -518,13 +514,11 @@ typedef enum WGPUErrorType {
 typedef enum WGPUFeatureLevel {
     /**
      * `0x00000001`.
-     *
      * "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
      */
     WGPUFeatureLevel_Compatibility = 0x00000001,
     /**
      * `0x00000002`.
-     *
      * "Core" profile which can be supported on Vulkan/Metal/D3D12 (at least).
      */
     WGPUFeatureLevel_Core = 0x00000002,
@@ -625,14 +619,12 @@ typedef enum WGPUOptionalBool {
 typedef enum WGPUPopErrorScopeStatus {
     /**
      * `0x00000001`.
-     *
      * The error scope stack was successfully popped and a result was reported.
      */
     WGPUPopErrorScopeStatus_Success = 0x00000001,
     WGPUPopErrorScopeStatus_InstanceDropped = 0x00000002,
     /**
      * `0x00000003`.
-     *
      * The error scope stack could not be popped, because it was empty.
      */
     WGPUPopErrorScopeStatus_EmptyStack = 0x00000003,
@@ -656,13 +648,11 @@ typedef enum WGPUPowerPreference {
 typedef enum WGPUPresentMode {
     /**
      * `0x00000000`.
-     *
      * Present mode is not specified. Use the default.
      */
     WGPUPresentMode_Undefined = 0x00000000,
     /**
      * `0x00000001`.
-     *
      * The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
      * Tearing cannot be observed and frame-loop will be limited to the display's refresh rate.
      * This is the only mode that's always available.
@@ -670,7 +660,6 @@ typedef enum WGPUPresentMode {
     WGPUPresentMode_Fifo = 0x00000001,
     /**
      * `0x00000002`.
-     *
      * The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
      * Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
      * This is still a first-in, first-out mechanism so a frame-loop will be limited to the display's refresh rate.
@@ -678,14 +667,12 @@ typedef enum WGPUPresentMode {
     WGPUPresentMode_FifoRelaxed = 0x00000002,
     /**
      * `0x00000003`.
-     *
      * The presentation of the image to the user is updated immediately without waiting for a vertical blank.
      * Tearing can be observed but latency is minimized.
      */
     WGPUPresentMode_Immediate = 0x00000003,
     /**
      * `0x00000004`.
-     *
      * The presentation of the image to the user waits for the next vertical blanking period to update to the latest provided image.
      * Tearing cannot be observed and a frame-loop is not limited to the display's refresh rate.
      */
@@ -751,7 +738,6 @@ typedef enum WGPUSType {
 typedef enum WGPUSamplerBindingType {
     /**
      * `0x00000000`.
-     *
      * Indicates that this @ref WGPUSamplerBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
      * (See also @ref SentinelValues.)
@@ -799,7 +785,6 @@ typedef enum WGPUStencilOperation {
 typedef enum WGPUStorageTextureAccess {
     /**
      * `0x00000000`.
-     *
      * Indicates that this @ref WGPUStorageTextureBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
      * (See also @ref SentinelValues.)
@@ -1000,7 +985,6 @@ typedef enum WGPUTextureFormat {
 typedef enum WGPUTextureSampleType {
     /**
      * `0x00000000`.
-     *
      * Indicates that this @ref WGPUTextureBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
      * (See also @ref SentinelValues.)
@@ -1082,7 +1066,6 @@ typedef enum WGPUVertexFormat {
 typedef enum WGPUVertexStepMode {
     /**
      * `0x00000000`.
-     *
      * This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
      * (See also @ref SentinelValues.)
      */
