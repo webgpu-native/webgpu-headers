@@ -78,6 +78,9 @@
 #else
 #  define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #endif
+#define _wgpu_COMMA ,
+#define _wgpu_TRUE 1
+#define _wgpu_FALSE 0
 {{end}}
 
 /**
@@ -294,6 +297,16 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
 } WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
+
+#define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{$.ExtSuffix}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+{{-   if eq .Style "callback_mode" }}
+    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+{{-   end}}
+    /*.callback=*/NULL _wgpu_COMMA \
+    /*.userdata1=*/NULL _wgpu_COMMA \
+    /*.userdata2=*/NULL _wgpu_COMMA \
+})
 {{  end}}{{"\n" -}}
 
  /** @} */
@@ -322,6 +335,17 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     {{  StructMember $struct $memberIndex}}
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
+
+#define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}, { \
+{{-   if eq .Type "base_in" "base_out" "base_in_or_out" }}
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+{{-   else if eq .Type "extension_in" "extension_out" "extension_in_or_out" }}
+    /*.chain=*/NULL _wgpu_COMMA \
+{{-   end }}
+{{-   range $memberIndex, $_ := .Members}}
+    {{  StructMemberInitializer $struct $memberIndex}}
+{{-   end}}
+})
 {{  end}}{{"\n" -}}
 
 /** @} */

@@ -153,6 +153,10 @@
                     "type": "string",
                     "description": "Optional property, specifying the external namespace where this type is defined",
                     "pattern": "^[a-z]+$"
+                },
+                "default": {
+                    "type": [ "string", "number", "boolean" ],
+                    "description": "Default value assigned to this parameter when using initializer macro"
                 }
             },
             "required": [

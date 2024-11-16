@@ -159,6 +159,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 			"FunctionArgs": g.FunctionArgs,
 			"CallbackArgs": g.CallbackArgs,
 			"StructMember": g.StructMember,
+			"StructMemberInitializer": g.StructMemberInitializer,
 		})
 	t, err := t.Parse(tmpl)
 	if err != nil {
@@ -445,4 +446,94 @@ func (g *Generator) StructMember(s Struct, memberIndex int) (string, error) {
 		}
 	}
 	return sb.String(), nil
+}
+
+func (g *Generator) StructMemberInitializer(s Struct, memberIndex int) (string, error) {
+	member := s.Members[memberIndex]
+	sb := &strings.Builder{}
+	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
+	if len(matches) == 2 {
+		fmt.Fprintf(sb, "/*.%sCount=*/0 _wgpu_COMMA \\\n", CamelCase(Singularize(member.Name)))
+		fmt.Fprintf(sb, "    /*.%s=*/NULL _wgpu_COMMA \\", CamelCase(member.Name))
+	} else {
+		fmt.Fprintf(sb, "/*.%s=*/%s _wgpu_COMMA \\", CamelCase(member.Name), g.DefaultValue(member))
+	}
+	return sb.String(), nil
+}
+
+func (g *Generator) DefaultValue(member ParameterType) string {
+	switch {
+	case strings.HasPrefix(member.Type, "enum."):
+		if member.Default == "" {
+			return "{}"
+		} else {
+			return "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default)
+		}
+	case strings.HasPrefix(member.Type, "typedef."):
+		if member.Default == "" {
+			return "{}"
+		} else {
+			return "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "typedef.")) + "_" + PascalCase(member.Default)
+		}
+	case strings.HasPrefix(member.Type, "bitflag."):
+		if member.Default == "" {
+			return "{}"
+		} else {
+			return "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_" + PascalCase(member.Default)
+		}
+	case strings.HasPrefix(member.Type, "struct."):
+		if member.Optional {
+			return "NULL"
+		} else {
+			typ := strings.TrimPrefix(member.Type, "struct.");
+			return "WGPU_" + ConstantCase(typ) + "_INIT"
+		}
+	case strings.HasPrefix(member.Type, "callback."):
+		return "NULL"
+	case strings.HasPrefix(member.Type, "object."):
+		return "NULL"
+	case member.Type == "out_string", member.Type == "string_with_default_empty", member.Type == "nullable_string":
+		return "WGPU_STRING_VIEW_INIT"
+	case member.Type == "uint16", member.Type == "uint32", member.Type == "uint64", member.Type == "usize", member.Type == "int32":
+		if member.Default == "" {
+			return "{}"
+		} else if strings.HasPrefix(member.Default, "constant.") {
+			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
+		} else {
+			return member.Default
+		}
+	case member.Type == "float32":
+		if member.Default == "" {
+			return "{}"
+		} else if strings.HasPrefix(member.Default, "constant.") {
+			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
+		} else {
+			return member.Default + "f"
+		}
+	case member.Type == "float64":
+		if member.Default == "" {
+			return "{}"
+		} else if strings.HasPrefix(member.Default, "constant.") {
+			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
+		} else {
+			return member.Default
+		}
+	case member.Type == "bool":
+		if member.Default == "" {
+			return "{}"
+		} else if strings.HasPrefix(member.Default, "constant.") {
+			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
+		} else if member.Default == "true" {
+			return "_wgpu_TRUE"
+		} else if member.Default == "false" {
+			return "_wgpu_FALSE"
+		} else {
+			return member.Default
+		}
+	case member.Type == "c_void":
+		return "NULL"
+	default:
+		panic("invalid prefix: " + member.Type + " in member " + member.Name)
+		return ""
+	}
 }
