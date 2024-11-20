@@ -78,9 +78,6 @@
 #else
 #  define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #endif
-#define _wgpu_COMMA ,
-#define _wgpu_TRUE 1
-#define _wgpu_FALSE 0
 {{end}}
 
 /**
@@ -301,7 +298,7 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 #define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{$.ExtSuffix}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
 {{-   if eq .Style "callback_mode" }}
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
 {{-   end}}
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \

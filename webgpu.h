@@ -67,9 +67,6 @@
 #else
 #  define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #endif
-#define _wgpu_COMMA ,
-#define _wgpu_TRUE 1
-#define _wgpu_FALSE 0
 
 
 /**
@@ -1314,7 +1311,7 @@ typedef struct WGPUBufferMapCallbackInfo {
 
 #define WGPU_BUFFER_MAP_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBufferMapCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1330,7 +1327,7 @@ typedef struct WGPUCompilationInfoCallbackInfo {
 
 #define WGPU_COMPILATION_INFO_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUCompilationInfoCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1346,7 +1343,7 @@ typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
 
 #define WGPU_CREATE_COMPUTE_PIPELINE_ASYNC_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUCreateComputePipelineAsyncCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1362,7 +1359,7 @@ typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
 
 #define WGPU_CREATE_RENDER_PIPELINE_ASYNC_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUCreateRenderPipelineAsyncCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1378,7 +1375,7 @@ typedef struct WGPUDeviceLostCallbackInfo {
 
 #define WGPU_DEVICE_LOST_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDeviceLostCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1394,7 +1391,7 @@ typedef struct WGPUPopErrorScopeCallbackInfo {
 
 #define WGPU_POP_ERROR_SCOPE_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUPopErrorScopeCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1410,7 +1407,7 @@ typedef struct WGPUQueueWorkDoneCallbackInfo {
 
 #define WGPU_QUEUE_WORK_DONE_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUQueueWorkDoneCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1426,7 +1423,7 @@ typedef struct WGPURequestAdapterCallbackInfo {
 
 #define WGPU_REQUEST_ADAPTER_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1442,7 +1439,7 @@ typedef struct WGPURequestDeviceCallbackInfo {
 
 #define WGPU_REQUEST_DEVICE_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestDeviceCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_AllowProcessEvents _wgpu_COMMA \
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1566,7 +1563,7 @@ typedef struct WGPUBufferBindingLayout {
 #define WGPU_BUFFER_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBufferBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.type=*/WGPUBufferBindingType_Uniform _wgpu_COMMA \
-    /*.hasDynamicOffset=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.hasDynamicOffset=*/0 _wgpu_COMMA \
     /*.minBindingSize=*/0 _wgpu_COMMA \
 })
 
@@ -1586,7 +1583,7 @@ typedef struct WGPUBufferDescriptor {
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.usage=*/WGPUBufferUsage_Undefined _wgpu_COMMA \
     /*.size=*/{} _wgpu_COMMA \
-    /*.mappedAtCreation=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.mappedAtCreation=*/0 _wgpu_COMMA \
 })
 
 typedef struct WGPUColor {
@@ -1831,7 +1828,7 @@ typedef struct WGPUMultisampleState {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.count=*/1 _wgpu_COMMA \
     /*.mask=*/4294967295 _wgpu_COMMA \
-    /*.alphaToCoverageEnabled=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.alphaToCoverageEnabled=*/0 _wgpu_COMMA \
 })
 
 typedef struct WGPUOrigin3D {
@@ -1878,7 +1875,7 @@ typedef struct WGPUPrimitiveState {
     /*.stripIndexFormat=*/{} _wgpu_COMMA \
     /*.frontFace=*/WGPUFrontFace_Ccw _wgpu_COMMA \
     /*.cullMode=*/WGPUCullMode_None _wgpu_COMMA \
-    /*.unclippedDepth=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.unclippedDepth=*/0 _wgpu_COMMA \
 })
 
 typedef struct WGPUQuerySetDescriptor {
@@ -1945,8 +1942,8 @@ typedef struct WGPURenderBundleEncoderDescriptor {
     /*.colorFormats=*/NULL _wgpu_COMMA \
     /*.depthStencilFormat=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.sampleCount=*/{} _wgpu_COMMA \
-    /*.depthReadOnly=*/_wgpu_FALSE _wgpu_COMMA \
-    /*.stencilReadOnly=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.depthReadOnly=*/0 _wgpu_COMMA \
+    /*.stencilReadOnly=*/0 _wgpu_COMMA \
 })
 
 typedef struct WGPURenderPassDepthStencilAttachment {
@@ -1968,11 +1965,11 @@ typedef struct WGPURenderPassDepthStencilAttachment {
     /*.depthLoadOp=*/WGPULoadOp_Undefined _wgpu_COMMA \
     /*.depthStoreOp=*/WGPUStoreOp_Undefined _wgpu_COMMA \
     /*.depthClearValue=*/{} _wgpu_COMMA \
-    /*.depthReadOnly=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.depthReadOnly=*/0 _wgpu_COMMA \
     /*.stencilLoadOp=*/WGPULoadOp_Undefined _wgpu_COMMA \
     /*.stencilStoreOp=*/WGPUStoreOp_Undefined _wgpu_COMMA \
     /*.stencilClearValue=*/{} _wgpu_COMMA \
-    /*.stencilReadOnly=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.stencilReadOnly=*/0 _wgpu_COMMA \
 })
 
 typedef struct WGPURenderPassMaxDrawCount {
@@ -2032,7 +2029,7 @@ typedef struct WGPURequestAdapterOptions {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.featureLevel=*/WGPUFeatureLevel_Core _wgpu_COMMA \
     /*.powerPreference=*/WGPUPowerPreference_Undefined _wgpu_COMMA \
-    /*.forceFallbackAdapter=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.forceFallbackAdapter=*/0 _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
     /*.compatibleSurface=*/NULL _wgpu_COMMA \
 })
@@ -2443,7 +2440,7 @@ typedef struct WGPUTextureBindingLayout {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.sampleType=*/WGPUTextureSampleType_Float _wgpu_COMMA \
     /*.viewDimension=*/WGPUTextureViewDimension_2D _wgpu_COMMA \
-    /*.multisampled=*/_wgpu_FALSE _wgpu_COMMA \
+    /*.multisampled=*/0 _wgpu_COMMA \
 })
 
 typedef struct WGPUTextureViewDescriptor {
@@ -2601,7 +2598,7 @@ typedef struct WGPUDepthStencilState {
 #define WGPU_DEPTH_STENCIL_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDepthStencilState, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
-    /*.depthWriteEnabled=*/{} _wgpu_COMMA \
+    /*.depthWriteEnabled=*/WGPUOptionalBool_Undefined _wgpu_COMMA \
     /*.depthCompare=*/{} _wgpu_COMMA \
     /*.stencilFront=*/WGPU_STENCIL_FACE_STATE_INIT _wgpu_COMMA \
     /*.stencilBack=*/WGPU_STENCIL_FACE_STATE_INIT _wgpu_COMMA \
@@ -2757,7 +2754,7 @@ typedef struct WGPUVertexBufferLayout {
 
 #define WGPU_VERTEX_BUFFER_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUVertexBufferLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.stepMode=*/WGPUVertexStepMode_Vertex _wgpu_COMMA \
+    /*.stepMode=*/WGPUVertexStepMode_VertexBufferBotUsed _wgpu_COMMA \
     /*.arrayStride=*/{} _wgpu_COMMA \
     /*.attributeCount=*/0 _wgpu_COMMA \
     /*.attributes=*/NULL _wgpu_COMMA \

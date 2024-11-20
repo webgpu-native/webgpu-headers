@@ -465,7 +465,14 @@ func (g *Generator) DefaultValue(member ParameterType) string {
 	switch {
 	case strings.HasPrefix(member.Type, "enum."):
 		if member.Default == "" {
-			return "{}"
+			if member.Type == "enum.optional_bool" {
+				// This Undefined is a special one that is not the zero-value, so that
+				// a stdbool.h bool cast correctly to WGPUOptionalBool; this means we
+				// must explicitly initialize it
+				return "WGPUOptionalBool_Undefined"
+			} else {
+				return "{}"
+			}
 		} else {
 			return "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default)
 		}
@@ -524,9 +531,9 @@ func (g *Generator) DefaultValue(member ParameterType) string {
 		} else if strings.HasPrefix(member.Default, "constant.") {
 			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
 		} else if member.Default == "true" {
-			return "_wgpu_TRUE"
+			return "1"
 		} else if member.Default == "false" {
-			return "_wgpu_FALSE"
+			return "0"
 		} else {
 			return member.Default
 		}
