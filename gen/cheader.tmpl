@@ -336,8 +336,16 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 #define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}, { \
 {{-   if eq .Type "base_in" "base_out" "base_in_or_out" }}
     /*.nextInChain=*/NULL _wgpu_COMMA \
-{{-   else if eq .Type "extension_in" "extension_out" "extension_in_or_out" }}
-    /*.chain=*/NULL _wgpu_COMMA \
+{{-   else if eq .Type "extension_in" }}
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_{{.Name | PascalCase}}{{$.ExtSuffix}} _wgpu_COMMA \
+    }) _wgpu_COMMA \
+{{-   else if eq .Type "extension_out" "extension_in_or_out" }}
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStructOut, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_{{.Name | PascalCase}}{{$.ExtSuffix}} _wgpu_COMMA \
+    }) _wgpu_COMMA \
 {{-   end }}
 {{-   range $memberIndex, $_ := .Members}}
     {{  StructMemberInitializer $struct $memberIndex}}

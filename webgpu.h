@@ -1978,7 +1978,10 @@ typedef struct WGPURenderPassMaxDrawCount {
 } WGPURenderPassMaxDrawCount WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_RENDER_PASS_MAX_DRAW_COUNT_INIT _wgpu_MAKE_INIT_STRUCT(WGPURenderPassMaxDrawCount, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_RenderPassMaxDrawCount _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.maxDrawCount=*/50000000 _wgpu_COMMA \
 })
 
@@ -2097,7 +2100,10 @@ typedef struct WGPUShaderSourceSPIRV {
 } WGPUShaderSourceSPIRV WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHADER_SOURCE_SPIRV_INIT _wgpu_MAKE_INIT_STRUCT(WGPUShaderSourceSPIRV, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_ShaderSourceSPIRV _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.codeSize=*/0 _wgpu_COMMA \
     /*.code=*/{} _wgpu_COMMA \
 })
@@ -2111,7 +2117,10 @@ typedef struct WGPUShaderSourceWGSL {
 } WGPUShaderSourceWGSL WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHADER_SOURCE_WGSL_INIT _wgpu_MAKE_INIT_STRUCT(WGPUShaderSourceWGSL, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_ShaderSourceWGSL _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.code=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
 })
 
@@ -2289,7 +2298,10 @@ typedef struct WGPUSurfaceSourceAndroidNativeWindow {
 } WGPUSurfaceSourceAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_ANDROID_NATIVE_WINDOW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceSourceAndroidNativeWindow, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_SurfaceSourceAndroidNativeWindow _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.window=*/NULL _wgpu_COMMA \
 })
 
@@ -2305,7 +2317,10 @@ typedef struct WGPUSurfaceSourceMetalLayer {
 } WGPUSurfaceSourceMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_METAL_LAYER_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceSourceMetalLayer, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_SurfaceSourceMetalLayer _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.layer=*/NULL _wgpu_COMMA \
 })
 
@@ -2325,7 +2340,10 @@ typedef struct WGPUSurfaceSourceWaylandSurface {
 } WGPUSurfaceSourceWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_WAYLAND_SURFACE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceSourceWaylandSurface, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_SurfaceSourceWaylandSurface _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.display=*/NULL _wgpu_COMMA \
     /*.surface=*/NULL _wgpu_COMMA \
 })
@@ -2347,7 +2365,10 @@ typedef struct WGPUSurfaceSourceWindowsHWND {
 } WGPUSurfaceSourceWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_WINDOWS_HWND_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceSourceWindowsHWND, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_SurfaceSourceWindowsHWND _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.hinstance=*/NULL _wgpu_COMMA \
     /*.hwnd=*/NULL _wgpu_COMMA \
 })
@@ -2368,7 +2389,10 @@ typedef struct WGPUSurfaceSourceXCBWindow {
 } WGPUSurfaceSourceXCBWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_XCB_WINDOW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceSourceXCBWindow, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_SurfaceSourceXCBWindow _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.connection=*/NULL _wgpu_COMMA \
     /*.window=*/{} _wgpu_COMMA \
 })
@@ -2389,7 +2413,10 @@ typedef struct WGPUSurfaceSourceXlibWindow {
 } WGPUSurfaceSourceXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_XLIB_WINDOW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceSourceXlibWindow, { \
-    /*.chain=*/NULL _wgpu_COMMA \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_SurfaceSourceXlibWindow _wgpu_COMMA \
+    }) _wgpu_COMMA \
     /*.display=*/NULL _wgpu_COMMA \
     /*.window=*/{} _wgpu_COMMA \
 })
