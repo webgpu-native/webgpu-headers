@@ -191,9 +191,8 @@ enums:
         doc: |
           Indicates that this @ref WGPUBufferBindingLayout member of
           its parent @ref WGPUBindGroupLayoutEntry is not used.
-          (See also @ref SentinelValues.)
-      - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+          (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+          `Undefined` value that would trivially-default to `Uniform`.)
       - name: uniform
         doc: |
           TODO
@@ -718,9 +717,8 @@ enums:
         doc: |
           Indicates that this @ref WGPUSamplerBindingLayout member of
           its parent @ref WGPUBindGroupLayoutEntry is not used.
-          (See also @ref SentinelValues.)
-      - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+          (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+          `Undefined` value that would trivially-default to `Filtering`.)
       - name: filtering
         doc: |
           TODO
@@ -779,9 +777,8 @@ enums:
         doc: |
           Indicates that this @ref WGPUStorageTextureBindingLayout member of
           its parent @ref WGPUBindGroupLayoutEntry is not used.
-          (See also @ref SentinelValues.)
-      - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+          (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+          `Undefined` value that would trivially-default to `WriteOnly`.)
       - name: write_only
         doc: |
           TODO
@@ -1150,9 +1147,8 @@ enums:
         doc: |
           Indicates that this @ref WGPUTextureBindingLayout member of
           its parent @ref WGPUBindGroupLayoutEntry is not used.
-          (See also @ref SentinelValues.)
-      - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+          (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+          `Undefined` value that would trivially-default to `Float`.)
       - name: float
         doc: |
           TODO
@@ -1327,9 +1323,8 @@ enums:
       - name: vertex_buffer_not_used
         doc: |
           This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
-          (See also @ref SentinelValues.)
-      - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+          (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+          `Undefined` value that would trivially-default to `Vertex`.)
       - name: vertex
         doc: |
           TODO
