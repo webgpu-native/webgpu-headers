@@ -345,17 +345,13 @@ typedef enum WGPUBufferBindingType {
      * `0x00000000`.
      * Indicates that this @ref WGPUBufferBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
-     * (See also @ref SentinelValues.)
+     * (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+     * `Undefined` value that would trivially-default to `Uniform`.)
      */
     WGPUBufferBindingType_BindingNotUsed = 0x00000000,
-    /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
-     */
-    WGPUBufferBindingType_Undefined = 0x00000001,
-    WGPUBufferBindingType_Uniform = 0x00000002,
-    WGPUBufferBindingType_Storage = 0x00000003,
-    WGPUBufferBindingType_ReadOnlyStorage = 0x00000004,
+    WGPUBufferBindingType_Uniform = 0x00000001,
+    WGPUBufferBindingType_Storage = 0x00000002,
+    WGPUBufferBindingType_ReadOnlyStorage = 0x00000003,
     WGPUBufferBindingType_Force32 = 0x7FFFFFFF
 } WGPUBufferBindingType WGPU_ENUM_ATTRIBUTE;
 
@@ -737,17 +733,13 @@ typedef enum WGPUSamplerBindingType {
      * `0x00000000`.
      * Indicates that this @ref WGPUSamplerBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
-     * (See also @ref SentinelValues.)
+     * (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+     * `Undefined` value that would trivially-default to `Filtering`.)
      */
     WGPUSamplerBindingType_BindingNotUsed = 0x00000000,
-    /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
-     */
-    WGPUSamplerBindingType_Undefined = 0x00000001,
-    WGPUSamplerBindingType_Filtering = 0x00000002,
-    WGPUSamplerBindingType_NonFiltering = 0x00000003,
-    WGPUSamplerBindingType_Comparison = 0x00000004,
+    WGPUSamplerBindingType_Filtering = 0x00000001,
+    WGPUSamplerBindingType_NonFiltering = 0x00000002,
+    WGPUSamplerBindingType_Comparison = 0x00000003,
     WGPUSamplerBindingType_Force32 = 0x7FFFFFFF
 } WGPUSamplerBindingType WGPU_ENUM_ATTRIBUTE;
 
@@ -784,17 +776,13 @@ typedef enum WGPUStorageTextureAccess {
      * `0x00000000`.
      * Indicates that this @ref WGPUStorageTextureBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
-     * (See also @ref SentinelValues.)
+     * (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+     * `Undefined` value that would trivially-default to `WriteOnly`.)
      */
     WGPUStorageTextureAccess_BindingNotUsed = 0x00000000,
-    /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
-     */
-    WGPUStorageTextureAccess_Undefined = 0x00000001,
-    WGPUStorageTextureAccess_WriteOnly = 0x00000002,
-    WGPUStorageTextureAccess_ReadOnly = 0x00000003,
-    WGPUStorageTextureAccess_ReadWrite = 0x00000004,
+    WGPUStorageTextureAccess_WriteOnly = 0x00000001,
+    WGPUStorageTextureAccess_ReadOnly = 0x00000002,
+    WGPUStorageTextureAccess_ReadWrite = 0x00000003,
     WGPUStorageTextureAccess_Force32 = 0x7FFFFFFF
 } WGPUStorageTextureAccess WGPU_ENUM_ATTRIBUTE;
 
@@ -984,19 +972,15 @@ typedef enum WGPUTextureSampleType {
      * `0x00000000`.
      * Indicates that this @ref WGPUTextureBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
-     * (See also @ref SentinelValues.)
+     * (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+     * `Undefined` value that would trivially-default to `Float`.)
      */
     WGPUTextureSampleType_BindingNotUsed = 0x00000000,
-    /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
-     */
-    WGPUTextureSampleType_Undefined = 0x00000001,
-    WGPUTextureSampleType_Float = 0x00000002,
-    WGPUTextureSampleType_UnfilterableFloat = 0x00000003,
-    WGPUTextureSampleType_Depth = 0x00000004,
-    WGPUTextureSampleType_Sint = 0x00000005,
-    WGPUTextureSampleType_Uint = 0x00000006,
+    WGPUTextureSampleType_Float = 0x00000001,
+    WGPUTextureSampleType_UnfilterableFloat = 0x00000002,
+    WGPUTextureSampleType_Depth = 0x00000003,
+    WGPUTextureSampleType_Sint = 0x00000004,
+    WGPUTextureSampleType_Uint = 0x00000005,
     WGPUTextureSampleType_Force32 = 0x7FFFFFFF
 } WGPUTextureSampleType WGPU_ENUM_ATTRIBUTE;
 
@@ -1064,16 +1048,12 @@ typedef enum WGPUVertexStepMode {
     /**
      * `0x00000000`.
      * This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
-     * (See also @ref SentinelValues.)
+     * (See also @ref SentinelValues. Note that unlike in JS, there is *no*
+     * `Undefined` value that would trivially-default to `Vertex`.)
      */
     WGPUVertexStepMode_VertexBufferNotUsed = 0x00000000,
-    /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
-     */
-    WGPUVertexStepMode_Undefined = 0x00000001,
-    WGPUVertexStepMode_Vertex = 0x00000002,
-    WGPUVertexStepMode_Instance = 0x00000003,
+    WGPUVertexStepMode_Vertex = 0x00000001,
+    WGPUVertexStepMode_Instance = 0x00000002,
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
 
