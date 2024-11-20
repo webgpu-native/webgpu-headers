@@ -2574,7 +2574,7 @@ structs:
         doc: |
           TODO
         type: enum.sampler_binding_type
-        default: filtering
+        default: binding_not_used
   - name: sampler_descriptor
     doc: |
       TODO
@@ -2705,7 +2705,7 @@ structs:
         doc: |
           TODO
         type: enum.storage_texture_access
-        default: write_only
+        default: binding_not_used
       - name: format
         doc: |
           TODO
@@ -2962,7 +2962,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_sample_type
-        default: float
+        default: binding_not_used
       - name: view_dimension
         doc: |
           TODO

@@ -2041,7 +2041,7 @@ typedef struct WGPUSamplerBindingLayout {
 
 #define WGPU_SAMPLER_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSamplerBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.type=*/WGPUSamplerBindingType_Filtering _wgpu_COMMA \
+    /*.type=*/WGPUSamplerBindingType_BindingNotUsed _wgpu_COMMA \
 })
 
 typedef struct WGPUSamplerDescriptor {
@@ -2138,7 +2138,7 @@ typedef struct WGPUStorageTextureBindingLayout {
 
 #define WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStorageTextureBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.access=*/WGPUStorageTextureAccess_WriteOnly _wgpu_COMMA \
+    /*.access=*/WGPUStorageTextureAccess_BindingNotUsed _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.viewDimension=*/WGPUTextureViewDimension_2D _wgpu_COMMA \
 })
@@ -2438,7 +2438,7 @@ typedef struct WGPUTextureBindingLayout {
 
 #define WGPU_TEXTURE_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.sampleType=*/WGPUTextureSampleType_Float _wgpu_COMMA \
+    /*.sampleType=*/WGPUTextureSampleType_BindingNotUsed _wgpu_COMMA \
     /*.viewDimension=*/WGPUTextureViewDimension_2D _wgpu_COMMA \
     /*.multisampled=*/0 _wgpu_COMMA \
 })
