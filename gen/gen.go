@@ -122,9 +122,23 @@ func (g *Generator) Gen(dst io.Writer) error {
 					s += "\n\nThis is an \\ref OutputString."
 				}
 
+				s += "\n\nDefaults to " + g.DefaultValue(*member, true /* isDocString */)
+
 				if member.PassedWithOwnership != nil {
 					panic("invalid")
 				}
+
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
+			"MCommentStruct": func(st *Struct, indent int) string {
+				var s string
+
+				var srcDoc = strings.TrimSpace(st.Doc)
+				if srcDoc != "" && srcDoc != "TODO" {
+					s += srcDoc
+				}
+
+				s += "\n\nDefault values can be set using WGPU_" + ConstantCase(st.Name) + "_INIT as initializer."
 
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
 			},
@@ -456,12 +470,16 @@ func (g *Generator) StructMemberInitializer(s Struct, memberIndex int) (string, 
 		fmt.Fprintf(sb, "/*.%sCount=*/0 _wgpu_COMMA \\\n", CamelCase(Singularize(member.Name)))
 		fmt.Fprintf(sb, "    /*.%s=*/NULL _wgpu_COMMA \\", CamelCase(member.Name))
 	} else {
-		fmt.Fprintf(sb, "/*.%s=*/%s _wgpu_COMMA \\", CamelCase(member.Name), g.DefaultValue(member))
+		fmt.Fprintf(sb, "/*.%s=*/%s _wgpu_COMMA \\", CamelCase(member.Name), g.DefaultValue(member, false /* isDocString */))
 	}
 	return sb.String(), nil
 }
 
-func (g *Generator) DefaultValue(member ParameterType) string {
+func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string {
+	ref := ""
+	if (isDocString) {
+		ref = "@ref "
+	}
 	switch {
 	case strings.HasPrefix(member.Type, "enum."):
 		if member.Default == "" {
@@ -469,67 +487,69 @@ func (g *Generator) DefaultValue(member ParameterType) string {
 				// This Undefined is a special one that is not the zero-value, so that
 				// a stdbool.h bool cast correctly to WGPUOptionalBool; this means we
 				// must explicitly initialize it
-				return "WGPUOptionalBool_Undefined"
+				return ref + "WGPUOptionalBool_Undefined"
 			} else {
 				return "{}"
 			}
 		} else {
-			return "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default)
+			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default)
 		}
 	case strings.HasPrefix(member.Type, "typedef."):
 		if member.Default == "" {
 			return "{}"
 		} else {
-			return "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "typedef.")) + "_" + PascalCase(member.Default)
+			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "typedef.")) + "_" + PascalCase(member.Default)
 		}
 	case strings.HasPrefix(member.Type, "bitflag."):
 		if member.Default == "" {
 			return "{}"
 		} else {
-			return "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_" + PascalCase(member.Default)
+			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_" + PascalCase(member.Default)
 		}
 	case strings.HasPrefix(member.Type, "struct."):
 		if member.Optional {
 			return "NULL"
 		} else {
 			typ := strings.TrimPrefix(member.Type, "struct.");
-			return "WGPU_" + ConstantCase(typ) + "_INIT"
+			return ref + "WGPU_" + ConstantCase(typ) + "_INIT"
 		}
 	case strings.HasPrefix(member.Type, "callback."):
 		return "NULL"
 	case strings.HasPrefix(member.Type, "object."):
 		return "NULL"
+	case strings.HasPrefix(member.Type, "array<"):
+		return "NULL"
 	case member.Type == "out_string", member.Type == "string_with_default_empty", member.Type == "nullable_string":
-		return "WGPU_STRING_VIEW_INIT"
+		return ref + "WGPU_STRING_VIEW_INIT"
 	case member.Type == "uint16", member.Type == "uint32", member.Type == "uint64", member.Type == "usize", member.Type == "int32":
 		if member.Default == "" {
-			return "{}"
+			return "0"
 		} else if strings.HasPrefix(member.Default, "constant.") {
-			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
+			return ref + "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
 		} else {
 			return member.Default
 		}
 	case member.Type == "float32":
 		if member.Default == "" {
-			return "{}"
+			return "0.0f"
 		} else if strings.HasPrefix(member.Default, "constant.") {
-			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
+			return ref + "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
 		} else {
 			return member.Default + "f"
 		}
 	case member.Type == "float64":
 		if member.Default == "" {
-			return "{}"
+			return "0.0"
 		} else if strings.HasPrefix(member.Default, "constant.") {
-			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
+			return ref + "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
 		} else {
 			return member.Default
 		}
 	case member.Type == "bool":
 		if member.Default == "" {
-			return "{}"
+			return "0"
 		} else if strings.HasPrefix(member.Default, "constant.") {
-			return "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
+			return ref + "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
 		} else if member.Default == "true" {
 			return "1"
 		} else if member.Default == "false" {

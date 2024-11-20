@@ -310,7 +310,7 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 
 {{- "\n"}}
 {{- range $struct := .Structs}}
-{{-   MComment .Doc 0}}
+{{-   MCommentStruct . 0}}
 typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-   if eq .Type "base_in" }}
     WGPUChainedStruct const * nextInChain;
