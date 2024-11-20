@@ -3092,7 +3092,7 @@ structs:
           indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
           the pipeline does not use a vertex buffer at this `location`.
         type: enum.vertex_step_mode
-        default: vertex_buffer_bot_used
+        default: vertex_buffer_not_used
       - name: array_stride
         doc: |
           TODO

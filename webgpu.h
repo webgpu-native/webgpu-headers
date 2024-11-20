@@ -3616,7 +3616,7 @@ typedef struct WGPUVertexBufferLayout {
      * indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
      * the pipeline does not use a vertex buffer at this `location`.
      *
-     * Defaults to @ref WGPUVertexStepMode_VertexBufferBotUsed
+     * Defaults to @ref WGPUVertexStepMode_VertexBufferNotUsed
      */
     WGPUVertexStepMode stepMode;
     /**
@@ -3632,7 +3632,7 @@ typedef struct WGPUVertexBufferLayout {
 
 #define WGPU_VERTEX_BUFFER_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUVertexBufferLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.stepMode=*/WGPUVertexStepMode_VertexBufferBotUsed _wgpu_COMMA \
+    /*.stepMode=*/WGPUVertexStepMode_VertexBufferNotUsed _wgpu_COMMA \
     /*.arrayStride=*/0 _wgpu_COMMA \
     /*.attributeCount=*/0 _wgpu_COMMA \
     /*.attributes=*/NULL _wgpu_COMMA \
