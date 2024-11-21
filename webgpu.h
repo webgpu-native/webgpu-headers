@@ -1749,7 +1749,7 @@ typedef struct WGPUCompilationMessage {
     /**
      * Severity level of the message.
      *
-     * Defaults to @ref WGPUCompilationMessageType_Error
+     * Defaults to {0}
      */
     WGPUCompilationMessageType type;
     /**
@@ -1781,7 +1781,7 @@ typedef struct WGPUCompilationMessage {
 #define WGPU_COMPILATION_MESSAGE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUCompilationMessage, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.message=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.type=*/WGPUCompilationMessageType_Error _wgpu_COMMA \
+    /*.type=*/_wgpu_ZERO_INIT _wgpu_COMMA \
     /*.lineNum=*/0 _wgpu_COMMA \
     /*.linePos=*/0 _wgpu_COMMA \
     /*.offset=*/0 _wgpu_COMMA \
@@ -2161,7 +2161,7 @@ typedef struct WGPUPrimitiveState {
      */
     WGPUPrimitiveTopology topology;
     /**
-     * Defaults to @ref WGPUIndexFormat_Undefined
+     * Defaults to {0}
      */
     WGPUIndexFormat stripIndexFormat;
     /**
@@ -2181,7 +2181,7 @@ typedef struct WGPUPrimitiveState {
 #define WGPU_PRIMITIVE_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUPrimitiveState, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.topology=*/WGPUPrimitiveTopology_TriangleList _wgpu_COMMA \
-    /*.stripIndexFormat=*/WGPUIndexFormat_Undefined _wgpu_COMMA \
+    /*.stripIndexFormat=*/_wgpu_ZERO_INIT _wgpu_COMMA \
     /*.frontFace=*/WGPUFrontFace_CCW _wgpu_COMMA \
     /*.cullMode=*/WGPUCullMode_None _wgpu_COMMA \
     /*.unclippedDepth=*/0 _wgpu_COMMA \
@@ -2199,7 +2199,7 @@ typedef struct WGPUQuerySetDescriptor {
      */
     WGPUStringView label;
     /**
-     * Defaults to @ref WGPUQueryType_Occlusion
+     * Defaults to {0}
      */
     WGPUQueryType type;
     /**
@@ -2211,7 +2211,7 @@ typedef struct WGPUQuerySetDescriptor {
 #define WGPU_QUERY_SET_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUQuerySetDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.type=*/WGPUQueryType_Occlusion _wgpu_COMMA \
+    /*.type=*/_wgpu_ZERO_INIT _wgpu_COMMA \
     /*.count=*/0 _wgpu_COMMA \
 })
 
@@ -3013,7 +3013,7 @@ typedef struct WGPUSurfaceTexture {
     /**
      * Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
      *
-     * Defaults to @ref WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal
+     * Defaults to {0}
      */
     WGPUSurfaceGetCurrentTextureStatus status;
 } WGPUSurfaceTexture WGPU_STRUCTURE_ATTRIBUTE;
@@ -3021,7 +3021,7 @@ typedef struct WGPUSurfaceTexture {
 #define WGPU_SURFACE_TEXTURE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceTexture, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.texture=*/NULL _wgpu_COMMA \
-    /*.status=*/WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal _wgpu_COMMA \
+    /*.status=*/_wgpu_ZERO_INIT _wgpu_COMMA \
 })
 
 /**
@@ -3138,7 +3138,7 @@ typedef struct WGPUTextureViewDescriptor {
 typedef struct WGPUVertexAttribute {
     WGPUChainedStruct const * nextInChain;
     /**
-     * Defaults to @ref WGPUVertexFormat_Uint8
+     * Defaults to {0}
      */
     WGPUVertexFormat format;
     /**
@@ -3153,7 +3153,7 @@ typedef struct WGPUVertexAttribute {
 
 #define WGPU_VERTEX_ATTRIBUTE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUVertexAttribute, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.format=*/WGPUVertexFormat_Uint8 _wgpu_COMMA \
+    /*.format=*/_wgpu_ZERO_INIT _wgpu_COMMA \
     /*.offset=*/0 _wgpu_COMMA \
     /*.shaderLocation=*/0 _wgpu_COMMA \
 })
@@ -3333,7 +3333,7 @@ typedef struct WGPUDepthStencilState {
      */
     WGPUOptionalBool depthWriteEnabled;
     /**
-     * Defaults to @ref WGPUCompareFunction_Undefined
+     * Defaults to {0}
      */
     WGPUCompareFunction depthCompare;
     /**
@@ -3370,7 +3370,7 @@ typedef struct WGPUDepthStencilState {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.depthWriteEnabled=*/WGPUOptionalBool_Undefined _wgpu_COMMA \
-    /*.depthCompare=*/WGPUCompareFunction_Undefined _wgpu_COMMA \
+    /*.depthCompare=*/_wgpu_ZERO_INIT _wgpu_COMMA \
     /*.stencilFront=*/WGPU_STENCIL_FACE_STATE_INIT _wgpu_COMMA \
     /*.stencilBack=*/WGPU_STENCIL_FACE_STATE_INIT _wgpu_COMMA \
     /*.stencilReadMask=*/4294967295 _wgpu_COMMA \
@@ -3486,11 +3486,11 @@ typedef struct WGPURenderPassColorAttachment {
      */
     WGPU_NULLABLE WGPUTextureView resolveTarget;
     /**
-     * Defaults to @ref WGPULoadOp_Undefined
+     * Defaults to {0}
      */
     WGPULoadOp loadOp;
     /**
-     * Defaults to @ref WGPUStoreOp_Undefined
+     * Defaults to {0}
      */
     WGPUStoreOp storeOp;
     /**
@@ -3504,8 +3504,8 @@ typedef struct WGPURenderPassColorAttachment {
     /*.view=*/NULL _wgpu_COMMA \
     /*.depthSlice=*/WGPU_DEPTH_SLICE_UNDEFINED _wgpu_COMMA \
     /*.resolveTarget=*/NULL _wgpu_COMMA \
-    /*.loadOp=*/WGPULoadOp_Undefined _wgpu_COMMA \
-    /*.storeOp=*/WGPUStoreOp_Undefined _wgpu_COMMA \
+    /*.loadOp=*/_wgpu_ZERO_INIT _wgpu_COMMA \
+    /*.storeOp=*/_wgpu_ZERO_INIT _wgpu_COMMA \
     /*.clearValue=*/WGPU_COLOR_INIT _wgpu_COMMA \
 })
 
