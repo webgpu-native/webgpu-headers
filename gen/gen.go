@@ -488,8 +488,10 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 				// a stdbool.h bool cast correctly to WGPUOptionalBool; this means we
 				// must explicitly initialize it
 				return ref + "WGPUOptionalBool_Undefined"
+			} else if (isDocString) {
+				return "{0}"
 			} else {
-				return "(WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.") + ")0")
+				return "_wgpu_ZERO_INIT"
 			}
 		} else {
 			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default)

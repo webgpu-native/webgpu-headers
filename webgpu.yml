@@ -1196,8 +1196,7 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+      - null
       - name: uint8
         doc: |
           TODO
@@ -3073,7 +3072,6 @@ structs:
         doc: |
           TODO
         type: enum.vertex_format
-        default: undefined
       - name: offset
         doc: |
           TODO
