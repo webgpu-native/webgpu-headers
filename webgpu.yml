@@ -1520,7 +1520,6 @@ structs:
         doc: |
           TODO
         type: enum.adapter_type
-        default: unknown
       - name: vendor_ID
         doc: |
           TODO
@@ -2554,7 +2553,6 @@ structs:
 
           Implementations may ignore @ref WGPUFeatureLevel_Compatibility and provide @ref WGPUFeatureLevel_Core instead. @ref WGPUFeatureLevel_Core is the default in the JS API, but in C, this field is **required** (must not be undefined).
         type: enum.feature_level
-        default: core
       - name: power_preference
         doc: |
           TODO

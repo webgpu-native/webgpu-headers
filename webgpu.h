@@ -1538,7 +1538,7 @@ typedef struct WGPUAdapterInfo {
      */
     WGPUBackendType backendType;
     /**
-     * Defaults to @ref WGPUAdapterType_Unknown.
+     * Defaults to (@ref WGPUAdapterType)0.
      */
     WGPUAdapterType adapterType;
     /**
@@ -1561,7 +1561,7 @@ typedef struct WGPUAdapterInfo {
     /*.device=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.description=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
-    /*.adapterType=*/WGPUAdapterType_Unknown _wgpu_COMMA \
+    /*.adapterType=*/_wgpu_ENUM_ZERO_INIT(WGPUAdapterType) _wgpu_COMMA \
     /*.vendorID=*/0 _wgpu_COMMA \
     /*.deviceID=*/0 _wgpu_COMMA \
 })
@@ -2524,7 +2524,7 @@ typedef struct WGPURequestAdapterOptions {
      *
      * Implementations may ignore @ref WGPUFeatureLevel_Compatibility and provide @ref WGPUFeatureLevel_Core instead. @ref WGPUFeatureLevel_Core is the default in the JS API, but in C, this field is **required** (must not be undefined).
      *
-     * Defaults to @ref WGPUFeatureLevel_Core.
+     * Defaults to (@ref WGPUFeatureLevel)0.
      */
     WGPUFeatureLevel featureLevel;
     /**
@@ -2559,7 +2559,7 @@ typedef struct WGPURequestAdapterOptions {
  */
 #define WGPU_REQUEST_ADAPTER_OPTIONS_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterOptions, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.featureLevel=*/WGPUFeatureLevel_Core _wgpu_COMMA \
+    /*.featureLevel=*/_wgpu_ENUM_ZERO_INIT(WGPUFeatureLevel) _wgpu_COMMA \
     /*.powerPreference=*/WGPUPowerPreference_Undefined _wgpu_COMMA \
     /*.forceFallbackAdapter=*/0 _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
