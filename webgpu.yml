@@ -13,6 +13,11 @@ constants:
     value: uint32_max
     doc: |
       TODO
+  - name: depth_clear_value_undefined
+    value: nan
+    doc: |
+      Value to be assigned to member depthClearValue of @ref WGPURenderPassDepthStencilAttachment
+      to mean that it is not defined.
   - name: depth_slice_undefined
     value: uint32_max
     doc: |
@@ -1510,6 +1515,7 @@ structs:
         doc: |
           TODO
         type: enum.backend_type
+        default: undefined
       - name: adapter_type
         doc: |
           TODO
@@ -1566,6 +1572,7 @@ structs:
           (@ref WGPU_WHOLE_SIZE means the binding ends at the end of the buffer).
           Otherwise ignored.
         type: uint64
+        default: constant.whole_size
       - name: sampler
         doc: |
           Set this if the binding is a sampler object.
@@ -1605,22 +1612,27 @@ structs:
         doc: |
           TODO
         type: bitflag.shader_stage
+        default: none
       - name: buffer
         doc: |
           TODO
         type: struct.buffer_binding_layout
+        default: constant.binding_not_used
       - name: sampler
         doc: |
           TODO
         type: struct.sampler_binding_layout
+        default: constant.binding_not_used
       - name: texture
         doc: |
           TODO
         type: struct.texture_binding_layout
+        default: constant.binding_not_used
       - name: storage_texture
         doc: |
           TODO
         type: struct.storage_texture_binding_layout
+        default: constant.binding_not_used
   - name: blend_component
     doc: |
       TODO
@@ -1630,14 +1642,17 @@ structs:
         doc: |
           TODO
         type: enum.blend_operation
+        default: add
       - name: src_factor
         doc: |
           TODO
         type: enum.blend_factor
+        default: one
       - name: dst_factor
         doc: |
           TODO
         type: enum.blend_factor
+        default: zero
   - name: blend_state
     doc: |
       TODO
@@ -1660,14 +1675,17 @@ structs:
         doc: |
           TODO
         type: enum.buffer_binding_type
+        default: uniform
       - name: has_dynamic_offset
         doc: |
           TODO
         type: bool
+        default: false
       - name: min_binding_size
         doc: |
           TODO
         type: uint64
+        default: 0
   - name: buffer_descriptor
     doc: |
       TODO
@@ -1681,6 +1699,7 @@ structs:
         doc: |
           TODO
         type: bitflag.buffer_usage
+        default: none
       - name: size
         doc: |
           TODO
@@ -1689,6 +1708,7 @@ structs:
         doc: |
           TODO
         type: bool
+        default: false
   - name: color
     doc: |
       TODO
@@ -1721,6 +1741,7 @@ structs:
           indicates a "hole" in the parent @ref WGPUFragmentState `targets` array:
           the pipeline does not output a value at this `location`.
         type: enum.texture_format
+        default: undefined
       - name: blend
         doc: |
           TODO
@@ -1731,6 +1752,7 @@ structs:
         doc: |
           TODO
         type: bitflag.color_write_mask
+        default: all
   - name: command_buffer_descriptor
     doc: |
       TODO
@@ -1814,10 +1836,12 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: constant.query_set_index_undefined
       - name: end_of_pass_write_index
         doc: |
           TODO
         type: uint32
+        default: constant.query_set_index_undefined
   - name: compute_pipeline_descriptor
     doc: |
       TODO
@@ -1876,6 +1900,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: depth_write_enabled
         doc: |
           TODO
@@ -1896,22 +1921,27 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: "0xFFFFFFFF"
       - name: stencil_write_mask
         doc: |
           TODO
         type: uint32
+        default: "0xFFFFFFFF"
       - name: depth_bias
         doc: |
           TODO
         type: int32
+        default: 0
       - name: depth_bias_slope_scale
         doc: |
           TODO
         type: float32
+        default: 0.0
       - name: depth_bias_clamp
         doc: |
           TODO
         type: float32
+        default: 0.0
   - name: device_descriptor
     doc: |
       TODO
@@ -1957,10 +1987,12 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: depth_or_array_layers
         doc: |
           TODO
         type: uint32
+        default: 1
   - name: fragment_state
     doc: |
       TODO
@@ -2029,126 +2061,157 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_texture_dimension_2D
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_texture_dimension_3D
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_texture_array_layers
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_bind_groups
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_bind_groups_plus_vertex_buffers
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_bindings_per_bind_group
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_dynamic_uniform_buffers_per_pipeline_layout
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_dynamic_storage_buffers_per_pipeline_layout
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_sampled_textures_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_samplers_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_storage_buffers_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_storage_textures_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_uniform_buffers_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_uniform_buffer_binding_size
         doc: |
           TODO
         type: uint64
+        default: constant.limit_u64_undefined
       - name: max_storage_buffer_binding_size
         doc: |
           TODO
         type: uint64
+        default: constant.limit_u64_undefined
       - name: min_uniform_buffer_offset_alignment
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: min_storage_buffer_offset_alignment
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_vertex_buffers
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_buffer_size
         doc: |
           TODO
         type: uint64
+        default: constant.limit_u64_undefined
       - name: max_vertex_attributes
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_vertex_buffer_array_stride
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_inter_stage_shader_variables
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_color_attachments
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_color_attachment_bytes_per_sample
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroup_storage_size
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_invocations_per_workgroup
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroup_size_x
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroup_size_y
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroup_size_z
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroups_per_dimension
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
   - name: multisample_state
     doc: |
       TODO
@@ -2158,14 +2221,17 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: mask
         doc: |
           TODO
         type: uint32
+        default: "0xFFFFFFFF"
       - name: alpha_to_coverage_enabled
         doc: |
           TODO
         type: bool
+        default: false
   - name: origin_3D
     doc: |
       TODO
@@ -2175,14 +2241,17 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: y
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: z
         doc: |
           TODO
         type: uint32
+        default: 0
   - name: pipeline_layout_descriptor
     doc: |
       TODO
@@ -2206,6 +2275,7 @@ structs:
         doc: |
           TODO
         type: enum.primitive_topology
+        default: triangle_list
       - name: strip_index_format
         doc: |
           TODO
@@ -2214,14 +2284,17 @@ structs:
         doc: |
           TODO
         type: enum.front_face
+        default: CCW
       - name: cull_mode
         doc: |
           TODO
         type: enum.cull_mode
+        default: none
       - name: unclipped_depth
         doc: |
           TODO
         type: bool
+        default: false
   - name: query_set_descriptor
     doc: |
       TODO
@@ -2275,18 +2348,22 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: sample_count
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: depth_read_only
         doc: |
           TODO
         type: bool
+        default: false
       - name: stencil_read_only
         doc: |
           TODO
         type: bool
+        default: false
   - name: render_pass_color_attachment
     doc: |
       TODO
@@ -2301,6 +2378,7 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: constant.depth_slice_undefined
       - name: resolve_target
         doc: |
           TODO
@@ -2331,26 +2409,32 @@ structs:
         doc: |
           TODO
         type: enum.load_op
+        default: undefined
       - name: depth_store_op
         doc: |
           TODO
         type: enum.store_op
+        default: undefined
       - name: depth_clear_value
         doc: |
           TODO
         type: float32
+        default: constant.depth_clear_value_undefined
       - name: depth_read_only
         doc: |
           TODO
         type: bool
+        default: false
       - name: stencil_load_op
         doc: |
           TODO
         type: enum.load_op
+        default: undefined
       - name: stencil_store_op
         doc: |
           TODO
         type: enum.store_op
+        default: undefined
       - name: stencil_clear_value
         doc: |
           TODO
@@ -2359,6 +2443,7 @@ structs:
         doc: |
           TODO
         type: bool
+        default: false
   - name: render_pass_descriptor
     doc: |
       TODO
@@ -2399,6 +2484,7 @@ structs:
         doc: |
           TODO
         type: uint64
+        default: 50000000
   - name: render_pass_timestamp_writes
     doc: |
       TODO
@@ -2412,10 +2498,12 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: constant.query_set_index_undefined
       - name: end_of_pass_write_index
         doc: |
           TODO
         type: uint32
+        default: constant.query_set_index_undefined
   - name: render_pipeline_descriptor
     doc: |
       TODO
@@ -2469,16 +2557,19 @@ structs:
         doc: |
           TODO
         type: enum.power_preference
+        default: undefined
       - name: force_fallback_adapter
         doc: |
           If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
           If this is not possible, the request returns null.
         type: bool
+        default: false
       - name: backend_type
         doc: |
           If set, requires the adapter to have a particular backend type.
           If this is not possible, the request returns null.
         type: enum.backend_type
+        default: undefined
       - name: compatible_surface
         doc: |
           If set, requires the adapter to be able to output to a particular surface.
@@ -2494,6 +2585,7 @@ structs:
         doc: |
           TODO
         type: enum.sampler_binding_type
+        default: binding_not_used
   - name: sampler_descriptor
     doc: |
       TODO
@@ -2507,42 +2599,52 @@ structs:
         doc: |
           TODO
         type: enum.address_mode
+        default: clamp_to_edge
       - name: address_mode_v
         doc: |
           TODO
         type: enum.address_mode
+        default: clamp_to_edge
       - name: address_mode_w
         doc: |
           TODO
         type: enum.address_mode
+        default: clamp_to_edge
       - name: mag_filter
         doc: |
           TODO
         type: enum.filter_mode
+        default: nearest
       - name: min_filter
         doc: |
           TODO
         type: enum.filter_mode
+        default: nearest
       - name: mipmap_filter
         doc: |
           TODO
         type: enum.mipmap_filter_mode
+        default: nearest
       - name: lod_min_clamp
         doc: |
           TODO
         type: float32
+        default: 0.0
       - name: lod_max_clamp
         doc: |
           TODO
         type: float32
+        default: 32.0
       - name: compare
         doc: |
           TODO
         type: enum.compare_function
+        default: undefined
       - name: max_anisotropy
         doc: |
           TODO
         type: uint16
+        default: 1
   - name: shader_module_descriptor
     doc: |
       TODO
@@ -2563,6 +2665,7 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: code
         doc: |
           TODO
@@ -2588,18 +2691,22 @@ structs:
         doc: |
           TODO
         type: enum.compare_function
+        default: always
       - name: fail_op
         doc: |
           TODO
         type: enum.stencil_operation
+        default: keep
       - name: depth_fail_op
         doc: |
           TODO
         type: enum.stencil_operation
+        default: keep
       - name: pass_op
         doc: |
           TODO
         type: enum.stencil_operation
+        default: keep
   - name: storage_texture_binding_layout
     doc: |
       TODO
@@ -2609,14 +2716,17 @@ structs:
         doc: |
           TODO
         type: enum.storage_texture_access
+        default: binding_not_used
       - name: format
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: view_dimension
         doc: |
           TODO
         type: enum.texture_view_dimension
+        default: 2D
   - name: supported_features
     doc: |
       TODO
@@ -2677,9 +2787,11 @@ structs:
       - name: format
         doc: The @ref WGPUTextureFormat of the surface's textures.
         type: enum.texture_format
+        default: undefined
       - name: usage
         doc: The @ref WGPUTextureUsage of the surface's textures.
         type: bitflag.texture_usage
+        default: render_attachment
       - name: width
         doc: The width of the surface's textures.
         type: uint32
@@ -2693,9 +2805,11 @@ structs:
       - name: alpha_mode
         doc: How the surface's frames will be composited on the screen.
         type: enum.composite_alpha_mode
+        default: auto
       - name: present_mode
         doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
+        default: fifo
   - name: surface_descriptor
     doc: |
       The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
@@ -2818,14 +2932,17 @@ structs:
         doc: |
           TODO
         type: uint64
+        default: 0
       - name: bytes_per_row
         doc: |
           TODO
         type: uint32
+        default: constant.copy_stride_undefined
       - name: rows_per_image
         doc: |
           TODO
         type: uint32
+        default: constant.copy_stride_undefined
   - name: texel_copy_texture_info
     doc: |
       TODO
@@ -2839,6 +2956,7 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: origin
         doc: |
           TODO
@@ -2847,6 +2965,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_aspect
+        default: all
   - name: texture_binding_layout
     doc: |
       TODO
@@ -2856,14 +2975,17 @@ structs:
         doc: |
           TODO
         type: enum.texture_sample_type
+        default: binding_not_used
       - name: view_dimension
         doc: |
           TODO
         type: enum.texture_view_dimension
+        default: 2D
       - name: multisampled
         doc: |
           TODO
         type: bool
+        default: false
   - name: texture_descriptor
     doc: |
       TODO
@@ -2877,10 +2999,12 @@ structs:
         doc: |
           TODO
         type: bitflag.texture_usage
+        default: none
       - name: dimension
         doc: |
           TODO
         type: enum.texture_dimension
+        default: 2D
       - name: size
         doc: |
           TODO
@@ -2889,14 +3013,17 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: mip_level_count
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: sample_count
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: view_formats
         doc: |
           TODO
@@ -2915,34 +3042,42 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: dimension
         doc: |
           TODO
         type: enum.texture_view_dimension
+        default: undefined
       - name: base_mip_level
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: mip_level_count
         doc: |
           TODO
         type: uint32
+        default: constant.mip_level_count_undefined
       - name: base_array_layer
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: array_layer_count
         doc: |
           TODO
         type: uint32
+        default: constant.array_layer_count_undefined
       - name: aspect
         doc: |
           TODO
         type: enum.texture_aspect
+        default: all
       - name: usage
         doc: |
           TODO
         type: bitflag.texture_usage
+        default: none
   - name: vertex_attribute
     doc: |
       TODO
@@ -2971,6 +3106,7 @@ structs:
           indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
           the pipeline does not use a vertex buffer at this `location`.
         type: enum.vertex_step_mode
+        default: vertex_buffer_not_used
       - name: array_stride
         doc: |
           TODO

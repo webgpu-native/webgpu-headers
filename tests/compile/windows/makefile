@@ -7,7 +7,7 @@ all: build-c build-cpp
 clean:
 	rm -f main-c.exe main-cpp.exe main.obj
 
-MSVC_WARNINGS = /Wall /WX /options:strict /wd4820 /wd4464 /wd4189
+MSVC_WARNINGS = /Wall /WX /options:strict /wd4820 /wd4464 /wd4189 /wd4101
 
 build-c: ../main.c ../main.inl ../../../webgpu.h Makefile
 	cl.exe /Fe:main-c.exe ../main.c /std:c11 $(MSVC_WARNINGS)
