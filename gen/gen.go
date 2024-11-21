@@ -489,20 +489,14 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 				// must explicitly initialize it
 				return ref + "WGPUOptionalBool_Undefined"
 			} else {
-				return "{}"
+				return "(WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.") + ")0")
 			}
 		} else {
 			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default)
 		}
-	case strings.HasPrefix(member.Type, "typedef."):
-		if member.Default == "" {
-			return "{}"
-		} else {
-			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "typedef.")) + "_" + PascalCase(member.Default)
-		}
 	case strings.HasPrefix(member.Type, "bitflag."):
 		if member.Default == "" {
-			return "{}"
+			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_None"
 		} else {
 			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_" + PascalCase(member.Default)
 		}
