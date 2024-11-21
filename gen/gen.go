@@ -488,10 +488,17 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 				// a stdbool.h bool cast correctly to WGPUOptionalBool; this means we
 				// must explicitly initialize it
 				return ref + "WGPUOptionalBool_Undefined"
-			} else if (isDocString) {
-				return "{0}"
 			} else {
-				return "_wgpu_ZERO_INIT"
+				enumName := strings.TrimPrefix(member.Type, "enum.")
+				// Look for the first entry of this enum and use it as default
+				for _, enum := range g.Enums {
+					if enum.Name != enumName { continue }
+					for _, entry := range enum.Entries {
+						if entry == nil { continue }
+						return ref + "WGPU" + PascalCase(enumName) + "_" + PascalCase(entry.Name)
+					}
+				}
+				panic("invalid enum name: '" + enumName + "' in member '" + member.Name + "'")
 			}
 		} else {
 			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default)
@@ -559,7 +566,6 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 	case member.Type == "c_void":
 		return "NULL"
 	default:
-		panic("invalid prefix: " + member.Type + " in member " + member.Name)
-		return ""
+		panic("invalid prefix: '" + member.Type + "' in member '" + member.Name + "'")
 	}
 }
