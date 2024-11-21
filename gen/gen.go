@@ -170,9 +170,9 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				return "void"
 			},
-			"FunctionArgs": g.FunctionArgs,
-			"CallbackArgs": g.CallbackArgs,
-			"StructMember": g.StructMember,
+			"FunctionArgs":            g.FunctionArgs,
+			"CallbackArgs":            g.CallbackArgs,
+			"StructMember":            g.StructMember,
 			"StructMemberInitializer": g.StructMemberInitializer,
 		})
 	t, err := t.Parse(tmpl)
@@ -479,7 +479,7 @@ func (g *Generator) StructMemberInitializer(s Struct, memberIndex int) (string, 
 
 func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string {
 	ref := ""
-	if (isDocString) {
+	if isDocString {
 		ref = "@ref "
 	}
 	switch {
@@ -492,10 +492,10 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 				// a stdbool.h bool cast correctly to WGPUOptionalBool; this means we
 				// must explicitly initialize it
 				return ref + "WGPUOptionalBool_Undefined"
-			} else if (isDocString) {
-				return "{0}"
+			} else if isDocString {
+				return "`(WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + ")0`"
 			} else {
-				return "_wgpu_ZERO_INIT"
+				return "_wgpu_ENUM_ZERO_INIT(WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + ")"
 			}
 		} else {
 			return ref + "WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default)
@@ -510,11 +510,11 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		if member.Optional {
 			return "NULL"
 		} else {
-			typ := strings.TrimPrefix(member.Type, "struct.");
+			typ := strings.TrimPrefix(member.Type, "struct.")
 			return ref + "WGPU_" + ConstantCase(typ) + "_INIT"
 		}
 	case strings.HasPrefix(member.Type, "callback."):
-		typ := strings.TrimPrefix(member.Type, "callback.");
+		typ := strings.TrimPrefix(member.Type, "callback.")
 		return ref + "WGPU_" + ConstantCase(typ) + "_CALLBACK_INFO_INIT"
 	case strings.HasPrefix(member.Type, "object."):
 		return "NULL"

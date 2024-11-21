@@ -13,6 +13,11 @@ constants:
     value: uint32_max
     doc: |
       TODO
+  - name: depth_clear_value_undefined
+    value: nan
+    doc: |
+      Value to be assigned to member depthClearValue of @ref WGPURenderPassDepthStencilAttachment
+      to mean that it is not defined.
   - name: depth_slice_undefined
     value: uint32_max
     doc: |
@@ -41,11 +46,6 @@ constants:
     value: uint64_max
     doc: |
       TODO
-  - name: depth_clear_value_undefined
-    value: nan
-    doc: |
-      Value to be assigned to member depthClearValue of @ref WGPURenderPassDepthStencilAttachment
-      to mean that it is not defined.
 typedefs: []
 enums:
   - name: adapter_type
