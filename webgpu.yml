@@ -1922,12 +1922,12 @@ structs:
         doc: |
           TODO
         type: uint32
-        default: 0xFFFFFFFF
+        default: "0xFFFFFFFF"
       - name: stencil_write_mask
         doc: |
           TODO
         type: uint32
-        default: 0xFFFFFFFF
+        default: "0xFFFFFFFF"
       - name: depth_bias
         doc: |
           TODO
@@ -2227,7 +2227,7 @@ structs:
         doc: |
           TODO
         type: uint32
-        default: 0xFFFFFFFF
+        default: "0xFFFFFFFF"
       - name: alpha_to_coverage_enabled
         doc: |
           TODO

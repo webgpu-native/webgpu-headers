@@ -2090,7 +2090,7 @@ typedef struct WGPUMultisampleState {
      */
     uint32_t count;
     /**
-     * Defaults to 4294967295
+     * Defaults to 0xFFFFFFFF
      */
     uint32_t mask;
     /**
@@ -2102,7 +2102,7 @@ typedef struct WGPUMultisampleState {
 #define WGPU_MULTISAMPLE_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUMultisampleState, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.count=*/1 _wgpu_COMMA \
-    /*.mask=*/4294967295 _wgpu_COMMA \
+    /*.mask=*/0xFFFFFFFF _wgpu_COMMA \
     /*.alphaToCoverageEnabled=*/0 _wgpu_COMMA \
 })
 
@@ -3349,11 +3349,11 @@ typedef struct WGPUDepthStencilState {
      */
     WGPUStencilFaceState stencilBack;
     /**
-     * Defaults to 4294967295
+     * Defaults to 0xFFFFFFFF
      */
     uint32_t stencilReadMask;
     /**
-     * Defaults to 4294967295
+     * Defaults to 0xFFFFFFFF
      */
     uint32_t stencilWriteMask;
     /**
@@ -3377,8 +3377,8 @@ typedef struct WGPUDepthStencilState {
     /*.depthCompare=*/_wgpu_ENUM_ZERO_INIT(WGPUCompareFunction) _wgpu_COMMA \
     /*.stencilFront=*/WGPU_STENCIL_FACE_STATE_INIT _wgpu_COMMA \
     /*.stencilBack=*/WGPU_STENCIL_FACE_STATE_INIT _wgpu_COMMA \
-    /*.stencilReadMask=*/4294967295 _wgpu_COMMA \
-    /*.stencilWriteMask=*/4294967295 _wgpu_COMMA \
+    /*.stencilReadMask=*/0xFFFFFFFF _wgpu_COMMA \
+    /*.stencilWriteMask=*/0xFFFFFFFF _wgpu_COMMA \
     /*.depthBias=*/0 _wgpu_COMMA \
     /*.depthBiasSlopeScale=*/0.f _wgpu_COMMA \
     /*.depthBiasClamp=*/0.f _wgpu_COMMA \
