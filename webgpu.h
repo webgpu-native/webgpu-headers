@@ -58,17 +58,14 @@
 
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
-#  define _wgpu_ZERO_INIT {}
 #  if __cplusplus >= 201103L
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) (type value)
 #  else
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #  endif
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-#  define _wgpu_ZERO_INIT {0}
 #  define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
 #else
-#  define _wgpu_ZERO_INIT {0}
 #  define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #endif
 
