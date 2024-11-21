@@ -143,6 +143,9 @@ typedef struct WGPUStringView {
  */
 #define WGPU_STRLEN SIZE_MAX
 
+/**
+ * Initializer for @ref WGPUStringView.
+ */
 #define WGPU_STRING_VIEW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStringView, { \
     /*.data=*/NULL _wgpu_COMMA \
     /*.length=*/WGPU_STRLEN _wgpu_COMMA \
@@ -300,6 +303,9 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
     WGPU_NULLABLE void* userdata2;
 } WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Initializer for @ref WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}.
+ */
 #define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{$.ExtSuffix}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
 {{-   if eq .Style "callback_mode" }}
@@ -338,6 +344,9 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
 
+/**
+ * Initializer for @ref WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}.
+ */
 #define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}, { \
 {{-   if eq .Type "base_in" "base_out" "base_in_or_out" }}
     /*.nextInChain=*/NULL _wgpu_COMMA \
