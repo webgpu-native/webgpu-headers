@@ -481,6 +481,8 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		ref = "@ref "
 	}
 	switch {
+	case member.Pointer != "":
+		return "NULL"
 	case strings.HasPrefix(member.Type, "enum."):
 		if member.Default == "" {
 			if member.Type == "enum.optional_bool" {

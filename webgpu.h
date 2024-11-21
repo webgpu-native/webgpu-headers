@@ -2557,7 +2557,7 @@ typedef struct WGPUShaderSourceSPIRV {
      */
     uint32_t codeSize;
     /**
-     * Defaults to 0
+     * Defaults to NULL
      */
     uint32_t const * code;
 } WGPUShaderSourceSPIRV WGPU_STRUCTURE_ATTRIBUTE;
@@ -2568,7 +2568,7 @@ typedef struct WGPUShaderSourceSPIRV {
         /*.sType=*/WGPUSType_ShaderSourceSPIRV _wgpu_COMMA \
     }) _wgpu_COMMA \
     /*.codeSize=*/0 _wgpu_COMMA \
-    /*.code=*/0 _wgpu_COMMA \
+    /*.code=*/NULL _wgpu_COMMA \
 })
 
 /**
