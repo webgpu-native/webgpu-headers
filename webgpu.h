@@ -1016,6 +1016,11 @@ typedef enum WGPUTextureViewDimension {
 } WGPUTextureViewDimension WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUVertexFormat {
+    /**
+     * `0x00000000`.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     */
+    WGPUVertexFormat_Undefined = 0x00000000,
     WGPUVertexFormat_Uint8 = 0x00000001,
     WGPUVertexFormat_Uint8x2 = 0x00000002,
     WGPUVertexFormat_Uint8x4 = 0x00000003,
@@ -1495,7 +1500,7 @@ typedef struct WGPUAdapterInfo {
      */
     WGPUBackendType backendType;
     /**
-     * Defaults to @ref WGPUAdapterType_Undefined
+     * Defaults to @ref WGPUAdapterType_Unknown
      */
     WGPUAdapterType adapterType;
     /**
@@ -1515,7 +1520,7 @@ typedef struct WGPUAdapterInfo {
     /*.device=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.description=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
-    /*.adapterType=*/WGPUAdapterType_Undefined _wgpu_COMMA \
+    /*.adapterType=*/WGPUAdapterType_Unknown _wgpu_COMMA \
     /*.vendorID=*/0 _wgpu_COMMA \
     /*.deviceID=*/0 _wgpu_COMMA \
 })
@@ -1641,7 +1646,7 @@ typedef struct WGPUBufferDescriptor {
      */
     WGPUStringView label;
     /**
-     * Defaults to @ref WGPUBufferUsage_Undefined
+     * Defaults to @ref WGPUBufferUsage_None
      */
     WGPUBufferUsage usage;
     /**
@@ -1657,7 +1662,7 @@ typedef struct WGPUBufferDescriptor {
 #define WGPU_BUFFER_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBufferDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.usage=*/WGPUBufferUsage_Undefined _wgpu_COMMA \
+    /*.usage=*/WGPUBufferUsage_None _wgpu_COMMA \
     /*.size=*/0 _wgpu_COMMA \
     /*.mappedAtCreation=*/0 _wgpu_COMMA \
 })
@@ -2151,7 +2156,7 @@ typedef struct WGPUPipelineLayoutDescriptor {
 typedef struct WGPUPrimitiveState {
     WGPUChainedStruct const * nextInChain;
     /**
-     * Defaults to @ref WGPUPrimitiveTopology_Triangle-list
+     * Defaults to @ref WGPUPrimitiveTopology_TriangleList
      */
     WGPUPrimitiveTopology topology;
     /**
@@ -2159,7 +2164,7 @@ typedef struct WGPUPrimitiveState {
      */
     WGPUIndexFormat stripIndexFormat;
     /**
-     * Defaults to @ref WGPUFrontFace_Ccw
+     * Defaults to @ref WGPUFrontFace_CCW
      */
     WGPUFrontFace frontFace;
     /**
@@ -2174,9 +2179,9 @@ typedef struct WGPUPrimitiveState {
 
 #define WGPU_PRIMITIVE_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUPrimitiveState, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.topology=*/WGPUPrimitiveTopology_Triangle-list _wgpu_COMMA \
+    /*.topology=*/WGPUPrimitiveTopology_TriangleList _wgpu_COMMA \
     /*.stripIndexFormat=*/{} _wgpu_COMMA \
-    /*.frontFace=*/WGPUFrontFace_Ccw _wgpu_COMMA \
+    /*.frontFace=*/WGPUFrontFace_CCW _wgpu_COMMA \
     /*.cullMode=*/WGPUCullMode_None _wgpu_COMMA \
     /*.unclippedDepth=*/0 _wgpu_COMMA \
 })
@@ -2494,11 +2499,11 @@ typedef struct WGPUSamplerDescriptor {
      */
     WGPUMipmapFilterMode mipmapFilter;
     /**
-     * Defaults to 0f
+     * Defaults to 0.f
      */
     float lodMinClamp;
     /**
-     * Defaults to 32f
+     * Defaults to 32.f
      */
     float lodMaxClamp;
     /**
@@ -2520,8 +2525,8 @@ typedef struct WGPUSamplerDescriptor {
     /*.magFilter=*/WGPUFilterMode_Nearest _wgpu_COMMA \
     /*.minFilter=*/WGPUFilterMode_Nearest _wgpu_COMMA \
     /*.mipmapFilter=*/WGPUMipmapFilterMode_Nearest _wgpu_COMMA \
-    /*.lodMinClamp=*/0f _wgpu_COMMA \
-    /*.lodMaxClamp=*/32f _wgpu_COMMA \
+    /*.lodMinClamp=*/0.f _wgpu_COMMA \
+    /*.lodMaxClamp=*/32.f _wgpu_COMMA \
     /*.compare=*/WGPUCompareFunction_Undefined _wgpu_COMMA \
     /*.maxAnisotropy=*/1 _wgpu_COMMA \
 })
@@ -3108,7 +3113,7 @@ typedef struct WGPUTextureViewDescriptor {
      */
     WGPUTextureAspect aspect;
     /**
-     * Defaults to @ref WGPUTextureUsage_Undefined
+     * Defaults to @ref WGPUTextureUsage_None
      */
     WGPUTextureUsage usage;
 } WGPUTextureViewDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -3123,7 +3128,7 @@ typedef struct WGPUTextureViewDescriptor {
     /*.baseArrayLayer=*/0 _wgpu_COMMA \
     /*.arrayLayerCount=*/0 _wgpu_COMMA \
     /*.aspect=*/WGPUTextureAspect_All _wgpu_COMMA \
-    /*.usage=*/WGPUTextureUsage_Undefined _wgpu_COMMA \
+    /*.usage=*/WGPUTextureUsage_None _wgpu_COMMA \
 })
 
 /**
@@ -3351,11 +3356,11 @@ typedef struct WGPUDepthStencilState {
      */
     int32_t depthBias;
     /**
-     * Defaults to 0f
+     * Defaults to 0.f
      */
     float depthBiasSlopeScale;
     /**
-     * Defaults to 0f
+     * Defaults to 0.f
      */
     float depthBiasClamp;
 } WGPUDepthStencilState WGPU_STRUCTURE_ATTRIBUTE;
@@ -3370,8 +3375,8 @@ typedef struct WGPUDepthStencilState {
     /*.stencilReadMask=*/4294967295 _wgpu_COMMA \
     /*.stencilWriteMask=*/4294967295 _wgpu_COMMA \
     /*.depthBias=*/0 _wgpu_COMMA \
-    /*.depthBiasSlopeScale=*/0f _wgpu_COMMA \
-    /*.depthBiasClamp=*/0f _wgpu_COMMA \
+    /*.depthBiasSlopeScale=*/0.f _wgpu_COMMA \
+    /*.depthBiasClamp=*/0.f _wgpu_COMMA \
 })
 
 /**
@@ -3399,11 +3404,11 @@ typedef struct WGPUDeviceDescriptor {
      */
     WGPUQueueDescriptor defaultQueue;
     /**
-     * Defaults to NULL
+     * Defaults to @ref WGPU_DEVICE_LOST_CALLBACK_INFO_INIT
      */
     WGPUDeviceLostCallbackInfo deviceLostCallbackInfo;
     /**
-     * Defaults to NULL
+     * Defaults to @ref WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT
      */
     WGPUUncapturedErrorCallbackInfo uncapturedErrorCallbackInfo;
 } WGPUDeviceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -3415,8 +3420,8 @@ typedef struct WGPUDeviceDescriptor {
     /*.requiredFeatures=*/NULL _wgpu_COMMA \
     /*.requiredLimits=*/NULL _wgpu_COMMA \
     /*.defaultQueue=*/WGPU_QUEUE_DESCRIPTOR_INIT _wgpu_COMMA \
-    /*.deviceLostCallbackInfo=*/NULL _wgpu_COMMA \
-    /*.uncapturedErrorCallbackInfo=*/NULL _wgpu_COMMA \
+    /*.deviceLostCallbackInfo=*/WGPU_DEVICE_LOST_CALLBACK_INFO_INIT _wgpu_COMMA \
+    /*.uncapturedErrorCallbackInfo=*/WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT _wgpu_COMMA \
 })
 
 /**
@@ -3563,7 +3568,7 @@ typedef struct WGPUTextureDescriptor {
      */
     WGPUStringView label;
     /**
-     * Defaults to @ref WGPUTextureUsage_Undefined
+     * Defaults to @ref WGPUTextureUsage_None
      */
     WGPUTextureUsage usage;
     /**
@@ -3596,7 +3601,7 @@ typedef struct WGPUTextureDescriptor {
 #define WGPU_TEXTURE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.usage=*/WGPUTextureUsage_Undefined _wgpu_COMMA \
+    /*.usage=*/WGPUTextureUsage_None _wgpu_COMMA \
     /*.dimension=*/WGPUTextureDimension_2D _wgpu_COMMA \
     /*.size=*/WGPU_EXTENT_3D_INIT _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \

@@ -514,7 +514,8 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			return ref + "WGPU_" + ConstantCase(typ) + "_INIT"
 		}
 	case strings.HasPrefix(member.Type, "callback."):
-		return "NULL"
+		typ := strings.TrimPrefix(member.Type, "callback.");
+		return ref + "WGPU_" + ConstantCase(typ) + "_CALLBACK_INFO_INIT"
 	case strings.HasPrefix(member.Type, "object."):
 		return "NULL"
 	case strings.HasPrefix(member.Type, "array<"):
@@ -534,8 +535,10 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			return "0.0f"
 		} else if strings.HasPrefix(member.Default, "constant.") {
 			return ref + "WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant."))
-		} else {
+		} else if strings.Contains(member.Default, ".") {
 			return member.Default + "f"
+		} else {
+			return member.Default + ".f"
 		}
 	case member.Type == "float64":
 		if member.Default == "" {

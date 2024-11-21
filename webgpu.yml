@@ -1196,7 +1196,8 @@ enums:
     doc: |
       TODO
     entries:
-      - null
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: uint8
         doc: |
           TODO
@@ -1515,7 +1516,7 @@ structs:
         doc: |
           TODO
         type: enum.adapter_type
-        default: undefined
+        default: unknown
       - name: vendor_ID
         doc: |
           TODO
@@ -1690,7 +1691,7 @@ structs:
         doc: |
           TODO
         type: bitflag.buffer_usage
-        default: undefined
+        default: none
       - name: size
         doc: |
           TODO
@@ -2265,7 +2266,7 @@ structs:
         doc: |
           TODO
         type: enum.primitive_topology
-        default: triangle-list
+        default: triangle_list
       - name: strip_index_format
         doc: |
           TODO
@@ -2274,7 +2275,7 @@ structs:
         doc: |
           TODO
         type: enum.front_face
-        default: ccw
+        default: CCW
       - name: cull_mode
         doc: |
           TODO
@@ -2986,7 +2987,7 @@ structs:
         doc: |
           TODO
         type: bitflag.texture_usage
-        default: undefined
+        default: none
       - name: dimension
         doc: |
           TODO
@@ -3062,7 +3063,7 @@ structs:
         doc: |
           TODO
         type: bitflag.texture_usage
-        default: undefined
+        default: none
   - name: vertex_attribute
     doc: |
       TODO
