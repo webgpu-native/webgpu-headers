@@ -61,6 +61,7 @@
 {{- if eq .Name "webgpu"}}
 #include <stdint.h>
 #include <stddef.h>
+#include <math.h> // for NAN
 {{else}}
 #include "webgpu.h"
 {{end}}

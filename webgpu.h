@@ -54,6 +54,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <math.h> // for NAN
 
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
@@ -80,6 +81,11 @@
  */
 #define WGPU_ARRAY_LAYER_COUNT_UNDEFINED (UINT32_MAX)
 #define WGPU_COPY_STRIDE_UNDEFINED (UINT32_MAX)
+/**
+ * Value to be assigned to member depthClearValue of @ref WGPURenderPassDepthStencilAttachment
+ * to mean that it is not defined.
+ */
+#define WGPU_DEPTH_CLEAR_VALUE_UNDEFINED (NAN)
 #define WGPU_DEPTH_SLICE_UNDEFINED (UINT32_MAX)
 #define WGPU_LIMIT_U32_UNDEFINED (UINT32_MAX)
 #define WGPU_LIMIT_U64_UNDEFINED (UINT64_MAX)
@@ -1553,7 +1559,7 @@ typedef struct WGPUBindGroupEntry {
      * (@ref WGPU_WHOLE_SIZE means the binding ends at the end of the buffer).
      * Otherwise ignored.
      *
-     * Defaults to 0
+     * Defaults to @ref WGPU_WHOLE_SIZE
      */
     uint64_t size;
     /**
@@ -1577,7 +1583,7 @@ typedef struct WGPUBindGroupEntry {
     /*.binding=*/0 _wgpu_COMMA \
     /*.buffer=*/NULL _wgpu_COMMA \
     /*.offset=*/0 _wgpu_COMMA \
-    /*.size=*/0 _wgpu_COMMA \
+    /*.size=*/WGPU_WHOLE_SIZE _wgpu_COMMA \
     /*.sampler=*/NULL _wgpu_COMMA \
     /*.textureView=*/NULL _wgpu_COMMA \
 })
@@ -2269,7 +2275,7 @@ typedef struct WGPURenderBundleEncoderDescriptor {
      */
     WGPUTextureFormat depthStencilFormat;
     /**
-     * Defaults to 0
+     * Defaults to 1
      */
     uint32_t sampleCount;
     /**
@@ -2288,7 +2294,7 @@ typedef struct WGPURenderBundleEncoderDescriptor {
     /*.colorFormatCount=*/0 _wgpu_COMMA \
     /*.colorFormats=*/NULL _wgpu_COMMA \
     /*.depthStencilFormat=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
-    /*.sampleCount=*/0 _wgpu_COMMA \
+    /*.sampleCount=*/1 _wgpu_COMMA \
     /*.depthReadOnly=*/0 _wgpu_COMMA \
     /*.stencilReadOnly=*/0 _wgpu_COMMA \
 })
@@ -2311,7 +2317,7 @@ typedef struct WGPURenderPassDepthStencilAttachment {
      */
     WGPUStoreOp depthStoreOp;
     /**
-     * Defaults to 0.0f
+     * Defaults to @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED
      */
     float depthClearValue;
     /**
@@ -2341,7 +2347,7 @@ typedef struct WGPURenderPassDepthStencilAttachment {
     /*.view=*/NULL _wgpu_COMMA \
     /*.depthLoadOp=*/WGPULoadOp_Undefined _wgpu_COMMA \
     /*.depthStoreOp=*/WGPUStoreOp_Undefined _wgpu_COMMA \
-    /*.depthClearValue=*/0.0f _wgpu_COMMA \
+    /*.depthClearValue=*/WGPU_DEPTH_CLEAR_VALUE_UNDEFINED _wgpu_COMMA \
     /*.depthReadOnly=*/0 _wgpu_COMMA \
     /*.stencilLoadOp=*/WGPULoadOp_Undefined _wgpu_COMMA \
     /*.stencilStoreOp=*/WGPUStoreOp_Undefined _wgpu_COMMA \
@@ -2777,7 +2783,7 @@ typedef struct WGPUSurfaceConfiguration {
     /**
      * How the surface's frames will be composited on the screen.
      *
-     * Defaults to @ref WGPUCompositeAlphaMode_Opaque
+     * Defaults to @ref WGPUCompositeAlphaMode_Auto
      */
     WGPUCompositeAlphaMode alphaMode;
     /**
@@ -2797,7 +2803,7 @@ typedef struct WGPUSurfaceConfiguration {
     /*.height=*/0 _wgpu_COMMA \
     /*.viewFormatCount=*/0 _wgpu_COMMA \
     /*.viewFormats=*/NULL _wgpu_COMMA \
-    /*.alphaMode=*/WGPUCompositeAlphaMode_Opaque _wgpu_COMMA \
+    /*.alphaMode=*/WGPUCompositeAlphaMode_Auto _wgpu_COMMA \
     /*.presentMode=*/WGPUPresentMode_Fifo _wgpu_COMMA \
 })
 
@@ -3030,19 +3036,19 @@ typedef struct WGPUTexelCopyBufferLayout {
      */
     uint64_t offset;
     /**
-     * Defaults to 0
+     * Defaults to @ref WGPU_COPY_STRIDE_UNDEFINED
      */
     uint32_t bytesPerRow;
     /**
-     * Defaults to 0
+     * Defaults to @ref WGPU_COPY_STRIDE_UNDEFINED
      */
     uint32_t rowsPerImage;
 } WGPUTexelCopyBufferLayout WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_TEXEL_COPY_BUFFER_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTexelCopyBufferLayout, { \
     /*.offset=*/0 _wgpu_COMMA \
-    /*.bytesPerRow=*/0 _wgpu_COMMA \
-    /*.rowsPerImage=*/0 _wgpu_COMMA \
+    /*.bytesPerRow=*/WGPU_COPY_STRIDE_UNDEFINED _wgpu_COMMA \
+    /*.rowsPerImage=*/WGPU_COPY_STRIDE_UNDEFINED _wgpu_COMMA \
 })
 
 /**
@@ -3095,7 +3101,7 @@ typedef struct WGPUTextureViewDescriptor {
      */
     uint32_t baseMipLevel;
     /**
-     * Defaults to 0
+     * Defaults to @ref WGPU_MIP_LEVEL_COUNT_UNDEFINED
      */
     uint32_t mipLevelCount;
     /**
@@ -3103,7 +3109,7 @@ typedef struct WGPUTextureViewDescriptor {
      */
     uint32_t baseArrayLayer;
     /**
-     * Defaults to 0
+     * Defaults to @ref WGPU_ARRAY_LAYER_COUNT_UNDEFINED
      */
     uint32_t arrayLayerCount;
     /**
@@ -3122,9 +3128,9 @@ typedef struct WGPUTextureViewDescriptor {
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.dimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
     /*.baseMipLevel=*/0 _wgpu_COMMA \
-    /*.mipLevelCount=*/0 _wgpu_COMMA \
+    /*.mipLevelCount=*/WGPU_MIP_LEVEL_COUNT_UNDEFINED _wgpu_COMMA \
     /*.baseArrayLayer=*/0 _wgpu_COMMA \
-    /*.arrayLayerCount=*/0 _wgpu_COMMA \
+    /*.arrayLayerCount=*/WGPU_ARRAY_LAYER_COUNT_UNDEFINED _wgpu_COMMA \
     /*.aspect=*/WGPUTextureAspect_All _wgpu_COMMA \
     /*.usage=*/WGPUTextureUsage_None _wgpu_COMMA \
 })
@@ -3684,7 +3690,7 @@ typedef struct WGPUColorTargetState {
      */
     WGPU_NULLABLE WGPUBlendState const * blend;
     /**
-     * Defaults to @ref WGPUColorWriteMask_None
+     * Defaults to @ref WGPUColorWriteMask_All
      */
     WGPUColorWriteMask writeMask;
 } WGPUColorTargetState WGPU_STRUCTURE_ATTRIBUTE;
@@ -3693,7 +3699,7 @@ typedef struct WGPUColorTargetState {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.blend=*/NULL _wgpu_COMMA \
-    /*.writeMask=*/WGPUColorWriteMask_None _wgpu_COMMA \
+    /*.writeMask=*/WGPUColorWriteMask_All _wgpu_COMMA \
 })
 
 /**
