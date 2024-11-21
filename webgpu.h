@@ -54,7 +54,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include <math.h> // for NAN
+#include <math.h>
 
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
