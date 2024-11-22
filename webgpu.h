@@ -185,6 +185,7 @@ typedef struct WGPUTextureViewImpl* WGPUTextureView WGPU_OBJECT_ATTRIBUTE;
 /** @} */
 // Structure forward declarations
 struct WGPUAdapterInfo;
+struct WGPUAdapterPropertiesSubgroups;
 struct WGPUBindGroupEntry;
 struct WGPUBlendComponent;
 struct WGPUBufferBindingLayout;
@@ -742,6 +743,7 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceSourceWaylandSurface = 0x00000007,
     WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
     WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
+    WGPUSType_AdapterPropertiesSubgroups = 0x0000000A,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -1564,6 +1566,37 @@ typedef struct WGPUAdapterInfo {
     /*.adapterType=*/_wgpu_ENUM_ZERO_INIT(WGPUAdapterType) _wgpu_COMMA \
     /*.vendorID=*/0 _wgpu_COMMA \
     /*.deviceID=*/0 _wgpu_COMMA \
+})
+
+/**
+ * Enabled by the "subgroups" feature.
+ * Provides bounds on the sizes of subgroups supported by the adapter.
+ *
+ * Default values can be set using @ref WGPU_ADAPTER_PROPERTIES_SUBGROUPS_INIT as initializer.
+ */
+typedef struct WGPUAdapterPropertiesSubgroups {
+    WGPUChainedStructOut * nextInChain;
+    /**
+     * If the "subgroups" feature is supported, the minimum supported subgroup size for the adapter.
+     *
+     * Defaults to `0`.
+     */
+    uint32_t minSubgroupSize;
+    /**
+     * If the "subgroups" feature is supported, the maximum supported subgroup size for the adapter.
+     *
+     * Defaults to `0`.
+     */
+    uint32_t maxSubgroupSize;
+} WGPUAdapterPropertiesSubgroups WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUAdapterPropertiesSubgroups.
+ */
+#define WGPU_ADAPTER_PROPERTIES_SUBGROUPS_INIT _wgpu_MAKE_INIT_STRUCT(WGPUAdapterPropertiesSubgroups, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.minSubgroupSize=*/0 _wgpu_COMMA \
+    /*.maxSubgroupSize=*/0 _wgpu_COMMA \
 })
 
 /**

@@ -715,6 +715,9 @@ enums:
       - name: surface_source_XCB_window
         doc: |
           TODO
+      - name: adapter_properties_subgroups
+        doc: |
+          TODO
   - name: sampler_binding_type
     doc: |
       TODO
@@ -1527,6 +1530,20 @@ structs:
       - name: device_ID
         doc: |
           TODO
+        type: uint32
+  - name: adapter_properties_subgroups
+    doc: |
+      Enabled by the "subgroups" feature.
+      Provides bounds on the sizes of subgroups supported by the adapter.
+    type: base_out
+    members:
+      - name: min_subgroup_size
+        doc: |
+          If the "subgroups" feature is supported, the minimum supported subgroup size for the adapter.
+        type: uint32
+      - name: max_subgroup_size
+        doc: |
+          If the "subgroups" feature is supported, the maximum supported subgroup size for the adapter.
         type: uint32
   - name: bind_group_descriptor
     doc: |
