@@ -18,7 +18,8 @@
                     "enum": [
                         "usize_max",
                         "uint32_max",
-                        "uint64_max"
+                        "uint64_max",
+                        "nan"
                     ]
                 }
             ]
@@ -153,6 +154,10 @@
                     "type": "string",
                     "description": "Optional property, specifying the external namespace where this type is defined",
                     "pattern": "^[a-z]+$"
+                },
+                "default": {
+                    "type": [ "string", "number", "boolean" ],
+                    "description": "Default value assigned to this parameter when using initializer macro"
                 }
             },
             "required": [
@@ -279,7 +284,7 @@
                     },
                     "value": {
                         "$ref": "#/definitions/Value64",
-                        "description": "An enum of predefined max constants or a 64-bit unsigned integer"
+                        "description": "An enum of predefined max constants or a 64-bit unsigned integer, or float NaN value."
                     },
                     "doc": {
                         "type": "string"

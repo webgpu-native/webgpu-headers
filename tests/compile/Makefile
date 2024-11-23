@@ -11,6 +11,7 @@ clean:
 # Enable all but a few warnings, then also enable a few extras that clang on Mac
 # forces off by default even with -Weverything
 CLANG_WARNINGS = -Werror -Weverything \
+	-Wno-unused-variable \
 	-Wno-padded -Wno-poison-system-directories -Wno-c++98-compat-pedantic \
 	-Wc99-designator \
 	-Welaborated-enum-base \
@@ -26,7 +27,8 @@ CLANG_WARNINGS = -Werror -Weverything \
 	-Wreorder-init-list \
 	-Wreserved-identifier \
 	# phew.
-GCC_WARNINGS   = -Werror -Wall -Wextra
+GCC_WARNINGS   = -Werror -Wall -Wextra \
+	-Wno-unused-variable -Wno-unused-but-set-variable
 
 main-c.out: main.c main.inl ../../webgpu.h Makefile
 	# Compile as C
