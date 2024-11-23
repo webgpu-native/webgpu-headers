@@ -2923,16 +2923,16 @@ structs:
         doc: |
           TODO
         type: object.buffer
-  - name: texel_copy_buffer_layout
-    doc: |
-      TODO
-    type: standalone
-    members:
       - name: offset
         doc: |
           TODO
         type: uint64
         default: 0
+  - name: texel_copy_buffer_layout
+    doc: |
+      TODO
+    type: standalone
+    members:
       - name: bytes_per_row
         doc: |
           TODO

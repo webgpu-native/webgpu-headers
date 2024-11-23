@@ -3204,10 +3204,6 @@ typedef struct WGPUSurfaceTexture {
  */
 typedef struct WGPUTexelCopyBufferLayout {
     /**
-     * Defaults to `0`.
-     */
-    uint64_t offset;
-    /**
      * Defaults to @ref WGPU_COPY_STRIDE_UNDEFINED.
      */
     uint32_t bytesPerRow;
@@ -3221,7 +3217,6 @@ typedef struct WGPUTexelCopyBufferLayout {
  * Initializer for @ref WGPUTexelCopyBufferLayout.
  */
 #define WGPU_TEXEL_COPY_BUFFER_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTexelCopyBufferLayout, { \
-    /*.offset=*/0 _wgpu_COMMA \
     /*.bytesPerRow=*/WGPU_COPY_STRIDE_UNDEFINED _wgpu_COMMA \
     /*.rowsPerImage=*/WGPU_COPY_STRIDE_UNDEFINED _wgpu_COMMA \
 })
@@ -3741,6 +3736,10 @@ typedef struct WGPUTexelCopyBufferInfo {
      * Defaults to `NULL`.
      */
     WGPUBuffer buffer;
+    /**
+     * Defaults to `0`.
+     */
+    uint64_t offset;
 } WGPUTexelCopyBufferInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -3749,6 +3748,7 @@ typedef struct WGPUTexelCopyBufferInfo {
 #define WGPU_TEXEL_COPY_BUFFER_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTexelCopyBufferInfo, { \
     /*.layout=*/WGPU_TEXEL_COPY_BUFFER_LAYOUT_INIT _wgpu_COMMA \
     /*.buffer=*/NULL _wgpu_COMMA \
+    /*.offset=*/0 _wgpu_COMMA \
 })
 
 /**
