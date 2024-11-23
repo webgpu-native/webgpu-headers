@@ -637,7 +637,7 @@ typedef enum WGPUPopErrorScopeStatus {
      * `0x00000003`.
      * The error scope stack could not be popped, because it was empty.
      */
-    WGPUPopErrorScopeStatus_EmptyStack = 0x00000003,
+    WGPUPopErrorScopeStatus_Error = 0x00000003,
     WGPUPopErrorScopeStatus_Force32 = 0x7FFFFFFF
 } WGPUPopErrorScopeStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1240,7 +1240,9 @@ typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLost
  * If the `status` is not @ref WGPUPopErrorScopeStatus_Success, this is @ref WGPUErrorType_NoError.
  *
  * @param message
- * If the `type` is not @ref WGPUErrorType_NoError, this is a non-empty @ref LocalizableHumanReadableMessageString;
+ * If the `status` is not @ref WGPUPopeErrorScopeStatus_Success` **or**
+ * the `type` is not @ref WGPUErrorType_NoError, this is a non-empty
+ * @ref LocalizableHumanReadableMessageString;
  * otherwise, this is an empty string.
  * This parameter is @ref PassedWithoutOwnership.
  */
