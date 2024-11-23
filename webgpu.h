@@ -523,6 +523,11 @@ typedef enum WGPUErrorType {
  */
 typedef enum WGPUFeatureLevel {
     /**
+     * `0x00000000`.
+     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     */
+    WGPUFeatureLevel_Undefined = 0x00000000,
+    /**
      * `0x00000001`.
      * "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
      */
@@ -2522,9 +2527,11 @@ typedef struct WGPURequestAdapterOptions {
     /**
      * "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
      *
-     * Implementations may ignore @ref WGPUFeatureLevel_Compatibility and provide @ref WGPUFeatureLevel_Core instead. @ref WGPUFeatureLevel_Core is the default in the JS API, but in C, this field is **required** (must not be undefined).
+     * If not specified, the default is @ref WGPUFeatureLevel_Core.
+     * Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
+     * and provide @ref WGPUFeatureLevel_Core instead.
      *
-     * Defaults to (@ref WGPUFeatureLevel)0.
+     * Defaults to @ref WGPUFeatureLevel_Core.
      */
     WGPUFeatureLevel featureLevel;
     /**
@@ -2559,7 +2566,7 @@ typedef struct WGPURequestAdapterOptions {
  */
 #define WGPU_REQUEST_ADAPTER_OPTIONS_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterOptions, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.featureLevel=*/_wgpu_ENUM_ZERO_INIT(WGPUFeatureLevel) _wgpu_COMMA \
+    /*.featureLevel=*/WGPUFeatureLevel_Core _wgpu_COMMA \
     /*.powerPreference=*/WGPUPowerPreference_Undefined _wgpu_COMMA \
     /*.forceFallbackAdapter=*/0 _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
