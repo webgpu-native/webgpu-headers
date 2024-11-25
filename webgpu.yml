@@ -403,7 +403,8 @@ enums:
     doc: |
       See @ref WGPURequestAdapterOptions::featureLevel.
     entries:
-      - null
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: compatibility
         doc: |
           "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
@@ -2551,8 +2552,11 @@ structs:
         doc: |
           "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
 
-          Implementations may ignore @ref WGPUFeatureLevel_Compatibility and provide @ref WGPUFeatureLevel_Core instead. @ref WGPUFeatureLevel_Core is the default in the JS API, but in C, this field is **required** (must not be undefined).
+          If not specified, the default is @ref WGPUFeatureLevel_Core.
+          Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
+          and provide @ref WGPUFeatureLevel_Core instead.
         type: enum.feature_level
+        default: core
       - name: power_preference
         doc: |
           TODO
