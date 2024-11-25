@@ -567,7 +567,7 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
-      - name: empty_stack
+      - name: error
         doc: |
           The error scope stack could not be popped, because it was empty.
   - name: power_preference
@@ -3244,7 +3244,9 @@ callbacks:
         type: enum.error_type
       - name: message
         doc: |
-          If the `type` is not @ref WGPUErrorType_NoError, this is a non-empty @ref LocalizableHumanReadableMessageString;
+          If the `status` is not @ref WGPUPopeErrorScopeStatus_Success` **or**
+          the `type` is not @ref WGPUErrorType_NoError, this is a non-empty
+          @ref LocalizableHumanReadableMessageString;
           otherwise, this is an empty string.
         type: out_string
         passed_with_ownership: false
