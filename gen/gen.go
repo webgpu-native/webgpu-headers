@@ -122,7 +122,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 					s += "\n\nThis is an \\ref OutputString."
 				}
 
-				s += "\n\nDefaults to " + g.DefaultValue(*member, true /* isDocString */) + "."
+				s += "\n\nThe `INIT` macro sets this to " + g.DefaultValue(*member, true /* isDocString */) + "."
 
 				if member.PassedWithOwnership != nil {
 					panic("invalid")
