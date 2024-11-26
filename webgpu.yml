@@ -229,13 +229,13 @@ enums:
       - name: wait_any_only
         doc: |
           Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
-          - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
-            AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
+          - fire when the asynchronous operation's future is passed to a call to @ref wgpuInstanceWaitAny
+            AND the operation has already completed or it completes inside the call to @ref wgpuInstanceWaitAny.
       - name: allow_process_events
         doc: |
           Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
           - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
-          - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
+          - fire inside a call to @ref wgpuInstanceProcessEvents if the asynchronous operation is complete.
       - name: allow_spontaneous
         doc: |
           Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
@@ -304,7 +304,7 @@ enums:
         doc: |
           TODO
   - name: composite_alpha_mode
-    doc: Describes how frames are composited with other contents on the screen when `::wgpuSurfacePresent` is called.
+    doc: Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
     entries:
       - name: auto
         doc: Lets the WebGPU implementation choose the best mode (supported, and with the best performance) between @ref WGPUCompositeAlphaMode_Opaque or @ref WGPUCompositeAlphaMode_Inherit.
@@ -583,7 +583,7 @@ enums:
         doc: |
           TODO
   - name: present_mode
-    doc: Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
+    doc: Describes when and in which order frames are presented on the screen when @ref wgpuSurfacePresent is called.
     entries:
       - name: undefined
         doc: |
@@ -810,7 +810,7 @@ enums:
         doc: |
           TODO
   - name: surface_get_current_texture_status
-    doc: The status enum for `::wgpuSurfaceGetCurrentTexture`.
+    doc: The status enum for @ref wgpuSurfaceGetCurrentTexture.
     entries:
       - null
       - name: success_optimal
@@ -2758,7 +2758,7 @@ structs:
         type: array<enum.WGSL_language_feature_name>
         pointer: immutable
   - name: surface_capabilities
-    doc: Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
+    doc: Filled by @ref wgpuSurfaceGetCapabilities with what's supported for @ref wgpuSurfaceConfigure for a pair of @ref WGPUSurface and @ref WGPUAdapter.
     type: base_out
     free_members: true
     members:
@@ -2785,7 +2785,7 @@ structs:
         pointer: immutable
   - name: surface_configuration
     doc: |
-      Options to `::wgpuSurfaceConfigure` for defining how a @ref WGPUSurface will be rendered to and presented to the user.
+      Options to @ref wgpuSurfaceConfigure for defining how a @ref WGPUSurface will be rendered to and presented to the user.
       See @ref Surface-Configuration for more details.
     type: base_in
     members:
@@ -2820,7 +2820,7 @@ structs:
         default: fifo
   - name: surface_descriptor
     doc: |
-      The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
+      The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
       It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
       See @ref Surface-Creation for more details.
     type: base_in
@@ -2916,7 +2916,7 @@ structs:
           It is @ref ReturnedWithOwnership from @ref wgpuSurfaceGetCurrentTexture.
         type: object.texture
       - name: status
-        doc: Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
+        doc: Whether the call to @ref wgpuSurfaceGetCurrentTexture succeeded and a hint as to why it might not have.
         type: enum.surface_get_current_texture_status
   - name: texel_copy_buffer_info
     doc: |
@@ -4186,7 +4186,7 @@ objects:
             type: enum.WGSL_language_feature_name
       - name: process_events
         doc: |
-          Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
+          Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with @ref WGPUCallbackMode_AllowProcessEvents.
 
           See @ref Process-Events for more information.
       - name: request_adapter
@@ -4868,7 +4868,7 @@ objects:
           - name: capabilities
             doc: |
               The structure to fill capabilities in.
-              It may contain memory allocations so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid memory leaks.
+              It may contain memory allocations so @ref wgpuSurfaceCapabilitiesFreeMembers must be called to avoid memory leaks.
             type: struct.surface_capabilities
             pointer: mutable
             passed_with_ownership: true

@@ -386,15 +386,15 @@ typedef enum WGPUCallbackMode {
     /**
      * `0x00000001`.
      * Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
-     * - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
-     *   AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
+     * - fire when the asynchronous operation's future is passed to a call to @ref wgpuInstanceWaitAny
+     *   AND the operation has already completed or it completes inside the call to @ref wgpuInstanceWaitAny.
      */
     WGPUCallbackMode_WaitAnyOnly = 0x00000001,
     /**
      * `0x00000002`.
      * Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
-     * - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
+     * - fire inside a call to @ref wgpuInstanceProcessEvents if the asynchronous operation is complete.
      */
     WGPUCallbackMode_AllowProcessEvents = 0x00000002,
     /**
@@ -443,7 +443,7 @@ typedef enum WGPUCompilationMessageType {
 } WGPUCompilationMessageType WGPU_ENUM_ATTRIBUTE;
 
 /**
- * Describes how frames are composited with other contents on the screen when `::wgpuSurfacePresent` is called.
+ * Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
  */
 typedef enum WGPUCompositeAlphaMode {
     /**
@@ -658,7 +658,7 @@ typedef enum WGPUPowerPreference {
 } WGPUPowerPreference WGPU_ENUM_ATTRIBUTE;
 
 /**
- * Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
+ * Describes when and in which order frames are presented on the screen when @ref wgpuSurfacePresent is called.
  */
 typedef enum WGPUPresentMode {
     /**
@@ -828,7 +828,7 @@ typedef enum WGPUStoreOp {
 } WGPUStoreOp WGPU_ENUM_ATTRIBUTE;
 
 /**
- * The status enum for `::wgpuSurfaceGetCurrentTexture`.
+ * The status enum for @ref wgpuSurfaceGetCurrentTexture.
  */
 typedef enum WGPUSurfaceGetCurrentTextureStatus {
     /**
@@ -2837,7 +2837,7 @@ typedef struct WGPUSupportedWGSLLanguageFeatures {
 })
 
 /**
- * Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
+ * Filled by @ref wgpuSurfaceGetCapabilities with what's supported for @ref wgpuSurfaceConfigure for a pair of @ref WGPUSurface and @ref WGPUAdapter.
  *
  * Default values can be set using @ref WGPU_SURFACE_CAPABILITIES_INIT as initializer.
  */
@@ -2890,7 +2890,7 @@ typedef struct WGPUSurfaceCapabilities {
 })
 
 /**
- * Options to `::wgpuSurfaceConfigure` for defining how a @ref WGPUSurface will be rendered to and presented to the user.
+ * Options to @ref wgpuSurfaceConfigure for defining how a @ref WGPUSurface will be rendered to and presented to the user.
  * See @ref Surface-Configuration for more details.
  *
  * Default values can be set using @ref WGPU_SURFACE_CONFIGURATION_INIT as initializer.
@@ -2965,7 +2965,7 @@ typedef struct WGPUSurfaceConfiguration {
 })
 
 /**
- * The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
+ * The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
  * It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
  * See @ref Surface-Creation for more details.
  *
@@ -3192,7 +3192,7 @@ typedef struct WGPUSurfaceTexture {
      */
     WGPUTexture texture;
     /**
-     * Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
+     * Whether the call to @ref wgpuSurfaceGetCurrentTexture succeeded and a hint as to why it might not have.
      *
      * The `INIT` macro sets this to (@ref WGPUSurfaceGetCurrentTextureStatus)0.
      */
@@ -5479,7 +5479,7 @@ WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSur
 WGPU_EXPORT WGPUStatus wgpuInstanceGetWGSLLanguageFeatures(WGPUInstance instance, WGPUSupportedWGSLLanguageFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLLanguageFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
+ * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with @ref WGPUCallbackMode_AllowProcessEvents.
  *
  * See @ref Process-Events for more information.
  */
@@ -5711,7 +5711,7 @@ WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfigurat
  *
  * @param capabilities
  * The structure to fill capabilities in.
- * It may contain memory allocations so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid memory leaks.
+ * It may contain memory allocations so @ref wgpuSurfaceCapabilitiesFreeMembers must be called to avoid memory leaks.
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
