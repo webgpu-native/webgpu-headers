@@ -36,7 +36,7 @@ WebIDL's more flexible typing:
 - \ref WGPUFuture has a special null value
 - Special cases to indicate the parent struct is null, avoiding extra layers of
   pointers just for nullability:
-    - \ref WGPUVertexBufferLayout::stepMode = \ref WGPUVertexStepMode_VertexBufferNotUsed
+    - \ref WGPUVertexBufferLayout::stepMode = \ref WGPUVertexStepMode_Undefined with \ref WGPUVertexBufferLayout::attributeCount
     - \ref WGPUBufferBindingLayout::type = \ref WGPUBufferBindingType_BindingNotUsed
     - \ref WGPUSamplerBindingLayout::type = \ref WGPUSamplerBindingType_BindingNotUsed
     - \ref WGPUTextureBindingLayout::sampleType = \ref WGPUTextureSampleType_BindingNotUsed

@@ -1080,17 +1080,11 @@ typedef enum WGPUVertexFormat {
 typedef enum WGPUVertexStepMode {
     /**
      * `0x00000000`.
-     * This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
-     * (See also @ref SentinelValues.)
-     */
-    WGPUVertexStepMode_VertexBufferNotUsed = 0x00000000,
-    /**
-     * `0x00000001`.
      * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
-    WGPUVertexStepMode_Undefined = 0x00000001,
-    WGPUVertexStepMode_Vertex = 0x00000002,
-    WGPUVertexStepMode_Instance = 0x00000003,
+    WGPUVertexStepMode_Undefined = 0x00000000,
+    WGPUVertexStepMode_Vertex = 0x00000001,
+    WGPUVertexStepMode_Instance = 0x00000002,
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
 
@@ -3822,16 +3816,25 @@ typedef struct WGPUTextureDescriptor {
 })
 
 /**
+ * If `attributes` is empty *and* `stepMode` is @ref WGPUVertexStepMode_Undefined,
+ * indicates a "hole" in the parent @ref WGPUVertexState `buffers` array,
+ * with behavior equivalent to `null` in the JS API.
+ *
+ * If `attributes` is empty but `stepMode` is *not* @ref WGPUVertexStepMode_Undefined,
+ * indicates a vertex buffer with no attributes, with behavior equivalent to
+ * `{ attributes: [] }` in the JS API. (TODO: If the JS API changes not to
+ * distinguish these cases, then this distinction doesn't matter and we can
+ * remove this documentation.)
+ *
+ * If `stepMode` is @ref WGPUVertexStepMode_Undefined but `attributes` is *not* empty,
+ * `stepMode` [defaults](@ref SentinelValues) to @ref WGPUVertexStepMode_Vertex.
+ *
  * Default values can be set using @ref WGPU_VERTEX_BUFFER_LAYOUT_INIT as initializer.
  */
 typedef struct WGPUVertexBufferLayout {
     WGPUChainedStruct const * nextInChain;
     /**
-     * The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
-     * indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
-     * the pipeline does not use a vertex buffer at this `location`.
-     *
-     * The `INIT` macro sets this to @ref WGPUVertexStepMode_VertexBufferNotUsed.
+     * The `INIT` macro sets this to @ref WGPUVertexStepMode_Undefined.
      */
     WGPUVertexStepMode stepMode;
     /**
@@ -3850,7 +3853,7 @@ typedef struct WGPUVertexBufferLayout {
  */
 #define WGPU_VERTEX_BUFFER_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUVertexBufferLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.stepMode=*/WGPUVertexStepMode_VertexBufferNotUsed _wgpu_COMMA \
+    /*.stepMode=*/WGPUVertexStepMode_Undefined _wgpu_COMMA \
     /*.arrayStride=*/0 _wgpu_COMMA \
     /*.attributeCount=*/0 _wgpu_COMMA \
     /*.attributes=*/NULL _wgpu_COMMA \
