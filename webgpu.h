@@ -3700,6 +3700,9 @@ typedef struct WGPUInstanceDescriptor {
 typedef struct WGPURenderPassColorAttachment {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If `NULL`, indicates a hole in the parent
+     * @ref WGPURenderPassDescriptor::colorAttachments array.
+     *
      * The `INIT` macro sets this to `NULL`.
      */
     WGPU_NULLABLE WGPUTextureView view;
