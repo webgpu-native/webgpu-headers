@@ -27,6 +27,15 @@ OUTPUT_DIRECTORY       = doc/generated
 
 OPTIMIZE_OUTPUT_FOR_C  = YES
 
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+WARN_AS_ERROR          = FAIL_ON_WARNINGS
+WARN_IF_INCOMPLETE_DOC = NO
+# Note EXTRACT_ALL bypasses these, but keep them in case we disable it.
+WARN_IF_UNDOC_ENUM_VAL = YES
+WARN_NO_PARAMDOC       = NO
+WARN_IF_UNDOCUMENTED   = YES
+
 #---------------------------------------------------------------------------
 # Build related configuration options
 #---------------------------------------------------------------------------
