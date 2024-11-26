@@ -1862,8 +1862,8 @@ structs:
       - name: compute
         doc: |
           TODO
-        type: struct.compute_stage
-  - name: compute_stage
+        type: struct.compute_state
+  - name: compute_state
     doc: |
       TODO
     type: base_in
