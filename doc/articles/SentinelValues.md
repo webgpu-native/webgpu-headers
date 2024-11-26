@@ -29,7 +29,7 @@ It may be:
 
 ## C-Specific Sentinel Values
 
-Undefined and null values are also be used in C-specific ways in place of
+Undefined and null values are also used in C-specific ways in place of
 WebIDL's more flexible typing:
 
 - \ref WGPUStringView has a special null value
