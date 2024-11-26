@@ -1865,7 +1865,7 @@ typedef struct WGPUCompilationMessage {
 typedef struct WGPUComputePassTimestampWrites {
     WGPUChainedStruct const * nextInChain;
     /**
-     * Query set to write timestamps to. Null if timestamps should not be recorded.
+     * Query set to write timestamps to.
      *
      * The `INIT` macro sets this to `NULL`.
      */
@@ -2496,7 +2496,7 @@ typedef struct WGPURenderPassMaxDrawCount {
 typedef struct WGPURenderPassTimestampWrites {
     WGPUChainedStruct const * nextInChain;
     /**
-     * Query set to write timestamps to. Null if timestamps should not be recorded.
+     * Query set to write timestamps to.
      *
      * The `INIT` macro sets this to `NULL`.
      */
@@ -3486,9 +3486,9 @@ typedef struct WGPUComputePassDescriptor {
      */
     WGPUStringView label;
     /**
-     * The `INIT` macro sets this to @ref WGPU_COMPUTE_PASS_TIMESTAMP_WRITES_INIT.
+     * The `INIT` macro sets this to `NULL`.
      */
-    WGPUComputePassTimestampWrites timestampWrites;
+    WGPU_NULLABLE WGPUComputePassTimestampWrites const * timestampWrites;
 } WGPUComputePassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -3497,7 +3497,7 @@ typedef struct WGPUComputePassDescriptor {
 #define WGPU_COMPUTE_PASS_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUComputePassDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.timestampWrites=*/WGPU_COMPUTE_PASS_TIMESTAMP_WRITES_INIT _wgpu_COMMA \
+    /*.timestampWrites=*/NULL _wgpu_COMMA \
 })
 
 /**
@@ -4002,9 +4002,9 @@ typedef struct WGPURenderPassDescriptor {
      */
     WGPU_NULLABLE WGPUQuerySet occlusionQuerySet;
     /**
-     * The `INIT` macro sets this to @ref WGPU_RENDER_PASS_TIMESTAMP_WRITES_INIT.
+     * The `INIT` macro sets this to `NULL`.
      */
-    WGPURenderPassTimestampWrites timestampWrites;
+    WGPU_NULLABLE WGPURenderPassTimestampWrites const * timestampWrites;
 } WGPURenderPassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -4017,7 +4017,7 @@ typedef struct WGPURenderPassDescriptor {
     /*.colorAttachments=*/NULL _wgpu_COMMA \
     /*.depthStencilAttachment=*/NULL _wgpu_COMMA \
     /*.occlusionQuerySet=*/NULL _wgpu_COMMA \
-    /*.timestampWrites=*/WGPU_RENDER_PASS_TIMESTAMP_WRITES_INIT _wgpu_COMMA \
+    /*.timestampWrites=*/NULL _wgpu_COMMA \
 })
 
 /**
