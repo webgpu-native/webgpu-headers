@@ -2374,7 +2374,8 @@ structs:
     members:
       - name: view
         doc: |
-          TODO
+          If `NULL`, indicates a hole in the parent
+          @ref WGPURenderPassDescriptor::colorAttachments array.
         type: object.texture_view
         optional: true
       - name: depth_slice
