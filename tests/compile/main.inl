@@ -33,7 +33,7 @@ int main(void) {
         uint64_t y = a.maxBufferSize = WGPU_LIMIT_U64_UNDEFINED;
     }
     {
-        WGPUComputePassTimestampWrites a;
+        WGPUPassTimestampWrites a;
         a.beginningOfPassWriteIndex = WGPU_QUERY_SET_INDEX_UNDEFINED;
         a.endOfPassWriteIndex = WGPU_QUERY_SET_INDEX_UNDEFINED;
     }
@@ -59,12 +59,12 @@ int main(void) {
     { WGPUCommandBufferDescriptor x = WGPU_COMMAND_BUFFER_DESCRIPTOR_INIT; }
     { WGPUCommandEncoderDescriptor x = WGPU_COMMAND_ENCODER_DESCRIPTOR_INIT; }
     { WGPUCompilationMessage x = WGPU_COMPILATION_MESSAGE_INIT; }
-    { WGPUComputePassTimestampWrites x = WGPU_COMPUTE_PASS_TIMESTAMP_WRITES_INIT; }
     { WGPUConstantEntry x = WGPU_CONSTANT_ENTRY_INIT; }
     { WGPUFuture x = WGPU_FUTURE_INIT; }
     { WGPUInstanceCapabilities x = WGPU_INSTANCE_CAPABILITIES_INIT; }
     { WGPULimits x = WGPU_LIMITS_INIT; }
     { WGPUMultisampleState x = WGPU_MULTISAMPLE_STATE_INIT; }
+    { WGPUPassTimestampWrites x = WGPU_PASS_TIMESTAMP_WRITES_INIT; }
     { WGPUPipelineLayoutDescriptor x = WGPU_PIPELINE_LAYOUT_DESCRIPTOR_INIT; }
     { WGPUPrimitiveState x = WGPU_PRIMITIVE_STATE_INIT; }
     { WGPUQuerySetDescriptor x = WGPU_QUERY_SET_DESCRIPTOR_INIT; }
@@ -73,7 +73,6 @@ int main(void) {
     { WGPURenderBundleEncoderDescriptor x = WGPU_RENDER_BUNDLE_ENCODER_DESCRIPTOR_INIT; }
     { WGPURenderPassDepthStencilAttachment x = WGPU_RENDER_PASS_DEPTH_STENCIL_ATTACHMENT_INIT; }
     { WGPURenderPassMaxDrawCount x = WGPU_RENDER_PASS_MAX_DRAW_COUNT_INIT; }
-    { WGPURenderPassTimestampWrites x = WGPU_RENDER_PASS_TIMESTAMP_WRITES_INIT; }
     { WGPURequestAdapterOptions x = WGPU_REQUEST_ADAPTER_OPTIONS_INIT; }
     { WGPUSamplerBindingLayout x = WGPU_SAMPLER_BINDING_LAYOUT_INIT; }
     { WGPUSamplerDescriptor x = WGPU_SAMPLER_DESCRIPTOR_INIT; }

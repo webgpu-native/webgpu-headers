@@ -1823,28 +1823,9 @@ structs:
       - name: timestamp_writes
         doc: |
           TODO
-        type: struct.compute_pass_timestamp_writes
+        type: struct.pass_timestamp_writes
         pointer: immutable
         optional: true
-  - name: compute_pass_timestamp_writes
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: query_set
-        doc: |
-          Query set to write timestamps to.
-        type: object.query_set
-      - name: beginning_of_pass_write_index
-        doc: |
-          TODO
-        type: uint32
-        default: constant.query_set_index_undefined
-      - name: end_of_pass_write_index
-        doc: |
-          TODO
-        type: uint32
-        default: constant.query_set_index_undefined
   - name: compute_pipeline_descriptor
     doc: |
       TODO
@@ -2255,6 +2236,25 @@ structs:
           TODO
         type: uint32
         default: 0
+  - name: pass_timestamp_writes
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: query_set
+        doc: |
+          Query set to write timestamps to.
+        type: object.query_set
+      - name: beginning_of_pass_write_index
+        doc: |
+          TODO
+        type: uint32
+        default: constant.query_set_index_undefined
+      - name: end_of_pass_write_index
+        doc: |
+          TODO
+        type: uint32
+        default: constant.query_set_index_undefined
   - name: pipeline_layout_descriptor
     doc: |
       TODO
@@ -2475,7 +2475,7 @@ structs:
       - name: timestamp_writes
         doc: |
           TODO
-        type: struct.render_pass_timestamp_writes
+        type: struct.pass_timestamp_writes
         pointer: immutable
         optional: true
   - name: render_pass_max_draw_count
@@ -2490,25 +2490,6 @@ structs:
           TODO
         type: uint64
         default: 50000000
-  - name: render_pass_timestamp_writes
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: query_set
-        doc: |
-          Query set to write timestamps to.
-        type: object.query_set
-      - name: beginning_of_pass_write_index
-        doc: |
-          TODO
-        type: uint32
-        default: constant.query_set_index_undefined
-      - name: end_of_pass_write_index
-        doc: |
-          TODO
-        type: uint32
-        default: constant.query_set_index_undefined
   - name: render_pipeline_descriptor
     doc: |
       TODO

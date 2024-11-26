@@ -193,7 +193,6 @@ struct WGPUColor;
 struct WGPUCommandBufferDescriptor;
 struct WGPUCommandEncoderDescriptor;
 struct WGPUCompilationMessage;
-struct WGPUComputePassTimestampWrites;
 struct WGPUConstantEntry;
 struct WGPUExtent3D;
 struct WGPUFuture;
@@ -201,6 +200,7 @@ struct WGPUInstanceCapabilities;
 struct WGPULimits;
 struct WGPUMultisampleState;
 struct WGPUOrigin3D;
+struct WGPUPassTimestampWrites;
 struct WGPUPipelineLayoutDescriptor;
 struct WGPUPrimitiveState;
 struct WGPUQuerySetDescriptor;
@@ -209,7 +209,6 @@ struct WGPURenderBundleDescriptor;
 struct WGPURenderBundleEncoderDescriptor;
 struct WGPURenderPassDepthStencilAttachment;
 struct WGPURenderPassMaxDrawCount;
-struct WGPURenderPassTimestampWrites;
 struct WGPURequestAdapterOptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
@@ -1860,37 +1859,6 @@ typedef struct WGPUCompilationMessage {
 })
 
 /**
- * Default values can be set using @ref WGPU_COMPUTE_PASS_TIMESTAMP_WRITES_INIT as initializer.
- */
-typedef struct WGPUComputePassTimestampWrites {
-    WGPUChainedStruct const * nextInChain;
-    /**
-     * Query set to write timestamps to.
-     *
-     * The `INIT` macro sets this to `NULL`.
-     */
-    WGPUQuerySet querySet;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_QUERY_SET_INDEX_UNDEFINED.
-     */
-    uint32_t beginningOfPassWriteIndex;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_QUERY_SET_INDEX_UNDEFINED.
-     */
-    uint32_t endOfPassWriteIndex;
-} WGPUComputePassTimestampWrites WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUComputePassTimestampWrites.
- */
-#define WGPU_COMPUTE_PASS_TIMESTAMP_WRITES_INIT _wgpu_MAKE_INIT_STRUCT(WGPUComputePassTimestampWrites, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.querySet=*/NULL _wgpu_COMMA \
-    /*.beginningOfPassWriteIndex=*/WGPU_QUERY_SET_INDEX_UNDEFINED _wgpu_COMMA \
-    /*.endOfPassWriteIndex=*/WGPU_QUERY_SET_INDEX_UNDEFINED _wgpu_COMMA \
-})
-
-/**
  * Default values can be set using @ref WGPU_CONSTANT_ENTRY_INIT as initializer.
  */
 typedef struct WGPUConstantEntry {
@@ -2222,6 +2190,37 @@ typedef struct WGPUOrigin3D {
 })
 
 /**
+ * Default values can be set using @ref WGPU_PASS_TIMESTAMP_WRITES_INIT as initializer.
+ */
+typedef struct WGPUPassTimestampWrites {
+    WGPUChainedStruct const * nextInChain;
+    /**
+     * Query set to write timestamps to.
+     *
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPUQuerySet querySet;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_QUERY_SET_INDEX_UNDEFINED.
+     */
+    uint32_t beginningOfPassWriteIndex;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_QUERY_SET_INDEX_UNDEFINED.
+     */
+    uint32_t endOfPassWriteIndex;
+} WGPUPassTimestampWrites WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUPassTimestampWrites.
+ */
+#define WGPU_PASS_TIMESTAMP_WRITES_INIT _wgpu_MAKE_INIT_STRUCT(WGPUPassTimestampWrites, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.querySet=*/NULL _wgpu_COMMA \
+    /*.beginningOfPassWriteIndex=*/WGPU_QUERY_SET_INDEX_UNDEFINED _wgpu_COMMA \
+    /*.endOfPassWriteIndex=*/WGPU_QUERY_SET_INDEX_UNDEFINED _wgpu_COMMA \
+})
+
+/**
  * Default values can be set using @ref WGPU_PIPELINE_LAYOUT_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUPipelineLayoutDescriptor {
@@ -2488,37 +2487,6 @@ typedef struct WGPURenderPassMaxDrawCount {
         /*.sType=*/WGPUSType_RenderPassMaxDrawCount _wgpu_COMMA \
     }) _wgpu_COMMA \
     /*.maxDrawCount=*/50000000 _wgpu_COMMA \
-})
-
-/**
- * Default values can be set using @ref WGPU_RENDER_PASS_TIMESTAMP_WRITES_INIT as initializer.
- */
-typedef struct WGPURenderPassTimestampWrites {
-    WGPUChainedStruct const * nextInChain;
-    /**
-     * Query set to write timestamps to.
-     *
-     * The `INIT` macro sets this to `NULL`.
-     */
-    WGPUQuerySet querySet;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_QUERY_SET_INDEX_UNDEFINED.
-     */
-    uint32_t beginningOfPassWriteIndex;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_QUERY_SET_INDEX_UNDEFINED.
-     */
-    uint32_t endOfPassWriteIndex;
-} WGPURenderPassTimestampWrites WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPURenderPassTimestampWrites.
- */
-#define WGPU_RENDER_PASS_TIMESTAMP_WRITES_INIT _wgpu_MAKE_INIT_STRUCT(WGPURenderPassTimestampWrites, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.querySet=*/NULL _wgpu_COMMA \
-    /*.beginningOfPassWriteIndex=*/WGPU_QUERY_SET_INDEX_UNDEFINED _wgpu_COMMA \
-    /*.endOfPassWriteIndex=*/WGPU_QUERY_SET_INDEX_UNDEFINED _wgpu_COMMA \
 })
 
 /**
@@ -3488,7 +3456,7 @@ typedef struct WGPUComputePassDescriptor {
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    WGPU_NULLABLE WGPUComputePassTimestampWrites const * timestampWrites;
+    WGPU_NULLABLE WGPUPassTimestampWrites const * timestampWrites;
 } WGPUComputePassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -4004,7 +3972,7 @@ typedef struct WGPURenderPassDescriptor {
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    WGPU_NULLABLE WGPURenderPassTimestampWrites const * timestampWrites;
+    WGPU_NULLABLE WGPUPassTimestampWrites const * timestampWrites;
 } WGPURenderPassDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
