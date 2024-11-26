@@ -3248,7 +3248,7 @@ callbacks:
         type: enum.error_type
       - name: message
         doc: |
-          If the `status` is not @ref WGPUPopeErrorScopeStatus_Success` **or**
+          If the `status` is not @ref WGPUPopErrorScopeStatus_Success **or**
           the `type` is not @ref WGPUErrorType_NoError, this is a non-empty
           @ref LocalizableHumanReadableMessageString;
           otherwise, this is an empty string.

@@ -58,7 +58,7 @@ struct WGPUSurface {
 
 The behavior of `::wgpuInstanceCreateSurface``(instance, descriptor)` is:
 
- - If any of these validation steps fails, return an error @ref WGPUSurface:
+ - If any of these validation steps fails, return an error @ref WGPUSurface object:
 
     - Validate that all the sub-descriptors in the chain for `descriptor` are known to this implementation.
     - Validate that `descriptor` contains information about exactly one OS surface.
@@ -79,7 +79,7 @@ This first step of the negotiation is querying what capabilities are available u
 
 The call to `::wgpuSurfaceGetCapabilities` may allocate memory for pointers filled in the @ref WGPUSurfaceCapabilities structure so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid leaking memory once the capabilities are no longer needed.
 
-This is an example of how to query the capabilities or a @ref WGPUSurface:
+This is an example of how to query the capabilities of a `::WGPUSurface`:
 
 ```c
 // Get the capabilities
@@ -123,7 +123,7 @@ It contains the following kinds of parameters:
  - Parameters for the textures returned by `::wgpuSurfaceGetCurrentTexture`.
  - @ref WGPUPresentMode and @ref WGPUCompositeAlphaMode parameters for how and when the surface will be presented to the user.
 
-This is an example of how to configure a @ref WGPUSurface:
+This is an example of how to configure a `::WGPUSurface`:
 
 ```c
 WGPUSurfaceConfiguration config = {

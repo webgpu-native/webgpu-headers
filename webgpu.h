@@ -75,7 +75,7 @@
 
 
 /**
- * \defgroup Constants
+ * \defgroup Constants Constants
  * \brief Constants.
  *
  * @{
@@ -150,7 +150,7 @@ typedef struct WGPUStringView {
 /** @} */
 
 /**
- * \defgroup Objects
+ * \defgroup Objects Objects
  * \brief Opaque, non-dispatchable handles to WebGPU objects.
  *
  * @{
@@ -271,7 +271,7 @@ struct WGPUUncapturedErrorCallbackInfo;
 
 
 /**
- * \defgroup Enumerations
+ * \defgroup Enumerations Enumerations
  * \brief Enums.
  *
  * @{
@@ -1139,7 +1139,7 @@ typedef enum WGPUWaitStatus {
 /** @} */
 
 /**
- * \defgroup Bitflags
+ * \defgroup Bitflags Bitflags
  * \brief Type and constant definitions for bitflag types.
  *
  * @{
@@ -1190,7 +1190,7 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 
 
 /**
- * \defgroup Callbacks
+ * \defgroup Callbacks Callbacks
  * \brief Callbacks through which asynchronous functions return.
  *
  * @{
@@ -1245,7 +1245,7 @@ typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLost
  * If the `status` is not @ref WGPUPopErrorScopeStatus_Success, this is @ref WGPUErrorType_NoError.
  *
  * @param message
- * If the `status` is not @ref WGPUPopeErrorScopeStatus_Success` **or**
+ * If the `status` is not @ref WGPUPopErrorScopeStatus_Success **or**
  * the `type` is not @ref WGPUErrorType_NoError, this is a non-empty
  * @ref LocalizableHumanReadableMessageString;
  * otherwise, this is an empty string.
@@ -1309,14 +1309,14 @@ typedef struct WGPUChainedStructOut {
 
 
 /**
- * \defgroup Structures
+ * \defgroup Structures Structures
  * \brief Descriptors and other transparent structures.
  *
  * @{
  */
 
  /**
- * \defgroup WGPUCallbackInfo
+ * \defgroup WGPUCallbackInfo Callback Info Structs
  * \brief Callback info structures that are used in asynchronous functions.
  *
  * @{
@@ -5195,7 +5195,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
 /** @} */
 
 /**
- * \defgroup Methods
+ * \defgroup Methods Methods
  * \brief Functions that are relative to a specific object.
  *
  * @{
