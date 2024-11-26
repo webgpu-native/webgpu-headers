@@ -24,3 +24,5 @@ gen-check: fix gen
 
 doc: webgpu.h Doxyfile
 	doxygen Doxyfile
+	# Verify that no ` or :: made it through into the final docs
+	! grep -RE '`|>::' doc/generated/**/*.html

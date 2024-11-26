@@ -102,7 +102,7 @@ int main(void) {
     { WGPUBlendState x = WGPU_BLEND_STATE_INIT; }
     { WGPUCompilationInfo x = WGPU_COMPILATION_INFO_INIT; }
     { WGPUComputePassDescriptor x = WGPU_COMPUTE_PASS_DESCRIPTOR_INIT; }
-    { WGPUComputeStage x = WGPU_COMPUTE_STAGE_INIT; }
+    { WGPUComputeState x = WGPU_COMPUTE_STATE_INIT; }
     { WGPUDepthStencilState x = WGPU_DEPTH_STENCIL_STATE_INIT; }
     { WGPUDeviceDescriptor x = WGPU_DEVICE_DESCRIPTOR_INIT; }
     { WGPUFutureWaitInfo x = WGPU_FUTURE_WAIT_INFO_INIT; }

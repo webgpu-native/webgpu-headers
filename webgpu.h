@@ -75,7 +75,7 @@
 
 
 /**
- * \defgroup Constants
+ * \defgroup Constants Constants
  * \brief Constants.
  *
  * @{
@@ -150,7 +150,7 @@ typedef struct WGPUStringView {
 /** @} */
 
 /**
- * \defgroup Objects
+ * \defgroup Objects Objects
  * \brief Opaque, non-dispatchable handles to WebGPU objects.
  *
  * @{
@@ -238,7 +238,7 @@ struct WGPUBindGroupLayoutEntry;
 struct WGPUBlendState;
 struct WGPUCompilationInfo;
 struct WGPUComputePassDescriptor;
-struct WGPUComputeStage;
+struct WGPUComputeState;
 struct WGPUDepthStencilState;
 struct WGPUDeviceDescriptor;
 struct WGPUFutureWaitInfo;
@@ -270,7 +270,7 @@ struct WGPUUncapturedErrorCallbackInfo;
 
 
 /**
- * \defgroup Enumerations
+ * \defgroup Enumerations Enumerations
  * \brief Enums.
  *
  * @{
@@ -385,15 +385,15 @@ typedef enum WGPUCallbackMode {
     /**
      * `0x00000001`.
      * Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
-     * - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
-     *   AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
+     * - fire when the asynchronous operation's future is passed to a call to @ref wgpuInstanceWaitAny
+     *   AND the operation has already completed or it completes inside the call to @ref wgpuInstanceWaitAny.
      */
     WGPUCallbackMode_WaitAnyOnly = 0x00000001,
     /**
      * `0x00000002`.
      * Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
-     * - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
+     * - fire inside a call to @ref wgpuInstanceProcessEvents if the asynchronous operation is complete.
      */
     WGPUCallbackMode_AllowProcessEvents = 0x00000002,
     /**
@@ -442,7 +442,7 @@ typedef enum WGPUCompilationMessageType {
 } WGPUCompilationMessageType WGPU_ENUM_ATTRIBUTE;
 
 /**
- * Describes how frames are composited with other contents on the screen when `::wgpuSurfacePresent` is called.
+ * Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
  */
 typedef enum WGPUCompositeAlphaMode {
     /**
@@ -657,7 +657,7 @@ typedef enum WGPUPowerPreference {
 } WGPUPowerPreference WGPU_ENUM_ATTRIBUTE;
 
 /**
- * Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
+ * Describes when and in which order frames are presented on the screen when @ref wgpuSurfacePresent is called.
  */
 typedef enum WGPUPresentMode {
     /**
@@ -827,7 +827,7 @@ typedef enum WGPUStoreOp {
 } WGPUStoreOp WGPU_ENUM_ATTRIBUTE;
 
 /**
- * The status enum for `::wgpuSurfaceGetCurrentTexture`.
+ * The status enum for @ref wgpuSurfaceGetCurrentTexture.
  */
 typedef enum WGPUSurfaceGetCurrentTextureStatus {
     /**
@@ -1138,7 +1138,7 @@ typedef enum WGPUWaitStatus {
 /** @} */
 
 /**
- * \defgroup Bitflags
+ * \defgroup Bitflags Bitflags
  * \brief Type and constant definitions for bitflag types.
  *
  * @{
@@ -1189,7 +1189,7 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 
 
 /**
- * \defgroup Callbacks
+ * \defgroup Callbacks Callbacks
  * \brief Callbacks through which asynchronous functions return.
  *
  * @{
@@ -1244,7 +1244,7 @@ typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLost
  * If the `status` is not @ref WGPUPopErrorScopeStatus_Success, this is @ref WGPUErrorType_NoError.
  *
  * @param message
- * If the `status` is not @ref WGPUPopeErrorScopeStatus_Success` **or**
+ * If the `status` is not @ref WGPUPopErrorScopeStatus_Success **or**
  * the `type` is not @ref WGPUErrorType_NoError, this is a non-empty
  * @ref LocalizableHumanReadableMessageString;
  * otherwise, this is an empty string.
@@ -1308,14 +1308,14 @@ typedef struct WGPUChainedStructOut {
 
 
 /**
- * \defgroup Structures
+ * \defgroup Structures Structures
  * \brief Descriptors and other transparent structures.
  *
  * @{
  */
 
  /**
- * \defgroup WGPUCallbackInfo
+ * \defgroup WGPUCallbackInfo Callback Info Structs
  * \brief Callback info structures that are used in asynchronous functions.
  *
  * @{
@@ -2805,7 +2805,7 @@ typedef struct WGPUSupportedWGSLLanguageFeatures {
 })
 
 /**
- * Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
+ * Filled by @ref wgpuSurfaceGetCapabilities with what's supported for @ref wgpuSurfaceConfigure for a pair of @ref WGPUSurface and @ref WGPUAdapter.
  *
  * Default values can be set using @ref WGPU_SURFACE_CAPABILITIES_INIT as initializer.
  */
@@ -2858,7 +2858,7 @@ typedef struct WGPUSurfaceCapabilities {
 })
 
 /**
- * Options to `::wgpuSurfaceConfigure` for defining how a @ref WGPUSurface will be rendered to and presented to the user.
+ * Options to @ref wgpuSurfaceConfigure for defining how a @ref WGPUSurface will be rendered to and presented to the user.
  * See @ref Surface-Configuration for more details.
  *
  * Default values can be set using @ref WGPU_SURFACE_CONFIGURATION_INIT as initializer.
@@ -2933,7 +2933,7 @@ typedef struct WGPUSurfaceConfiguration {
 })
 
 /**
- * The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
+ * The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
  * It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
  * See @ref Surface-Creation for more details.
  *
@@ -3160,7 +3160,7 @@ typedef struct WGPUSurfaceTexture {
      */
     WGPUTexture texture;
     /**
-     * Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
+     * Whether the call to @ref wgpuSurfaceGetCurrentTexture succeeded and a hint as to why it might not have.
      *
      * The `INIT` macro sets this to (@ref WGPUSurfaceGetCurrentTextureStatus)0.
      */
@@ -3469,9 +3469,9 @@ typedef struct WGPUComputePassDescriptor {
 })
 
 /**
- * Default values can be set using @ref WGPU_COMPUTE_STAGE_INIT as initializer.
+ * Default values can be set using @ref WGPU_COMPUTE_STATE_INIT as initializer.
  */
-typedef struct WGPUComputeStage {
+typedef struct WGPUComputeState {
     WGPUChainedStruct const * nextInChain;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3488,12 +3488,12 @@ typedef struct WGPUComputeStage {
      */
     size_t constantCount;
     WGPUConstantEntry const * constants;
-} WGPUComputeStage WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUComputeState WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPUComputeStage.
+ * Initializer for @ref WGPUComputeState.
  */
-#define WGPU_COMPUTE_STAGE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUComputeStage, { \
+#define WGPU_COMPUTE_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUComputeState, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.module=*/NULL _wgpu_COMMA \
     /*.entryPoint=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
@@ -3930,9 +3930,9 @@ typedef struct WGPUComputePipelineDescriptor {
      */
     WGPU_NULLABLE WGPUPipelineLayout layout;
     /**
-     * The `INIT` macro sets this to @ref WGPU_COMPUTE_STAGE_INIT.
+     * The `INIT` macro sets this to @ref WGPU_COMPUTE_STATE_INIT.
      */
-    WGPUComputeStage compute;
+    WGPUComputeState compute;
 } WGPUComputePipelineDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -3942,7 +3942,7 @@ typedef struct WGPUComputePipelineDescriptor {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.layout=*/NULL _wgpu_COMMA \
-    /*.compute=*/WGPU_COMPUTE_STAGE_INIT _wgpu_COMMA \
+    /*.compute=*/WGPU_COMPUTE_STATE_INIT _wgpu_COMMA \
 })
 
 /**
@@ -5163,7 +5163,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
 /** @} */
 
 /**
- * \defgroup Methods
+ * \defgroup Methods Methods
  * \brief Functions that are relative to a specific object.
  *
  * @{
@@ -5447,7 +5447,7 @@ WGPU_EXPORT WGPUSurface wgpuInstanceCreateSurface(WGPUInstance instance, WGPUSur
 WGPU_EXPORT WGPUStatus wgpuInstanceGetWGSLLanguageFeatures(WGPUInstance instance, WGPUSupportedWGSLLanguageFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuInstanceHasWGSLLanguageFeature(WGPUInstance instance, WGPUWGSLLanguageFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
+ * Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with @ref WGPUCallbackMode_AllowProcessEvents.
  *
  * See @ref Process-Events for more information.
  */
@@ -5679,7 +5679,7 @@ WGPU_EXPORT void wgpuSurfaceConfigure(WGPUSurface surface, WGPUSurfaceConfigurat
  *
  * @param capabilities
  * The structure to fill capabilities in.
- * It may contain memory allocations so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid memory leaks.
+ * It may contain memory allocations so @ref wgpuSurfaceCapabilitiesFreeMembers must be called to avoid memory leaks.
  * This parameter is @ref ReturnedWithOwnership.
  *
  * @returns
