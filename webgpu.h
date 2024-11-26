@@ -239,7 +239,7 @@ struct WGPUBindGroupLayoutEntry;
 struct WGPUBlendState;
 struct WGPUCompilationInfo;
 struct WGPUComputePassDescriptor;
-struct WGPUComputeStage;
+struct WGPUComputeState;
 struct WGPUDepthStencilState;
 struct WGPUDeviceDescriptor;
 struct WGPUFutureWaitInfo;
@@ -3501,9 +3501,9 @@ typedef struct WGPUComputePassDescriptor {
 })
 
 /**
- * Default values can be set using @ref WGPU_COMPUTE_STAGE_INIT as initializer.
+ * Default values can be set using @ref WGPU_COMPUTE_STATE_INIT as initializer.
  */
-typedef struct WGPUComputeStage {
+typedef struct WGPUComputeState {
     WGPUChainedStruct const * nextInChain;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3520,12 +3520,12 @@ typedef struct WGPUComputeStage {
      */
     size_t constantCount;
     WGPUConstantEntry const * constants;
-} WGPUComputeStage WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUComputeState WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPUComputeStage.
+ * Initializer for @ref WGPUComputeState.
  */
-#define WGPU_COMPUTE_STAGE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUComputeStage, { \
+#define WGPU_COMPUTE_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUComputeState, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.module=*/NULL _wgpu_COMMA \
     /*.entryPoint=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
@@ -3962,9 +3962,9 @@ typedef struct WGPUComputePipelineDescriptor {
      */
     WGPU_NULLABLE WGPUPipelineLayout layout;
     /**
-     * The `INIT` macro sets this to @ref WGPU_COMPUTE_STAGE_INIT.
+     * The `INIT` macro sets this to @ref WGPU_COMPUTE_STATE_INIT.
      */
-    WGPUComputeStage compute;
+    WGPUComputeState compute;
 } WGPUComputePipelineDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -3974,7 +3974,7 @@ typedef struct WGPUComputePipelineDescriptor {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.layout=*/NULL _wgpu_COMMA \
-    /*.compute=*/WGPU_COMPUTE_STAGE_INIT _wgpu_COMMA \
+    /*.compute=*/WGPU_COMPUTE_STATE_INIT _wgpu_COMMA \
 })
 
 /**
