@@ -1667,7 +1667,7 @@ typedef struct WGPUBlendComponent {
 typedef struct WGPUBufferBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
-     * The `INIT` macro sets this to @ref WGPUBufferBindingType_Uniform.
+     * The `INIT` macro sets this to @ref WGPUBufferBindingType_BindingNotUsed.
      */
     WGPUBufferBindingType type;
     /**
@@ -1685,7 +1685,7 @@ typedef struct WGPUBufferBindingLayout {
  */
 #define WGPU_BUFFER_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBufferBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.type=*/WGPUBufferBindingType_Uniform _wgpu_COMMA \
+    /*.type=*/WGPUBufferBindingType_BindingNotUsed _wgpu_COMMA \
     /*.hasDynamicOffset=*/0 _wgpu_COMMA \
     /*.minBindingSize=*/0 _wgpu_COMMA \
 })
