@@ -1643,17 +1643,17 @@ structs:
         doc: |
           TODO
         type: enum.blend_operation
-        default: add
+        default: undefined
       - name: src_factor
         doc: |
           TODO
         type: enum.blend_factor
-        default: one
+        default: undefined
       - name: dst_factor
         doc: |
           TODO
         type: enum.blend_factor
-        default: zero
+        default: undefined
   - name: blend_state
     doc: |
       TODO
@@ -2278,7 +2278,7 @@ structs:
         doc: |
           TODO
         type: enum.primitive_topology
-        default: triangle_list
+        default: undefined
       - name: strip_index_format
         doc: |
           TODO
@@ -2287,12 +2287,12 @@ structs:
         doc: |
           TODO
         type: enum.front_face
-        default: CCW
+        default: undefined
       - name: cull_mode
         doc: |
           TODO
         type: enum.cull_mode
-        default: none
+        default: undefined
       - name: unclipped_depth
         doc: |
           TODO
@@ -2542,7 +2542,7 @@ structs:
           Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
           and provide @ref WGPUFeatureLevel_Core instead.
         type: enum.feature_level
-        default: core
+        default: undefined
       - name: power_preference
         doc: |
           TODO
@@ -2589,32 +2589,32 @@ structs:
         doc: |
           TODO
         type: enum.address_mode
-        default: clamp_to_edge
+        default: undefined
       - name: address_mode_v
         doc: |
           TODO
         type: enum.address_mode
-        default: clamp_to_edge
+        default: undefined
       - name: address_mode_w
         doc: |
           TODO
         type: enum.address_mode
-        default: clamp_to_edge
+        default: undefined
       - name: mag_filter
         doc: |
           TODO
         type: enum.filter_mode
-        default: nearest
+        default: undefined
       - name: min_filter
         doc: |
           TODO
         type: enum.filter_mode
-        default: nearest
+        default: undefined
       - name: mipmap_filter
         doc: |
           TODO
         type: enum.mipmap_filter_mode
-        default: nearest
+        default: undefined
       - name: lod_min_clamp
         doc: |
           TODO
@@ -2681,22 +2681,22 @@ structs:
         doc: |
           TODO
         type: enum.compare_function
-        default: always
+        default: undefined
       - name: fail_op
         doc: |
           TODO
         type: enum.stencil_operation
-        default: keep
+        default: undefined
       - name: depth_fail_op
         doc: |
           TODO
         type: enum.stencil_operation
-        default: keep
+        default: undefined
       - name: pass_op
         doc: |
           TODO
         type: enum.stencil_operation
-        default: keep
+        default: undefined
   - name: storage_texture_binding_layout
     doc: |
       TODO
@@ -2716,7 +2716,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_view_dimension
-        default: 2D
+        default: undefined
   - name: supported_features
     doc: |
       TODO
@@ -2799,7 +2799,7 @@ structs:
       - name: present_mode
         doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
-        default: fifo
+        default: undefined
   - name: surface_descriptor
     doc: |
       The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
@@ -2955,7 +2955,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_aspect
-        default: all
+        default: undefined
   - name: texture_binding_layout
     doc: |
       TODO
@@ -2970,7 +2970,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_view_dimension
-        default: 2D
+        default: undefined
       - name: multisampled
         doc: |
           TODO
@@ -2994,7 +2994,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_dimension
-        default: 2D
+        default: undefined
       - name: size
         doc: |
           TODO
@@ -3062,7 +3062,7 @@ structs:
         doc: |
           TODO
         type: enum.texture_aspect
-        default: all
+        default: undefined
       - name: usage
         doc: |
           TODO
