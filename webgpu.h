@@ -1673,6 +1673,9 @@ typedef struct WGPUBlendComponent {
 typedef struct WGPUBufferBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If set to @ref WGPUBufferBindingType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBufferBindingType_Uniform.
+     *
      * The `INIT` macro sets this to @ref WGPUBufferBindingType_BindingNotUsed.
      */
     WGPUBufferBindingType type;
@@ -2561,6 +2564,9 @@ typedef struct WGPURequestAdapterOptions {
 typedef struct WGPUSamplerBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If set to @ref WGPUSamplerBindingType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUSamplerBindingType_Filtering.
+     *
      * The `INIT` macro sets this to @ref WGPUSamplerBindingType_BindingNotUsed.
      */
     WGPUSamplerBindingType type;
@@ -2775,6 +2781,9 @@ typedef struct WGPUStencilFaceState {
 typedef struct WGPUStorageTextureBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If set to @ref WGPUStorageTextureAccess_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStorageTextureAccess_WriteOnly.
+     *
      * The `INIT` macro sets this to @ref WGPUStorageTextureAccess_BindingNotUsed.
      */
     WGPUStorageTextureAccess access;
@@ -3245,6 +3254,9 @@ typedef struct WGPUTexelCopyBufferLayout {
 typedef struct WGPUTextureBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If set to @ref WGPUTextureSampleType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureSampleType_Float.
+     *
      * The `INIT` macro sets this to @ref WGPUTextureSampleType_BindingNotUsed.
      */
     WGPUTextureSampleType sampleType;

@@ -1670,7 +1670,8 @@ structs:
     members:
       - name: type
         doc: |
-          TODO
+          If set to @ref WGPUBufferBindingType_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUBufferBindingType_Uniform.
         type: enum.buffer_binding_type
         default: binding_not_used
       - name: has_dynamic_offset
@@ -2569,7 +2570,8 @@ structs:
     members:
       - name: type
         doc: |
-          TODO
+          If set to @ref WGPUSamplerBindingType_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUSamplerBindingType_Filtering.
         type: enum.sampler_binding_type
         default: binding_not_used
   - name: sampler_descriptor
@@ -2700,7 +2702,8 @@ structs:
     members:
       - name: access
         doc: |
-          TODO
+          If set to @ref WGPUStorageTextureAccess_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUStorageTextureAccess_WriteOnly.
         type: enum.storage_texture_access
         default: binding_not_used
       - name: format
@@ -2962,7 +2965,8 @@ structs:
     members:
       - name: sample_type
         doc: |
-          TODO
+          If set to @ref WGPUTextureSampleType_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureSampleType_Float.
         type: enum.texture_sample_type
         default: binding_not_used
       - name: view_dimension
