@@ -339,8 +339,15 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
+{{-     if (.Type | IsArray)}}
+    /** Array count for `{{.Name | CamelCase}}`. The `INIT` macro sets this to 0. */
+    {{  StructMemberArrayCount $struct $memberIndex}}
+    {{- MCommentMember . 4 }}
+    {{  StructMemberArrayData $struct $memberIndex}}
+{{-     else}}
     {{- MCommentMember . 4 }}
     {{  StructMember $struct $memberIndex}}
+{{-     end}}
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
 

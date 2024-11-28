@@ -2231,10 +2231,11 @@ typedef struct WGPUPipelineLayoutDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
+    /** Array count for `bindGroupLayouts`. The `INIT` macro sets this to 0. */
+    size_t bindGroupLayoutCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t bindGroupLayoutCount;
     WGPUBindGroupLayout const * bindGroupLayouts;
 } WGPUPipelineLayoutDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -2371,10 +2372,11 @@ typedef struct WGPURenderBundleEncoderDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
+    /** Array count for `colorFormats`. The `INIT` macro sets this to 0. */
+    size_t colorFormatCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t colorFormatCount;
     WGPUTextureFormat const * colorFormats;
     /**
      * The `INIT` macro sets this to @ref WGPUTextureFormat_Undefined.
@@ -2770,10 +2772,11 @@ typedef struct WGPUStorageTextureBindingLayout {
  * Default values can be set using @ref WGPU_SUPPORTED_FEATURES_INIT as initializer.
  */
 typedef struct WGPUSupportedFeatures {
+    /** Array count for `features`. The `INIT` macro sets this to 0. */
+    size_t featureCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t featureCount;
     WGPUFeatureName const * features;
 } WGPUSupportedFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -2789,10 +2792,11 @@ typedef struct WGPUSupportedFeatures {
  * Default values can be set using @ref WGPU_SUPPORTED_WGSL_LANGUAGE_FEATURES_INIT as initializer.
  */
 typedef struct WGPUSupportedWGSLLanguageFeatures {
+    /** Array count for `features`. The `INIT` macro sets this to 0. */
+    size_t featureCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t featureCount;
     WGPUWGSLLanguageFeatureName const * features;
 } WGPUSupportedWGSLLanguageFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -2818,28 +2822,31 @@ typedef struct WGPUSurfaceCapabilities {
      * The `INIT` macro sets this to @ref WGPUTextureUsage_None.
      */
     WGPUTextureUsage usages;
+    /** Array count for `formats`. The `INIT` macro sets this to 0. */
+    size_t formatCount;
     /**
      * A list of supported @ref WGPUTextureFormat values, in order of preference.
      *
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t formatCount;
     WGPUTextureFormat const * formats;
+    /** Array count for `presentModes`. The `INIT` macro sets this to 0. */
+    size_t presentModeCount;
     /**
      * A list of supported @ref WGPUPresentMode values.
      * Guaranteed to contain @ref WGPUPresentMode_Fifo.
      *
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t presentModeCount;
     WGPUPresentMode const * presentModes;
+    /** Array count for `alphaModes`. The `INIT` macro sets this to 0. */
+    size_t alphaModeCount;
     /**
      * A list of supported @ref WGPUCompositeAlphaMode values.
      * @ref WGPUCompositeAlphaMode_Auto will be an alias for the first element and will never be present in this array.
      *
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t alphaModeCount;
     WGPUCompositeAlphaMode const * alphaModes;
 } WGPUSurfaceCapabilities WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -2895,12 +2902,13 @@ typedef struct WGPUSurfaceConfiguration {
      * The `INIT` macro sets this to `0`.
      */
     uint32_t height;
+    /** Array count for `viewFormats`. The `INIT` macro sets this to 0. */
+    size_t viewFormatCount;
     /**
      * The additional @ref WGPUTextureFormat for @ref WGPUTextureView format reinterpretation of the surface's textures.
      *
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t viewFormatCount;
     WGPUTextureFormat const * viewFormats;
     /**
      * How the surface's frames will be composited on the screen.
@@ -3337,10 +3345,11 @@ typedef struct WGPUBindGroupDescriptor {
      * The `INIT` macro sets this to `NULL`.
      */
     WGPUBindGroupLayout layout;
+    /** Array count for `entries`. The `INIT` macro sets this to 0. */
+    size_t entryCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t entryCount;
     WGPUBindGroupEntry const * entries;
 } WGPUBindGroupDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3426,10 +3435,11 @@ typedef struct WGPUBlendState {
  */
 typedef struct WGPUCompilationInfo {
     WGPUChainedStruct const * nextInChain;
+    /** Array count for `messages`. The `INIT` macro sets this to 0. */
+    size_t messageCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t messageCount;
     WGPUCompilationMessage const * messages;
 } WGPUCompilationInfo WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3483,10 +3493,11 @@ typedef struct WGPUComputeState {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView entryPoint;
+    /** Array count for `constants`. The `INIT` macro sets this to 0. */
+    size_t constantCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t constantCount;
     WGPUConstantEntry const * constants;
 } WGPUComputeState WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3576,10 +3587,11 @@ typedef struct WGPUDeviceDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
+    /** Array count for `requiredFeatures`. The `INIT` macro sets this to 0. */
+    size_t requiredFeatureCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t requiredFeatureCount;
     WGPUFeatureName const * requiredFeatures;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3798,10 +3810,11 @@ typedef struct WGPUTextureDescriptor {
      * The `INIT` macro sets this to `1`.
      */
     uint32_t sampleCount;
+    /** Array count for `viewFormats`. The `INIT` macro sets this to 0. */
+    size_t viewFormatCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t viewFormatCount;
     WGPUTextureFormat const * viewFormats;
 } WGPUTextureDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3838,10 +3851,11 @@ typedef struct WGPUVertexBufferLayout {
      * The `INIT` macro sets this to `0`.
      */
     uint64_t arrayStride;
+    /** Array count for `attributes`. The `INIT` macro sets this to 0. */
+    size_t attributeCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t attributeCount;
     WGPUVertexAttribute const * attributes;
 } WGPUVertexBufferLayout WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3867,10 +3881,11 @@ typedef struct WGPUBindGroupLayoutDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
+    /** Array count for `entries`. The `INIT` macro sets this to 0. */
+    size_t entryCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t entryCount;
     WGPUBindGroupLayoutEntry const * entries;
 } WGPUBindGroupLayoutDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3959,10 +3974,11 @@ typedef struct WGPURenderPassDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
+    /** Array count for `colorAttachments`. The `INIT` macro sets this to 0. */
+    size_t colorAttachmentCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t colorAttachmentCount;
     WGPURenderPassColorAttachment const * colorAttachments;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -4006,15 +4022,17 @@ typedef struct WGPUVertexState {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView entryPoint;
-    /**
-     * The `INIT` macro sets this to `NULL`.
-     */
+    /** Array count for `constants`. The `INIT` macro sets this to 0. */
     size_t constantCount;
-    WGPUConstantEntry const * constants;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
+    WGPUConstantEntry const * constants;
+    /** Array count for `buffers`. The `INIT` macro sets this to 0. */
     size_t bufferCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUVertexBufferLayout const * buffers;
 } WGPUVertexState WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -4046,15 +4064,17 @@ typedef struct WGPUFragmentState {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView entryPoint;
-    /**
-     * The `INIT` macro sets this to `NULL`.
-     */
+    /** Array count for `constants`. The `INIT` macro sets this to 0. */
     size_t constantCount;
-    WGPUConstantEntry const * constants;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
+    WGPUConstantEntry const * constants;
+    /** Array count for `targets`. The `INIT` macro sets this to 0. */
     size_t targetCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUColorTargetState const * targets;
 } WGPUFragmentState WGPU_STRUCTURE_ATTRIBUTE;
 
