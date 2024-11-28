@@ -570,7 +570,7 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			if isDocString {
 				return "zero (so the entry is `BindingNotUsed`)"
 			} else {
-				return literal("{0}")
+				return literal("_wgpu_STRUCT_ZERO_INIT")
 			}
 		} else {
 			panic("unknown default for struct type")

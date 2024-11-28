@@ -59,6 +59,7 @@
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
 #  define _wgpu_ENUM_ZERO_INIT(type) type(0)
+#  define _wgpu_STRUCT_ZERO_INIT {}
 #  if __cplusplus >= 201103L
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) (type value)
 #  else
@@ -66,6 +67,7 @@
 #  endif
 #else
 #  define _wgpu_ENUM_ZERO_INIT(type) (type)0
+#  define _wgpu_STRUCT_ZERO_INIT {0}
 #  if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
 #  else
@@ -3445,10 +3447,10 @@ typedef struct WGPUBindGroupLayoutEntry {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.binding=*/0 _wgpu_COMMA \
     /*.visibility=*/WGPUShaderStage_None _wgpu_COMMA \
-    /*.buffer=*/{0} _wgpu_COMMA \
-    /*.sampler=*/{0} _wgpu_COMMA \
-    /*.texture=*/{0} _wgpu_COMMA \
-    /*.storageTexture=*/{0} _wgpu_COMMA \
+    /*.buffer=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.sampler=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.texture=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.storageTexture=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
 })
 
 /**
