@@ -1618,22 +1618,18 @@ structs:
         doc: |
           TODO
         type: struct.buffer_binding_layout
-        default: constant.binding_not_used
       - name: sampler
         doc: |
           TODO
         type: struct.sampler_binding_layout
-        default: constant.binding_not_used
       - name: texture
         doc: |
           TODO
         type: struct.texture_binding_layout
-        default: constant.binding_not_used
       - name: storage_texture
         doc: |
           TODO
         type: struct.storage_texture_binding_layout
-        default: constant.binding_not_used
   - name: blend_component
     doc: |
       TODO
@@ -1676,7 +1672,7 @@ structs:
         doc: |
           TODO
         type: enum.buffer_binding_type
-        default: uniform
+        default: binding_not_used
       - name: has_dynamic_offset
         doc: |
           TODO

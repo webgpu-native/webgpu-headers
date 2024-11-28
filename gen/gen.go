@@ -492,11 +492,17 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			return s
 		}
 	}
+
 	switch {
 	case member.Pointer != "":
+		if member.Default != nil {
+			panic("pointer type should not have a default")
+		}
 		return literal("NULL")
+
+	// Cases that may have member.Default
 	case strings.HasPrefix(member.Type, "enum."):
-		if member.Default == "" {
+		if member.Default == nil {
 			if member.Type == "enum.optional_bool" {
 				// This Undefined is a special one that is not the zero-value, so that
 				// a stdbool.h bool cast correctly to WGPUOptionalBool; this means we
@@ -508,14 +514,56 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 				return "_wgpu_ENUM_ZERO_INIT(WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + ")"
 			}
 		} else {
-			return ref("WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(member.Default))
+			return ref("WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(*member.Default))
 		}
 	case strings.HasPrefix(member.Type, "bitflag."):
-		if member.Default == "" {
+		if member.Default == nil {
 			return ref("WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_None")
 		} else {
-			return ref("WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_" + PascalCase(member.Default))
+			return ref("WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_" + PascalCase(*member.Default))
 		}
+	case member.Type == "uint16", member.Type == "uint32", member.Type == "uint64", member.Type == "usize", member.Type == "int32":
+		if member.Default == nil {
+			return literal("0")
+		} else if strings.HasPrefix(*member.Default, "constant.") {
+			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(*member.Default, "constant.")))
+		} else {
+			return literal(*member.Default)
+		}
+	case member.Type == "float32":
+		if member.Default == nil {
+			return literal("0.f")
+		} else if strings.HasPrefix(*member.Default, "constant.") {
+			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(*member.Default, "constant.")))
+		} else if strings.Contains(*member.Default, ".") {
+			return literal(*member.Default + "f")
+		} else {
+			return literal(*member.Default + ".f")
+		}
+	case member.Type == "float64":
+		if member.Default == nil {
+			return literal("0.")
+		} else if strings.HasPrefix(*member.Default, "constant.") {
+			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(*member.Default, "constant.")))
+		} else {
+			return literal(*member.Default)
+		}
+	case member.Type == "bool":
+		if member.Default == nil {
+			return literal("0")
+		} else if strings.HasPrefix(*member.Default, "constant.") {
+			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(*member.Default, "constant.")))
+		} else if *member.Default == "true" {
+			return literal("1")
+		} else if *member.Default == "false" {
+			return literal("0")
+		} else {
+			return *member.Default
+		}
+	case member.Default != nil:
+		panic(fmt.Errorf("type %s should not have a default", member.Type))
+
+	// Cases that should not have member.Default
 	case strings.HasPrefix(member.Type, "struct."):
 		if member.Optional {
 			return literal("NULL")
@@ -532,48 +580,9 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		return literal("NULL")
 	case member.Type == "out_string", member.Type == "string_with_default_empty", member.Type == "nullable_string":
 		return ref("WGPU_STRING_VIEW_INIT")
-	case member.Type == "uint16", member.Type == "uint32", member.Type == "uint64", member.Type == "usize", member.Type == "int32":
-		if member.Default == "" {
-			return literal("0")
-		} else if strings.HasPrefix(member.Default, "constant.") {
-			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant.")))
-		} else {
-			return literal(member.Default)
-		}
-	case member.Type == "float32":
-		if member.Default == "" {
-			return literal("0.f")
-		} else if strings.HasPrefix(member.Default, "constant.") {
-			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant.")))
-		} else if strings.Contains(member.Default, ".") {
-			return literal(member.Default + "f")
-		} else {
-			return literal(member.Default + ".f")
-		}
-	case member.Type == "float64":
-		if member.Default == "" {
-			return literal("0.")
-		} else if strings.HasPrefix(member.Default, "constant.") {
-			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant.")))
-		} else {
-			return literal(member.Default)
-		}
-	case member.Type == "bool":
-		if member.Default == "" {
-			return literal("0")
-		} else if strings.HasPrefix(member.Default, "constant.") {
-			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(member.Default, "constant.")))
-		} else if member.Default == "true" {
-			return literal("1")
-		} else if member.Default == "false" {
-			return literal("0")
-		} else {
-			return member.Default
-		}
 	case member.Type == "c_void":
 		return literal("NULL")
 	default:
 		panic("invalid prefix: " + member.Type + " in member " + member.Name)
-		return ""
 	}
 }
