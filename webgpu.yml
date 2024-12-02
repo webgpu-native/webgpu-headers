@@ -1633,19 +1633,19 @@ structs:
     members:
       - name: operation
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUBlendOperation_Add.
         type: enum.blend_operation
-        default: add
+        default: undefined
       - name: src_factor
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUBlendFactor_One.
         type: enum.blend_factor
-        default: one
+        default: undefined
       - name: dst_factor
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUBlendFactor_Zero.
         type: enum.blend_factor
-        default: zero
+        default: undefined
   - name: blend_state
     doc: |
       TODO
@@ -2268,23 +2268,23 @@ structs:
     members:
       - name: topology
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUPrimitiveTopology_TriangleList.
         type: enum.primitive_topology
-        default: triangle_list
+        default: undefined
       - name: strip_index_format
         doc: |
           TODO
         type: enum.index_format
       - name: front_face
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUFrontFace_CCW.
         type: enum.front_face
-        default: CCW
+        default: undefined
       - name: cull_mode
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUCullMode_None.
         type: enum.cull_mode
-        default: none
+        default: undefined
       - name: unclipped_depth
         doc: |
           TODO
@@ -2530,11 +2530,11 @@ structs:
         doc: |
           "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
 
-          If not specified, the default is @ref WGPUFeatureLevel_Core.
+          [Defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
           Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
           and provide @ref WGPUFeatureLevel_Core instead.
         type: enum.feature_level
-        default: core
+        default: undefined
       - name: power_preference
         doc: |
           TODO
@@ -2579,34 +2579,34 @@ structs:
         type: string_with_default_empty
       - name: address_mode_u
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
-        default: clamp_to_edge
+        default: undefined
       - name: address_mode_v
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
-        default: clamp_to_edge
+        default: undefined
       - name: address_mode_w
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
-        default: clamp_to_edge
+        default: undefined
       - name: mag_filter
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
         type: enum.filter_mode
-        default: nearest
+        default: undefined
       - name: min_filter
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
         type: enum.filter_mode
-        default: nearest
+        default: undefined
       - name: mipmap_filter
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUMipmapFilterMode_Nearest.
         type: enum.mipmap_filter_mode
-        default: nearest
+        default: undefined
       - name: lod_min_clamp
         doc: |
           TODO
@@ -2671,24 +2671,24 @@ structs:
     members:
       - name: compare
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUCompareFunction_Always.
         type: enum.compare_function
-        default: always
+        default: undefined
       - name: fail_op
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
-        default: keep
+        default: undefined
       - name: depth_fail_op
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
-        default: keep
+        default: undefined
       - name: pass_op
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
-        default: keep
+        default: undefined
   - name: storage_texture_binding_layout
     doc: |
       TODO
@@ -2706,9 +2706,9 @@ structs:
         default: undefined
       - name: view_dimension
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
-        default: 2D
+        default: undefined
   - name: supported_features
     doc: |
       TODO
@@ -2789,9 +2789,12 @@ structs:
         type: enum.composite_alpha_mode
         default: auto
       - name: present_mode
-        doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
+        doc: |
+          When and in which order the surface's frames will be shown on the screen.
+
+          [Defaults](@ref SentinelValues) to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
-        default: fifo
+        default: undefined
   - name: surface_descriptor
     doc: |
       The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
@@ -2945,9 +2948,9 @@ structs:
         type: struct.origin_3D
       - name: aspect
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
         type: enum.texture_aspect
-        default: all
+        default: undefined
   - name: texture_binding_layout
     doc: |
       TODO
@@ -2960,9 +2963,9 @@ structs:
         default: binding_not_used
       - name: view_dimension
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
-        default: 2D
+        default: undefined
       - name: multisampled
         doc: |
           TODO
@@ -2984,9 +2987,9 @@ structs:
         default: none
       - name: dimension
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUTextureDimension_2D.
         type: enum.texture_dimension
-        default: 2D
+        default: undefined
       - name: size
         doc: |
           TODO
@@ -3052,9 +3055,9 @@ structs:
         default: constant.array_layer_count_undefined
       - name: aspect
         doc: |
-          TODO
+          [Defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
         type: enum.texture_aspect
-        default: all
+        default: undefined
       - name: usage
         doc: |
           TODO
