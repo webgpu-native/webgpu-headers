@@ -1,4 +1,4 @@
-.PHONY: help gen gen-check doc
+.PHONY: all all-help-message help gen gen-check doc
 
 # default target if you just type `make`
 all: all-help-message fix gen doc
