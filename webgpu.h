@@ -1639,19 +1639,22 @@ typedef struct WGPUBindGroupEntry {
  */
 typedef struct WGPUBlendComponent {
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUBlendOperation_Add.
+     * If set to @ref WGPUBlendOperation_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBlendOperation_Add.
      *
      * The `INIT` macro sets this to @ref WGPUBlendOperation_Undefined.
      */
     WGPUBlendOperation operation;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUBlendFactor_One.
+     * If set to @ref WGPUBlendFactor_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_One.
      *
      * The `INIT` macro sets this to @ref WGPUBlendFactor_Undefined.
      */
     WGPUBlendFactor srcFactor;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUBlendFactor_Zero.
+     * If set to @ref WGPUBlendFactor_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_Zero.
      *
      * The `INIT` macro sets this to @ref WGPUBlendFactor_Undefined.
      */
@@ -1673,6 +1676,9 @@ typedef struct WGPUBlendComponent {
 typedef struct WGPUBufferBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If set to @ref WGPUBufferBindingType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBufferBindingType_Uniform.
+     *
      * The `INIT` macro sets this to @ref WGPUBufferBindingType_BindingNotUsed.
      */
     WGPUBufferBindingType type;
@@ -2263,7 +2269,8 @@ typedef struct WGPUPipelineLayoutDescriptor {
 typedef struct WGPUPrimitiveState {
     WGPUChainedStruct const * nextInChain;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUPrimitiveTopology_TriangleList.
+     * If set to @ref WGPUPrimitiveTopology_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUPrimitiveTopology_TriangleList.
      *
      * The `INIT` macro sets this to @ref WGPUPrimitiveTopology_Undefined.
      */
@@ -2273,13 +2280,15 @@ typedef struct WGPUPrimitiveState {
      */
     WGPUIndexFormat stripIndexFormat;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUFrontFace_CCW.
+     * If set to @ref WGPUFrontFace_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFrontFace_CCW.
      *
      * The `INIT` macro sets this to @ref WGPUFrontFace_Undefined.
      */
     WGPUFrontFace frontFace;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUCullMode_None.
+     * If set to @ref WGPUCullMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUCullMode_None.
      *
      * The `INIT` macro sets this to @ref WGPUCullMode_Undefined.
      */
@@ -2515,7 +2524,8 @@ typedef struct WGPURequestAdapterOptions {
     /**
      * "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
      *
-     * [Defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
+     * If set to @ref WGPUFeatureLevel_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
      * Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
      * and provide @ref WGPUFeatureLevel_Core instead.
      *
@@ -2567,6 +2577,9 @@ typedef struct WGPURequestAdapterOptions {
 typedef struct WGPUSamplerBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If set to @ref WGPUSamplerBindingType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUSamplerBindingType_Filtering.
+     *
      * The `INIT` macro sets this to @ref WGPUSamplerBindingType_BindingNotUsed.
      */
     WGPUSamplerBindingType type;
@@ -2592,37 +2605,43 @@ typedef struct WGPUSamplerDescriptor {
      */
     WGPUStringView label;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+     * If set to @ref WGPUAddressMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
      *
      * The `INIT` macro sets this to @ref WGPUAddressMode_Undefined.
      */
     WGPUAddressMode addressModeU;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+     * If set to @ref WGPUAddressMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
      *
      * The `INIT` macro sets this to @ref WGPUAddressMode_Undefined.
      */
     WGPUAddressMode addressModeV;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+     * If set to @ref WGPUAddressMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
      *
      * The `INIT` macro sets this to @ref WGPUAddressMode_Undefined.
      */
     WGPUAddressMode addressModeW;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
+     * If set to @ref WGPUFilterMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
      *
      * The `INIT` macro sets this to @ref WGPUFilterMode_Undefined.
      */
     WGPUFilterMode magFilter;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
+     * If set to @ref WGPUFilterMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
      *
      * The `INIT` macro sets this to @ref WGPUFilterMode_Undefined.
      */
     WGPUFilterMode minFilter;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUMipmapFilterMode_Nearest.
+     * If set to @ref WGPUFilterMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUMipmapFilterMode_Nearest.
      *
      * The `INIT` macro sets this to @ref WGPUMipmapFilterMode_Undefined.
      */
@@ -2740,25 +2759,29 @@ typedef struct WGPUShaderSourceWGSL {
  */
 typedef struct WGPUStencilFaceState {
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUCompareFunction_Always.
+     * If set to @ref WGPUCompareFunction_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUCompareFunction_Always.
      *
      * The `INIT` macro sets this to @ref WGPUCompareFunction_Undefined.
      */
     WGPUCompareFunction compare;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+     * If set to @ref WGPUStencilOperation_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
      *
      * The `INIT` macro sets this to @ref WGPUStencilOperation_Undefined.
      */
     WGPUStencilOperation failOp;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+     * If set to @ref WGPUStencilOperation_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
      *
      * The `INIT` macro sets this to @ref WGPUStencilOperation_Undefined.
      */
     WGPUStencilOperation depthFailOp;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+     * If set to @ref WGPUStencilOperation_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
      *
      * The `INIT` macro sets this to @ref WGPUStencilOperation_Undefined.
      */
@@ -2781,6 +2804,9 @@ typedef struct WGPUStencilFaceState {
 typedef struct WGPUStorageTextureBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If set to @ref WGPUStorageTextureAccess_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStorageTextureAccess_WriteOnly.
+     *
      * The `INIT` macro sets this to @ref WGPUStorageTextureAccess_BindingNotUsed.
      */
     WGPUStorageTextureAccess access;
@@ -2789,7 +2815,8 @@ typedef struct WGPUStorageTextureBindingLayout {
      */
     WGPUTextureFormat format;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
+     * If set to @ref WGPUTextureViewDimension_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
      *
      * The `INIT` macro sets this to @ref WGPUTextureViewDimension_Undefined.
      */
@@ -2963,13 +2990,18 @@ typedef struct WGPUSurfaceConfiguration {
     /**
      * How the surface's frames will be composited on the screen.
      *
+     * If set to @ref WGPUCompositeAlphaMode_Auto,
+     * [defaults] to @ref WGPUCompositeAlphaMode_Inherit in native (allowing the mode
+     * to be configured externally), and to @ref WGPUCompositeAlphaMode_Opaque in Wasm.
+     *
      * The `INIT` macro sets this to @ref WGPUCompositeAlphaMode_Auto.
      */
     WGPUCompositeAlphaMode alphaMode;
     /**
      * When and in which order the surface's frames will be shown on the screen.
      *
-     * [Defaults](@ref SentinelValues) to @ref WGPUPresentMode_Fifo.
+     * If set to @ref WGPUPresentMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUPresentMode_Fifo.
      *
      * The `INIT` macro sets this to @ref WGPUPresentMode_Undefined.
      */
@@ -3269,11 +3301,15 @@ typedef struct WGPUTexelCopyBufferLayout {
 typedef struct WGPUTextureBindingLayout {
     WGPUChainedStruct const * nextInChain;
     /**
+     * If set to @ref WGPUTextureSampleType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureSampleType_Float.
+     *
      * The `INIT` macro sets this to @ref WGPUTextureSampleType_BindingNotUsed.
      */
     WGPUTextureSampleType sampleType;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
+     * If set to @ref WGPUTextureViewDimension_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
      *
      * The `INIT` macro sets this to @ref WGPUTextureViewDimension_Undefined.
      */
@@ -3330,7 +3366,8 @@ typedef struct WGPUTextureViewDescriptor {
      */
     uint32_t arrayLayerCount;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
+     * If set to @ref WGPUTextureAspect_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
      *
      * The `INIT` macro sets this to @ref WGPUTextureAspect_Undefined.
      */
@@ -3824,7 +3861,8 @@ typedef struct WGPUTexelCopyTextureInfo {
      */
     WGPUOrigin3D origin;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
+     * If set to @ref WGPUTextureAspect_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
      *
      * The `INIT` macro sets this to @ref WGPUTextureAspect_Undefined.
      */
@@ -3857,7 +3895,8 @@ typedef struct WGPUTextureDescriptor {
      */
     WGPUTextureUsage usage;
     /**
-     * [Defaults](@ref SentinelValues) to @ref WGPUTextureDimension_2D.
+     * If set to @ref WGPUTextureDimension_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureDimension_2D.
      *
      * The `INIT` macro sets this to @ref WGPUTextureDimension_Undefined.
      */
