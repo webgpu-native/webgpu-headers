@@ -3423,19 +3423,19 @@ typedef struct WGPUBindGroupLayoutEntry {
      */
     WGPUShaderStage visibility;
     /**
-     * The `INIT` macro sets this to zero (so the entry is `BindingNotUsed`).
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUBufferBindingLayout buffer;
     /**
-     * The `INIT` macro sets this to zero (so the entry is `BindingNotUsed`).
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUSamplerBindingLayout sampler;
     /**
-     * The `INIT` macro sets this to zero (so the entry is `BindingNotUsed`).
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUTextureBindingLayout texture;
     /**
-     * The `INIT` macro sets this to zero (so the entry is `BindingNotUsed`).
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUStorageTextureBindingLayout storageTexture;
 } WGPUBindGroupLayoutEntry WGPU_STRUCTURE_ATTRIBUTE;

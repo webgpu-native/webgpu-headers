@@ -568,7 +568,7 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			return ref("WGPU_" + ConstantCase(typ) + "_INIT")
 		} else if *member.Default == "zero" {
 			if isDocString {
-				return "zero (so the entry is `BindingNotUsed`)"
+				return "zero (which sets the entry to `BindingNotUsed`)"
 			} else {
 				return literal("_wgpu_STRUCT_ZERO_INIT")
 			}

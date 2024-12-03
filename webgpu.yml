@@ -1618,21 +1618,33 @@ structs:
         doc: |
           TODO
         type: struct.buffer_binding_layout
+        # Use struct-zero-init here to get .type=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_BUFFER_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
         default: zero
       - name: sampler
         doc: |
           TODO
         type: struct.sampler_binding_layout
+        # Use struct-zero-init here to get .type=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_SAMPLER_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
         default: zero
       - name: texture
         doc: |
           TODO
         type: struct.texture_binding_layout
+        # Use struct-zero-init here to get .sampleType=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_TEXTURE_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
         default: zero
       - name: storage_texture
         doc: |
           TODO
         type: struct.storage_texture_binding_layout
+        # Use struct-zero-init here to get .access=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
         default: zero
   - name: blend_component
     doc: |
