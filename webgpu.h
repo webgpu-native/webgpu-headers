@@ -2966,6 +2966,10 @@ typedef struct WGPUSurfaceConfiguration {
     /**
      * How the surface's frames will be composited on the screen.
      *
+     * If set to @ref WGPUCompositeAlphaMode_Auto,
+     * [defaults] to @ref WGPUCompositeAlphaMode_Inherit in native (allowing the mode
+     * to be configured externally), and to @ref WGPUCompositeAlphaMode_Opaque in Wasm.
+     *
      * The `INIT` macro sets this to @ref WGPUCompositeAlphaMode_Auto.
      */
     WGPUCompositeAlphaMode alphaMode;

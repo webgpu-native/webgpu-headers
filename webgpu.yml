@@ -2810,7 +2810,12 @@ structs:
         type: array<enum.texture_format>
         pointer: immutable
       - name: alpha_mode
-        doc: How the surface's frames will be composited on the screen.
+        doc: |
+          How the surface's frames will be composited on the screen.
+
+          If set to @ref WGPUCompositeAlphaMode_Auto,
+          [defaults] to @ref WGPUCompositeAlphaMode_Inherit in native (allowing the mode
+          to be configured externally), and to @ref WGPUCompositeAlphaMode_Opaque in Wasm.
         type: enum.composite_alpha_mode
         default: auto
       - name: present_mode
