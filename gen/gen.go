@@ -590,11 +590,11 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			return literal("NULL")
 		} else {
 			typ := strings.TrimPrefix(member.Type, "struct.")
-			return ref("WGPU_" + ConstantCase(typ) + "_INIT")
+			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
 		}
 	case strings.HasPrefix(member.Type, "callback."):
 		typ := strings.TrimPrefix(member.Type, "callback.")
-		return ref("WGPU_" + ConstantCase(typ) + "_CALLBACK_INFO_INIT")
+		return ref("WGPU_" + ConstantCase(typ) + "_CALLBACK_INFO" + g.ConstantExtSuffix() + "_INIT")
 	case strings.HasPrefix(member.Type, "object."):
 		return literal("NULL")
 	case strings.HasPrefix(member.Type, "array<"):
@@ -605,5 +605,13 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		return literal("NULL")
 	default:
 		panic("invalid prefix: " + member.Type + " in member " + member.Name)
+	}
+}
+
+func (g *Generator) ConstantExtSuffix() string {
+	if g.ExtSuffix != "" {
+		return "_" + ConstantCase(g.ExtSuffix)
+	} else {
+		return ""
 	}
 }

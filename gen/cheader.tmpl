@@ -312,7 +312,7 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 /**
  * Initializer for @ref WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}.
  */
-#define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{$.ExtSuffix}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
+#define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
 {{-   if eq .Style "callback_mode" }}
     /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
