@@ -1314,7 +1314,7 @@ typedef struct WGPUChainedStructOut {
  * @{
  */
 
- /**
+/**
  * \defgroup WGPUCallbackInfo Callback Info Structs
  * \brief Callback info structures that are used in asynchronous functions.
  *
@@ -2231,7 +2231,9 @@ typedef struct WGPUPipelineLayoutDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
-    /** Array count for `bindGroupLayouts`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `bindGroupLayouts`. The `INIT` macro sets this to 0.
+     */
     size_t bindGroupLayoutCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -2372,7 +2374,9 @@ typedef struct WGPURenderBundleEncoderDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
-    /** Array count for `colorFormats`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `colorFormats`. The `INIT` macro sets this to 0.
+     */
     size_t colorFormatCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -2772,7 +2776,9 @@ typedef struct WGPUStorageTextureBindingLayout {
  * Default values can be set using @ref WGPU_SUPPORTED_FEATURES_INIT as initializer.
  */
 typedef struct WGPUSupportedFeatures {
-    /** Array count for `features`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `features`. The `INIT` macro sets this to 0.
+     */
     size_t featureCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -2792,7 +2798,9 @@ typedef struct WGPUSupportedFeatures {
  * Default values can be set using @ref WGPU_SUPPORTED_WGSL_LANGUAGE_FEATURES_INIT as initializer.
  */
 typedef struct WGPUSupportedWGSLLanguageFeatures {
-    /** Array count for `features`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `features`. The `INIT` macro sets this to 0.
+     */
     size_t featureCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -2822,7 +2830,9 @@ typedef struct WGPUSurfaceCapabilities {
      * The `INIT` macro sets this to @ref WGPUTextureUsage_None.
      */
     WGPUTextureUsage usages;
-    /** Array count for `formats`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `formats`. The `INIT` macro sets this to 0.
+     */
     size_t formatCount;
     /**
      * A list of supported @ref WGPUTextureFormat values, in order of preference.
@@ -2830,7 +2840,9 @@ typedef struct WGPUSurfaceCapabilities {
      * The `INIT` macro sets this to `NULL`.
      */
     WGPUTextureFormat const * formats;
-    /** Array count for `presentModes`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `presentModes`. The `INIT` macro sets this to 0.
+     */
     size_t presentModeCount;
     /**
      * A list of supported @ref WGPUPresentMode values.
@@ -2839,7 +2851,9 @@ typedef struct WGPUSurfaceCapabilities {
      * The `INIT` macro sets this to `NULL`.
      */
     WGPUPresentMode const * presentModes;
-    /** Array count for `alphaModes`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `alphaModes`. The `INIT` macro sets this to 0.
+     */
     size_t alphaModeCount;
     /**
      * A list of supported @ref WGPUCompositeAlphaMode values.
@@ -2902,7 +2916,9 @@ typedef struct WGPUSurfaceConfiguration {
      * The `INIT` macro sets this to `0`.
      */
     uint32_t height;
-    /** Array count for `viewFormats`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `viewFormats`. The `INIT` macro sets this to 0.
+     */
     size_t viewFormatCount;
     /**
      * The additional @ref WGPUTextureFormat for @ref WGPUTextureView format reinterpretation of the surface's textures.
@@ -3345,7 +3361,9 @@ typedef struct WGPUBindGroupDescriptor {
      * The `INIT` macro sets this to `NULL`.
      */
     WGPUBindGroupLayout layout;
-    /** Array count for `entries`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `entries`. The `INIT` macro sets this to 0.
+     */
     size_t entryCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3435,7 +3453,9 @@ typedef struct WGPUBlendState {
  */
 typedef struct WGPUCompilationInfo {
     WGPUChainedStruct const * nextInChain;
-    /** Array count for `messages`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `messages`. The `INIT` macro sets this to 0.
+     */
     size_t messageCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3493,7 +3513,9 @@ typedef struct WGPUComputeState {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView entryPoint;
-    /** Array count for `constants`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `constants`. The `INIT` macro sets this to 0.
+     */
     size_t constantCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3587,7 +3609,9 @@ typedef struct WGPUDeviceDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
-    /** Array count for `requiredFeatures`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `requiredFeatures`. The `INIT` macro sets this to 0.
+     */
     size_t requiredFeatureCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3810,7 +3834,9 @@ typedef struct WGPUTextureDescriptor {
      * The `INIT` macro sets this to `1`.
      */
     uint32_t sampleCount;
-    /** Array count for `viewFormats`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `viewFormats`. The `INIT` macro sets this to 0.
+     */
     size_t viewFormatCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3851,7 +3877,9 @@ typedef struct WGPUVertexBufferLayout {
      * The `INIT` macro sets this to `0`.
      */
     uint64_t arrayStride;
-    /** Array count for `attributes`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `attributes`. The `INIT` macro sets this to 0.
+     */
     size_t attributeCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3881,7 +3909,9 @@ typedef struct WGPUBindGroupLayoutDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
-    /** Array count for `entries`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `entries`. The `INIT` macro sets this to 0.
+     */
     size_t entryCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3974,7 +4004,9 @@ typedef struct WGPURenderPassDescriptor {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView label;
-    /** Array count for `colorAttachments`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `colorAttachments`. The `INIT` macro sets this to 0.
+     */
     size_t colorAttachmentCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -4022,13 +4054,17 @@ typedef struct WGPUVertexState {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView entryPoint;
-    /** Array count for `constants`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `constants`. The `INIT` macro sets this to 0.
+     */
     size_t constantCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
     WGPUConstantEntry const * constants;
-    /** Array count for `buffers`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `buffers`. The `INIT` macro sets this to 0.
+     */
     size_t bufferCount;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -4064,13 +4100,17 @@ typedef struct WGPUFragmentState {
      * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
      */
     WGPUStringView entryPoint;
-    /** Array count for `constants`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `constants`. The `INIT` macro sets this to 0.
+     */
     size_t constantCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
     WGPUConstantEntry const * constants;
-    /** Array count for `targets`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `targets`. The `INIT` macro sets this to 0.
+     */
     size_t targetCount;
     /**
      * The `INIT` macro sets this to `NULL`.

@@ -284,7 +284,7 @@ typedef struct WGPUChainedStructOut {
  * @{
  */
 
- /**
+/**
  * \defgroup WGPUCallbackInfo Callback Info Structs
  * \brief Callback info structures that are used in asynchronous functions.
  *
@@ -317,7 +317,7 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 })
 {{  end}}{{"\n" -}}
 
- /** @} */
+/** @} */
 
 {{- "\n"}}
 {{- range $struct := .Structs}}
@@ -340,7 +340,9 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
 {{-     if (.Type | IsArray)}}
-    /** Array count for `{{.Name | CamelCase}}`. The `INIT` macro sets this to 0. */
+    /**
+     * Array count for `{{.Name | CamelCase}}`. The `INIT` macro sets this to 0.
+     */
     {{  StructMemberArrayCount $struct $memberIndex}}
     {{- MCommentMember . 4 }}
     {{  StructMemberArrayData $struct $memberIndex}}
