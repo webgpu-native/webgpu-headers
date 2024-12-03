@@ -173,6 +173,8 @@ func (g *Generator) Gen(dst io.Writer) error {
 			"FunctionArgs":            g.FunctionArgs,
 			"CallbackArgs":            g.CallbackArgs,
 			"StructMember":            g.StructMember,
+			"StructMemberArrayCount":  g.StructMemberArrayCount,
+			"StructMemberArrayData":   g.StructMemberArrayData,
 			"StructMemberInitializer": g.StructMemberInitializer,
 		})
 	t, err := t.Parse(tmpl)
@@ -286,12 +288,7 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 func (g *Generator) FunctionArgs(f Function, o *Object) string {
 	sb := &strings.Builder{}
 	if o != nil {
-		var typeSuffix string
-		if o.Namespace == "" {
-			typeSuffix = ConstantCase(g.ExtSuffix)
-		} else if o.Namespace != "webgpu" {
-			typeSuffix = ConstantCase(o.Namespace)
-		}
+		typeSuffix := g.TypeSuffixForNamespace(o.Namespace)
 		if len(f.Args) > 0 {
 			fmt.Fprintf(sb, "WGPU%s%s %s, ", PascalCase(o.Name), typeSuffix, CamelCase(o.Name))
 		} else {
@@ -302,12 +299,7 @@ func (g *Generator) FunctionArgs(f Function, o *Object) string {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
 		}
-		var typeSuffix string
-		if arg.Namespace == "" {
-			typeSuffix = ConstantCase(g.ExtSuffix)
-		} else if arg.Namespace != "webgpu" {
-			typeSuffix = ConstantCase(arg.Namespace)
-		}
+		typeSuffix := g.TypeSuffixForNamespace(arg.Namespace)
 		matches := arrayTypeRegexp.FindStringSubmatch(arg.Type)
 		if len(matches) == 2 {
 			fmt.Fprintf(sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
@@ -331,12 +323,7 @@ func (g *Generator) CallbackArgs(f Callback) string {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
 		}
-		var typeSuffix string
-		if arg.Namespace == "" {
-			typeSuffix = ConstantCase(g.ExtSuffix)
-		} else if arg.Namespace != "webgpu" {
-			typeSuffix = ConstantCase(arg.Namespace)
-		}
+		typeSuffix := g.TypeSuffixForNamespace(arg.Namespace)
 		var structPrefix string
 		if strings.HasPrefix(arg.Type, "struct.") {
 			structPrefix = "struct "
@@ -438,29 +425,63 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int) (string, error) {
 	return entryValue, nil
 }
 
+func (g *Generator) TypeSuffixForNamespace(namespace string) string {
+	switch namespace {
+	case "":
+		return ConstantCase(g.ExtSuffix)
+	case "webgpu":
+		return ""
+	default:
+		return ConstantCase(namespace)
+	}
+}
+
 func (g *Generator) StructMember(s Struct, memberIndex int) (string, error) {
 	member := s.Members[memberIndex]
+	typeSuffix := g.TypeSuffixForNamespace(member.Namespace)
+
+	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
+	if len(matches) == 2 {
+		panic("StructMember used on array type")
+	}
+
 	sb := &strings.Builder{}
 	if member.Optional {
 		sb.WriteString("WGPU_NULLABLE ")
 	}
-	var typeSuffix string
-	if member.Namespace == "" {
-		typeSuffix = ConstantCase(g.ExtSuffix)
-	} else if member.Namespace != "webgpu" {
-		typeSuffix = ConstantCase(member.Namespace)
-	}
-	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
-	if len(matches) == 2 {
-		fmt.Fprintf(sb, "size_t %sCount;\n", CamelCase(Singularize(member.Name)))
-		fmt.Fprintf(sb, "    %s %s;", g.CType(matches[1], member.Pointer, typeSuffix), CamelCase(member.Name))
+	if strings.HasPrefix(member.Type, "callback.") {
+		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, "", "Info"), CamelCase(member.Name))
 	} else {
-		if strings.HasPrefix(member.Type, "callback.") {
-			fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, "", "Info"), CamelCase(member.Name))
-		} else {
-			fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
-		}
+		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
 	}
+	return sb.String(), nil
+}
+
+func (g *Generator) StructMemberArrayCount(s Struct, memberIndex int) (string, error) {
+	member := s.Members[memberIndex]
+
+	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
+	if len(matches) != 2 {
+		panic("StructMemberArrayCount used on non-array")
+	}
+
+	return fmt.Sprintf("size_t %sCount;", CamelCase(Singularize(member.Name))), nil
+}
+
+func (g *Generator) StructMemberArrayData(s Struct, memberIndex int) (string, error) {
+	member := s.Members[memberIndex]
+	typeSuffix := g.TypeSuffixForNamespace(member.Namespace)
+
+	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
+	if len(matches) != 2 {
+		panic("StructMemberArrayCount used on non-array")
+	}
+
+	sb := &strings.Builder{}
+	if member.Optional {
+		sb.WriteString("WGPU_NULLABLE ")
+	}
+	fmt.Fprintf(sb, "%s %s;", g.CType(matches[1], member.Pointer, typeSuffix), CamelCase(member.Name))
 	return sb.String(), nil
 }
 

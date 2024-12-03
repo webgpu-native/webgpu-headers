@@ -16,7 +16,7 @@ can be called equivalently as `b.getMappedRange()`, `b.getMappedRange(0)`,
 
 To represent `undefined` in C, `webgpu.h` uses `NULL` where possible (anything
 behind a pointer, including objects), `*_UNDEFINED` sentinel numeric values
-(generally `UINT32_MAX`, etc.) and `*_Undefined` enum values (generally `0`).
+(usually `UINT32_MAX` or similar) and `*_Undefined` enum values (usually `0`).
 
 The place that uses the type will define what to do with an undefined value.
 It may be:
@@ -36,7 +36,7 @@ WebIDL's more flexible typing:
 - \ref WGPUFuture has a special null value
 - Special cases to indicate the parent struct is null, avoiding extra layers of
   pointers just for nullability:
-    - \ref WGPUVertexBufferLayout::stepMode = \ref WGPUVertexStepMode_VertexBufferNotUsed
+    - \ref WGPUVertexBufferLayout::stepMode = \ref WGPUVertexStepMode_Undefined with \ref WGPUVertexBufferLayout::attributeCount
     - \ref WGPUBufferBindingLayout::type = \ref WGPUBufferBindingType_BindingNotUsed
     - \ref WGPUSamplerBindingLayout::type = \ref WGPUSamplerBindingType_BindingNotUsed
     - \ref WGPUTextureBindingLayout::sampleType = \ref WGPUTextureSampleType_BindingNotUsed
