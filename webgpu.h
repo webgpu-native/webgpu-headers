@@ -170,6 +170,8 @@ typedef struct WGPUCommandEncoderImpl* WGPUCommandEncoder WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUComputePassEncoderImpl* WGPUComputePassEncoder WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUComputePipelineImpl* WGPUComputePipeline WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUDeviceImpl* WGPUDevice WGPU_OBJECT_ATTRIBUTE;
+typedef struct WGPUErrorSinkInternalImpl* WGPUErrorSinkInternal WGPU_OBJECT_ATTRIBUTE;
+typedef struct WGPUErrorSinkOutOfMemoryImpl* WGPUErrorSinkOutOfMemory WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUInstanceImpl* WGPUInstance WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUPipelineLayoutImpl* WGPUPipelineLayout WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUQuerySetImpl* WGPUQuerySet WGPU_OBJECT_ATTRIBUTE;
@@ -4629,7 +4631,7 @@ typedef WGPUBindGroupLayout (*WGPUProcDeviceCreateBindGroupLayout)(WGPUDevice de
  * Proc pointer type for @ref wgpuDeviceCreateBuffer:
  * > @copydoc wgpuDeviceCreateBuffer
  */
-typedef WGPUBuffer (*WGPUProcDeviceCreateBuffer)(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUBuffer (*WGPUProcDeviceCreateBuffer)(WGPUDevice device, WGPUBufferDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceCreateCommandEncoder:
  * > @copydoc wgpuDeviceCreateCommandEncoder
@@ -4639,7 +4641,7 @@ typedef WGPUCommandEncoder (*WGPUProcDeviceCreateCommandEncoder)(WGPUDevice devi
  * Proc pointer type for @ref wgpuDeviceCreateComputePipeline:
  * > @copydoc wgpuDeviceCreateComputePipeline
  */
-typedef WGPUComputePipeline (*WGPUProcDeviceCreateComputePipeline)(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUComputePipeline (*WGPUProcDeviceCreateComputePipeline)(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkInternal errorSinkInternal) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceCreateComputePipelineAsync:
  * > @copydoc wgpuDeviceCreateComputePipelineAsync
@@ -4654,7 +4656,7 @@ typedef WGPUPipelineLayout (*WGPUProcDeviceCreatePipelineLayout)(WGPUDevice devi
  * Proc pointer type for @ref wgpuDeviceCreateQuerySet:
  * > @copydoc wgpuDeviceCreateQuerySet
  */
-typedef WGPUQuerySet (*WGPUProcDeviceCreateQuerySet)(WGPUDevice device, WGPUQuerySetDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUQuerySet (*WGPUProcDeviceCreateQuerySet)(WGPUDevice device, WGPUQuerySetDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceCreateRenderBundleEncoder:
  * > @copydoc wgpuDeviceCreateRenderBundleEncoder
@@ -4664,7 +4666,7 @@ typedef WGPURenderBundleEncoder (*WGPUProcDeviceCreateRenderBundleEncoder)(WGPUD
  * Proc pointer type for @ref wgpuDeviceCreateRenderPipeline:
  * > @copydoc wgpuDeviceCreateRenderPipeline
  */
-typedef WGPURenderPipeline (*WGPUProcDeviceCreateRenderPipeline)(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPURenderPipeline (*WGPUProcDeviceCreateRenderPipeline)(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkInternal errorSinkInternal) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceCreateRenderPipelineAsync:
  * > @copydoc wgpuDeviceCreateRenderPipelineAsync
@@ -4684,7 +4686,7 @@ typedef WGPUShaderModule (*WGPUProcDeviceCreateShaderModule)(WGPUDevice device, 
  * Proc pointer type for @ref wgpuDeviceCreateTexture:
  * > @copydoc wgpuDeviceCreateTexture
  */
-typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUTexture (*WGPUProcDeviceCreateTexture)(WGPUDevice device, WGPUTextureDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceDestroy:
  * > @copydoc wgpuDeviceDestroy
@@ -4745,6 +4747,40 @@ typedef void (*WGPUProcDeviceAddRef)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  * > @copydoc wgpuDeviceRelease
  */
 typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+
+// Procs of ErrorSinkInternal
+/**
+ * Proc pointer type for @ref wgpuErrorSinkInternalGetError:
+ * > @copydoc wgpuErrorSinkInternalGetError
+ */
+typedef WGPUFuture (*WGPUProcErrorSinkInternalGetError)(WGPUErrorSinkInternal errorSinkInternal, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuErrorSinkInternalAddRef.
+ * > @copydoc wgpuErrorSinkInternalAddRef
+ */
+typedef void (*WGPUProcErrorSinkInternalAddRef)(WGPUErrorSinkInternal errorSinkInternal) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuErrorSinkInternalRelease.
+ * > @copydoc wgpuErrorSinkInternalRelease
+ */
+typedef void (*WGPUProcErrorSinkInternalRelease)(WGPUErrorSinkInternal errorSinkInternal) WGPU_FUNCTION_ATTRIBUTE;
+
+// Procs of ErrorSinkOutOfMemory
+/**
+ * Proc pointer type for @ref wgpuErrorSinkOutOfMemoryGetError:
+ * > @copydoc wgpuErrorSinkOutOfMemoryGetError
+ */
+typedef WGPUFuture (*WGPUProcErrorSinkOutOfMemoryGetError)(WGPUErrorSinkOutOfMemory errorSinkOutOfMemory, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuErrorSinkOutOfMemoryAddRef.
+ * > @copydoc wgpuErrorSinkOutOfMemoryAddRef
+ */
+typedef void (*WGPUProcErrorSinkOutOfMemoryAddRef)(WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuErrorSinkOutOfMemoryRelease.
+ * > @copydoc wgpuErrorSinkOutOfMemoryRelease
+ */
+typedef void (*WGPUProcErrorSinkOutOfMemoryRelease)(WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Instance
 /**
@@ -5534,18 +5570,38 @@ WGPU_EXPORT void wgpuComputePipelineRelease(WGPUComputePipeline computePipeline)
  */
 WGPU_EXPORT WGPUBindGroup wgpuDeviceCreateBindGroup(WGPUDevice device, WGPUBindGroupDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBindGroupLayout wgpuDeviceCreateBindGroupLayout(WGPUDevice device, WGPUBindGroupLayoutDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBuffer wgpuDeviceCreateBuffer(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param errorSinkOutOfMemory
+ * See @ref ErrorSinks.
+ */
+WGPU_EXPORT WGPUBuffer wgpuDeviceCreateBuffer(WGPUDevice device, WGPUBufferDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUCommandEncoder wgpuDeviceCreateCommandEncoder(WGPUDevice device, WGPU_NULLABLE WGPUCommandEncoderDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUComputePipeline wgpuDeviceCreateComputePipeline(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param errorSinkInternal
+ * See @ref ErrorSinks.
+ */
+WGPU_EXPORT WGPUComputePipeline wgpuDeviceCreateComputePipeline(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkInternal errorSinkInternal) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuDeviceCreateComputePipelineAsync(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor, WGPUCreateComputePipelineAsyncCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUPipelineLayout wgpuDeviceCreatePipelineLayout(WGPUDevice device, WGPUPipelineLayoutDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUQuerySet wgpuDeviceCreateQuerySet(WGPUDevice device, WGPUQuerySetDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param errorSinkOutOfMemory
+ * See @ref ErrorSinks.
+ */
+WGPU_EXPORT WGPUQuerySet wgpuDeviceCreateQuerySet(WGPUDevice device, WGPUQuerySetDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPURenderBundleEncoder wgpuDeviceCreateRenderBundleEncoder(WGPUDevice device, WGPURenderBundleEncoderDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPURenderPipeline wgpuDeviceCreateRenderPipeline(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param errorSinkInternal
+ * See @ref ErrorSinks.
+ */
+WGPU_EXPORT WGPURenderPipeline wgpuDeviceCreateRenderPipeline(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkInternal errorSinkInternal) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuDeviceCreateRenderPipelineAsync(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor, WGPUCreateRenderPipelineAsyncCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUSampler wgpuDeviceCreateSampler(WGPUDevice device, WGPU_NULLABLE WGPUSamplerDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUShaderModule wgpuDeviceCreateShaderModule(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param errorSinkOutOfMemory
+ * See @ref ErrorSinks.
+ */
+WGPU_EXPORT WGPUTexture wgpuDeviceCreateTexture(WGPUDevice device, WGPUTextureDescriptor const * descriptor, WGPU_NULLABLE WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceDestroy(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @param adapterInfo
@@ -5587,6 +5643,32 @@ WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter fil
 WGPU_EXPORT void wgpuDeviceSetLabel(WGPUDevice device, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceAddRef(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+/** @} */
+
+
+
+/**
+ * \defgroup WGPUErrorSinkInternalMethods WGPUErrorSinkInternal methods
+ * \brief Functions whose first argument has type WGPUErrorSinkInternal.
+ *
+ * @{
+ */
+WGPU_EXPORT WGPUFuture wgpuErrorSinkInternalGetError(WGPUErrorSinkInternal errorSinkInternal, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuErrorSinkInternalAddRef(WGPUErrorSinkInternal errorSinkInternal) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuErrorSinkInternalRelease(WGPUErrorSinkInternal errorSinkInternal) WGPU_FUNCTION_ATTRIBUTE;
+/** @} */
+
+
+
+/**
+ * \defgroup WGPUErrorSinkOutOfMemoryMethods WGPUErrorSinkOutOfMemory methods
+ * \brief Functions whose first argument has type WGPUErrorSinkOutOfMemory.
+ *
+ * @{
+ */
+WGPU_EXPORT WGPUFuture wgpuErrorSinkOutOfMemoryGetError(WGPUErrorSinkOutOfMemory errorSinkOutOfMemory, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuErrorSinkOutOfMemoryAddRef(WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuErrorSinkOutOfMemoryRelease(WGPUErrorSinkOutOfMemory errorSinkOutOfMemory) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */
 
 

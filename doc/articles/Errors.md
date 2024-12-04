@@ -27,6 +27,19 @@ Error scopes are used via @ref wgpuDevicePushErrorScope, @ref wgpuDevicePopError
     - Runtimes with async task support (I/O runtimes, language async/coroutines/futures, etc.) may use "green threads" style systems to schedule tasks on different OS threads. Error scope stack state is OS-thread-local, not green-thread-local.
 - The UncapturedError callback receives uncaptured errors from all threads.
 
+### Error Sinks {#ErrorSinks}
+
+`webgpu.h` adds error sinks as a new error management primitive over the JavaScript API: @ref WGPUErrorSinkOutOfMemory and @ref WGPUErrorSinkInternal.
+This can be set in certain API calls to absorb an error from that API call only, rather than having it go to the error scope stack. It is equivalent to pushing and popping error scopes of the corresponding types around the call, but is more straightforward because it doesn't use thread-local storage.
+
+- @ref WGPUErrorSinkOutOfMemory
+    - @ref wgpuDeviceCreateBuffer
+    - @ref wgpuDeviceCreateTexture
+    - @ref wgpuDeviceCreateQuerySet
+- @ref WGPUErrorSinkInternal
+    - @ref wgpuDeviceCreateComputePipeline
+    - @ref wgpuDeviceCreateRenderPipeline
+
 ## Callback Error {#CallbackError}
 
 These behave similarly to the Promise-returning JavaScript APIs. Instead of there being two callbacks like in JavaScript (one for resolve and one for reject), there is a single callback which receives a status code, and depending on the status, _either_ a valid result with an empty message string (`{NULL, 0}`), _or_ an invalid result with a non-empty message string.

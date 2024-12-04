@@ -3931,6 +3931,10 @@ objects:
               TODO
             type: struct.buffer_descriptor
             pointer: immutable
+          - name: error_sink_out_of_memory
+            doc: See @ref ErrorSinks.
+            type: object.error_sink_out_of_memory
+            optional: true
       - name: create_command_encoder
         doc: |
           TODO
@@ -3960,6 +3964,10 @@ objects:
               TODO
             type: struct.compute_pipeline_descriptor
             pointer: immutable
+          - name: error_sink_internal
+            doc: See @ref ErrorSinks.
+            type: object.error_sink_internal
+            optional: true
       - name: create_compute_pipeline_async
         doc: |
           TODO
@@ -3998,6 +4006,10 @@ objects:
               TODO
             type: struct.query_set_descriptor
             pointer: immutable
+          - name: error_sink_out_of_memory
+            doc: See @ref ErrorSinks.
+            type: object.error_sink_out_of_memory
+            optional: true
       - name: create_render_pipeline_async
         doc: |
           TODO
@@ -4036,6 +4048,10 @@ objects:
               TODO
             type: struct.render_pipeline_descriptor
             pointer: immutable
+          - name: error_sink_internal
+            doc: See @ref ErrorSinks.
+            type: object.error_sink_internal
+            optional: true
       - name: create_sampler
         doc: |
           TODO
@@ -4079,6 +4095,10 @@ objects:
               TODO
             type: struct.texture_descriptor
             pointer: immutable
+          - name: error_sink_out_of_memory
+            doc: See @ref ErrorSinks.
+            type: object.error_sink_out_of_memory
+            optional: true
       - name: destroy
         doc: |
           TODO
@@ -4165,6 +4185,18 @@ objects:
             doc: |
               TODO
             type: string_with_default_empty
+  - name: error_sink_internal
+    doc: TODO
+    methods:
+      - name: get_error
+        doc: TODO
+        callback: callback.pop_error_scope
+  - name: error_sink_out_of_memory
+    doc: TODO
+    methods:
+      - name: get_error
+        doc: TODO
+        callback: callback.pop_error_scope
   - name: instance
     doc: |
       TODO
