@@ -38,6 +38,7 @@
                 "nullable_string",
                 "string_with_default_empty",
                 "out_string",
+                "post_task_hook_info",
                 "uint16",
                 "uint32",
                 "uint64",
