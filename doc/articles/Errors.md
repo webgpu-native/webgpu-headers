@@ -22,6 +22,9 @@ These errors include:
 Error scopes are used via @ref wgpuDevicePushErrorScope, @ref wgpuDevicePopErrorScope, and @ref WGPUDeviceDescriptor::uncapturedErrorCallbackInfo. These behave the same as in the JavaScript API, except for considerations around multi-threading (which JavaScript doesn't have at the time of this writing):
 
 - The error scope stack state is **thread-local**: each thread has a separate stack, which is initially empty. The error scope that captures an error depends on which thread made the API call that generated the error.
+    Note in particular:
+    - Async callbacks run on various threads and with unpredictable timing (see @ref Asynchronous-Operations), except when using @ref wgpuInstanceWaitAny. To avoid race conditions, if error scopes are used, applications generally should avoid having device errors escape from an async function, and/or should not keep scopes open when callbacks that could produce errors may run.
+    - Runtimes with async task support (I/O runtimes, language async/coroutines/futures, etc.) may use "green threads" style systems to schedule tasks on different OS threads. Error scope stack state is OS-thread-local, not green-thread-local.
 - The UncapturedError callback receives uncaptured errors from all threads.
 
 ## Callback Error {#CallbackError}
