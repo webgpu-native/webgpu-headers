@@ -1952,7 +1952,8 @@ structs:
         type: callback.device_lost
       - name: uncaptured_error_callback_info
         doc: |
-          TODO
+          Called when there is an uncaptured error on this device, from any thread.
+          See @ref ErrorScopes.
         type: callback.uncaptured_error
   - name: extent_3D
     doc: |
@@ -4144,7 +4145,8 @@ objects:
           passed_with_ownership: true
       - name: push_error_scope
         doc: |
-          TODO
+          Pushes an error scope to the current thread's error scope stack.
+          See @ref ErrorScopes.
         args:
           - name: filter
             doc: |
@@ -4152,7 +4154,8 @@ objects:
             type: enum.error_filter
       - name: pop_error_scope
         doc: |
-          TODO
+          Pops an error scope to the current thread's error scope stack,
+          asynchronously returning the result. See @ref ErrorScopes.
         callback: callback.pop_error_scope
       - name: set_label
         doc: |
