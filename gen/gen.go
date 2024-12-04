@@ -120,6 +120,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 					s += "\n\nThis is a \\ref NonNullInputString."
 				case "out_string":
 					s += "\n\nThis is an \\ref OutputString."
+				case "post_task_hook_info":
 				}
 
 				s += "\n\nThe `INIT` macro sets this to " + g.DefaultValue(*member, true /* isDocString */) + "."
@@ -238,6 +239,8 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 		return appendModifiers("WGPUBool", pointerType)
 	case "nullable_string", "string_with_default_empty", "out_string":
 		return "WGPUStringView"
+	case "post_task_hook_info":
+		return "WGPUPostTaskHookInfo"
 	case "uint16":
 		return appendModifiers("uint16_t", pointerType)
 	case "uint32":
@@ -602,6 +605,8 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 	case member.Type == "out_string", member.Type == "string_with_default_empty", member.Type == "nullable_string":
 		return ref("WGPU_STRING_VIEW_INIT")
 	case member.Type == "c_void":
+		return literal("NULL")
+	case member.Type == "post_task_hook_info":
 		return literal("NULL")
 	default:
 		panic("invalid prefix: " + member.Type + " in member " + member.Name)
