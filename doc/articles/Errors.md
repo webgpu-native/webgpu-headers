@@ -17,6 +17,13 @@ These errors include:
 - Enum values which are require features not enabled on the device (a [content-timeline](https://www.w3.org/TR/webgpu/#content-timeline) error in JavaScript), for example compressed texture formats.
 - Other content-timeline errors where specified.
 
+### Error Scopes {#ErrorScopes}
+
+Error scopes are used via @ref wgpuDevicePushErrorScope, @ref wgpuDevicePopErrorScope, and @ref WGPUDeviceDescriptor::uncapturedErrorCallbackInfo. These behave the same as in the JavaScript API, except for considerations around multi-threading (which JavaScript doesn't have at the time of this writing):
+
+- The error scope stack state is **thread-local**: each thread has a separate stack, which is initially empty. The error scope that captures an error depends on which thread made the API call that generated the error.
+- The UncapturedError callback receives uncaptured errors from all threads.
+
 ## Callback Error {#CallbackError}
 
 These behave similarly to the Promise-returning JavaScript APIs. Instead of there being two callbacks like in JavaScript (one for resolve and one for reject), there is a single callback which receives a status code, and depending on the status, _either_ a valid result with an empty message string (`{NULL, 0}`), _or_ an invalid result with a non-empty message string.

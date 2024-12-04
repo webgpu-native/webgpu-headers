@@ -3707,6 +3707,9 @@ typedef struct WGPUDeviceDescriptor {
      */
     WGPUDeviceLostCallbackInfo deviceLostCallbackInfo;
     /**
+     * Called when there is an uncaptured error on this device, from any thread.
+     * See @ref ErrorScopes.
+     *
      * The `INIT` macro sets this to @ref WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT.
      */
     WGPUUncapturedErrorCallbackInfo uncapturedErrorCallbackInfo;
@@ -5571,7 +5574,15 @@ WGPU_EXPORT WGPUStatus wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limit
 WGPU_EXPORT WGPUFuture wgpuDeviceGetLostFuture(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuDeviceHasFeature(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Pops an error scope to the current thread's error scope stack,
+ * asynchronously returning the result. See @ref ErrorScopes.
+ */
 WGPU_EXPORT WGPUFuture wgpuDevicePopErrorScope(WGPUDevice device, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Pushes an error scope to the current thread's error scope stack.
+ * See @ref ErrorScopes.
+ */
 WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter filter) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceSetLabel(WGPUDevice device, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceAddRef(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
