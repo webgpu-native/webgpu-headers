@@ -1,21 +1,7 @@
 {{- MCommentN .Copyright 0}}
 
 /** @file */
-
-/**
- * \mainpage
- *
- * **Important:** *This documentation is a Work In Progress.*
- *
- * This is the home of WebGPU C API specification. We define here the standard
- * `webgpu.h` header that all implementations should provide.
- *
- * For all details where behavior is not otherwise specified, `webgpu.h` has
- * the same behavior as the WebGPU specification for JavaScript on the Web.
- * The WebIDL-based Web specification is mapped into C as faithfully (and
- * bidirectionally) as practical/possible.
- * The working draft of WebGPU can be found at <https://www.w3.org/TR/webgpu/>.
- */
+{{MComment (print "\\mainpage\n" .Doc) 0}}
 
 #ifndef {{.HeaderName | ConstantCase}}_H_
 #define {{.HeaderName | ConstantCase}}_H_
