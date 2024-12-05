@@ -256,6 +256,9 @@
             "pattern": "^0x[0-9]{4}$",
             "description": "The dedicated enum prefix for the implementation specific header to avoid collisions"
         },
+        "doc": {
+            "type": "string"
+        },
         "typedefs": {
             "type": "array",
             "items": {
@@ -516,6 +519,7 @@
         "copyright",
         "name",
         "enum_prefix",
+        "doc",
         "constants",
         "typedefs",
         "enums",
