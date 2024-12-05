@@ -6,10 +6,10 @@ name: webgpu
 enum_prefix: '0x0000'
 doc: |
   **Important:** *This documentation is a Work In Progress.*
-  
+
   This is the home of WebGPU C API specification. We define here the standard
   `webgpu.h` header that all implementations should provide.
-  
+
   For all details where behavior is not otherwise specified, `webgpu.h` has
   the same behavior as the WebGPU specification for JavaScript on the Web.
   The WebIDL-based Web specification is mapped into C as faithfully (and
@@ -708,8 +708,9 @@ enums:
       - name: render_pass_max_draw_count
         doc: |
           TODO
-      # TODO(#214): Move all of the surface sources into block 0x0001
       - name: surface_source_metal_layer
+        # TODO(#214): Move all of the surface sources into block 0x0001
+
         doc: |
           TODO
       - name: surface_source_windows_HWND
