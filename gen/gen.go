@@ -47,10 +47,10 @@ func (g *Generator) Gen(dst io.Writer) error {
 					}
 				}
 				for _, arg := range fn.Args {
-					var argDoc = strings.TrimSpace(arg.Doc)
+					argDoc := strings.TrimSpace(arg.Doc)
 					var sArg string
 					if argDoc != "" && argDoc != "TODO" {
-						sArg += argDoc
+						sArg = argDoc
 					}
 
 					if arg.PassedWithOwnership != nil {
@@ -68,8 +68,22 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				if fn.Returns != nil {
 					returnsDoc := strings.TrimSpace(fn.Returns.Doc)
+					var sRet string
 					if returnsDoc != "" && returnsDoc != "TODO" {
-						s += "\n\n@returns\n" + returnsDoc
+						sRet = returnsDoc
+					}
+
+					if fn.Returns.PassedWithOwnership != nil {
+						if *fn.Returns.PassedWithOwnership {
+							sRet += "\nThis value is @ref ReturnedWithOwnership."
+						} else {
+							panic("invalid")
+						}
+					}
+
+					sRet = strings.TrimSpace(sRet)
+					if sRet != "" {
+						s += "\n\n@returns\n" + sRet
 					}
 				}
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)

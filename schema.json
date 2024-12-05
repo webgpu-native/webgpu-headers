@@ -204,7 +204,9 @@
                     "description": "Optional property, return type of the function",
                     "properties": {
                         "doc": {
-                            "type": "string"
+                            "type": "string",
+                            "$comment": "Doxygen doesn't support multi-paragraph return docs (containing \\n\\n)",
+                            "pattern": "^\n?.+(\n.+)*\n?$"
                         },
                         "type": {
                             "$ref": "#/definitions/Type",
