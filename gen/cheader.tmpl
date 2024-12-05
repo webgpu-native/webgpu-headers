@@ -1,7 +1,7 @@
 {{- MCommentN .Copyright 0}}
 
 /** @file */
-{{MComment (print "\\mainpage\n" .Doc) 0}}
+{{MCommentMainPage .Doc 0}}
 
 #ifndef {{.HeaderName | ConstantCase}}_H_
 #define {{.HeaderName | ConstantCase}}_H_
