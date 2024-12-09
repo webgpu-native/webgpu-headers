@@ -863,14 +863,9 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000005,
     /**
      * `0x00000006`.
-     * The system ran out of memory.
-     */
-    WGPUSurfaceGetCurrentTextureStatus_OutOfMemory = 0x00000006,
-    /**
-     * `0x00000007`.
      * The surface is not configured, or there was an @ref OutStructChainError.
      */
-    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000007,
+    WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000006,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
 } WGPUSurfaceGetCurrentTextureStatus WGPU_ENUM_ATTRIBUTE;
 
