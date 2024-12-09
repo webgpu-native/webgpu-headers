@@ -74,6 +74,7 @@ type ParameterType struct {
 	Pointer             PointerType `yaml:"pointer"`
 	Optional            bool        `yaml:"optional"`
 	Namespace           string      `yaml:"namespace"`
+	Default             *string     `yaml:"default"`
 }
 
 type Callback struct {

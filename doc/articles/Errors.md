@@ -17,6 +17,16 @@ These errors include:
 - Enum values which are require features not enabled on the device (a [content-timeline](https://www.w3.org/TR/webgpu/#content-timeline) error in JavaScript), for example compressed texture formats.
 - Other content-timeline errors where specified.
 
+### Error Scopes {#ErrorScopes}
+
+Error scopes are used via @ref wgpuDevicePushErrorScope, @ref wgpuDevicePopErrorScope, and @ref WGPUDeviceDescriptor::uncapturedErrorCallbackInfo. These behave the same as in the JavaScript API, except for considerations around multi-threading (which JavaScript doesn't have at the time of this writing):
+
+- The error scope stack state is **thread-local**: each thread has a separate stack, which is initially empty. The error scope that captures an error depends on which thread made the API call that generated the error.
+    Note in particular:
+    - Async callbacks run on various threads and with unpredictable timing (see @ref Asynchronous-Operations), except when using @ref wgpuInstanceWaitAny. To avoid race conditions, if error scopes are used, applications generally should avoid having device errors escape from an async function, and/or should not keep scopes open when callbacks that could produce errors may run.
+    - Runtimes with async task support (I/O runtimes, language async/coroutines/futures, etc.) may use "green threads" style systems to schedule tasks on different OS threads. Error scope stack state is OS-thread-local, not green-thread-local.
+- The UncapturedError callback receives uncaptured errors from all threads.
+
 ## Callback Error {#CallbackError}
 
 These behave similarly to the Promise-returning JavaScript APIs. Instead of there being two callbacks like in JavaScript (one for resolve and one for reject), there is a single callback which receives a status code, and depending on the status, _either_ a valid result with an empty message string (`{NULL, 0}`), _or_ an invalid result with a non-empty message string.
@@ -25,7 +35,7 @@ These behave similarly to the Promise-returning JavaScript APIs. Instead of ther
 
 These errors include:
 
-- @ref SynchronousStructChainingError cases.
+- @ref StructChainingError cases.
 - [Content-timeline](https://www.w3.org/TR/webgpu/#content-timeline) errors other than those which are surfaced as @ref DeviceError in `webgpu.h`. See specific documentation to determine how each error is exposed.
 
 Generally these will return some kind of failure status (like \ref WGPUStatus_Error) or `NULL`, and produce an @ref ImplementationDefinedLogging message.
@@ -36,15 +46,15 @@ Entry points may also specify that they produce "implementation-defined logging"
 These messages are logged in an implementation defined way (e.g. to an implementation-specific callback, or to a logging runtime).
 They are intended to be intended to be read by humans, useful primarily for development and crash reporting.
 
-## Struct-Chaining Errors {#StructChainingErrors}
+## Struct-Chaining Error {#StructChainingError}
 
-A struct-chaining error happens when the @ref SType of a struct in a struct chain is not valid for that chain.
+A struct-chaining error happens when the @ref WGPUSType of a struct in a struct chain is not valid for that chain.
 
-Struct chains which are used in device-timeline validation/operations (e.g. @ref WGPUBufferDescriptor in @ref WGPUDeviceCreateBuffer) have their chain errors surfaced asynchronously, like any other validation error.
+Struct chains which are used in device-timeline validation/operations (e.g. @ref WGPUBufferDescriptor in @ref wgpuDeviceCreateBuffer) have their chain errors surfaced asynchronously, like any other validation error.
 
 ### Out-Struct-Chain Error {#OutStructChainError}
 
-Operations which take out-struct-chains (e.g. @ref WGPULimits, in @ref WGPUAdapterGetLimits/@ref WGPUDeviceGetLimits, but not in @ref WGPUDeviceDescriptor) handle struct-chaining errors as follows:
+Operations which take out-struct-chains (e.g. @ref WGPULimits, in @ref wgpuAdapterGetLimits and @ref wgpuDeviceGetLimits, but not in @ref WGPUDeviceDescriptor) handle struct-chaining errors as follows:
 
 - The output struct and struct chain is not modified.
 - The operation produces a @ref SynchronousError (return value and log message).

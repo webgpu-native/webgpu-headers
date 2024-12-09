@@ -13,6 +13,11 @@ constants:
     value: uint32_max
     doc: |
       TODO
+  - name: depth_clear_value_undefined
+    value: nan
+    doc: |
+      Value to be assigned to member depthClearValue of @ref WGPURenderPassDepthStencilAttachment
+      to mean that it is not defined.
   - name: depth_slice_undefined
     value: uint32_max
     doc: |
@@ -224,13 +229,13 @@ enums:
       - name: wait_any_only
         doc: |
           Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
-          - fire when the asynchronous operation's future is passed to a call to `::wgpuInstanceWaitAny`
-            AND the operation has already completed or it completes inside the call to `::wgpuInstanceWaitAny`.
+          - fire when the asynchronous operation's future is passed to a call to @ref wgpuInstanceWaitAny
+            AND the operation has already completed or it completes inside the call to @ref wgpuInstanceWaitAny.
       - name: allow_process_events
         doc: |
           Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
           - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
-          - fire inside a call to `::wgpuInstanceProcessEvents` if the asynchronous operation is complete.
+          - fire inside a call to @ref wgpuInstanceProcessEvents if the asynchronous operation is complete.
       - name: allow_spontaneous
         doc: |
           Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
@@ -281,12 +286,6 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
-      - name: error
-        doc: |
-          TODO
-      - name: unknown
-        doc: |
-          TODO
   - name: compilation_message_type
     doc: |
       TODO
@@ -302,7 +301,7 @@ enums:
         doc: |
           TODO
   - name: composite_alpha_mode
-    doc: Describes how frames are composited with other contents on the screen when `::wgpuSurfacePresent` is called.
+    doc: Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
     entries:
       - name: auto
         doc: Lets the WebGPU implementation choose the best mode (supported, and with the best performance) between @ref WGPUCompositeAlphaMode_Opaque or @ref WGPUCompositeAlphaMode_Inherit.
@@ -329,9 +328,6 @@ enums:
         doc: |
           TODO
       - name: internal_error
-        doc: |
-          TODO
-      - name: unknown
         doc: |
           TODO
   - name: cull_mode
@@ -404,7 +400,8 @@ enums:
     doc: |
       See @ref WGPURequestAdapterOptions::featureLevel.
     entries:
-      - null
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: compatibility
         doc: |
           "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
@@ -531,9 +528,6 @@ enums:
       - name: aborted
         doc: |
           TODO
-      - name: unknown
-        doc: |
-          TODO
   - name: mipmap_filter_mode
     doc: |
       TODO
@@ -570,7 +564,7 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
-      - name: empty_stack
+      - name: error
         doc: |
           The error scope stack could not be popped, because it was empty.
   - name: power_preference
@@ -597,7 +591,7 @@ enums:
         doc: |
           TODO
   - name: present_mode
-    doc: Describes when and in which order frames are presented on the screen when `::wgpuSurfacePresent` is called.
+    doc: Describes when and in which order frames are presented on the screen when @ref wgpuSurfacePresent is called.
     entries:
       - name: undefined
         doc: |
@@ -663,12 +657,6 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
-      - name: error
-        doc: |
-          TODO
-      - name: unknown
-        doc: |
-          TODO
   - name: request_adapter_status
     doc: |
       TODO
@@ -686,9 +674,6 @@ enums:
       - name: error
         doc: |
           TODO
-      - name: unknown
-        doc: |
-          TODO
   - name: request_device_status
     doc: |
       TODO
@@ -701,9 +686,6 @@ enums:
         doc: |
           TODO
       - name: error
-        doc: |
-          TODO
-      - name: unknown
         doc: |
           TODO
   - name: s_type
@@ -836,7 +818,7 @@ enums:
         doc: |
           TODO
   - name: surface_get_current_texture_status
-    doc: The status enum for `::wgpuSurfaceGetCurrentTexture`.
+    doc: The status enum for @ref wgpuSurfaceGetCurrentTexture.
     entries:
       - null
       - name: success_optimal
@@ -1367,10 +1349,6 @@ enums:
     doc: |
       TODO
     entries:
-      - name: vertex_buffer_not_used
-        doc: |
-          This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
-          (See also @ref SentinelValues.)
       - name: undefined
         doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: vertex
@@ -1530,7 +1508,7 @@ structs:
   - name: adapter_info
     doc: |
       TODO
-    type: base_out
+    type: extensible
     free_members: true
     members:
       - name: vendor
@@ -1553,6 +1531,7 @@ structs:
         doc: |
           TODO
         type: enum.backend_type
+        default: undefined
       - name: adapter_type
         doc: |
           TODO
@@ -1568,7 +1547,7 @@ structs:
   - name: bind_group_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1586,39 +1565,46 @@ structs:
   - name: bind_group_entry
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: binding
         doc: |
-          TODO
+          Binding index in the bind group.
         type: uint32
       - name: buffer
         doc: |
-          TODO
+          Set this if the binding is a buffer object.
+          Otherwise must be null.
         type: object.buffer
         optional: true
       - name: offset
         doc: |
-          TODO
+          If the binding is a buffer, this is the byte offset of the binding range.
+          Otherwise ignored.
         type: uint64
       - name: size
         doc: |
-          TODO
+          If the binding is a buffer, this is the byte size of the binding range
+          (@ref WGPU_WHOLE_SIZE means the binding ends at the end of the buffer).
+          Otherwise ignored.
         type: uint64
+        default: constant.whole_size
       - name: sampler
         doc: |
-          TODO
+          Set this if the binding is a sampler object.
+          Otherwise must be null.
         type: object.sampler
         optional: true
       - name: texture_view
         doc: |
-          TODO
+          Set this if the binding is a texture view object.
+          Otherwise must be null.
         type: object.texture_view
         optional: true
   - name: bind_group_layout_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1632,7 +1618,7 @@ structs:
   - name: bind_group_layout_entry
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: binding
         doc: |
@@ -1642,22 +1628,39 @@ structs:
         doc: |
           TODO
         type: bitflag.shader_stage
+        default: none
       - name: buffer
         doc: |
           TODO
         type: struct.buffer_binding_layout
+        # Use struct-zero-init here to get .type=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_BUFFER_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
+        default: zero
       - name: sampler
         doc: |
           TODO
         type: struct.sampler_binding_layout
+        # Use struct-zero-init here to get .type=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_SAMPLER_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
+        default: zero
       - name: texture
         doc: |
           TODO
         type: struct.texture_binding_layout
+        # Use struct-zero-init here to get .sampleType=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_TEXTURE_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
+        default: zero
       - name: storage_texture
         doc: |
           TODO
         type: struct.storage_texture_binding_layout
+        # Use struct-zero-init here to get .access=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
+        default: zero
   - name: blend_component
     doc: |
       TODO
@@ -1665,16 +1668,22 @@ structs:
     members:
       - name: operation
         doc: |
-          TODO
+          If set to @ref WGPUBlendOperation_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUBlendOperation_Add.
         type: enum.blend_operation
+        default: undefined
       - name: src_factor
         doc: |
-          TODO
+          If set to @ref WGPUBlendFactor_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_One.
         type: enum.blend_factor
+        default: undefined
       - name: dst_factor
         doc: |
-          TODO
+          If set to @ref WGPUBlendFactor_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_Zero.
         type: enum.blend_factor
+        default: undefined
   - name: blend_state
     doc: |
       TODO
@@ -1691,24 +1700,28 @@ structs:
   - name: buffer_binding_layout
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: type
         doc: |
-          TODO
+          If set to @ref WGPUBufferBindingType_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUBufferBindingType_Uniform.
         type: enum.buffer_binding_type
+        default: undefined
       - name: has_dynamic_offset
         doc: |
           TODO
         type: bool
+        default: false
       - name: min_binding_size
         doc: |
           TODO
         type: uint64
+        default: 0
   - name: buffer_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1718,6 +1731,7 @@ structs:
         doc: |
           TODO
         type: bitflag.buffer_usage
+        default: none
       - name: size
         doc: |
           TODO
@@ -1726,6 +1740,7 @@ structs:
         doc: |
           TODO
         type: bool
+        default: false
   - name: color
     doc: |
       TODO
@@ -1750,7 +1765,7 @@ structs:
   - name: color_target_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: format
         doc: |
@@ -1758,6 +1773,7 @@ structs:
           indicates a "hole" in the parent @ref WGPUFragmentState `targets` array:
           the pipeline does not output a value at this `location`.
         type: enum.texture_format
+        default: undefined
       - name: blend
         doc: |
           TODO
@@ -1768,10 +1784,11 @@ structs:
         doc: |
           TODO
         type: bitflag.color_write_mask
+        default: all
   - name: command_buffer_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1780,7 +1797,7 @@ structs:
   - name: command_encoder_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1789,7 +1806,7 @@ structs:
   - name: compilation_info
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: messages
         doc: |
@@ -1799,7 +1816,7 @@ structs:
   - name: compilation_message
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: message
         doc: |
@@ -1828,7 +1845,7 @@ structs:
   - name: compute_pass_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1837,28 +1854,13 @@ structs:
       - name: timestamp_writes
         doc: |
           TODO
-        type: struct.compute_pass_timestamp_writes
-  - name: compute_pass_timestamp_writes
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: query_set
-        doc: |
-          Query set to write timestamps to. Null if timestamps should not be recorded.
-        type: object.query_set
-      - name: beginning_of_pass_write_index
-        doc: |
-          TODO
-        type: uint32
-      - name: end_of_pass_write_index
-        doc: |
-          TODO
-        type: uint32
+        type: struct.pass_timestamp_writes
+        pointer: immutable
+        optional: true
   - name: compute_pipeline_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1872,11 +1874,11 @@ structs:
       - name: compute
         doc: |
           TODO
-        type: struct.compute_stage
-  - name: compute_stage
+        type: struct.compute_state
+  - name: compute_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: module
         doc: |
@@ -1894,7 +1896,7 @@ structs:
   - name: constant_entry
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: key
         doc: |
@@ -1907,12 +1909,13 @@ structs:
   - name: depth_stencil_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: format
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: depth_write_enabled
         doc: |
           TODO
@@ -1933,26 +1936,31 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: "0xFFFFFFFF"
       - name: stencil_write_mask
         doc: |
           TODO
         type: uint32
+        default: "0xFFFFFFFF"
       - name: depth_bias
         doc: |
           TODO
         type: int32
+        default: 0
       - name: depth_bias_slope_scale
         doc: |
           TODO
         type: float32
+        default: 0.0
       - name: depth_bias_clamp
         doc: |
           TODO
         type: float32
+        default: 0.0
   - name: device_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1979,7 +1987,8 @@ structs:
         type: callback.device_lost
       - name: uncaptured_error_callback_info
         doc: |
-          TODO
+          Called when there is an uncaptured error on this device, from any thread.
+          See @ref ErrorScopes.
         type: callback.uncaptured_error
   - name: extent_3D
     doc: |
@@ -1994,14 +2003,16 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: depth_or_array_layers
         doc: |
           TODO
         type: uint32
+        default: 1
   - name: fragment_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: module
         doc: |
@@ -2041,7 +2052,7 @@ structs:
   - name: instance_capabilities
     doc: |
       Features enabled on the WGPUInstance
-    type: base_in_or_out
+    type: extensible
     members:
       - name: timed_wait_any_enable
         doc: Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
@@ -2052,7 +2063,7 @@ structs:
   - name: instance_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: features
         doc: Instance features to enable
@@ -2060,149 +2071,183 @@ structs:
   - name: limits
     doc: |
       TODO
-    type: base_in_or_out
+    type: extensible
     members:
       - name: max_texture_dimension_1D
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_texture_dimension_2D
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_texture_dimension_3D
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_texture_array_layers
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_bind_groups
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_bind_groups_plus_vertex_buffers
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_bindings_per_bind_group
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_dynamic_uniform_buffers_per_pipeline_layout
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_dynamic_storage_buffers_per_pipeline_layout
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_sampled_textures_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_samplers_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_storage_buffers_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_storage_textures_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_uniform_buffers_per_shader_stage
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_uniform_buffer_binding_size
         doc: |
           TODO
         type: uint64
+        default: constant.limit_u64_undefined
       - name: max_storage_buffer_binding_size
         doc: |
           TODO
         type: uint64
+        default: constant.limit_u64_undefined
       - name: min_uniform_buffer_offset_alignment
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: min_storage_buffer_offset_alignment
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_vertex_buffers
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_buffer_size
         doc: |
           TODO
         type: uint64
+        default: constant.limit_u64_undefined
       - name: max_vertex_attributes
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_vertex_buffer_array_stride
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_inter_stage_shader_variables
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_color_attachments
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_color_attachment_bytes_per_sample
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroup_storage_size
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_invocations_per_workgroup
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroup_size_x
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroup_size_y
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroup_size_z
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
       - name: max_compute_workgroups_per_dimension
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
   - name: multisample_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: count
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: mask
         doc: |
           TODO
         type: uint32
+        default: "0xFFFFFFFF"
       - name: alpha_to_coverage_enabled
         doc: |
           TODO
         type: bool
+        default: false
   - name: origin_3D
     doc: |
       TODO
@@ -2212,18 +2257,40 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: y
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: z
         doc: |
           TODO
         type: uint32
+        default: 0
+  - name: pass_timestamp_writes
+    doc: |
+      TODO
+    type: extensible
+    members:
+      - name: query_set
+        doc: |
+          Query set to write timestamps to.
+        type: object.query_set
+      - name: beginning_of_pass_write_index
+        doc: |
+          TODO
+        type: uint32
+        default: constant.query_set_index_undefined
+      - name: end_of_pass_write_index
+        doc: |
+          TODO
+        type: uint32
+        default: constant.query_set_index_undefined
   - name: pipeline_layout_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2237,32 +2304,39 @@ structs:
   - name: primitive_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: topology
         doc: |
-          TODO
+          If set to @ref WGPUPrimitiveTopology_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUPrimitiveTopology_TriangleList.
         type: enum.primitive_topology
+        default: undefined
       - name: strip_index_format
         doc: |
           TODO
         type: enum.index_format
       - name: front_face
         doc: |
-          TODO
+          If set to @ref WGPUFrontFace_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUFrontFace_CCW.
         type: enum.front_face
+        default: undefined
       - name: cull_mode
         doc: |
-          TODO
+          If set to @ref WGPUCullMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUCullMode_None.
         type: enum.cull_mode
+        default: undefined
       - name: unclipped_depth
         doc: |
           TODO
         type: bool
+        default: false
   - name: query_set_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2279,7 +2353,7 @@ structs:
   - name: queue_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2288,7 +2362,7 @@ structs:
   - name: render_bundle_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2297,7 +2371,7 @@ structs:
   - name: render_bundle_encoder_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2312,32 +2386,38 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: sample_count
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: depth_read_only
         doc: |
           TODO
         type: bool
+        default: false
       - name: stencil_read_only
         doc: |
           TODO
         type: bool
+        default: false
   - name: render_pass_color_attachment
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: view
         doc: |
-          TODO
+          If `NULL`, indicates a hole in the parent
+          @ref WGPURenderPassDescriptor::colorAttachments array.
         type: object.texture_view
         optional: true
       - name: depth_slice
         doc: |
           TODO
         type: uint32
+        default: constant.depth_slice_undefined
       - name: resolve_target
         doc: |
           TODO
@@ -2358,7 +2438,7 @@ structs:
   - name: render_pass_depth_stencil_attachment
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: view
         doc: |
@@ -2368,26 +2448,32 @@ structs:
         doc: |
           TODO
         type: enum.load_op
+        default: undefined
       - name: depth_store_op
         doc: |
           TODO
         type: enum.store_op
+        default: undefined
       - name: depth_clear_value
         doc: |
           TODO
         type: float32
+        default: constant.depth_clear_value_undefined
       - name: depth_read_only
         doc: |
           TODO
         type: bool
+        default: false
       - name: stencil_load_op
         doc: |
           TODO
         type: enum.load_op
+        default: undefined
       - name: stencil_store_op
         doc: |
           TODO
         type: enum.store_op
+        default: undefined
       - name: stencil_clear_value
         doc: |
           TODO
@@ -2396,10 +2482,11 @@ structs:
         doc: |
           TODO
         type: bool
+        default: false
   - name: render_pass_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2424,11 +2511,13 @@ structs:
       - name: timestamp_writes
         doc: |
           TODO
-        type: struct.render_pass_timestamp_writes
+        type: struct.pass_timestamp_writes
+        pointer: immutable
+        optional: true
   - name: render_pass_max_draw_count
     doc: |
       TODO
-    type: extension_in
+    type: extension
     extends:
       - render_pass_descriptor
     members:
@@ -2436,27 +2525,11 @@ structs:
         doc: |
           TODO
         type: uint64
-  - name: render_pass_timestamp_writes
-    doc: |
-      TODO
-    type: base_in
-    members:
-      - name: query_set
-        doc: |
-          Query set to write timestamps to. Null if timestamps should not be recorded.
-        type: object.query_set
-      - name: beginning_of_pass_write_index
-        doc: |
-          TODO
-        type: uint32
-      - name: end_of_pass_write_index
-        doc: |
-          TODO
-        type: uint32
+        default: 50000000
   - name: render_pipeline_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2494,28 +2567,35 @@ structs:
   - name: request_adapter_options
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: feature_level
         doc: |
           "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
 
-          Implementations may ignore @ref WGPUFeatureLevel_Compatibility and provide @ref WGPUFeatureLevel_Core instead. @ref WGPUFeatureLevel_Core is the default in the JS API, but in C, this field is **required** (must not be undefined).
+          If set to @ref WGPUFeatureLevel_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
+          Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
+          and provide @ref WGPUFeatureLevel_Core instead.
         type: enum.feature_level
+        default: undefined
       - name: power_preference
         doc: |
           TODO
         type: enum.power_preference
+        default: undefined
       - name: force_fallback_adapter
         doc: |
           If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
           If this is not possible, the request returns null.
         type: bool
+        default: false
       - name: backend_type
         doc: |
           If set, requires the adapter to have a particular backend type.
           If this is not possible, the request returns null.
         type: enum.backend_type
+        default: undefined
       - name: compatible_surface
         doc: |
           If set, requires the adapter to be able to output to a particular surface.
@@ -2525,16 +2605,18 @@ structs:
   - name: sampler_binding_layout
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: type
         doc: |
-          TODO
+          If set to @ref WGPUSamplerBindingType_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUSamplerBindingType_Filtering.
         type: enum.sampler_binding_type
+        default: undefined
   - name: sampler_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2542,48 +2624,64 @@ structs:
         type: string_with_default_empty
       - name: address_mode_u
         doc: |
-          TODO
+          If set to @ref WGPUAddressMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
+        default: undefined
       - name: address_mode_v
         doc: |
-          TODO
+          If set to @ref WGPUAddressMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
+        default: undefined
       - name: address_mode_w
         doc: |
-          TODO
+          If set to @ref WGPUAddressMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
+        default: undefined
       - name: mag_filter
         doc: |
-          TODO
+          If set to @ref WGPUFilterMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
         type: enum.filter_mode
+        default: undefined
       - name: min_filter
         doc: |
-          TODO
+          If set to @ref WGPUFilterMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
         type: enum.filter_mode
+        default: undefined
       - name: mipmap_filter
         doc: |
-          TODO
+          If set to @ref WGPUFilterMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUMipmapFilterMode_Nearest.
         type: enum.mipmap_filter_mode
+        default: undefined
       - name: lod_min_clamp
         doc: |
           TODO
         type: float32
+        default: 0.0
       - name: lod_max_clamp
         doc: |
           TODO
         type: float32
+        default: 32.0
       - name: compare
         doc: |
           TODO
         type: enum.compare_function
+        default: undefined
       - name: max_anisotropy
         doc: |
           TODO
         type: uint16
+        default: 1
   - name: shader_module_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2592,7 +2690,7 @@ structs:
   - name: shader_source_SPIRV
     doc: |
       TODO
-    type: extension_in
+    type: extension
     extends:
       - shader_module_descriptor
     members:
@@ -2600,6 +2698,7 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: code
         doc: |
           TODO
@@ -2608,7 +2707,7 @@ structs:
   - name: shader_source_WGSL
     doc: |
       TODO
-    type: extension_in
+    type: extension
     extends:
       - shader_module_descriptor
     members:
@@ -2623,37 +2722,50 @@ structs:
     members:
       - name: compare
         doc: |
-          TODO
+          If set to @ref WGPUCompareFunction_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUCompareFunction_Always.
         type: enum.compare_function
+        default: undefined
       - name: fail_op
         doc: |
-          TODO
+          If set to @ref WGPUStencilOperation_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
+        default: undefined
       - name: depth_fail_op
         doc: |
-          TODO
+          If set to @ref WGPUStencilOperation_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
+        default: undefined
       - name: pass_op
         doc: |
-          TODO
+          If set to @ref WGPUStencilOperation_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
+        default: undefined
   - name: storage_texture_binding_layout
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: access
         doc: |
-          TODO
+          If set to @ref WGPUStorageTextureAccess_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUStorageTextureAccess_WriteOnly.
         type: enum.storage_texture_access
+        default: undefined
       - name: format
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: view_dimension
         doc: |
-          TODO
+          If set to @ref WGPUTextureViewDimension_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
+        default: undefined
   - name: supported_features
     doc: |
       TODO
@@ -2677,8 +2789,8 @@ structs:
         type: array<enum.WGSL_language_feature_name>
         pointer: immutable
   - name: surface_capabilities
-    doc: Filled by `::wgpuSurfaceGetCapabilities` with what's supported for `::wgpuSurfaceConfigure` for a pair of @ref WGPUSurface and @ref WGPUAdapter.
-    type: base_out
+    doc: Filled by @ref wgpuSurfaceGetCapabilities with what's supported for @ref wgpuSurfaceConfigure for a pair of @ref WGPUSurface and @ref WGPUAdapter.
+    type: extensible
     free_members: true
     members:
       - name: usages
@@ -2705,7 +2817,7 @@ structs:
   - name: surface_color_management
     doc: |
       Extension of @ref WGPUSurfaceConfiguration for color spaces and HDR.
-    type: extension_in
+    type: extension
     members:
       - name: color_space
         doc: TODO
@@ -2715,9 +2827,9 @@ structs:
         type: enum.tone_mapping_mode
   - name: surface_configuration
     doc: |
-      Options to `::wgpuSurfaceConfigure` for defining how a @ref WGPUSurface will be rendered to and presented to the user.
+      Options to @ref wgpuSurfaceConfigure for defining how a @ref WGPUSurface will be rendered to and presented to the user.
       See @ref Surface-Configuration for more details.
-    type: base_in
+    type: extensible
     members:
       - name: device
         doc: The @ref WGPUDevice to use to render to surface's textures.
@@ -2725,9 +2837,11 @@ structs:
       - name: format
         doc: The @ref WGPUTextureFormat of the surface's textures.
         type: enum.texture_format
+        default: undefined
       - name: usage
         doc: The @ref WGPUTextureUsage of the surface's textures.
         type: bitflag.texture_usage
+        default: render_attachment
       - name: width
         doc: The width of the surface's textures.
         type: uint32
@@ -2739,24 +2853,35 @@ structs:
         type: array<enum.texture_format>
         pointer: immutable
       - name: alpha_mode
-        doc: How the surface's frames will be composited on the screen.
+        doc: |
+          How the surface's frames will be composited on the screen.
+
+          If set to @ref WGPUCompositeAlphaMode_Auto,
+          [defaults] to @ref WGPUCompositeAlphaMode_Inherit in native (allowing the mode
+          to be configured externally), and to @ref WGPUCompositeAlphaMode_Opaque in Wasm.
         type: enum.composite_alpha_mode
+        default: auto
       - name: present_mode
-        doc: When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
+        doc: |
+          When and in which order the surface's frames will be shown on the screen.
+
+          If set to @ref WGPUPresentMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
+        default: undefined
   - name: surface_descriptor
     doc: |
-      The root descriptor for the creation of an @ref WGPUSurface with `::wgpuInstanceCreateSurface`.
+      The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
       It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
       See @ref Surface-Creation for more details.
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: Label used to refer to the object.
         type: string_with_default_empty
   - name: surface_source_android_native_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an Android [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window).
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2766,7 +2891,7 @@ structs:
         pointer: mutable
   - name: surface_source_metal_layer
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2776,7 +2901,7 @@ structs:
         pointer: mutable
   - name: surface_source_wayland_surface
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [Wayland](https://wayland.freedesktop.org/) [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface).
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2790,7 +2915,7 @@ structs:
         pointer: mutable
   - name: surface_source_windows_HWND
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a Windows [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd).
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2806,7 +2931,7 @@ structs:
         pointer: mutable
   - name: surface_source_XCB_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2819,7 +2944,7 @@ structs:
         type: uint32
   - name: surface_source_xlib_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [Xlib](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) `Window`.
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2834,7 +2959,7 @@ structs:
     doc: |
       Queried each frame from a @ref WGPUSurface to get a @ref WGPUTexture to render to along with some metadata.
       See @ref Surface-Presenting for more details.
-    type: base_out
+    type: extensible
     members:
       - name: texture
         doc: |
@@ -2842,7 +2967,7 @@ structs:
           It is @ref ReturnedWithOwnership from @ref wgpuSurfaceGetCurrentTexture.
         type: object.texture
       - name: status
-        doc: Whether the call to `::wgpuSurfaceGetCurrentTexture` succeeded and a hint as to why it might not have.
+        doc: Whether the call to @ref wgpuSurfaceGetCurrentTexture succeeded and a hint as to why it might not have.
         type: enum.surface_get_current_texture_status
   - name: texel_copy_buffer_info
     doc: |
@@ -2866,14 +2991,17 @@ structs:
         doc: |
           TODO
         type: uint64
+        default: 0
       - name: bytes_per_row
         doc: |
           TODO
         type: uint32
+        default: constant.copy_stride_undefined
       - name: rows_per_image
         doc: |
           TODO
         type: uint32
+        default: constant.copy_stride_undefined
   - name: texel_copy_texture_info
     doc: |
       TODO
@@ -2887,35 +3015,43 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: origin
         doc: |
           TODO
         type: struct.origin_3D
       - name: aspect
         doc: |
-          TODO
+          If set to @ref WGPUTextureAspect_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
         type: enum.texture_aspect
+        default: undefined
   - name: texture_binding_layout
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: sample_type
         doc: |
-          TODO
+          If set to @ref WGPUTextureSampleType_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureSampleType_Float.
         type: enum.texture_sample_type
+        default: undefined
       - name: view_dimension
         doc: |
-          TODO
+          If set to @ref WGPUTextureViewDimension_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
+        default: undefined
       - name: multisampled
         doc: |
           TODO
         type: bool
+        default: false
   - name: texture_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2925,10 +3061,13 @@ structs:
         doc: |
           TODO
         type: bitflag.texture_usage
+        default: none
       - name: dimension
         doc: |
-          TODO
+          If set to @ref WGPUTextureDimension_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureDimension_2D.
         type: enum.texture_dimension
+        default: undefined
       - name: size
         doc: |
           TODO
@@ -2937,14 +3076,17 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: mip_level_count
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: sample_count
         doc: |
           TODO
         type: uint32
+        default: 1
       - name: view_formats
         doc: |
           TODO
@@ -2953,7 +3095,7 @@ structs:
   - name: texture_view_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2963,38 +3105,47 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
+        default: undefined
       - name: dimension
         doc: |
           TODO
         type: enum.texture_view_dimension
+        default: undefined
       - name: base_mip_level
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: mip_level_count
         doc: |
           TODO
         type: uint32
+        default: constant.mip_level_count_undefined
       - name: base_array_layer
         doc: |
           TODO
         type: uint32
+        default: 0
       - name: array_layer_count
         doc: |
           TODO
         type: uint32
+        default: constant.array_layer_count_undefined
       - name: aspect
         doc: |
-          TODO
+          If set to @ref WGPUTextureAspect_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
         type: enum.texture_aspect
+        default: undefined
       - name: usage
         doc: |
           TODO
         type: bitflag.texture_usage
+        default: none
   - name: vertex_attribute
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: format
         doc: |
@@ -3010,15 +3161,25 @@ structs:
         type: uint32
   - name: vertex_buffer_layout
     doc: |
-      TODO
-    type: base_in
+      If `attributes` is empty *and* `stepMode` is @ref WGPUVertexStepMode_Undefined,
+      indicates a "hole" in the parent @ref WGPUVertexState `buffers` array,
+      with behavior equivalent to `null` in the JS API.
+
+      If `attributes` is empty but `stepMode` is *not* @ref WGPUVertexStepMode_Undefined,
+      indicates a vertex buffer with no attributes, with behavior equivalent to
+      `{ attributes: [] }` in the JS API. (TODO: If the JS API changes not to
+      distinguish these cases, then this distinction doesn't matter and we can
+      remove this documentation.)
+
+      If `stepMode` is @ref WGPUVertexStepMode_Undefined but `attributes` is *not* empty,
+      `stepMode` [defaults](@ref SentinelValues) to @ref WGPUVertexStepMode_Vertex.
+    type: extensible
     members:
       - name: step_mode
         doc: |
-          The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
-          indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
-          the pipeline does not use a vertex buffer at this `location`.
+          TODO
         type: enum.vertex_step_mode
+        default: undefined
       - name: array_stride
         doc: |
           TODO
@@ -3031,7 +3192,7 @@ structs:
   - name: vertex_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: module
         doc: |
@@ -3152,7 +3313,9 @@ callbacks:
         type: enum.error_type
       - name: message
         doc: |
-          If the `type` is not @ref WGPUErrorType_NoError, this is a non-empty @ref LocalizableHumanReadableMessageString;
+          If the `status` is not @ref WGPUPopErrorScopeStatus_Success **or**
+          the `type` is not @ref WGPUErrorType_NoError, this is a non-empty
+          @ref LocalizableHumanReadableMessageString;
           otherwise, this is an empty string.
         type: out_string
         passed_with_ownership: false
@@ -3363,7 +3526,6 @@ objects:
           doc: |
             Returns a mutable pointer to beginning of the mapped range.
             Returns `NULL` with @ref ImplementationDefinedLogging if:
-
             - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
             - The buffer is not mapped with @ref WGPUMapMode_Write.
           type: c_void
@@ -3385,7 +3547,6 @@ objects:
             Returns a const pointer to beginning of the mapped range.
             It must not be written; writing to this range causes undefined behavior.
             Returns `NULL` with @ref ImplementationDefinedLogging if:
-
             - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
               **except** for overlaps with other *const* ranges, which are allowed in C.
               (JS does not allow this because const ranges do not exist.)
@@ -4028,7 +4189,8 @@ objects:
           passed_with_ownership: true
       - name: push_error_scope
         doc: |
-          TODO
+          Pushes an error scope to the current thread's error scope stack.
+          See @ref ErrorScopes.
         args:
           - name: filter
             doc: |
@@ -4036,7 +4198,8 @@ objects:
             type: enum.error_filter
       - name: pop_error_scope
         doc: |
-          TODO
+          Pops an error scope to the current thread's error scope stack,
+          asynchronously returning the result. See @ref ErrorScopes.
         callback: callback.pop_error_scope
       - name: set_label
         doc: |
@@ -4088,7 +4251,7 @@ objects:
             type: enum.WGSL_language_feature_name
       - name: process_events
         doc: |
-          Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with `::WGPUCallbackMode_AllowProcessEvents`.
+          Processes asynchronous events on this `WGPUInstance`, calling any callbacks for asynchronous operations created with @ref WGPUCallbackMode_AllowProcessEvents.
 
           See @ref Process-Events for more information.
       - name: request_adapter
@@ -4770,7 +4933,7 @@ objects:
           - name: capabilities
             doc: |
               The structure to fill capabilities in.
-              It may contain memory allocations so `::wgpuSurfaceCapabilitiesFreeMembers` must be called to avoid memory leaks.
+              It may contain memory allocations so @ref wgpuSurfaceCapabilitiesFreeMembers must be called to avoid memory leaks.
             type: struct.surface_capabilities
             pointer: mutable
             passed_with_ownership: true

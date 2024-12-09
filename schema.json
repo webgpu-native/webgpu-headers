@@ -1,6 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft-07/schema",
     "type": "object",
+    "additionalProperties": false,
     "definitions": {
         "Name": {
             "type": "string",
@@ -18,7 +19,8 @@
                     "enum": [
                         "usize_max",
                         "uint32_max",
-                        "uint64_max"
+                        "uint64_max",
+                        "nan"
                     ]
                 }
             ]
@@ -93,6 +95,7 @@
         },
         "Callback": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "name": {
                     "$ref": "#/definitions/Name",
@@ -121,6 +124,7 @@
         },
         "ParameterType": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "name": {
                     "$ref": "#/definitions/Name",
@@ -133,13 +137,9 @@
                     "$ref": "#/definitions/Type",
                     "description": "Parameter type"
                 },
-                "ownership": {
-                    "type": "string",
-                    "description": "Ownership of the value",
-                    "enum": [
-                        "with",
-                        "without"
-                    ]
+                "passed_with_ownership": {
+                    "type": "boolean",
+                    "description": "Whether the value is passed with ownership or without ownership"
                 },
                 "pointer": {
                     "$ref": "#/definitions/Pointer",
@@ -153,6 +153,14 @@
                     "type": "string",
                     "description": "Optional property, specifying the external namespace where this type is defined",
                     "pattern": "^[a-z]+$"
+                },
+                "default": {
+                    "type": [
+                        "string",
+                        "number",
+                        "boolean"
+                    ],
+                    "description": "Default value assigned to this parameter when using initializer macro. Special context-dependent values include constant names (`constant.*`), bitflag names (unprefixed), and `zero` for struct-zero-init (where zero-init is known to have the desired result)."
                 }
             },
             "required": [
@@ -162,6 +170,7 @@
             ]
         },
         "FunctionParameterType": {
+            "unevaluatedProperties": false,
             "allOf": [
                 {
                     "$ref": "#/definitions/ParameterType"
@@ -180,6 +189,7 @@
         },
         "Function": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "name": {
                     "$ref": "#/definitions/Name",
@@ -190,10 +200,13 @@
                 },
                 "returns": {
                     "type": "object",
+                    "additionalProperties": false,
                     "description": "Optional property, return type of the function",
                     "properties": {
                         "doc": {
-                            "type": "string"
+                            "type": "string",
+                            "$comment": "Doxygen doesn't support multi-paragraph return docs (containing \\n\\n)",
+                            "pattern": "^\n?.+(\n.+)*\n?$"
                         },
                         "type": {
                             "$ref": "#/definitions/Type",
@@ -249,6 +262,7 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "description": "An alias of a primitive type",
                 "properties": {
                     "name": {
@@ -272,6 +286,7 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                     "name": {
                         "$ref": "#/definitions/Name",
@@ -279,7 +294,7 @@
                     },
                     "value": {
                         "$ref": "#/definitions/Value64",
-                        "description": "An enum of predefined max constants or a 64-bit unsigned integer"
+                        "description": "An enum of predefined max constants or a 64-bit unsigned integer, or float NaN value."
                     },
                     "doc": {
                         "type": "string"
@@ -296,6 +311,7 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                     "name": {
                         "$ref": "#/definitions/Name",
@@ -318,6 +334,7 @@
                                 },
                                 {
                                     "type": "object",
+                                    "additionalProperties": false,
                                     "properties": {
                                         "name": {
                                             "$ref": "#/definitions/Name",
@@ -350,6 +367,7 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                     "name": {
                         "$ref": "#/definitions/Name",
@@ -366,6 +384,7 @@
                         "type": "array",
                         "items": {
                             "type": "object",
+                            "additionalProperties": false,
                             "properties": {
                                 "name": {
                                     "$ref": "#/definitions/Name",
@@ -403,6 +422,7 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                     "name": {
                         "$ref": "#/definitions/Name",
@@ -415,12 +435,8 @@
                         "type": "string",
                         "description": "Type of the structure",
                         "enum": [
-                            "base_in",
-                            "base_out",
-                            "base_in_or_out",
-                            "extension_in",
-                            "extension_out",
-                            "extension_in_or_out",
+                            "extensible",
+                            "extension",
                             "standalone"
                         ]
                     },
@@ -466,6 +482,7 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                     "name": {
                         "$ref": "#/definitions/Name",

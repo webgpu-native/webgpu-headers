@@ -29,7 +29,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 					return ""
 				}
 				value, _ := g.EnumValue(prefix, e, entryIndex)
-				return Comment("`"+value+"`.\n"+v, CommentTypeMultiLine, indent, true)
+				return Comment("`"+value+"`.\n"+strings.TrimSpace(v), CommentTypeMultiLine, indent, true)
 			},
 			"MCommentBitflag": func(v string, indent int, b Bitflag, entryIndex int) string {
 				if v == "" || strings.TrimSpace(v) == "TODO" {
@@ -47,10 +47,10 @@ func (g *Generator) Gen(dst io.Writer) error {
 					}
 				}
 				for _, arg := range fn.Args {
-					var argDoc = strings.TrimSpace(arg.Doc)
+					argDoc := strings.TrimSpace(arg.Doc)
 					var sArg string
 					if argDoc != "" && argDoc != "TODO" {
-						sArg += argDoc
+						sArg = argDoc
 					}
 
 					if arg.PassedWithOwnership != nil {
@@ -68,8 +68,22 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				if fn.Returns != nil {
 					returnsDoc := strings.TrimSpace(fn.Returns.Doc)
+					var sRet string
 					if returnsDoc != "" && returnsDoc != "TODO" {
-						s += "\n\n@returns\n" + returnsDoc
+						sRet = returnsDoc
+					}
+
+					if fn.Returns.PassedWithOwnership != nil {
+						if *fn.Returns.PassedWithOwnership {
+							sRet += "\nThis value is @ref ReturnedWithOwnership."
+						} else {
+							panic("invalid")
+						}
+					}
+
+					sRet = strings.TrimSpace(sRet)
+					if sRet != "" {
+						s += "\n\n@returns\n" + sRet
 					}
 				}
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
@@ -122,9 +136,23 @@ func (g *Generator) Gen(dst io.Writer) error {
 					s += "\n\nThis is an \\ref OutputString."
 				}
 
+				s += "\n\nThe `INIT` macro sets this to " + g.DefaultValue(*member, true /* isDocString */) + "."
+
 				if member.PassedWithOwnership != nil {
 					panic("invalid")
 				}
+
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
+			"MCommentStruct": func(st *Struct, indent int) string {
+				var s string
+
+				var srcDoc = strings.TrimSpace(st.Doc)
+				if srcDoc != "" && srcDoc != "TODO" {
+					s += srcDoc
+				}
+
+				s += "\n\nDefault values can be set using @ref WGPU_" + ConstantCase(st.Name) + "_INIT as initializer."
 
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
 			},
@@ -156,9 +184,12 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				return "void"
 			},
-			"FunctionArgs": g.FunctionArgs,
-			"CallbackArgs": g.CallbackArgs,
-			"StructMember": g.StructMember,
+			"FunctionArgs":            g.FunctionArgs,
+			"CallbackArgs":            g.CallbackArgs,
+			"StructMember":            g.StructMember,
+			"StructMemberArrayCount":  g.StructMemberArrayCount,
+			"StructMemberArrayData":   g.StructMemberArrayData,
+			"StructMemberInitializer": g.StructMemberInitializer,
 		})
 	t, err := t.Parse(tmpl)
 	if err != nil {
@@ -178,6 +209,8 @@ func (g *Generator) CValue(s string) (string, error) {
 		return "UINT32_MAX", nil
 	case "uint64_max":
 		return "UINT64_MAX", nil
+	case "nan":
+		return "NAN", nil
 	default:
 		var num string
 		var base int
@@ -269,12 +302,7 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 func (g *Generator) FunctionArgs(f Function, o *Object) string {
 	sb := &strings.Builder{}
 	if o != nil {
-		var typeSuffix string
-		if o.Namespace == "" {
-			typeSuffix = ConstantCase(g.ExtSuffix)
-		} else if o.Namespace != "webgpu" {
-			typeSuffix = ConstantCase(o.Namespace)
-		}
+		typeSuffix := g.TypeSuffixForNamespace(o.Namespace)
 		if len(f.Args) > 0 {
 			fmt.Fprintf(sb, "WGPU%s%s %s, ", PascalCase(o.Name), typeSuffix, CamelCase(o.Name))
 		} else {
@@ -285,12 +313,7 @@ func (g *Generator) FunctionArgs(f Function, o *Object) string {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
 		}
-		var typeSuffix string
-		if arg.Namespace == "" {
-			typeSuffix = ConstantCase(g.ExtSuffix)
-		} else if arg.Namespace != "webgpu" {
-			typeSuffix = ConstantCase(arg.Namespace)
-		}
+		typeSuffix := g.TypeSuffixForNamespace(arg.Namespace)
 		matches := arrayTypeRegexp.FindStringSubmatch(arg.Type)
 		if len(matches) == 2 {
 			fmt.Fprintf(sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
@@ -314,12 +337,7 @@ func (g *Generator) CallbackArgs(f Callback) string {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
 		}
-		var typeSuffix string
-		if arg.Namespace == "" {
-			typeSuffix = ConstantCase(g.ExtSuffix)
-		} else if arg.Namespace != "webgpu" {
-			typeSuffix = ConstantCase(arg.Namespace)
-		}
+		typeSuffix := g.TypeSuffixForNamespace(arg.Namespace)
 		var structPrefix string
 		if strings.HasPrefix(arg.Type, "struct.") {
 			structPrefix = "struct "
@@ -421,28 +439,201 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int) (string, error) {
 	return entryValue, nil
 }
 
+func (g *Generator) TypeSuffixForNamespace(namespace string) string {
+	switch namespace {
+	case "":
+		return ConstantCase(g.ExtSuffix)
+	case "webgpu":
+		return ""
+	default:
+		return ConstantCase(namespace)
+	}
+}
+
 func (g *Generator) StructMember(s Struct, memberIndex int) (string, error) {
 	member := s.Members[memberIndex]
+	typeSuffix := g.TypeSuffixForNamespace(member.Namespace)
+
+	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
+	if len(matches) == 2 {
+		panic("StructMember used on array type")
+	}
+
 	sb := &strings.Builder{}
 	if member.Optional {
 		sb.WriteString("WGPU_NULLABLE ")
 	}
-	var typeSuffix string
-	if member.Namespace == "" {
-		typeSuffix = ConstantCase(g.ExtSuffix)
-	} else if member.Namespace != "webgpu" {
-		typeSuffix = ConstantCase(member.Namespace)
-	}
-	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
-	if len(matches) == 2 {
-		fmt.Fprintf(sb, "size_t %sCount;\n", CamelCase(Singularize(member.Name)))
-		fmt.Fprintf(sb, "    %s %s;", g.CType(matches[1], member.Pointer, typeSuffix), CamelCase(member.Name))
+	if strings.HasPrefix(member.Type, "callback.") {
+		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, "", "Info"), CamelCase(member.Name))
 	} else {
-		if strings.HasPrefix(member.Type, "callback.") {
-			fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, "", "Info"), CamelCase(member.Name))
-		} else {
-			fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
-		}
+		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
 	}
 	return sb.String(), nil
+}
+
+func (g *Generator) StructMemberArrayCount(s Struct, memberIndex int) (string, error) {
+	member := s.Members[memberIndex]
+
+	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
+	if len(matches) != 2 {
+		panic("StructMemberArrayCount used on non-array")
+	}
+
+	return fmt.Sprintf("size_t %sCount;", CamelCase(Singularize(member.Name))), nil
+}
+
+func (g *Generator) StructMemberArrayData(s Struct, memberIndex int) (string, error) {
+	member := s.Members[memberIndex]
+	typeSuffix := g.TypeSuffixForNamespace(member.Namespace)
+
+	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
+	if len(matches) != 2 {
+		panic("StructMemberArrayCount used on non-array")
+	}
+
+	sb := &strings.Builder{}
+	if member.Optional {
+		sb.WriteString("WGPU_NULLABLE ")
+	}
+	fmt.Fprintf(sb, "%s %s;", g.CType(matches[1], member.Pointer, typeSuffix), CamelCase(member.Name))
+	return sb.String(), nil
+}
+
+func (g *Generator) StructMemberInitializer(s Struct, memberIndex int) (string, error) {
+	member := s.Members[memberIndex]
+	sb := &strings.Builder{}
+	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
+	if len(matches) == 2 {
+		fmt.Fprintf(sb, "/*.%sCount=*/0 _wgpu_COMMA \\\n", CamelCase(Singularize(member.Name)))
+		fmt.Fprintf(sb, "    /*.%s=*/NULL _wgpu_COMMA \\", CamelCase(member.Name))
+	} else {
+		fmt.Fprintf(sb, "/*.%s=*/%s _wgpu_COMMA \\", CamelCase(member.Name), g.DefaultValue(member, false /* isDocString */))
+	}
+	return sb.String(), nil
+}
+
+func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string {
+	ref := func(s string) string {
+		if isDocString {
+			return "@ref " + s
+		} else {
+			return s
+		}
+	}
+	literal := func(s string) string {
+		if isDocString {
+			return "`" + s + "`"
+		} else {
+			return s
+		}
+	}
+
+	switch {
+	case member.Pointer != "":
+		if member.Default != nil {
+			panic("pointer type should not have a default")
+		}
+		return literal("NULL")
+
+	// Cases that may have member.Default
+	case strings.HasPrefix(member.Type, "enum."):
+		if member.Default == nil {
+			if member.Type == "enum.optional_bool" {
+				// This Undefined is a special one that is not the zero-value, so that
+				// a stdbool.h bool cast correctly to WGPUOptionalBool; this means we
+				// must explicitly initialize it
+				return ref("WGPUOptionalBool_Undefined")
+			} else if isDocString {
+				return "(@ref WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + ")0"
+			} else {
+				return "_wgpu_ENUM_ZERO_INIT(WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + ")"
+			}
+		} else {
+			return ref("WGPU" + PascalCase(strings.TrimPrefix(member.Type, "enum.")) + "_" + PascalCase(*member.Default))
+		}
+	case strings.HasPrefix(member.Type, "bitflag."):
+		if member.Default == nil {
+			return ref("WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_None")
+		} else {
+			return ref("WGPU" + PascalCase(strings.TrimPrefix(member.Type, "bitflag.")) + "_" + PascalCase(*member.Default))
+		}
+	case member.Type == "uint16", member.Type == "uint32", member.Type == "uint64", member.Type == "usize", member.Type == "int32":
+		if member.Default == nil {
+			return literal("0")
+		} else if strings.HasPrefix(*member.Default, "constant.") {
+			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(*member.Default, "constant.")))
+		} else {
+			return literal(*member.Default)
+		}
+	case member.Type == "float32":
+		if member.Default == nil {
+			return literal("0.f")
+		} else if strings.HasPrefix(*member.Default, "constant.") {
+			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(*member.Default, "constant.")))
+		} else if strings.Contains(*member.Default, ".") {
+			return literal(*member.Default + "f")
+		} else {
+			return literal(*member.Default + ".f")
+		}
+	case member.Type == "float64":
+		if member.Default == nil {
+			return literal("0.")
+		} else if strings.HasPrefix(*member.Default, "constant.") {
+			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(*member.Default, "constant.")))
+		} else {
+			return literal(*member.Default)
+		}
+	case member.Type == "bool":
+		if member.Default == nil {
+			return literal("0")
+		} else if strings.HasPrefix(*member.Default, "constant.") {
+			return ref("WGPU_" + ConstantCase(strings.TrimPrefix(*member.Default, "constant.")))
+		} else if *member.Default == "true" {
+			return literal("1")
+		} else if *member.Default == "false" {
+			return literal("0")
+		} else {
+			return *member.Default
+		}
+	case strings.HasPrefix(member.Type, "struct."):
+		if member.Optional {
+			return literal("NULL")
+		} else if member.Default == nil {
+			typ := strings.TrimPrefix(member.Type, "struct.")
+			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
+		} else if *member.Default == "zero" {
+			if isDocString {
+				return "zero (which sets the entry to `BindingNotUsed`)"
+			} else {
+				return literal("_wgpu_STRUCT_ZERO_INIT")
+			}
+		} else {
+			panic("unknown default for struct type")
+		}
+	case member.Default != nil:
+		panic(fmt.Errorf("type %s should not have a default", member.Type))
+
+	// Cases that should not have member.Default
+	case strings.HasPrefix(member.Type, "callback."):
+		typ := strings.TrimPrefix(member.Type, "callback.")
+		return ref("WGPU_" + ConstantCase(typ) + "_CALLBACK_INFO" + g.ConstantExtSuffix() + "_INIT")
+	case strings.HasPrefix(member.Type, "object."):
+		return literal("NULL")
+	case strings.HasPrefix(member.Type, "array<"):
+		return literal("NULL")
+	case member.Type == "out_string", member.Type == "string_with_default_empty", member.Type == "nullable_string":
+		return ref("WGPU_STRING_VIEW_INIT")
+	case member.Type == "c_void":
+		return literal("NULL")
+	default:
+		panic("invalid prefix: " + member.Type + " in member " + member.Name)
+	}
+}
+
+func (g *Generator) ConstantExtSuffix() string {
+	if g.ExtSuffix != "" {
+		return "_" + ConstantCase(g.ExtSuffix)
+	} else {
+		return ""
+	}
 }

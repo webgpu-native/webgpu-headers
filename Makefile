@@ -1,8 +1,14 @@
-.PHONY: help gen gen-check doc
+.PHONY: all all-help-message help gen gen-check doc
 
 # default target if you just type `make`
+all: all-help-message fix gen doc
+
+# help message before starting `make all`
+all-help-message: help
+	@echo 'Running default targets: fix gen doc'
+
 help:
-	@echo 'Targets are: help, fix, gen, gen-check, doc'
+	@echo 'Targets are: all, help, fix, gen, gen-check, doc'
 
 fix: webgpu.yml
 	go run ./fix -yaml webgpu.yml
@@ -24,3 +30,5 @@ gen-check: fix gen
 
 doc: webgpu.h Doxyfile
 	doxygen Doxyfile
+	# Verify that no ` or :: made it through into the final docs
+	! grep -RE '`|>::' doc/generated/**/*.html

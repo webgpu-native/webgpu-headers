@@ -9,6 +9,12 @@
  *
  * This is the home of WebGPU C API specification. We define here the standard
  * `webgpu.h` header that all implementations should provide.
+ *
+ * For all details where behavior is not otherwise specified, `webgpu.h` has
+ * the same behavior as the WebGPU specification for JavaScript on the Web.
+ * The WebIDL-based Web specification is mapped into C as faithfully (and
+ * bidirectionally) as practical/possible.
+ * The working draft of WebGPU can be found at <https://www.w3.org/TR/webgpu/>.
  */
 
 #ifndef {{.HeaderName | ConstantCase}}_H_
@@ -61,6 +67,7 @@
 {{- if eq .Name "webgpu"}}
 #include <stdint.h>
 #include <stddef.h>
+#include <math.h>
 {{else}}
 #include "webgpu.h"
 {{end}}
@@ -68,20 +75,26 @@
 {{- if eq .Name "webgpu"}}
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
+#  define _wgpu_ENUM_ZERO_INIT(type) type(0)
+#  define _wgpu_STRUCT_ZERO_INIT {}
 #  if __cplusplus >= 201103L
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) (type value)
 #  else
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #  endif
-#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-#  define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
 #else
-#  define _wgpu_MAKE_INIT_STRUCT(type, value) value
+#  define _wgpu_ENUM_ZERO_INIT(type) (type)0
+#  define _wgpu_STRUCT_ZERO_INIT {0}
+#  if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#    define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
+#  else
+#    define _wgpu_MAKE_INIT_STRUCT(type, value) value
+#  endif
 #endif
 {{end}}
 
 /**
- * \defgroup Constants
+ * \defgroup Constants Constants
  * \brief Constants.
  *
  * @{
@@ -138,6 +151,9 @@ typedef struct WGPUStringView {
  */
 #define WGPU_STRLEN SIZE_MAX
 
+/**
+ * Initializer for @ref WGPUStringView.
+ */
 #define WGPU_STRING_VIEW_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStringView, { \
     /*.data=*/NULL _wgpu_COMMA \
     /*.length=*/WGPU_STRLEN _wgpu_COMMA \
@@ -151,7 +167,7 @@ typedef {{CType .Type "" ""}} WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
 /** @} */
 
 /**
- * \defgroup Objects
+ * \defgroup Objects Objects
  * \brief Opaque, non-dispatchable handles to WebGPU objects.
  *
  * @{
@@ -183,7 +199,7 @@ struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
 {{  end}}
 
 /**
- * \defgroup Enumerations
+ * \defgroup Enumerations Enumerations
  * \brief Enums.
  *
  * @{
@@ -213,7 +229,7 @@ typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 /** @} */
 
 /**
- * \defgroup Bitflags
+ * \defgroup Bitflags Bitflags
  * \brief Type and constant definitions for bitflag types.
  *
  * @{
@@ -235,7 +251,7 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
 /**
- * \defgroup Callbacks
+ * \defgroup Callbacks Callbacks
  * \brief Callbacks through which asynchronous functions return.
  *
  * @{
@@ -257,27 +273,22 @@ typedef void (*WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}})({{CallbackArgs
  */
 
 typedef struct WGPUChainedStruct {
-    struct WGPUChainedStruct const * next;
+    struct WGPUChainedStruct * next;
     WGPUSType sType;
 } WGPUChainedStruct WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPUChainedStructOut {
-    struct WGPUChainedStructOut * next;
-    WGPUSType sType;
-} WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
 
 /** @} */
 {{  end}}
 
 /**
- * \defgroup Structures
+ * \defgroup Structures Structures
  * \brief Descriptors and other transparent structures.
  *
  * @{
  */
 
- /**
- * \defgroup WGPUCallbackInfo
+/**
+ * \defgroup WGPUCallbackInfo Callback Info Structs
  * \brief Callback info structures that are used in asynchronous functions.
  *
  * @{
@@ -294,34 +305,63 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
 } WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}.
+ */
+#define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+{{-   if eq .Style "callback_mode" }}
+    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+{{-   end}}
+    /*.callback=*/NULL _wgpu_COMMA \
+    /*.userdata1=*/NULL _wgpu_COMMA \
+    /*.userdata2=*/NULL _wgpu_COMMA \
+})
 {{  end}}{{"\n" -}}
 
- /** @} */
+/** @} */
 
 {{- "\n"}}
 {{- range $struct := .Structs}}
-{{-   MComment .Doc 0}}
+{{-   MCommentStruct . 0}}
 typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
-{{-   if eq .Type "base_in" }}
-    WGPUChainedStruct const * nextInChain;
-{{-   else if eq .Type "base_out" }}
-    WGPUChainedStructOut * nextInChain;
-{{-   else if eq .Type "base_in_or_out" }}
-    /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut * nextInChain;
-{{-   else if eq .Type "extension_in"}}
+{{-   if eq .Type "extensible" }}
+    WGPUChainedStruct * nextInChain;
+{{-   else if eq .Type "extension"}}
     WGPUChainedStruct chain;
-{{-   else if eq .Type "extension_out"}}
-    WGPUChainedStructOut chain;
-{{-   else if eq .Type "extension_in_or_out"}}
-    /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
+{{-     if (.Type | IsArray)}}
+    /**
+     * Array count for `{{.Name | CamelCase}}`. The `INIT` macro sets this to 0.
+     */
+    {{  StructMemberArrayCount $struct $memberIndex}}
+    {{- MCommentMember . 4 }}
+    {{  StructMemberArrayData $struct $memberIndex}}
+{{-     else}}
     {{- MCommentMember . 4 }}
     {{  StructMember $struct $memberIndex}}
+{{-     end}}
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}.
+ */
+#define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}, { \
+{{-   if eq .Type "extensible" }}
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+{{-   else if eq .Type "extension" }}
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_{{.Name | PascalCase}}{{$.ExtSuffix}} _wgpu_COMMA \
+    }) _wgpu_COMMA \
+{{-   end }}
+{{-   range $memberIndex, $_ := .Members}}
+    {{  StructMemberInitializer $struct $memberIndex}}
+{{-   end}}
+})
 {{  end}}{{"\n" -}}
 
 /** @} */
@@ -396,7 +436,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
 /** @} */
 
 /**
- * \defgroup Methods
+ * \defgroup Methods Methods
  * \brief Functions that are relative to a specific object.
  *
  * @{
