@@ -9,6 +9,12 @@
  *
  * This is the home of WebGPU C API specification. We define here the standard
  * `webgpu.h` header that all implementations should provide.
+ *
+ * For all details where behavior is not otherwise specified, `webgpu.h` has
+ * the same behavior as the WebGPU specification for JavaScript on the Web.
+ * The WebIDL-based Web specification is mapped into C as faithfully (and
+ * bidirectionally) as practical/possible.
+ * The working draft of WebGPU can be found at <https://www.w3.org/TR/webgpu/>.
  */
 
 #ifndef {{.HeaderName | ConstantCase}}_H_
@@ -286,7 +292,7 @@ typedef struct WGPUChainedStructOut {
  * @{
  */
 
- /**
+/**
  * \defgroup WGPUCallbackInfo Callback Info Structs
  * \brief Callback info structures that are used in asynchronous functions.
  *
@@ -308,7 +314,7 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 /**
  * Initializer for @ref WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}.
  */
-#define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{$.ExtSuffix}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
+#define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
 {{-   if eq .Style "callback_mode" }}
     /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
@@ -319,7 +325,7 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 })
 {{  end}}{{"\n" -}}
 
- /** @} */
+/** @} */
 
 {{- "\n"}}
 {{- range $struct := .Structs}}
@@ -341,8 +347,17 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
+{{-     if (.Type | IsArray)}}
+    /**
+     * Array count for `{{.Name | CamelCase}}`. The `INIT` macro sets this to 0.
+     */
+    {{  StructMemberArrayCount $struct $memberIndex}}
+    {{- MCommentMember . 4 }}
+    {{  StructMemberArrayData $struct $memberIndex}}
+{{-     else}}
     {{- MCommentMember . 4 }}
     {{  StructMember $struct $memberIndex}}
+{{-     end}}
 {{-   end}}
 } WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
 

@@ -1330,10 +1330,6 @@ enums:
     doc: |
       TODO
     entries:
-      - name: vertex_buffer_not_used
-        doc: |
-          This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
-          (See also @ref SentinelValues.)
       - name: undefined
         doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: vertex
@@ -1653,17 +1649,20 @@ structs:
     members:
       - name: operation
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUBlendOperation_Add.
+          If set to @ref WGPUBlendOperation_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUBlendOperation_Add.
         type: enum.blend_operation
         default: undefined
       - name: src_factor
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUBlendFactor_One.
+          If set to @ref WGPUBlendFactor_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_One.
         type: enum.blend_factor
         default: undefined
       - name: dst_factor
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUBlendFactor_Zero.
+          If set to @ref WGPUBlendFactor_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_Zero.
         type: enum.blend_factor
         default: undefined
   - name: blend_state
@@ -1969,7 +1968,8 @@ structs:
         type: callback.device_lost
       - name: uncaptured_error_callback_info
         doc: |
-          TODO
+          Called when there is an uncaptured error on this device, from any thread.
+          See @ref ErrorScopes.
         type: callback.uncaptured_error
   - name: extent_3D
     doc: |
@@ -2289,7 +2289,8 @@ structs:
     members:
       - name: topology
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUPrimitiveTopology_TriangleList.
+          If set to @ref WGPUPrimitiveTopology_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUPrimitiveTopology_TriangleList.
         type: enum.primitive_topology
         default: undefined
       - name: strip_index_format
@@ -2298,12 +2299,14 @@ structs:
         type: enum.index_format
       - name: front_face
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUFrontFace_CCW.
+          If set to @ref WGPUFrontFace_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUFrontFace_CCW.
         type: enum.front_face
         default: undefined
       - name: cull_mode
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUCullMode_None.
+          If set to @ref WGPUCullMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUCullMode_None.
         type: enum.cull_mode
         default: undefined
       - name: unclipped_depth
@@ -2551,7 +2554,8 @@ structs:
         doc: |
           "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
 
-          [Defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
+          If set to @ref WGPUFeatureLevel_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
           Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
           and provide @ref WGPUFeatureLevel_Core instead.
         type: enum.feature_level
@@ -2601,32 +2605,38 @@ structs:
         type: string_with_default_empty
       - name: address_mode_u
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+          If set to @ref WGPUAddressMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
         default: undefined
       - name: address_mode_v
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+          If set to @ref WGPUAddressMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
         default: undefined
       - name: address_mode_w
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+          If set to @ref WGPUAddressMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
         default: undefined
       - name: mag_filter
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
+          If set to @ref WGPUFilterMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
         type: enum.filter_mode
         default: undefined
       - name: min_filter
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
+          If set to @ref WGPUFilterMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
         type: enum.filter_mode
         default: undefined
       - name: mipmap_filter
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUMipmapFilterMode_Nearest.
+          If set to @ref WGPUFilterMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUMipmapFilterMode_Nearest.
         type: enum.mipmap_filter_mode
         default: undefined
       - name: lod_min_clamp
@@ -2693,22 +2703,26 @@ structs:
     members:
       - name: compare
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUCompareFunction_Always.
+          If set to @ref WGPUCompareFunction_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUCompareFunction_Always.
         type: enum.compare_function
         default: undefined
       - name: fail_op
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+          If set to @ref WGPUStencilOperation_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
         default: undefined
       - name: depth_fail_op
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+          If set to @ref WGPUStencilOperation_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
         default: undefined
       - name: pass_op
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+          If set to @ref WGPUStencilOperation_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
         default: undefined
   - name: storage_texture_binding_layout
@@ -2729,7 +2743,8 @@ structs:
         default: undefined
       - name: view_dimension
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
+          If set to @ref WGPUTextureViewDimension_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
         default: undefined
   - name: supported_features
@@ -2808,14 +2823,20 @@ structs:
         type: array<enum.texture_format>
         pointer: immutable
       - name: alpha_mode
-        doc: How the surface's frames will be composited on the screen.
+        doc: |
+          How the surface's frames will be composited on the screen.
+
+          If set to @ref WGPUCompositeAlphaMode_Auto,
+          [defaults] to @ref WGPUCompositeAlphaMode_Inherit in native (allowing the mode
+          to be configured externally), and to @ref WGPUCompositeAlphaMode_Opaque in Wasm.
         type: enum.composite_alpha_mode
         default: auto
       - name: present_mode
         doc: |
           When and in which order the surface's frames will be shown on the screen.
 
-          [Defaults](@ref SentinelValues) to @ref WGPUPresentMode_Fifo.
+          If set to @ref WGPUPresentMode_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
         default: undefined
   - name: surface_descriptor
@@ -2971,7 +2992,8 @@ structs:
         type: struct.origin_3D
       - name: aspect
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
+          If set to @ref WGPUTextureAspect_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
         type: enum.texture_aspect
         default: undefined
   - name: texture_binding_layout
@@ -2987,7 +3009,8 @@ structs:
         default: undefined
       - name: view_dimension
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
+          If set to @ref WGPUTextureViewDimension_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
         default: undefined
       - name: multisampled
@@ -3011,7 +3034,8 @@ structs:
         default: none
       - name: dimension
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUTextureDimension_2D.
+          If set to @ref WGPUTextureDimension_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureDimension_2D.
         type: enum.texture_dimension
         default: undefined
       - name: size
@@ -3079,7 +3103,8 @@ structs:
         default: constant.array_layer_count_undefined
       - name: aspect
         doc: |
-          [Defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
+          If set to @ref WGPUTextureAspect_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
         type: enum.texture_aspect
         default: undefined
       - name: usage
@@ -3106,16 +3131,25 @@ structs:
         type: uint32
   - name: vertex_buffer_layout
     doc: |
-      TODO
+      If `attributes` is empty *and* `stepMode` is @ref WGPUVertexStepMode_Undefined,
+      indicates a "hole" in the parent @ref WGPUVertexState `buffers` array,
+      with behavior equivalent to `null` in the JS API.
+
+      If `attributes` is empty but `stepMode` is *not* @ref WGPUVertexStepMode_Undefined,
+      indicates a vertex buffer with no attributes, with behavior equivalent to
+      `{ attributes: [] }` in the JS API. (TODO: If the JS API changes not to
+      distinguish these cases, then this distinction doesn't matter and we can
+      remove this documentation.)
+
+      If `stepMode` is @ref WGPUVertexStepMode_Undefined but `attributes` is *not* empty,
+      `stepMode` [defaults](@ref SentinelValues) to @ref WGPUVertexStepMode_Vertex.
     type: base_in
     members:
       - name: step_mode
         doc: |
-          The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
-          indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
-          the pipeline does not use a vertex buffer at this `location`.
+          TODO
         type: enum.vertex_step_mode
-        default: vertex_buffer_not_used
+        default: undefined
       - name: array_stride
         doc: |
           TODO
@@ -4127,7 +4161,8 @@ objects:
           passed_with_ownership: true
       - name: push_error_scope
         doc: |
-          TODO
+          Pushes an error scope to the current thread's error scope stack.
+          See @ref ErrorScopes.
         args:
           - name: filter
             doc: |
@@ -4135,7 +4170,8 @@ objects:
             type: enum.error_filter
       - name: pop_error_scope
         doc: |
-          TODO
+          Pops an error scope to the current thread's error scope stack,
+          asynchronously returning the result. See @ref ErrorScopes.
         callback: callback.pop_error_scope
       - name: set_label
         doc: |
