@@ -1489,7 +1489,7 @@ structs:
   - name: adapter_info
     doc: |
       TODO
-    type: base_out
+    type: extensible
     free_members: true
     members:
       - name: vendor
@@ -1528,7 +1528,7 @@ structs:
   - name: bind_group_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1546,7 +1546,7 @@ structs:
   - name: bind_group_entry
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: binding
         doc: |
@@ -1585,7 +1585,7 @@ structs:
   - name: bind_group_layout_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1599,7 +1599,7 @@ structs:
   - name: bind_group_layout_entry
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: binding
         doc: |
@@ -1665,7 +1665,7 @@ structs:
   - name: buffer_binding_layout
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: type
         doc: |
@@ -1686,7 +1686,7 @@ structs:
   - name: buffer_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1730,7 +1730,7 @@ structs:
   - name: color_target_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: format
         doc: |
@@ -1753,7 +1753,7 @@ structs:
   - name: command_buffer_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1762,7 +1762,7 @@ structs:
   - name: command_encoder_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1771,7 +1771,7 @@ structs:
   - name: compilation_info
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: messages
         doc: |
@@ -1781,7 +1781,7 @@ structs:
   - name: compilation_message
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: message
         doc: |
@@ -1810,7 +1810,7 @@ structs:
   - name: compute_pass_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1825,7 +1825,7 @@ structs:
   - name: compute_pipeline_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1843,7 +1843,7 @@ structs:
   - name: compute_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: module
         doc: |
@@ -1861,7 +1861,7 @@ structs:
   - name: constant_entry
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: key
         doc: |
@@ -1874,7 +1874,7 @@ structs:
   - name: depth_stencil_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: format
         doc: |
@@ -1925,7 +1925,7 @@ structs:
   - name: device_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -1977,7 +1977,7 @@ structs:
   - name: fragment_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: module
         doc: |
@@ -2017,7 +2017,7 @@ structs:
   - name: instance_capabilities
     doc: |
       Features enabled on the WGPUInstance
-    type: base_in_or_out
+    type: extensible
     members:
       - name: timed_wait_any_enable
         doc: Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
@@ -2028,7 +2028,7 @@ structs:
   - name: instance_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: features
         doc: Instance features to enable
@@ -2036,7 +2036,7 @@ structs:
   - name: limits
     doc: |
       TODO
-    type: base_in_or_out
+    type: extensible
     members:
       - name: max_texture_dimension_1D
         doc: |
@@ -2196,7 +2196,7 @@ structs:
   - name: multisample_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: count
         doc: |
@@ -2236,7 +2236,7 @@ structs:
   - name: pass_timestamp_writes
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: query_set
         doc: |
@@ -2255,7 +2255,7 @@ structs:
   - name: pipeline_layout_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2269,7 +2269,7 @@ structs:
   - name: primitive_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: topology
         doc: |
@@ -2301,7 +2301,7 @@ structs:
   - name: query_set_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2318,7 +2318,7 @@ structs:
   - name: queue_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2327,7 +2327,7 @@ structs:
   - name: render_bundle_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2336,7 +2336,7 @@ structs:
   - name: render_bundle_encoder_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2370,7 +2370,7 @@ structs:
   - name: render_pass_color_attachment
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: view
         doc: |
@@ -2403,7 +2403,7 @@ structs:
   - name: render_pass_depth_stencil_attachment
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: view
         doc: |
@@ -2451,7 +2451,7 @@ structs:
   - name: render_pass_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2482,7 +2482,7 @@ structs:
   - name: render_pass_max_draw_count
     doc: |
       TODO
-    type: extension_in
+    type: extension
     extends:
       - render_pass_descriptor
     members:
@@ -2494,7 +2494,7 @@ structs:
   - name: render_pipeline_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2532,7 +2532,7 @@ structs:
   - name: request_adapter_options
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: feature_level
         doc: |
@@ -2570,7 +2570,7 @@ structs:
   - name: sampler_binding_layout
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: type
         doc: |
@@ -2581,7 +2581,7 @@ structs:
   - name: sampler_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2646,7 +2646,7 @@ structs:
   - name: shader_module_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -2655,7 +2655,7 @@ structs:
   - name: shader_source_SPIRV
     doc: |
       TODO
-    type: extension_in
+    type: extension
     extends:
       - shader_module_descriptor
     members:
@@ -2672,7 +2672,7 @@ structs:
   - name: shader_source_WGSL
     doc: |
       TODO
-    type: extension_in
+    type: extension
     extends:
       - shader_module_descriptor
     members:
@@ -2712,7 +2712,7 @@ structs:
   - name: storage_texture_binding_layout
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: access
         doc: |
@@ -2755,7 +2755,7 @@ structs:
         pointer: immutable
   - name: surface_capabilities
     doc: Filled by @ref wgpuSurfaceGetCapabilities with what's supported for @ref wgpuSurfaceConfigure for a pair of @ref WGPUSurface and @ref WGPUAdapter.
-    type: base_out
+    type: extensible
     free_members: true
     members:
       - name: usages
@@ -2783,7 +2783,7 @@ structs:
     doc: |
       Options to @ref wgpuSurfaceConfigure for defining how a @ref WGPUSurface will be rendered to and presented to the user.
       See @ref Surface-Configuration for more details.
-    type: base_in
+    type: extensible
     members:
       - name: device
         doc: The @ref WGPUDevice to use to render to surface's textures.
@@ -2828,14 +2828,14 @@ structs:
       The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
       It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
       See @ref Surface-Creation for more details.
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: Label used to refer to the object.
         type: string_with_default_empty
   - name: surface_source_android_native_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an Android [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window).
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2845,7 +2845,7 @@ structs:
         pointer: mutable
   - name: surface_source_metal_layer
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2855,7 +2855,7 @@ structs:
         pointer: mutable
   - name: surface_source_wayland_surface
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [Wayland](https://wayland.freedesktop.org/) [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface).
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2869,7 +2869,7 @@ structs:
         pointer: mutable
   - name: surface_source_windows_HWND
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a Windows [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd).
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2885,7 +2885,7 @@ structs:
         pointer: mutable
   - name: surface_source_XCB_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2898,7 +2898,7 @@ structs:
         type: uint32
   - name: surface_source_xlib_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [Xlib](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html) `Window`.
-    type: extension_in
+    type: extension
     extends:
       - surface_descriptor
     members:
@@ -2913,7 +2913,7 @@ structs:
     doc: |
       Queried each frame from a @ref WGPUSurface to get a @ref WGPUTexture to render to along with some metadata.
       See @ref Surface-Presenting for more details.
-    type: base_out
+    type: extensible
     members:
       - name: texture
         doc: |
@@ -2983,7 +2983,7 @@ structs:
   - name: texture_binding_layout
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: sample_type
         doc: |
@@ -3005,7 +3005,7 @@ structs:
   - name: texture_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -3049,7 +3049,7 @@ structs:
   - name: texture_view_descriptor
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: label
         doc: |
@@ -3099,7 +3099,7 @@ structs:
   - name: vertex_attribute
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: format
         doc: |
@@ -3127,7 +3127,7 @@ structs:
 
       If `stepMode` is @ref WGPUVertexStepMode_Undefined but `attributes` is *not* empty,
       `stepMode` [defaults](@ref SentinelValues) to @ref WGPUVertexStepMode_Vertex.
-    type: base_in
+    type: extensible
     members:
       - name: step_mode
         doc: |
@@ -3146,7 +3146,7 @@ structs:
   - name: vertex_state
     doc: |
       TODO
-    type: base_in
+    type: extensible
     members:
       - name: module
         doc: |

@@ -433,12 +433,8 @@
                         "type": "string",
                         "description": "Type of the structure",
                         "enum": [
-                            "base_in",
-                            "base_out",
-                            "base_in_or_out",
-                            "extension_in",
-                            "extension_out",
-                            "extension_in_or_out",
+                            "extensible",
+                            "extension",
                             "standalone"
                         ]
                     },
