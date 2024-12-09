@@ -1,0 +1,831 @@
+copyright: |
+  Copyright 2019-2023 WebGPU-Native developers
+
+  SPDX-License-Identifier: BSD-3-Clause
+name: example
+doc: |
+  An example of WebGPU extension, inspired by wgpu-native's wgpu.h header.
+enum_prefix: '0x0006'
+constants:
+  - name: test_value_undefined
+    value: uint32_max
+    doc: A constant that represent some undefined value for this extension.
+typedefs:
+  - name: test
+    type: uint32
+    doc: A typedef added for this extension.
+enums:
+  - name: feature
+    doc: Custom features available with this extension
+    extended: true
+    entries:
+      - null
+      - name: push_constants
+        doc: |
+          TODO
+      - name: texture_adapter_specific_format_features
+        doc: |
+          TODO
+      - name: multi_draw_indirect
+        doc: |
+          TODO
+      - name: multi_draw_indirect_count
+        doc: |
+          TODO
+      - name: vertex_writable_storage
+        doc: |
+          TODO
+      - name: texture_binding_array
+        doc: |
+          TODO
+      - name: sampled_texture_and_storage_buffer_array_non_uniform_indexing
+        doc: |
+          TODO
+      - name: pipeline_statistics_query
+        doc: |
+          TODO
+      - name: storage_resource_binding_array
+        doc: |
+          TODO
+      - name: partially_bound_binding_array
+        doc: |
+          TODO
+      - name: texture_format_16bit_norm
+        doc: |
+          TODO
+      - name: texture_compression_astc_hdr
+        doc: |
+          TODO
+      - name: mappable_primary_buffers
+        doc: |
+          TODO
+      - name: buffer_binding_array
+        doc: |
+          TODO
+      - name: uniform_buffer_and_storage_texture_array_non_uniform_indexing
+        doc: |
+          TODO
+      - name: spirv_shader_passthrough
+        doc: |
+          TODO
+      - name: vertex_attribute_64bit
+        doc: |
+          TODO
+      - name: texture_format_nv12
+        doc: |
+          TODO
+      - name: ray_tracing_acceleration_structure
+        doc: |
+          TODO
+      - name: ray_query
+        doc: |
+          TODO
+      - name: shader_f64
+        doc: |
+          TODO
+      - name: shader_i16
+        doc: |
+          TODO
+      - name: shader_primitive_index
+        doc: |
+          TODO
+      - name: shader_early_depth_test
+        doc: |
+          TODO
+      - name: subgroup
+        doc: |
+          TODO
+      - name: subgroup_vertex
+        doc: |
+          TODO
+      - name: subgroup_barrier
+        doc: |
+          TODO
+      - name: timestamp_query_inside_encoders
+        doc: |
+          TODO
+      - name: timestamp_query_inside_passes
+        doc: |
+          TODO
+  - name: log_level
+    doc: Verbosity of the log, used in @ref wgpuSetLogLevel.
+    entries:
+      - name: off
+        doc: |
+          TODO
+      - name: error
+        doc: |
+          TODO
+      - name: warn
+        doc: |
+          TODO
+      - name: info
+        doc: |
+          TODO
+      - name: debug
+        doc: |
+          TODO
+      - name: trace
+        doc: |
+          TODO
+  - name: dx12_compiler
+    doc: Compiler to use when compiling DirectX 12 shaders.
+    entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+      - name: fxc
+        doc: |
+          TODO
+      - name: dxc
+        doc: |
+          TODO
+  - name: gles3_minor_version
+    doc: Minor version of OpenGL ES 3.x to use.
+    entries:
+      - name: automatic
+        doc: |
+          TODO
+      - name: version0
+        doc: Use OpenGL ES 3.0
+      - name: version1
+        doc: Use OpenGL ES 3.1
+      - name: version2
+        doc: Use OpenGL ES 3.2
+  - name: pipeline_statistic_name
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: vertex_shader_invocations
+        doc: |
+          TODO
+      - name: clipper_invocations
+        doc: |
+          TODO
+      - name: clipper_primitives_out
+        doc: |
+          TODO
+      - name: fragment_shader_invocations
+        doc: |
+          TODO
+      - name: compute_shader_invocations
+        doc: |
+          TODO
+  - name: query_type
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: PipelineStatistics
+        doc: |
+          TODO
+  - name: native_texture_format
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: r16_unorm
+        doc: |
+          Available when Features::TextureFormat16bitNorm is enabled
+      - name: r16_snorm
+        doc: |
+          Available when Features::TextureFormat16bitNorm is enabled
+      - name: rg16_unorm
+        doc: |
+          Available when Features::TextureFormat16bitNorm is enabled
+      - name: rg16_snorm
+        doc: |
+          Available when Features::TextureFormat16bitNorm is enabled
+      - name: rgba16_unorm
+        doc: |
+          Available when Features::TextureFormat16bitNorm is enabled
+      - name: rgba16_snorm
+        doc: |
+          Available when Features::TextureFormat16bitNorm is enabled
+      - name: clipper_invocations
+        doc: |
+          Available when Features::TextureFormatNv12 is enabled
+bitflags:
+  - name: instance_backend
+    doc: |
+      TODO
+    entries:
+      - name: all
+        doc: |
+          TODO
+      - name: vulkan
+        doc: |
+          TODO
+      - name: gl
+        doc: |
+          TODO
+      - name: metal
+        doc: |
+          TODO
+      - name: dx12
+        doc: |
+          TODO
+      - name: dx11
+        doc: |
+          TODO
+      - name: browser_webgpu
+        doc: |
+          TODO
+      - name: primary
+        value_combination:
+          - vulkan
+          - metal
+          - dx12
+          - browser_webgpu
+        doc: |
+          TODO
+      - name: secondary
+        value_combination:
+          - gl
+          - dx11
+        doc: |
+          TODO
+  - name: instance_option
+    doc: |
+      TODO
+    entries:
+      - name: default
+        doc: |
+          TODO
+      - name: debug
+        doc: |
+          TODO
+      - name: validation
+        doc: |
+          TODO
+      - name: discard_hal_labels
+        doc: |
+          TODO
+structs:
+  - name: instance_extras
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - instance_descriptor
+    members:
+      - name: backends
+        doc: |
+          TODO
+        type: bitflag.instance_backend
+      - name: options
+        doc: |
+          TODO
+        type: bitflag.instance_option
+      - name: dx12_shader_compiler
+        doc: |
+          TODO
+        type: enum.dx12_compiler
+      - name: gles3_minor_version
+        doc: |
+          TODO
+        type: enum.gles3_minor_version
+      - name: dxil_path
+        doc: |
+          TODO
+        type: string_with_default_empty
+      - name: dxc_path
+        doc: |
+          TODO
+        type: string_with_default_empty
+  - name: device_extras
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - device_descriptor
+    members:
+      - name: trace_path
+        doc: |
+          TODO
+        type: string_with_default_empty
+  - name: native_limits
+    doc: |
+      TODO
+    type: extension_in_or_out
+    extends:
+      - limits
+    members:
+      - name: max_push_constant_size
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_non_sampler_bindings
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+  - name: required_limits_extras
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - required_limits
+    members:
+      - name: limits
+        doc: |
+          TODO
+        type: struct.native_limits
+  - name: supported_limits_extras
+    doc: |
+      TODO
+    type: extension_out
+    extends:
+      - supported_limits
+    members:
+      - name: limits
+        doc: |
+          TODO
+        type: struct.native_limits
+  - name: push_constant_range
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: stages
+        doc: |
+          TODO
+        type: bitflag.shader_stage_flags
+      - name: start
+        doc: |
+          TODO
+        type: uint32
+      - name: end
+        doc: |
+          TODO
+        type: uint32
+  - name: pipeline_layout_extras
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - pipeline_layout_descriptor
+    members:
+      - name: push_constant_ranges
+        doc: |
+          TODO
+        type: array<struct.push_constant_range>
+  - name: shader_define
+    doc: |
+      TODO
+    type: base_in
+    members:
+      - name: name
+        doc: |
+          TODO
+        type: string_with_default_empty
+      - name: value
+        doc: |
+          TODO
+        type: string_with_default_empty
+  - name: shader_source_GLSL
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - shader_module_descriptor
+    members:
+      - name: code
+        doc: |
+          TODO
+        type: string_with_default_empty
+      - name: stage
+        doc: |
+          TODO
+        type: bitflag.shader_stage
+      - name: defines
+        doc: |
+          TODO
+        type: array<struct.shader_define>
+  - name: registry_report
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: num_allocated
+        doc: |
+          TODO
+        type: usize
+      - name: num_kept_from_user
+        doc: |
+          TODO
+        type: usize
+      - name: num_released_from_user
+        doc: |
+          TODO
+        type: usize
+      - name: element_size
+        doc: |
+          TODO
+        type: usize
+  - name: hub_report
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: adapters
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: devices
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: queues
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: pipeline_layouts
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: shader_modules
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: bind_group_layouts
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: bind_groups
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: command_buffers
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: render_bundles
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: render_pipelines
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: compute_pipelines
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: pipeline_caches
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: query_sets
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: buffers
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: textures
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: texture_views
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: samplers
+        doc: |
+          TODO
+        type: struct.registry_report
+  - name: global_report
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: surfaces
+        doc: |
+          TODO
+        type: struct.registry_report
+      - name: hub
+        doc: |
+          TODO
+        type: struct.hub_report
+  - name: instance_enumerate_adapter_options
+    doc: |
+      TODO
+    type: base_out
+    members:
+      - name: backends
+        doc: |
+          TODO
+        type: enum.instance_backend
+  - name: bind_group_entry_extras
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - bind_group_entry
+    members:
+      - name: buffers
+        doc: |
+          TODO
+        type: array<object.buffer>
+        pointer: immutable
+      - name: samplers
+        doc: |
+          TODO
+        type: array<object.sampler>
+        pointer: immutable
+      - name: texture_views
+        doc: |
+          TODO
+        type: array<object.texture_view>
+        pointer: immutable
+  - name: bind_group_layout_entry_extras
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - bind_group_layout_entry
+    members:
+      - name: count
+        doc: |
+          TODO
+        type: uint32
+  - name: query_set_descriptor_extras
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - query_set_descriptor
+    members:
+      - name: pipeline_statistics
+        doc: |
+          TODO
+        type: array<enum.pipeline_statistic_name>
+        pointer: immutable
+  - name: surface_configuration_extras
+    doc: |
+      TODO
+    type: extension_in
+    extends:
+      - query_set_descriptor
+    members:
+      - name: desired_maximum_frame_latency
+        doc: |
+          TODO
+        type: uint32
+callbacks:
+  - name: log
+    doc: |
+      TODO
+    style: callback_mode
+    args:
+      - name: level
+        doc: |
+          TODO
+        type: enum.log_level
+      - name: message
+        doc: |
+          TODO
+        type: out_string
+        passed_with_ownership: false
+functions:
+  - name: set_log_callback
+    doc: |
+      TODO
+    args:
+      - name: callback
+        doc: |
+          TODO
+        type: callback.log
+  - name: set_log_level
+    doc: |
+      TODO
+    args:
+      - name: level
+        doc: |
+          TODO
+        type: enum.log_level
+  - name: get_version
+    doc: |
+      TODO
+    returns:
+      doc: |
+        TODO
+      type: uint32
+objects:
+  - name: instance
+    doc: |
+      TODO
+    extended: true
+    methods:
+      - name: generate_report
+        doc: |
+          TODO
+        args:
+          - name: report
+            doc: |
+              TODO
+            type: struct.global_report
+            pointer: mutable
+            passed_with_ownership: true
+      - name: enumerate_adapters
+        doc: |
+          TODO
+        args:
+          - name: options
+            doc: |
+              TODO
+            type: struct.instance_enumerate_adapter_options
+            pointer: immutable
+            passed_with_ownership: true
+            optional: true
+          - name: adapters
+            doc: |
+              TODO
+            type: object.adapter
+            pointer: mutable
+            passed_with_ownership: true
+  - name: render_pass_encoder
+    doc: |
+      TODO
+    extended: true
+    methods:
+      - name: set_push_constants
+        doc: |
+          TODO
+        args:
+          - name: offset
+            doc: |
+              TODO
+            type: uint32
+          - name: stages
+            doc: |
+              TODO
+            type: bitflag.shader_stage
+          - name: byte_size
+            doc: |
+              TODO
+            type: usize
+          - name: code
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+      - name: multi_draw_indirect
+        doc: |
+          TODO
+        args:
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: count
+            doc: |
+              TODO
+            type: uint32
+      - name: multi_draw_indexed_indirect
+        doc: |
+          TODO
+        args:
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: count
+            doc: |
+              TODO
+            type: uint32
+      - name: multi_draw_indirect_count
+        doc: |
+          TODO
+        args:
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: count_buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: count_buffer_offset
+            doc: |
+              TODO
+            type: uint64
+          - name: max_count
+            doc: |
+              TODO
+            type: uint32
+      - name: multi_draw_indexed_indirect_count
+        doc: |
+          TODO
+        args:
+          - name: buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: offset
+            doc: |
+              TODO
+            type: uint64
+          - name: count_buffer
+            doc: |
+              TODO
+            type: object.buffer
+          - name: count_buffer_offset
+            doc: |
+              TODO
+            type: uint64
+          - name: max_count
+            doc: |
+              TODO
+            type: uint32
+      - name: begin_pipeline_statistics_query
+        doc: |
+          TODO
+        args:
+          - name: query_set
+            doc: |
+              TODO
+            type: object.query_set
+          - name: query_index
+            doc: |
+              TODO
+            type: uint32
+      - name: end_pipeline_statistics_query
+        doc: |
+          TODO
+      - name: write_timestamp
+        doc: |
+          TODO
+        args:
+          - name: query_set
+            doc: |
+              TODO
+            type: object.query_set
+          - name: query_index
+            doc: |
+              TODO
+            type: uint32
+  - name: compute_pass_encoder
+    doc: |
+      TODO
+    extended: true
+    methods:
+      - name: set_push_constants
+        doc: |
+          TODO
+        args:
+          - name: offset
+            doc: |
+              TODO
+            type: uint32
+          - name: byte_size
+            doc: |
+              TODO
+            type: usize
+          - name: code
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+      - name: begin_pipeline_statistics_query
+        doc: |
+          TODO
+        args:
+          - name: query_set
+            doc: |
+              TODO
+            type: object.query_set
+          - name: query_index
+            doc: |
+              TODO
+            type: uint32
+      - name: end_pipeline_statistics_query
+        doc: |
+          TODO
+      - name: write_timestamp
+        doc: |
+          TODO
+        args:
+          - name: query_set
+            doc: |
+              TODO
+            type: object.query_set
+          - name: query_index
+            doc: |
+              TODO
+            type: uint32

@@ -68,7 +68,7 @@ func Comment(in string, mode CommentType, indent int, newline bool) string {
 }
 
 func ConstantCase(v string) string {
-	return strings.ToUpper(v)
+	return strings.Replace(strings.ToUpper(v), "-", "_", -1)
 }
 
 func PascalCase(s string) string {
