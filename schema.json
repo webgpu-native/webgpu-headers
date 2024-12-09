@@ -160,7 +160,7 @@
                         "number",
                         "boolean"
                     ],
-                    "description": "Default value assigned to this parameter when using initializer macro"
+                    "description": "Default value assigned to this parameter when using initializer macro. Special context-dependent values include constant names (`constant.*`), bitflag names (unprefixed), and `zero` for struct-zero-init (where zero-init is known to have the desired result)."
                 }
             },
             "required": [
