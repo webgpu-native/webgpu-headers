@@ -581,17 +581,25 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		} else {
 			return *member.Default
 		}
+	case strings.HasPrefix(member.Type, "struct."):
+		if member.Optional {
+			return literal("NULL")
+		} else if member.Default == nil {
+			typ := strings.TrimPrefix(member.Type, "struct.")
+			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
+		} else if *member.Default == "zero" {
+			if isDocString {
+				return "zero (which sets the entry to `BindingNotUsed`)"
+			} else {
+				return literal("_wgpu_STRUCT_ZERO_INIT")
+			}
+		} else {
+			panic("unknown default for struct type")
+		}
 	case member.Default != nil:
 		panic(fmt.Errorf("type %s should not have a default", member.Type))
 
 	// Cases that should not have member.Default
-	case strings.HasPrefix(member.Type, "struct."):
-		if member.Optional {
-			return literal("NULL")
-		} else {
-			typ := strings.TrimPrefix(member.Type, "struct.")
-			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
-		}
 	case strings.HasPrefix(member.Type, "callback."):
 		typ := strings.TrimPrefix(member.Type, "callback.")
 		return ref("WGPU_" + ConstantCase(typ) + "_CALLBACK_INFO" + g.ConstantExtSuffix() + "_INIT")

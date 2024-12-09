@@ -1608,18 +1608,34 @@ structs:
         doc: |
           TODO
         type: struct.buffer_binding_layout
+        # Use struct-zero-init here to get .type=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_BUFFER_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
+        default: zero
       - name: sampler
         doc: |
           TODO
         type: struct.sampler_binding_layout
+        # Use struct-zero-init here to get .type=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_SAMPLER_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
+        default: zero
       - name: texture
         doc: |
           TODO
         type: struct.texture_binding_layout
+        # Use struct-zero-init here to get .sampleType=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_TEXTURE_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
+        default: zero
       - name: storage_texture
         doc: |
           TODO
         type: struct.storage_texture_binding_layout
+        # Use struct-zero-init here to get .access=BindingNotUsed (0), instead of
+        # Undefined which is the default in WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT.
+        # Zero-init is conveniently correct for the rest of the fields, too.
+        default: zero
   - name: blend_component
     doc: |
       TODO
@@ -1666,7 +1682,7 @@ structs:
           If set to @ref WGPUBufferBindingType_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUBufferBindingType_Uniform.
         type: enum.buffer_binding_type
-        default: binding_not_used
+        default: undefined
       - name: has_dynamic_offset
         doc: |
           TODO
@@ -2571,7 +2587,7 @@ structs:
           If set to @ref WGPUSamplerBindingType_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUSamplerBindingType_Filtering.
         type: enum.sampler_binding_type
-        default: binding_not_used
+        default: undefined
   - name: sampler_descriptor
     doc: |
       TODO
@@ -2713,7 +2729,7 @@ structs:
           If set to @ref WGPUStorageTextureAccess_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUStorageTextureAccess_WriteOnly.
         type: enum.storage_texture_access
-        default: binding_not_used
+        default: undefined
       - name: format
         doc: |
           TODO
@@ -2984,7 +3000,7 @@ structs:
           If set to @ref WGPUTextureSampleType_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUTextureSampleType_Float.
         type: enum.texture_sample_type
-        default: binding_not_used
+        default: undefined
       - name: view_dimension
         doc: |
           If set to @ref WGPUTextureViewDimension_Undefined,

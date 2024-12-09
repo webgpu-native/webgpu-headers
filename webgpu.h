@@ -65,6 +65,7 @@
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
 #  define _wgpu_ENUM_ZERO_INIT(type) type(0)
+#  define _wgpu_STRUCT_ZERO_INIT {}
 #  if __cplusplus >= 201103L
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) (type value)
 #  else
@@ -72,6 +73,7 @@
 #  endif
 #else
 #  define _wgpu_ENUM_ZERO_INIT(type) (type)0
+#  define _wgpu_STRUCT_ZERO_INIT {0}
 #  if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
 #  else
@@ -1677,7 +1679,7 @@ typedef struct WGPUBufferBindingLayout {
      * If set to @ref WGPUBufferBindingType_Undefined,
      * [defaults](@ref SentinelValues) to @ref WGPUBufferBindingType_Uniform.
      *
-     * The `INIT` macro sets this to @ref WGPUBufferBindingType_BindingNotUsed.
+     * The `INIT` macro sets this to @ref WGPUBufferBindingType_Undefined.
      */
     WGPUBufferBindingType type;
     /**
@@ -1695,7 +1697,7 @@ typedef struct WGPUBufferBindingLayout {
  */
 #define WGPU_BUFFER_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBufferBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.type=*/WGPUBufferBindingType_BindingNotUsed _wgpu_COMMA \
+    /*.type=*/WGPUBufferBindingType_Undefined _wgpu_COMMA \
     /*.hasDynamicOffset=*/0 _wgpu_COMMA \
     /*.minBindingSize=*/0 _wgpu_COMMA \
 })
@@ -2578,7 +2580,7 @@ typedef struct WGPUSamplerBindingLayout {
      * If set to @ref WGPUSamplerBindingType_Undefined,
      * [defaults](@ref SentinelValues) to @ref WGPUSamplerBindingType_Filtering.
      *
-     * The `INIT` macro sets this to @ref WGPUSamplerBindingType_BindingNotUsed.
+     * The `INIT` macro sets this to @ref WGPUSamplerBindingType_Undefined.
      */
     WGPUSamplerBindingType type;
 } WGPUSamplerBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
@@ -2588,7 +2590,7 @@ typedef struct WGPUSamplerBindingLayout {
  */
 #define WGPU_SAMPLER_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSamplerBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.type=*/WGPUSamplerBindingType_BindingNotUsed _wgpu_COMMA \
+    /*.type=*/WGPUSamplerBindingType_Undefined _wgpu_COMMA \
 })
 
 /**
@@ -2805,7 +2807,7 @@ typedef struct WGPUStorageTextureBindingLayout {
      * If set to @ref WGPUStorageTextureAccess_Undefined,
      * [defaults](@ref SentinelValues) to @ref WGPUStorageTextureAccess_WriteOnly.
      *
-     * The `INIT` macro sets this to @ref WGPUStorageTextureAccess_BindingNotUsed.
+     * The `INIT` macro sets this to @ref WGPUStorageTextureAccess_Undefined.
      */
     WGPUStorageTextureAccess access;
     /**
@@ -2826,7 +2828,7 @@ typedef struct WGPUStorageTextureBindingLayout {
  */
 #define WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStorageTextureBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.access=*/WGPUStorageTextureAccess_BindingNotUsed _wgpu_COMMA \
+    /*.access=*/WGPUStorageTextureAccess_Undefined _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.viewDimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
 })
@@ -3302,7 +3304,7 @@ typedef struct WGPUTextureBindingLayout {
      * If set to @ref WGPUTextureSampleType_Undefined,
      * [defaults](@ref SentinelValues) to @ref WGPUTextureSampleType_Float.
      *
-     * The `INIT` macro sets this to @ref WGPUTextureSampleType_BindingNotUsed.
+     * The `INIT` macro sets this to @ref WGPUTextureSampleType_Undefined.
      */
     WGPUTextureSampleType sampleType;
     /**
@@ -3323,7 +3325,7 @@ typedef struct WGPUTextureBindingLayout {
  */
 #define WGPU_TEXTURE_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.sampleType=*/WGPUTextureSampleType_BindingNotUsed _wgpu_COMMA \
+    /*.sampleType=*/WGPUTextureSampleType_Undefined _wgpu_COMMA \
     /*.viewDimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
     /*.multisampled=*/0 _wgpu_COMMA \
 })
@@ -3471,19 +3473,19 @@ typedef struct WGPUBindGroupLayoutEntry {
      */
     WGPUShaderStage visibility;
     /**
-     * The `INIT` macro sets this to @ref WGPU_BUFFER_BINDING_LAYOUT_INIT.
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUBufferBindingLayout buffer;
     /**
-     * The `INIT` macro sets this to @ref WGPU_SAMPLER_BINDING_LAYOUT_INIT.
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUSamplerBindingLayout sampler;
     /**
-     * The `INIT` macro sets this to @ref WGPU_TEXTURE_BINDING_LAYOUT_INIT.
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUTextureBindingLayout texture;
     /**
-     * The `INIT` macro sets this to @ref WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT.
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUStorageTextureBindingLayout storageTexture;
 } WGPUBindGroupLayoutEntry WGPU_STRUCTURE_ATTRIBUTE;
@@ -3495,10 +3497,10 @@ typedef struct WGPUBindGroupLayoutEntry {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.binding=*/0 _wgpu_COMMA \
     /*.visibility=*/WGPUShaderStage_None _wgpu_COMMA \
-    /*.buffer=*/WGPU_BUFFER_BINDING_LAYOUT_INIT _wgpu_COMMA \
-    /*.sampler=*/WGPU_SAMPLER_BINDING_LAYOUT_INIT _wgpu_COMMA \
-    /*.texture=*/WGPU_TEXTURE_BINDING_LAYOUT_INIT _wgpu_COMMA \
-    /*.storageTexture=*/WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT _wgpu_COMMA \
+    /*.buffer=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.sampler=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.texture=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.storageTexture=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
 })
 
 /**
