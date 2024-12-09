@@ -228,6 +228,7 @@ struct WGPUStorageTextureBindingLayout;
 struct WGPUSupportedFeatures;
 struct WGPUSupportedWGSLLanguageFeatures;
 struct WGPUSurfaceCapabilities;
+struct WGPUSurfaceColorManagement;
 struct WGPUSurfaceConfiguration;
 struct WGPUSurfaceDescriptor;
 struct WGPUSurfaceSourceAndroidNativeWindow;
@@ -663,6 +664,12 @@ typedef enum WGPUPowerPreference {
     WGPUPowerPreference_Force32 = 0x7FFFFFFF
 } WGPUPowerPreference WGPU_ENUM_ATTRIBUTE;
 
+typedef enum WGPUPredefinedColorSpace {
+    WGPUPredefinedColorSpace_SRGB = 0x00000001,
+    WGPUPredefinedColorSpace_DisplayP3 = 0x00000002,
+    WGPUPredefinedColorSpace_Force32 = 0x7FFFFFFF
+} WGPUPredefinedColorSpace WGPU_ENUM_ATTRIBUTE;
+
 /**
  * Describes when and in which order frames are presented on the screen when @ref wgpuSurfacePresent is called.
  */
@@ -752,6 +759,7 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceSourceWaylandSurface = 0x00000007,
     WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
     WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
+    WGPUSType_SurfaceColorManagement = 0x0000000A,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -1037,6 +1045,12 @@ typedef enum WGPUTextureViewDimension {
     WGPUTextureViewDimension_3D = 0x00000006,
     WGPUTextureViewDimension_Force32 = 0x7FFFFFFF
 } WGPUTextureViewDimension WGPU_ENUM_ATTRIBUTE;
+
+typedef enum WGPUToneMappingMode {
+    WGPUToneMappingMode_Standard = 0x00000001,
+    WGPUToneMappingMode_Extended = 0x00000002,
+    WGPUToneMappingMode_Force32 = 0x7FFFFFFF
+} WGPUToneMappingMode WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUVertexFormat {
     WGPUVertexFormat_Uint8 = 0x00000001,
@@ -2930,6 +2944,35 @@ typedef struct WGPUSurfaceCapabilities {
     /*.presentModes=*/NULL _wgpu_COMMA \
     /*.alphaModeCount=*/0 _wgpu_COMMA \
     /*.alphaModes=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Extension of @ref WGPUSurfaceConfiguration for color spaces and HDR.
+ *
+ * Default values can be set using @ref WGPU_SURFACE_COLOR_MANAGEMENT_INIT as initializer.
+ */
+typedef struct WGPUSurfaceColorManagement {
+    WGPUChainedStruct chain;
+    /**
+     * The `INIT` macro sets this to (@ref WGPUPredefinedColorSpace)0.
+     */
+    WGPUPredefinedColorSpace colorSpace;
+    /**
+     * The `INIT` macro sets this to (@ref WGPUToneMappingMode)0.
+     */
+    WGPUToneMappingMode toneMappingMode;
+} WGPUSurfaceColorManagement WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUSurfaceColorManagement.
+ */
+#define WGPU_SURFACE_COLOR_MANAGEMENT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceColorManagement, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_SurfaceColorManagement _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.colorSpace=*/_wgpu_ENUM_ZERO_INIT(WGPUPredefinedColorSpace) _wgpu_COMMA \
+    /*.toneMappingMode=*/_wgpu_ENUM_ZERO_INIT(WGPUToneMappingMode) _wgpu_COMMA \
 })
 
 /**
