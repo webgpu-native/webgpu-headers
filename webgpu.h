@@ -13,6 +13,12 @@
  *
  * This is the home of WebGPU C API specification. We define here the standard
  * `webgpu.h` header that all implementations should provide.
+ *
+ * For all details where behavior is not otherwise specified, `webgpu.h` has
+ * the same behavior as the WebGPU specification for JavaScript on the Web.
+ * The WebIDL-based Web specification is mapped into C as faithfully (and
+ * bidirectionally) as practical/possible.
+ * The working draft of WebGPU can be found at <https://www.w3.org/TR/webgpu/>.
  */
 
 #ifndef WEBGPU_H_
@@ -59,6 +65,7 @@
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
 #  define _wgpu_ENUM_ZERO_INIT(type) type(0)
+#  define _wgpu_STRUCT_ZERO_INIT {}
 #  if __cplusplus >= 201103L
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) (type value)
 #  else
@@ -66,6 +73,7 @@
 #  endif
 #else
 #  define _wgpu_ENUM_ZERO_INIT(type) (type)0
+#  define _wgpu_STRUCT_ZERO_INIT {0}
 #  if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) ((type) value)
 #  else
@@ -430,7 +438,6 @@ typedef enum WGPUCompareFunction {
 typedef enum WGPUCompilationInfoRequestStatus {
     WGPUCompilationInfoRequestStatus_Success = 0x00000001,
     WGPUCompilationInfoRequestStatus_InstanceDropped = 0x00000002,
-    WGPUCompilationInfoRequestStatus_Error = 0x00000003,
     WGPUCompilationInfoRequestStatus_Force32 = 0x7FFFFFFF
 } WGPUCompilationInfoRequestStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -717,7 +724,6 @@ typedef enum WGPUQueryType {
 typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_Success = 0x00000001,
     WGPUQueueWorkDoneStatus_InstanceDropped = 0x00000002,
-    WGPUQueueWorkDoneStatus_Error = 0x00000003,
     WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
 } WGPUQueueWorkDoneStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1080,17 +1086,11 @@ typedef enum WGPUVertexFormat {
 typedef enum WGPUVertexStepMode {
     /**
      * `0x00000000`.
-     * This @ref WGPUVertexBufferLayout is a "hole" in the @ref WGPUVertexState `buffers` array.
-     * (See also @ref SentinelValues.)
-     */
-    WGPUVertexStepMode_VertexBufferNotUsed = 0x00000000,
-    /**
-     * `0x00000001`.
      * Indicates no value is passed for this argument. See @ref SentinelValues.
      */
-    WGPUVertexStepMode_Undefined = 0x00000001,
-    WGPUVertexStepMode_Vertex = 0x00000002,
-    WGPUVertexStepMode_Instance = 0x00000003,
+    WGPUVertexStepMode_Undefined = 0x00000000,
+    WGPUVertexStepMode_Vertex = 0x00000001,
+    WGPUVertexStepMode_Instance = 0x00000002,
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
 
@@ -1295,14 +1295,9 @@ typedef void (*WGPUUncapturedErrorCallback)(WGPUDevice const * device, WGPUError
  */
 
 typedef struct WGPUChainedStruct {
-    struct WGPUChainedStruct const * next;
+    struct WGPUChainedStruct * next;
     WGPUSType sType;
 } WGPUChainedStruct WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPUChainedStructOut {
-    struct WGPUChainedStructOut * next;
-    WGPUSType sType;
-} WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
 
 /** @} */
 
@@ -1314,7 +1309,7 @@ typedef struct WGPUChainedStructOut {
  * @{
  */
 
- /**
+/**
  * \defgroup WGPUCallbackInfo Callback Info Structs
  * \brief Callback info structures that are used in asynchronous functions.
  *
@@ -1514,7 +1509,7 @@ typedef struct WGPUUncapturedErrorCallbackInfo {
  * Default values can be set using @ref WGPU_ADAPTER_INFO_INIT as initializer.
  */
 typedef struct WGPUAdapterInfo {
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is an \ref OutputString.
      *
@@ -1576,7 +1571,7 @@ typedef struct WGPUAdapterInfo {
  * Default values can be set using @ref WGPU_BIND_GROUP_ENTRY_INIT as initializer.
  */
 typedef struct WGPUBindGroupEntry {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Binding index in the bind group.
      *
@@ -1639,15 +1634,24 @@ typedef struct WGPUBindGroupEntry {
  */
 typedef struct WGPUBlendComponent {
     /**
-     * The `INIT` macro sets this to @ref WGPUBlendOperation_Add.
+     * If set to @ref WGPUBlendOperation_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBlendOperation_Add.
+     *
+     * The `INIT` macro sets this to @ref WGPUBlendOperation_Undefined.
      */
     WGPUBlendOperation operation;
     /**
-     * The `INIT` macro sets this to @ref WGPUBlendFactor_One.
+     * If set to @ref WGPUBlendFactor_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_One.
+     *
+     * The `INIT` macro sets this to @ref WGPUBlendFactor_Undefined.
      */
     WGPUBlendFactor srcFactor;
     /**
-     * The `INIT` macro sets this to @ref WGPUBlendFactor_Zero.
+     * If set to @ref WGPUBlendFactor_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_Zero.
+     *
+     * The `INIT` macro sets this to @ref WGPUBlendFactor_Undefined.
      */
     WGPUBlendFactor dstFactor;
 } WGPUBlendComponent WGPU_STRUCTURE_ATTRIBUTE;
@@ -1656,18 +1660,21 @@ typedef struct WGPUBlendComponent {
  * Initializer for @ref WGPUBlendComponent.
  */
 #define WGPU_BLEND_COMPONENT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBlendComponent, { \
-    /*.operation=*/WGPUBlendOperation_Add _wgpu_COMMA \
-    /*.srcFactor=*/WGPUBlendFactor_One _wgpu_COMMA \
-    /*.dstFactor=*/WGPUBlendFactor_Zero _wgpu_COMMA \
+    /*.operation=*/WGPUBlendOperation_Undefined _wgpu_COMMA \
+    /*.srcFactor=*/WGPUBlendFactor_Undefined _wgpu_COMMA \
+    /*.dstFactor=*/WGPUBlendFactor_Undefined _wgpu_COMMA \
 })
 
 /**
  * Default values can be set using @ref WGPU_BUFFER_BINDING_LAYOUT_INIT as initializer.
  */
 typedef struct WGPUBufferBindingLayout {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
-     * The `INIT` macro sets this to @ref WGPUBufferBindingType_BindingNotUsed.
+     * If set to @ref WGPUBufferBindingType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUBufferBindingType_Uniform.
+     *
+     * The `INIT` macro sets this to @ref WGPUBufferBindingType_Undefined.
      */
     WGPUBufferBindingType type;
     /**
@@ -1685,7 +1692,7 @@ typedef struct WGPUBufferBindingLayout {
  */
 #define WGPU_BUFFER_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBufferBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.type=*/WGPUBufferBindingType_BindingNotUsed _wgpu_COMMA \
+    /*.type=*/WGPUBufferBindingType_Undefined _wgpu_COMMA \
     /*.hasDynamicOffset=*/0 _wgpu_COMMA \
     /*.minBindingSize=*/0 _wgpu_COMMA \
 })
@@ -1694,7 +1701,7 @@ typedef struct WGPUBufferBindingLayout {
  * Default values can be set using @ref WGPU_BUFFER_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUBufferDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -1762,7 +1769,7 @@ typedef struct WGPUColor {
  * Default values can be set using @ref WGPU_COMMAND_BUFFER_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUCommandBufferDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -1783,7 +1790,7 @@ typedef struct WGPUCommandBufferDescriptor {
  * Default values can be set using @ref WGPU_COMMAND_ENCODER_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUCommandEncoderDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -1804,7 +1811,7 @@ typedef struct WGPUCommandEncoderDescriptor {
  * Default values can be set using @ref WGPU_COMPILATION_MESSAGE_INIT as initializer.
  */
 typedef struct WGPUCompilationMessage {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * A @ref LocalizableHumanReadableMessageString.
      *
@@ -1862,7 +1869,7 @@ typedef struct WGPUCompilationMessage {
  * Default values can be set using @ref WGPU_CONSTANT_ENTRY_INIT as initializer.
  */
 typedef struct WGPUConstantEntry {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -1938,8 +1945,7 @@ typedef struct WGPUFuture {
  * Default values can be set using @ref WGPU_INSTANCE_CAPABILITIES_INIT as initializer.
  */
 typedef struct WGPUInstanceCapabilities {
-    /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
      *
@@ -1967,8 +1973,7 @@ typedef struct WGPUInstanceCapabilities {
  * Default values can be set using @ref WGPU_LIMITS_INIT as initializer.
  */
 typedef struct WGPULimits {
-    /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
      */
@@ -2137,7 +2142,7 @@ typedef struct WGPULimits {
  * Default values can be set using @ref WGPU_MULTISAMPLE_STATE_INIT as initializer.
  */
 typedef struct WGPUMultisampleState {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to `1`.
      */
@@ -2193,7 +2198,7 @@ typedef struct WGPUOrigin3D {
  * Default values can be set using @ref WGPU_PASS_TIMESTAMP_WRITES_INIT as initializer.
  */
 typedef struct WGPUPassTimestampWrites {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Query set to write timestamps to.
      *
@@ -2224,7 +2229,7 @@ typedef struct WGPUPassTimestampWrites {
  * Default values can be set using @ref WGPU_PIPELINE_LAYOUT_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUPipelineLayoutDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -2232,9 +2237,12 @@ typedef struct WGPUPipelineLayoutDescriptor {
      */
     WGPUStringView label;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `bindGroupLayouts`. The `INIT` macro sets this to 0.
      */
     size_t bindGroupLayoutCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUBindGroupLayout const * bindGroupLayouts;
 } WGPUPipelineLayoutDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -2252,9 +2260,12 @@ typedef struct WGPUPipelineLayoutDescriptor {
  * Default values can be set using @ref WGPU_PRIMITIVE_STATE_INIT as initializer.
  */
 typedef struct WGPUPrimitiveState {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
-     * The `INIT` macro sets this to @ref WGPUPrimitiveTopology_TriangleList.
+     * If set to @ref WGPUPrimitiveTopology_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUPrimitiveTopology_TriangleList.
+     *
+     * The `INIT` macro sets this to @ref WGPUPrimitiveTopology_Undefined.
      */
     WGPUPrimitiveTopology topology;
     /**
@@ -2262,11 +2273,17 @@ typedef struct WGPUPrimitiveState {
      */
     WGPUIndexFormat stripIndexFormat;
     /**
-     * The `INIT` macro sets this to @ref WGPUFrontFace_CCW.
+     * If set to @ref WGPUFrontFace_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFrontFace_CCW.
+     *
+     * The `INIT` macro sets this to @ref WGPUFrontFace_Undefined.
      */
     WGPUFrontFace frontFace;
     /**
-     * The `INIT` macro sets this to @ref WGPUCullMode_None.
+     * If set to @ref WGPUCullMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUCullMode_None.
+     *
+     * The `INIT` macro sets this to @ref WGPUCullMode_Undefined.
      */
     WGPUCullMode cullMode;
     /**
@@ -2280,10 +2297,10 @@ typedef struct WGPUPrimitiveState {
  */
 #define WGPU_PRIMITIVE_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUPrimitiveState, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.topology=*/WGPUPrimitiveTopology_TriangleList _wgpu_COMMA \
+    /*.topology=*/WGPUPrimitiveTopology_Undefined _wgpu_COMMA \
     /*.stripIndexFormat=*/_wgpu_ENUM_ZERO_INIT(WGPUIndexFormat) _wgpu_COMMA \
-    /*.frontFace=*/WGPUFrontFace_CCW _wgpu_COMMA \
-    /*.cullMode=*/WGPUCullMode_None _wgpu_COMMA \
+    /*.frontFace=*/WGPUFrontFace_Undefined _wgpu_COMMA \
+    /*.cullMode=*/WGPUCullMode_Undefined _wgpu_COMMA \
     /*.unclippedDepth=*/0 _wgpu_COMMA \
 })
 
@@ -2291,7 +2308,7 @@ typedef struct WGPUPrimitiveState {
  * Default values can be set using @ref WGPU_QUERY_SET_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUQuerySetDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -2322,7 +2339,7 @@ typedef struct WGPUQuerySetDescriptor {
  * Default values can be set using @ref WGPU_QUEUE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUQueueDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -2343,7 +2360,7 @@ typedef struct WGPUQueueDescriptor {
  * Default values can be set using @ref WGPU_RENDER_BUNDLE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPURenderBundleDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -2364,7 +2381,7 @@ typedef struct WGPURenderBundleDescriptor {
  * Default values can be set using @ref WGPU_RENDER_BUNDLE_ENCODER_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPURenderBundleEncoderDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -2372,9 +2389,12 @@ typedef struct WGPURenderBundleEncoderDescriptor {
      */
     WGPUStringView label;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `colorFormats`. The `INIT` macro sets this to 0.
      */
     size_t colorFormatCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUTextureFormat const * colorFormats;
     /**
      * The `INIT` macro sets this to @ref WGPUTextureFormat_Undefined.
@@ -2412,7 +2432,7 @@ typedef struct WGPURenderBundleEncoderDescriptor {
  * Default values can be set using @ref WGPU_RENDER_PASS_DEPTH_STENCIL_ATTACHMENT_INIT as initializer.
  */
 typedef struct WGPURenderPassDepthStencilAttachment {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
@@ -2493,15 +2513,16 @@ typedef struct WGPURenderPassMaxDrawCount {
  * Default values can be set using @ref WGPU_REQUEST_ADAPTER_OPTIONS_INIT as initializer.
  */
 typedef struct WGPURequestAdapterOptions {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
      *
-     * If not specified, the default is @ref WGPUFeatureLevel_Core.
+     * If set to @ref WGPUFeatureLevel_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
      * Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
      * and provide @ref WGPUFeatureLevel_Core instead.
      *
-     * The `INIT` macro sets this to @ref WGPUFeatureLevel_Core.
+     * The `INIT` macro sets this to @ref WGPUFeatureLevel_Undefined.
      */
     WGPUFeatureLevel featureLevel;
     /**
@@ -2536,7 +2557,7 @@ typedef struct WGPURequestAdapterOptions {
  */
 #define WGPU_REQUEST_ADAPTER_OPTIONS_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterOptions, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.featureLevel=*/WGPUFeatureLevel_Core _wgpu_COMMA \
+    /*.featureLevel=*/WGPUFeatureLevel_Undefined _wgpu_COMMA \
     /*.powerPreference=*/WGPUPowerPreference_Undefined _wgpu_COMMA \
     /*.forceFallbackAdapter=*/0 _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
@@ -2547,9 +2568,12 @@ typedef struct WGPURequestAdapterOptions {
  * Default values can be set using @ref WGPU_SAMPLER_BINDING_LAYOUT_INIT as initializer.
  */
 typedef struct WGPUSamplerBindingLayout {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
-     * The `INIT` macro sets this to @ref WGPUSamplerBindingType_BindingNotUsed.
+     * If set to @ref WGPUSamplerBindingType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUSamplerBindingType_Filtering.
+     *
+     * The `INIT` macro sets this to @ref WGPUSamplerBindingType_Undefined.
      */
     WGPUSamplerBindingType type;
 } WGPUSamplerBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
@@ -2559,14 +2583,14 @@ typedef struct WGPUSamplerBindingLayout {
  */
 #define WGPU_SAMPLER_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSamplerBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.type=*/WGPUSamplerBindingType_BindingNotUsed _wgpu_COMMA \
+    /*.type=*/WGPUSamplerBindingType_Undefined _wgpu_COMMA \
 })
 
 /**
  * Default values can be set using @ref WGPU_SAMPLER_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUSamplerDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -2574,27 +2598,45 @@ typedef struct WGPUSamplerDescriptor {
      */
     WGPUStringView label;
     /**
-     * The `INIT` macro sets this to @ref WGPUAddressMode_ClampToEdge.
+     * If set to @ref WGPUAddressMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+     *
+     * The `INIT` macro sets this to @ref WGPUAddressMode_Undefined.
      */
     WGPUAddressMode addressModeU;
     /**
-     * The `INIT` macro sets this to @ref WGPUAddressMode_ClampToEdge.
+     * If set to @ref WGPUAddressMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+     *
+     * The `INIT` macro sets this to @ref WGPUAddressMode_Undefined.
      */
     WGPUAddressMode addressModeV;
     /**
-     * The `INIT` macro sets this to @ref WGPUAddressMode_ClampToEdge.
+     * If set to @ref WGPUAddressMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
+     *
+     * The `INIT` macro sets this to @ref WGPUAddressMode_Undefined.
      */
     WGPUAddressMode addressModeW;
     /**
-     * The `INIT` macro sets this to @ref WGPUFilterMode_Nearest.
+     * If set to @ref WGPUFilterMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
+     *
+     * The `INIT` macro sets this to @ref WGPUFilterMode_Undefined.
      */
     WGPUFilterMode magFilter;
     /**
-     * The `INIT` macro sets this to @ref WGPUFilterMode_Nearest.
+     * If set to @ref WGPUFilterMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
+     *
+     * The `INIT` macro sets this to @ref WGPUFilterMode_Undefined.
      */
     WGPUFilterMode minFilter;
     /**
-     * The `INIT` macro sets this to @ref WGPUMipmapFilterMode_Nearest.
+     * If set to @ref WGPUFilterMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUMipmapFilterMode_Nearest.
+     *
+     * The `INIT` macro sets this to @ref WGPUMipmapFilterMode_Undefined.
      */
     WGPUMipmapFilterMode mipmapFilter;
     /**
@@ -2621,12 +2663,12 @@ typedef struct WGPUSamplerDescriptor {
 #define WGPU_SAMPLER_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSamplerDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.addressModeU=*/WGPUAddressMode_ClampToEdge _wgpu_COMMA \
-    /*.addressModeV=*/WGPUAddressMode_ClampToEdge _wgpu_COMMA \
-    /*.addressModeW=*/WGPUAddressMode_ClampToEdge _wgpu_COMMA \
-    /*.magFilter=*/WGPUFilterMode_Nearest _wgpu_COMMA \
-    /*.minFilter=*/WGPUFilterMode_Nearest _wgpu_COMMA \
-    /*.mipmapFilter=*/WGPUMipmapFilterMode_Nearest _wgpu_COMMA \
+    /*.addressModeU=*/WGPUAddressMode_Undefined _wgpu_COMMA \
+    /*.addressModeV=*/WGPUAddressMode_Undefined _wgpu_COMMA \
+    /*.addressModeW=*/WGPUAddressMode_Undefined _wgpu_COMMA \
+    /*.magFilter=*/WGPUFilterMode_Undefined _wgpu_COMMA \
+    /*.minFilter=*/WGPUFilterMode_Undefined _wgpu_COMMA \
+    /*.mipmapFilter=*/WGPUMipmapFilterMode_Undefined _wgpu_COMMA \
     /*.lodMinClamp=*/0.f _wgpu_COMMA \
     /*.lodMaxClamp=*/32.f _wgpu_COMMA \
     /*.compare=*/WGPUCompareFunction_Undefined _wgpu_COMMA \
@@ -2637,7 +2679,7 @@ typedef struct WGPUSamplerDescriptor {
  * Default values can be set using @ref WGPU_SHADER_MODULE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUShaderModuleDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -2710,19 +2752,31 @@ typedef struct WGPUShaderSourceWGSL {
  */
 typedef struct WGPUStencilFaceState {
     /**
-     * The `INIT` macro sets this to @ref WGPUCompareFunction_Always.
+     * If set to @ref WGPUCompareFunction_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUCompareFunction_Always.
+     *
+     * The `INIT` macro sets this to @ref WGPUCompareFunction_Undefined.
      */
     WGPUCompareFunction compare;
     /**
-     * The `INIT` macro sets this to @ref WGPUStencilOperation_Keep.
+     * If set to @ref WGPUStencilOperation_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+     *
+     * The `INIT` macro sets this to @ref WGPUStencilOperation_Undefined.
      */
     WGPUStencilOperation failOp;
     /**
-     * The `INIT` macro sets this to @ref WGPUStencilOperation_Keep.
+     * If set to @ref WGPUStencilOperation_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+     *
+     * The `INIT` macro sets this to @ref WGPUStencilOperation_Undefined.
      */
     WGPUStencilOperation depthFailOp;
     /**
-     * The `INIT` macro sets this to @ref WGPUStencilOperation_Keep.
+     * If set to @ref WGPUStencilOperation_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
+     *
+     * The `INIT` macro sets this to @ref WGPUStencilOperation_Undefined.
      */
     WGPUStencilOperation passOp;
 } WGPUStencilFaceState WGPU_STRUCTURE_ATTRIBUTE;
@@ -2731,19 +2785,22 @@ typedef struct WGPUStencilFaceState {
  * Initializer for @ref WGPUStencilFaceState.
  */
 #define WGPU_STENCIL_FACE_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStencilFaceState, { \
-    /*.compare=*/WGPUCompareFunction_Always _wgpu_COMMA \
-    /*.failOp=*/WGPUStencilOperation_Keep _wgpu_COMMA \
-    /*.depthFailOp=*/WGPUStencilOperation_Keep _wgpu_COMMA \
-    /*.passOp=*/WGPUStencilOperation_Keep _wgpu_COMMA \
+    /*.compare=*/WGPUCompareFunction_Undefined _wgpu_COMMA \
+    /*.failOp=*/WGPUStencilOperation_Undefined _wgpu_COMMA \
+    /*.depthFailOp=*/WGPUStencilOperation_Undefined _wgpu_COMMA \
+    /*.passOp=*/WGPUStencilOperation_Undefined _wgpu_COMMA \
 })
 
 /**
  * Default values can be set using @ref WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT as initializer.
  */
 typedef struct WGPUStorageTextureBindingLayout {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
-     * The `INIT` macro sets this to @ref WGPUStorageTextureAccess_BindingNotUsed.
+     * If set to @ref WGPUStorageTextureAccess_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUStorageTextureAccess_WriteOnly.
+     *
+     * The `INIT` macro sets this to @ref WGPUStorageTextureAccess_Undefined.
      */
     WGPUStorageTextureAccess access;
     /**
@@ -2751,7 +2808,10 @@ typedef struct WGPUStorageTextureBindingLayout {
      */
     WGPUTextureFormat format;
     /**
-     * The `INIT` macro sets this to @ref WGPUTextureViewDimension_2D.
+     * If set to @ref WGPUTextureViewDimension_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
+     *
+     * The `INIT` macro sets this to @ref WGPUTextureViewDimension_Undefined.
      */
     WGPUTextureViewDimension viewDimension;
 } WGPUStorageTextureBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
@@ -2761,9 +2821,9 @@ typedef struct WGPUStorageTextureBindingLayout {
  */
 #define WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUStorageTextureBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.access=*/WGPUStorageTextureAccess_BindingNotUsed _wgpu_COMMA \
+    /*.access=*/WGPUStorageTextureAccess_Undefined _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
-    /*.viewDimension=*/WGPUTextureViewDimension_2D _wgpu_COMMA \
+    /*.viewDimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
 })
 
 /**
@@ -2771,9 +2831,12 @@ typedef struct WGPUStorageTextureBindingLayout {
  */
 typedef struct WGPUSupportedFeatures {
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `features`. The `INIT` macro sets this to 0.
      */
     size_t featureCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUFeatureName const * features;
 } WGPUSupportedFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -2790,9 +2853,12 @@ typedef struct WGPUSupportedFeatures {
  */
 typedef struct WGPUSupportedWGSLLanguageFeatures {
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `features`. The `INIT` macro sets this to 0.
      */
     size_t featureCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUWGSLLanguageFeatureName const * features;
 } WGPUSupportedWGSLLanguageFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -2810,7 +2876,7 @@ typedef struct WGPUSupportedWGSLLanguageFeatures {
  * Default values can be set using @ref WGPU_SURFACE_CAPABILITIES_INIT as initializer.
  */
 typedef struct WGPUSurfaceCapabilities {
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The bit set of supported @ref WGPUTextureUsage bits.
      * Guaranteed to contain @ref WGPUTextureUsage_RenderAttachment.
@@ -2819,27 +2885,36 @@ typedef struct WGPUSurfaceCapabilities {
      */
     WGPUTextureUsage usages;
     /**
+     * Array count for `formats`. The `INIT` macro sets this to 0.
+     */
+    size_t formatCount;
+    /**
      * A list of supported @ref WGPUTextureFormat values, in order of preference.
      *
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t formatCount;
     WGPUTextureFormat const * formats;
+    /**
+     * Array count for `presentModes`. The `INIT` macro sets this to 0.
+     */
+    size_t presentModeCount;
     /**
      * A list of supported @ref WGPUPresentMode values.
      * Guaranteed to contain @ref WGPUPresentMode_Fifo.
      *
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t presentModeCount;
     WGPUPresentMode const * presentModes;
+    /**
+     * Array count for `alphaModes`. The `INIT` macro sets this to 0.
+     */
+    size_t alphaModeCount;
     /**
      * A list of supported @ref WGPUCompositeAlphaMode values.
      * @ref WGPUCompositeAlphaMode_Auto will be an alias for the first element and will never be present in this array.
      *
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t alphaModeCount;
     WGPUCompositeAlphaMode const * alphaModes;
 } WGPUSurfaceCapabilities WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -2864,7 +2939,7 @@ typedef struct WGPUSurfaceCapabilities {
  * Default values can be set using @ref WGPU_SURFACE_CONFIGURATION_INIT as initializer.
  */
 typedef struct WGPUSurfaceConfiguration {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The @ref WGPUDevice to use to render to surface's textures.
      *
@@ -2896,22 +2971,32 @@ typedef struct WGPUSurfaceConfiguration {
      */
     uint32_t height;
     /**
+     * Array count for `viewFormats`. The `INIT` macro sets this to 0.
+     */
+    size_t viewFormatCount;
+    /**
      * The additional @ref WGPUTextureFormat for @ref WGPUTextureView format reinterpretation of the surface's textures.
      *
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t viewFormatCount;
     WGPUTextureFormat const * viewFormats;
     /**
      * How the surface's frames will be composited on the screen.
+     *
+     * If set to @ref WGPUCompositeAlphaMode_Auto,
+     * [defaults] to @ref WGPUCompositeAlphaMode_Inherit in native (allowing the mode
+     * to be configured externally), and to @ref WGPUCompositeAlphaMode_Opaque in Wasm.
      *
      * The `INIT` macro sets this to @ref WGPUCompositeAlphaMode_Auto.
      */
     WGPUCompositeAlphaMode alphaMode;
     /**
-     * When and in which order the surface's frames will be shown on the screen. Defaults to @ref WGPUPresentMode_Fifo.
+     * When and in which order the surface's frames will be shown on the screen.
      *
-     * The `INIT` macro sets this to @ref WGPUPresentMode_Fifo.
+     * If set to @ref WGPUPresentMode_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUPresentMode_Fifo.
+     *
+     * The `INIT` macro sets this to @ref WGPUPresentMode_Undefined.
      */
     WGPUPresentMode presentMode;
 } WGPUSurfaceConfiguration WGPU_STRUCTURE_ATTRIBUTE;
@@ -2929,7 +3014,7 @@ typedef struct WGPUSurfaceConfiguration {
     /*.viewFormatCount=*/0 _wgpu_COMMA \
     /*.viewFormats=*/NULL _wgpu_COMMA \
     /*.alphaMode=*/WGPUCompositeAlphaMode_Auto _wgpu_COMMA \
-    /*.presentMode=*/WGPUPresentMode_Fifo _wgpu_COMMA \
+    /*.presentMode=*/WGPUPresentMode_Undefined _wgpu_COMMA \
 })
 
 /**
@@ -2940,7 +3025,7 @@ typedef struct WGPUSurfaceConfiguration {
  * Default values can be set using @ref WGPU_SURFACE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUSurfaceDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Label used to refer to the object.
      *
@@ -3151,7 +3236,7 @@ typedef struct WGPUSurfaceSourceXlibWindow {
  * Default values can be set using @ref WGPU_SURFACE_TEXTURE_INIT as initializer.
  */
 typedef struct WGPUSurfaceTexture {
-    WGPUChainedStructOut * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The @ref WGPUTexture representing the frame that will be shown on the surface.
      * It is @ref ReturnedWithOwnership from @ref wgpuSurfaceGetCurrentTexture.
@@ -3207,13 +3292,19 @@ typedef struct WGPUTexelCopyBufferLayout {
  * Default values can be set using @ref WGPU_TEXTURE_BINDING_LAYOUT_INIT as initializer.
  */
 typedef struct WGPUTextureBindingLayout {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
-     * The `INIT` macro sets this to @ref WGPUTextureSampleType_BindingNotUsed.
+     * If set to @ref WGPUTextureSampleType_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureSampleType_Float.
+     *
+     * The `INIT` macro sets this to @ref WGPUTextureSampleType_Undefined.
      */
     WGPUTextureSampleType sampleType;
     /**
-     * The `INIT` macro sets this to @ref WGPUTextureViewDimension_2D.
+     * If set to @ref WGPUTextureViewDimension_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
+     *
+     * The `INIT` macro sets this to @ref WGPUTextureViewDimension_Undefined.
      */
     WGPUTextureViewDimension viewDimension;
     /**
@@ -3227,8 +3318,8 @@ typedef struct WGPUTextureBindingLayout {
  */
 #define WGPU_TEXTURE_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.sampleType=*/WGPUTextureSampleType_BindingNotUsed _wgpu_COMMA \
-    /*.viewDimension=*/WGPUTextureViewDimension_2D _wgpu_COMMA \
+    /*.sampleType=*/WGPUTextureSampleType_Undefined _wgpu_COMMA \
+    /*.viewDimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
     /*.multisampled=*/0 _wgpu_COMMA \
 })
 
@@ -3236,7 +3327,7 @@ typedef struct WGPUTextureBindingLayout {
  * Default values can be set using @ref WGPU_TEXTURE_VIEW_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUTextureViewDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -3268,7 +3359,10 @@ typedef struct WGPUTextureViewDescriptor {
      */
     uint32_t arrayLayerCount;
     /**
-     * The `INIT` macro sets this to @ref WGPUTextureAspect_All.
+     * If set to @ref WGPUTextureAspect_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
+     *
+     * The `INIT` macro sets this to @ref WGPUTextureAspect_Undefined.
      */
     WGPUTextureAspect aspect;
     /**
@@ -3289,7 +3383,7 @@ typedef struct WGPUTextureViewDescriptor {
     /*.mipLevelCount=*/WGPU_MIP_LEVEL_COUNT_UNDEFINED _wgpu_COMMA \
     /*.baseArrayLayer=*/0 _wgpu_COMMA \
     /*.arrayLayerCount=*/WGPU_ARRAY_LAYER_COUNT_UNDEFINED _wgpu_COMMA \
-    /*.aspect=*/WGPUTextureAspect_All _wgpu_COMMA \
+    /*.aspect=*/WGPUTextureAspect_Undefined _wgpu_COMMA \
     /*.usage=*/WGPUTextureUsage_None _wgpu_COMMA \
 })
 
@@ -3297,7 +3391,7 @@ typedef struct WGPUTextureViewDescriptor {
  * Default values can be set using @ref WGPU_VERTEX_ATTRIBUTE_INIT as initializer.
  */
 typedef struct WGPUVertexAttribute {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to (@ref WGPUVertexFormat)0.
      */
@@ -3326,7 +3420,7 @@ typedef struct WGPUVertexAttribute {
  * Default values can be set using @ref WGPU_BIND_GROUP_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUBindGroupDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -3338,9 +3432,12 @@ typedef struct WGPUBindGroupDescriptor {
      */
     WGPUBindGroupLayout layout;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `entries`. The `INIT` macro sets this to 0.
      */
     size_t entryCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUBindGroupEntry const * entries;
 } WGPUBindGroupDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3359,7 +3456,7 @@ typedef struct WGPUBindGroupDescriptor {
  * Default values can be set using @ref WGPU_BIND_GROUP_LAYOUT_ENTRY_INIT as initializer.
  */
 typedef struct WGPUBindGroupLayoutEntry {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to `0`.
      */
@@ -3369,19 +3466,19 @@ typedef struct WGPUBindGroupLayoutEntry {
      */
     WGPUShaderStage visibility;
     /**
-     * The `INIT` macro sets this to @ref WGPU_BUFFER_BINDING_LAYOUT_INIT.
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUBufferBindingLayout buffer;
     /**
-     * The `INIT` macro sets this to @ref WGPU_SAMPLER_BINDING_LAYOUT_INIT.
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUSamplerBindingLayout sampler;
     /**
-     * The `INIT` macro sets this to @ref WGPU_TEXTURE_BINDING_LAYOUT_INIT.
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUTextureBindingLayout texture;
     /**
-     * The `INIT` macro sets this to @ref WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT.
+     * The `INIT` macro sets this to zero (which sets the entry to `BindingNotUsed`).
      */
     WGPUStorageTextureBindingLayout storageTexture;
 } WGPUBindGroupLayoutEntry WGPU_STRUCTURE_ATTRIBUTE;
@@ -3393,10 +3490,10 @@ typedef struct WGPUBindGroupLayoutEntry {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.binding=*/0 _wgpu_COMMA \
     /*.visibility=*/WGPUShaderStage_None _wgpu_COMMA \
-    /*.buffer=*/WGPU_BUFFER_BINDING_LAYOUT_INIT _wgpu_COMMA \
-    /*.sampler=*/WGPU_SAMPLER_BINDING_LAYOUT_INIT _wgpu_COMMA \
-    /*.texture=*/WGPU_TEXTURE_BINDING_LAYOUT_INIT _wgpu_COMMA \
-    /*.storageTexture=*/WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT _wgpu_COMMA \
+    /*.buffer=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.sampler=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.texture=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
+    /*.storageTexture=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
 })
 
 /**
@@ -3425,11 +3522,14 @@ typedef struct WGPUBlendState {
  * Default values can be set using @ref WGPU_COMPILATION_INFO_INIT as initializer.
  */
 typedef struct WGPUCompilationInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
+    /**
+     * Array count for `messages`. The `INIT` macro sets this to 0.
+     */
+    size_t messageCount;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    size_t messageCount;
     WGPUCompilationMessage const * messages;
 } WGPUCompilationInfo WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3446,7 +3546,7 @@ typedef struct WGPUCompilationInfo {
  * Default values can be set using @ref WGPU_COMPUTE_PASS_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUComputePassDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -3472,7 +3572,7 @@ typedef struct WGPUComputePassDescriptor {
  * Default values can be set using @ref WGPU_COMPUTE_STATE_INIT as initializer.
  */
 typedef struct WGPUComputeState {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
@@ -3484,9 +3584,12 @@ typedef struct WGPUComputeState {
      */
     WGPUStringView entryPoint;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `constants`. The `INIT` macro sets this to 0.
      */
     size_t constantCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUConstantEntry const * constants;
 } WGPUComputeState WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3505,7 +3608,7 @@ typedef struct WGPUComputeState {
  * Default values can be set using @ref WGPU_DEPTH_STENCIL_STATE_INIT as initializer.
  */
 typedef struct WGPUDepthStencilState {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to @ref WGPUTextureFormat_Undefined.
      */
@@ -3569,7 +3672,7 @@ typedef struct WGPUDepthStencilState {
  * Default values can be set using @ref WGPU_DEVICE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUDeviceDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -3577,9 +3680,12 @@ typedef struct WGPUDeviceDescriptor {
      */
     WGPUStringView label;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `requiredFeatures`. The `INIT` macro sets this to 0.
      */
     size_t requiredFeatureCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUFeatureName const * requiredFeatures;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3594,6 +3700,9 @@ typedef struct WGPUDeviceDescriptor {
      */
     WGPUDeviceLostCallbackInfo deviceLostCallbackInfo;
     /**
+     * Called when there is an uncaptured error on this device, from any thread.
+     * See @ref ErrorScopes.
+     *
      * The `INIT` macro sets this to @ref WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT.
      */
     WGPUUncapturedErrorCallbackInfo uncapturedErrorCallbackInfo;
@@ -3645,7 +3754,7 @@ typedef struct WGPUFutureWaitInfo {
  * Default values can be set using @ref WGPU_INSTANCE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUInstanceDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Instance features to enable
      *
@@ -3666,7 +3775,7 @@ typedef struct WGPUInstanceDescriptor {
  * Default values can be set using @ref WGPU_RENDER_PASS_COLOR_ATTACHMENT_INIT as initializer.
  */
 typedef struct WGPURenderPassColorAttachment {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * If `NULL`, indicates a hole in the parent
      * @ref WGPURenderPassDescriptor::colorAttachments array.
@@ -3748,7 +3857,10 @@ typedef struct WGPUTexelCopyTextureInfo {
      */
     WGPUOrigin3D origin;
     /**
-     * The `INIT` macro sets this to @ref WGPUTextureAspect_All.
+     * If set to @ref WGPUTextureAspect_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
+     *
+     * The `INIT` macro sets this to @ref WGPUTextureAspect_Undefined.
      */
     WGPUTextureAspect aspect;
 } WGPUTexelCopyTextureInfo WGPU_STRUCTURE_ATTRIBUTE;
@@ -3760,14 +3872,14 @@ typedef struct WGPUTexelCopyTextureInfo {
     /*.texture=*/NULL _wgpu_COMMA \
     /*.mipLevel=*/0 _wgpu_COMMA \
     /*.origin=*/WGPU_ORIGIN_3D_INIT _wgpu_COMMA \
-    /*.aspect=*/WGPUTextureAspect_All _wgpu_COMMA \
+    /*.aspect=*/WGPUTextureAspect_Undefined _wgpu_COMMA \
 })
 
 /**
  * Default values can be set using @ref WGPU_TEXTURE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUTextureDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -3779,7 +3891,10 @@ typedef struct WGPUTextureDescriptor {
      */
     WGPUTextureUsage usage;
     /**
-     * The `INIT` macro sets this to @ref WGPUTextureDimension_2D.
+     * If set to @ref WGPUTextureDimension_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureDimension_2D.
+     *
+     * The `INIT` macro sets this to @ref WGPUTextureDimension_Undefined.
      */
     WGPUTextureDimension dimension;
     /**
@@ -3799,9 +3914,12 @@ typedef struct WGPUTextureDescriptor {
      */
     uint32_t sampleCount;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `viewFormats`. The `INIT` macro sets this to 0.
      */
     size_t viewFormatCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUTextureFormat const * viewFormats;
 } WGPUTextureDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3812,7 +3930,7 @@ typedef struct WGPUTextureDescriptor {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.usage=*/WGPUTextureUsage_None _wgpu_COMMA \
-    /*.dimension=*/WGPUTextureDimension_2D _wgpu_COMMA \
+    /*.dimension=*/WGPUTextureDimension_Undefined _wgpu_COMMA \
     /*.size=*/WGPU_EXTENT_3D_INIT _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.mipLevelCount=*/1 _wgpu_COMMA \
@@ -3822,16 +3940,25 @@ typedef struct WGPUTextureDescriptor {
 })
 
 /**
+ * If `attributes` is empty *and* `stepMode` is @ref WGPUVertexStepMode_Undefined,
+ * indicates a "hole" in the parent @ref WGPUVertexState `buffers` array,
+ * with behavior equivalent to `null` in the JS API.
+ *
+ * If `attributes` is empty but `stepMode` is *not* @ref WGPUVertexStepMode_Undefined,
+ * indicates a vertex buffer with no attributes, with behavior equivalent to
+ * `{ attributes: [] }` in the JS API. (TODO: If the JS API changes not to
+ * distinguish these cases, then this distinction doesn't matter and we can
+ * remove this documentation.)
+ *
+ * If `stepMode` is @ref WGPUVertexStepMode_Undefined but `attributes` is *not* empty,
+ * `stepMode` [defaults](@ref SentinelValues) to @ref WGPUVertexStepMode_Vertex.
+ *
  * Default values can be set using @ref WGPU_VERTEX_BUFFER_LAYOUT_INIT as initializer.
  */
 typedef struct WGPUVertexBufferLayout {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
-     * The step mode for the vertex buffer. If @ref WGPUVertexStepMode_VertexBufferNotUsed,
-     * indicates a "hole" in the parent @ref WGPUVertexState `buffers` array:
-     * the pipeline does not use a vertex buffer at this `location`.
-     *
-     * The `INIT` macro sets this to @ref WGPUVertexStepMode_VertexBufferNotUsed.
+     * The `INIT` macro sets this to @ref WGPUVertexStepMode_Undefined.
      */
     WGPUVertexStepMode stepMode;
     /**
@@ -3839,9 +3966,12 @@ typedef struct WGPUVertexBufferLayout {
      */
     uint64_t arrayStride;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `attributes`. The `INIT` macro sets this to 0.
      */
     size_t attributeCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUVertexAttribute const * attributes;
 } WGPUVertexBufferLayout WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3850,7 +3980,7 @@ typedef struct WGPUVertexBufferLayout {
  */
 #define WGPU_VERTEX_BUFFER_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUVertexBufferLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.stepMode=*/WGPUVertexStepMode_VertexBufferNotUsed _wgpu_COMMA \
+    /*.stepMode=*/WGPUVertexStepMode_Undefined _wgpu_COMMA \
     /*.arrayStride=*/0 _wgpu_COMMA \
     /*.attributeCount=*/0 _wgpu_COMMA \
     /*.attributes=*/NULL _wgpu_COMMA \
@@ -3860,7 +3990,7 @@ typedef struct WGPUVertexBufferLayout {
  * Default values can be set using @ref WGPU_BIND_GROUP_LAYOUT_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUBindGroupLayoutDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -3868,9 +3998,12 @@ typedef struct WGPUBindGroupLayoutDescriptor {
      */
     WGPUStringView label;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `entries`. The `INIT` macro sets this to 0.
      */
     size_t entryCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUBindGroupLayoutEntry const * entries;
 } WGPUBindGroupLayoutDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -3888,7 +4021,7 @@ typedef struct WGPUBindGroupLayoutDescriptor {
  * Default values can be set using @ref WGPU_COLOR_TARGET_STATE_INIT as initializer.
  */
 typedef struct WGPUColorTargetState {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The texture format of the target. If @ref WGPUTextureFormat_Undefined,
      * indicates a "hole" in the parent @ref WGPUFragmentState `targets` array:
@@ -3921,7 +4054,7 @@ typedef struct WGPUColorTargetState {
  * Default values can be set using @ref WGPU_COMPUTE_PIPELINE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUComputePipelineDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -3952,7 +4085,7 @@ typedef struct WGPUComputePipelineDescriptor {
  * Default values can be set using @ref WGPU_RENDER_PASS_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPURenderPassDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -3960,9 +4093,12 @@ typedef struct WGPURenderPassDescriptor {
      */
     WGPUStringView label;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `colorAttachments`. The `INIT` macro sets this to 0.
      */
     size_t colorAttachmentCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPURenderPassColorAttachment const * colorAttachments;
     /**
      * The `INIT` macro sets this to `NULL`.
@@ -3995,7 +4131,7 @@ typedef struct WGPURenderPassDescriptor {
  * Default values can be set using @ref WGPU_VERTEX_STATE_INIT as initializer.
  */
 typedef struct WGPUVertexState {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
@@ -4007,14 +4143,20 @@ typedef struct WGPUVertexState {
      */
     WGPUStringView entryPoint;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `constants`. The `INIT` macro sets this to 0.
      */
     size_t constantCount;
-    WGPUConstantEntry const * constants;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
+    WGPUConstantEntry const * constants;
+    /**
+     * Array count for `buffers`. The `INIT` macro sets this to 0.
+     */
     size_t bufferCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUVertexBufferLayout const * buffers;
 } WGPUVertexState WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -4035,7 +4177,7 @@ typedef struct WGPUVertexState {
  * Default values can be set using @ref WGPU_FRAGMENT_STATE_INIT as initializer.
  */
 typedef struct WGPUFragmentState {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
@@ -4047,14 +4189,20 @@ typedef struct WGPUFragmentState {
      */
     WGPUStringView entryPoint;
     /**
-     * The `INIT` macro sets this to `NULL`.
+     * Array count for `constants`. The `INIT` macro sets this to 0.
      */
     size_t constantCount;
-    WGPUConstantEntry const * constants;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
+    WGPUConstantEntry const * constants;
+    /**
+     * Array count for `targets`. The `INIT` macro sets this to 0.
+     */
     size_t targetCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
     WGPUColorTargetState const * targets;
 } WGPUFragmentState WGPU_STRUCTURE_ATTRIBUTE;
 
@@ -4075,7 +4223,7 @@ typedef struct WGPUFragmentState {
  * Default values can be set using @ref WGPU_RENDER_PIPELINE_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPURenderPipelineDescriptor {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * This is a \ref NonNullInputString.
      *
@@ -5488,7 +5636,15 @@ WGPU_EXPORT WGPUFuture wgpuDeviceGetLostFuture(WGPUDevice device) WGPU_FUNCTION_
  */
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBool wgpuDeviceHasFeature(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Pops an error scope to the current thread's error scope stack,
+ * asynchronously returning the result. See @ref ErrorScopes.
+ */
 WGPU_EXPORT WGPUFuture wgpuDevicePopErrorScope(WGPUDevice device, WGPUPopErrorScopeCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Pushes an error scope to the current thread's error scope stack.
+ * See @ref ErrorScopes.
+ */
 WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter filter) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceSetLabel(WGPUDevice device, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceAddRef(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
