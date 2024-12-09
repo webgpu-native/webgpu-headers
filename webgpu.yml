@@ -286,9 +286,6 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
-      - name: error
-        doc: |
-          TODO
   - name: compilation_message_type
     doc: |
       TODO
@@ -647,9 +644,6 @@ enums:
         doc: |
           TODO
       - name: instance_dropped
-        doc: |
-          TODO
-      - name: error
         doc: |
           TODO
   - name: request_adapter_status
