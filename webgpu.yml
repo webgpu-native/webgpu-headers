@@ -2437,7 +2437,7 @@ structs:
         default: undefined
       - name: depth_clear_value
         doc: |
-          TODO
+          If NaN (`isnan()` returns true), indicates an `undefined` value (as defined by the JS spec).
         type: float32
         default: constant.depth_clear_value_undefined
       - name: depth_read_only

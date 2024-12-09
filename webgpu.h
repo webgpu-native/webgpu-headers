@@ -2455,6 +2455,8 @@ typedef struct WGPURenderPassDepthStencilAttachment {
      */
     WGPUStoreOp depthStoreOp;
     /**
+     * If NaN (`isnan()` returns true), indicates an `undefined` value (as defined by the JS spec).
+     *
      * The `INIT` macro sets this to @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED.
      */
     float depthClearValue;
