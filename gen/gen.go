@@ -196,7 +196,7 @@ func (g *Generator) CValue(s string) (string, error) {
 	case "uint64_max":
 		return "UINT64_MAX", nil
 	case "nan":
-		return "NAN", nil
+		return "0.0f / 0.0f", nil
 	default:
 		var num string
 		var base int

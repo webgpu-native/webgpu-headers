@@ -60,7 +60,6 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include <math.h>
 
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
@@ -92,7 +91,7 @@
  * Value to be assigned to member depthClearValue of @ref WGPURenderPassDepthStencilAttachment
  * to mean that it is not defined.
  */
-#define WGPU_DEPTH_CLEAR_VALUE_UNDEFINED (NAN)
+#define WGPU_DEPTH_CLEAR_VALUE_UNDEFINED (0.0f / 0.0f)
 #define WGPU_DEPTH_SLICE_UNDEFINED (UINT32_MAX)
 #define WGPU_LIMIT_U32_UNDEFINED (UINT32_MAX)
 #define WGPU_LIMIT_U64_UNDEFINED (UINT64_MAX)
