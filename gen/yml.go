@@ -10,6 +10,7 @@ import (
 type Yml struct {
 	Copyright  string `yaml:"copyright"`
 	Name       string `yaml:"name"`
+	Doc        string `yaml:"doc"`
 	EnumPrefix string `yaml:"enum_prefix"`
 
 	Constants []Constant `yaml:"constants"`

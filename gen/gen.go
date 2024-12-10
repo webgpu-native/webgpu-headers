@@ -24,6 +24,12 @@ func (g *Generator) Gen(dst io.Writer) error {
 			"MComment":  func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, true) },
 			"SCommentN": func(v string, indent int) string { return Comment(v, CommentTypeSingleLine, indent, false) },
 			"MCommentN": func(v string, indent int) string { return Comment(v, CommentTypeMultiLine, indent, false) },
+			"MCommentMainPage": func(v string, indent int) string {
+				if v == "" || strings.TrimSpace(v) == "TODO" {
+					return ""
+				}
+				return Comment("\\mainpage\n\n"+strings.TrimSpace(v), CommentTypeMultiLine, indent, true)
+			},
 			"MCommentEnum": func(v string, indent int, prefix string, e Enum, entryIndex int) string {
 				if v == "" || strings.TrimSpace(v) == "TODO" {
 					return ""
