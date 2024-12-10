@@ -11,7 +11,7 @@ import (
 )
 
 type Generator struct {
-	ExtSuffix  string
+	ExtPrefix  string
 	HeaderName string
 	*Yml
 }
@@ -294,24 +294,24 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 func (g *Generator) FunctionArgs(f Function, o *Object) string {
 	sb := &strings.Builder{}
 	if o != nil {
-		typeSuffix := g.TypeSuffixForNamespace(o.Namespace)
+		typePrefix := g.TypePrefixForNamespace(o.Namespace)
 		if len(f.Args) > 0 {
-			fmt.Fprintf(sb, "WGPU%s%s %s, ", PascalCase(o.Name), typeSuffix, CamelCase(o.Name))
+			fmt.Fprintf(sb, "WGPU%s %s, ", PascalCase(typePrefix + o.Name), CamelCase(o.Name))
 		} else {
-			fmt.Fprintf(sb, "WGPU%s%s %s", PascalCase(o.Name), typeSuffix, CamelCase(o.Name))
+			fmt.Fprintf(sb, "WGPU%s %s", PascalCase(typePrefix + o.Name), CamelCase(o.Name))
 		}
 	}
 	for i, arg := range f.Args {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
 		}
-		typeSuffix := g.TypeSuffixForNamespace(arg.Namespace)
+		typePrefix := g.TypePrefixForNamespace(arg.Namespace)
 		matches := arrayTypeRegexp.FindStringSubmatch(arg.Type)
 		if len(matches) == 2 {
 			fmt.Fprintf(sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
-			fmt.Fprintf(sb, "%s %s", g.CType(matches[1], arg.Pointer, typeSuffix), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s %s", g.CType(typePrefix + matches[1], arg.Pointer, ""), CamelCase(arg.Name))
 		} else {
-			fmt.Fprintf(sb, "%s %s", g.CType(arg.Type, arg.Pointer, typeSuffix), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s %s", g.CType(typePrefix + arg.Type, arg.Pointer, ""), CamelCase(arg.Name))
 		}
 		if i != len(f.Args)-1 {
 			sb.WriteString(", ")
@@ -329,7 +329,7 @@ func (g *Generator) CallbackArgs(f Callback) string {
 		if arg.Optional {
 			sb.WriteString("WGPU_NULLABLE ")
 		}
-		typeSuffix := g.TypeSuffixForNamespace(arg.Namespace)
+		typePrefix := g.TypePrefixForNamespace(arg.Namespace)
 		var structPrefix string
 		if strings.HasPrefix(arg.Type, "struct.") {
 			structPrefix = "struct "
@@ -337,9 +337,9 @@ func (g *Generator) CallbackArgs(f Callback) string {
 		matches := arrayTypeRegexp.FindStringSubmatch(arg.Type)
 		if len(matches) == 2 {
 			fmt.Fprintf(sb, "size_t %sCount, ", CamelCase(Singularize(arg.Name)))
-			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, g.CType(matches[1], arg.Pointer, typeSuffix), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, g.CType(typePrefix + matches[1], arg.Pointer, ""), CamelCase(arg.Name))
 		} else {
-			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, g.CType(arg.Type, arg.Pointer, typeSuffix), CamelCase(arg.Name))
+			fmt.Fprintf(sb, "%s%s %s, ", structPrefix, g.CType(typePrefix + arg.Type, arg.Pointer, ""), CamelCase(arg.Name))
 		}
 	}
 	sb.WriteString("WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2")
@@ -411,9 +411,10 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int) (string, error) {
 				}
 			}
 			// construct comment
-			entryComment += PascalCase(v)
-			if g.ExtSuffix != "" {
-				entryComment += "_" + g.ExtSuffix
+			if g.ExtPrefix != "" {
+				entryComment += PascalCase(g.ExtPrefix + "_" + v)
+			} else {
+				entryComment += PascalCase(v)
 			}
 			if valueIndex != len(entry.ValueCombination)-1 {
 				entryComment += " | "
@@ -431,20 +432,20 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int) (string, error) {
 	return entryValue, nil
 }
 
-func (g *Generator) TypeSuffixForNamespace(namespace string) string {
+func (g *Generator) TypePrefixForNamespace(namespace string) string {
 	switch namespace {
 	case "":
-		return ConstantCase(g.ExtSuffix)
+		return g.ExtPrefix + "_"
 	case "webgpu":
 		return ""
 	default:
-		return ConstantCase(namespace)
+		return namespace + "_"
 	}
 }
 
 func (g *Generator) StructMember(s Struct, memberIndex int) (string, error) {
 	member := s.Members[memberIndex]
-	typeSuffix := g.TypeSuffixForNamespace(member.Namespace)
+	typePrefix := g.TypePrefixForNamespace(member.Namespace)
 
 	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
 	if len(matches) == 2 {
@@ -456,9 +457,9 @@ func (g *Generator) StructMember(s Struct, memberIndex int) (string, error) {
 		sb.WriteString("WGPU_NULLABLE ")
 	}
 	if strings.HasPrefix(member.Type, "callback.") {
-		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, "", "Info"), CamelCase(member.Name))
+		fmt.Fprintf(sb, "%s %s;", g.CType(typePrefix + member.Type, "", "Info"), CamelCase(member.Name))
 	} else {
-		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer, typeSuffix), CamelCase(member.Name))
+		fmt.Fprintf(sb, "%s %s;", g.CType(typePrefix + member.Type, member.Pointer, ""), CamelCase(member.Name))
 	}
 	return sb.String(), nil
 }
@@ -476,7 +477,7 @@ func (g *Generator) StructMemberArrayCount(s Struct, memberIndex int) (string, e
 
 func (g *Generator) StructMemberArrayData(s Struct, memberIndex int) (string, error) {
 	member := s.Members[memberIndex]
-	typeSuffix := g.TypeSuffixForNamespace(member.Namespace)
+	typePrefix := g.TypePrefixForNamespace(member.Namespace)
 
 	matches := arrayTypeRegexp.FindStringSubmatch(member.Type)
 	if len(matches) != 2 {
@@ -487,7 +488,7 @@ func (g *Generator) StructMemberArrayData(s Struct, memberIndex int) (string, er
 	if member.Optional {
 		sb.WriteString("WGPU_NULLABLE ")
 	}
-	fmt.Fprintf(sb, "%s %s;", g.CType(matches[1], member.Pointer, typeSuffix), CamelCase(member.Name))
+	fmt.Fprintf(sb, "%s %s;", g.CType(typePrefix + matches[1], member.Pointer, ""), CamelCase(member.Name))
 	return sb.String(), nil
 }
 
@@ -596,11 +597,11 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			return literal("NULL")
 		} else {
 			typ := strings.TrimPrefix(member.Type, "struct.")
-			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
+			return ref("WGPU_" + g.ConstantExtPrefix() + ConstantCase(typ) + "_INIT")
 		}
 	case strings.HasPrefix(member.Type, "callback."):
 		typ := strings.TrimPrefix(member.Type, "callback.")
-		return ref("WGPU_" + ConstantCase(typ) + "_CALLBACK_INFO" + g.ConstantExtSuffix() + "_INIT")
+		return ref("WGPU_" + g.ConstantExtPrefix() + ConstantCase(typ) + "_CALLBACK_INFO" + "_INIT")
 	case strings.HasPrefix(member.Type, "object."):
 		return literal("NULL")
 	case strings.HasPrefix(member.Type, "array<"):
@@ -614,9 +615,9 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 	}
 }
 
-func (g *Generator) ConstantExtSuffix() string {
-	if g.ExtSuffix != "" {
-		return "_" + ConstantCase(g.ExtSuffix)
+func (g *Generator) ConstantExtPrefix() string {
+	if g.ExtPrefix != "" {
+		return ConstantCase(g.ExtPrefix) + "_"
 	} else {
 		return ""
 	}

@@ -19,14 +19,14 @@ var (
 	schemaPath  string
 	headerPaths StringListFlag
 	yamlPaths   StringListFlag
-	extSuffix   bool
+	extPrefix   bool
 )
 
 func main() {
 	flag.StringVar(&schemaPath, "schema", "", "path of the json schema")
 	flag.Var(&yamlPaths, "yaml", "path of the yaml spec")
 	flag.Var(&headerPaths, "header", "output path of the header")
-	flag.BoolVar(&extSuffix, "extsuffix", true, "append suffix to extension identifiers")
+	flag.BoolVar(&extPrefix, "extprefix", true, "add prefix to extension identifiers")
 	flag.Parse()
 	if schemaPath == "" || len(headerPaths) == 0 || len(yamlPaths) == 0 || len(headerPaths) != len(yamlPaths) {
 		flag.Usage()
@@ -69,14 +69,14 @@ func main() {
 
 		SortAndTransform(&yml)
 
-		suffix := ""
-		if yml.Name != "webgpu" && extSuffix {
-			suffix = strings.ToUpper(yml.Name)
+		prefix := ""
+		if yml.Name != "webgpu" && extPrefix {
+			prefix = yml.Name
 		}
 		g := &Generator{
 			Yml:        &yml,
 			HeaderName: headerFileNameSplit[0],
-			ExtSuffix:  suffix,
+			ExtPrefix:  prefix,
 		}
 		if err := g.Gen(dst); err != nil {
 			panic(err)

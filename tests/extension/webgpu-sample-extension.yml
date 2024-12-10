@@ -179,9 +179,10 @@ enums:
       - name: PipelineStatistics
         doc: |
           TODO
-  - name: native_texture_format
+  - name: texture_format
     doc: |
       TODO
+    extended: true
     entries:
       - null
       - name: r16_unorm
