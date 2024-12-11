@@ -1370,16 +1370,6 @@ enums:
         doc: |
           TODO
 bitflags:
-  - name: implementation_task_flags
-    doc:
-      Flags indicating types of work contained in the task.
-    entries:
-      - name: none
-        doc: TODO
-      - name: CPU_work
-        doc: TODO
-      - name: blocking_IO
-        doc: TODO
   - name: buffer_usage
     doc: |
       TODO
@@ -1444,6 +1434,15 @@ bitflags:
           - alpha
         doc: |
           TODO
+  - name: implementation_task_flags
+    doc: Flags indicating types of work contained in the task.
+    entries:
+      - name: none
+        doc: TODO
+      - name: CPU_work
+        doc: TODO
+      - name: blocking_IO
+        doc: TODO
   - name: map_mode
     doc: |
       TODO

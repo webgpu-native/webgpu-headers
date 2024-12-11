@@ -1517,14 +1517,13 @@ typedef struct WGPUUncapturedErrorCallbackInfo {
     /*.userdata2=*/NULL _wgpu_COMMA \
 })
 
+typedef (*WGPUImplementationTaskFunction)(void* impldata);
+typedef (*WGPUPostTaskHook)(WGPUImplementationTaskFlags flags, WGPUImplementationTaskFunction task, void* impldata, void* userdata1, void* userdata2);
 typedef struct WGPUPostTaskHookInfo {
     WGPUPostTaskHook hook;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
 }
-
-typedef (*WGPUImplementationTaskFunction)(void* impldata);
-typedef (*WGPUPostTaskHook)(WGPUImplementationTaskFlags flags, WGPUImplementationTaskFunction task, void* impldata, void* userdata1, void* userdata2);
 
 /** @} */
 
