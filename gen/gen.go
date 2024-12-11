@@ -606,9 +606,10 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
 		} else if *member.Default == "zero" {
 			if isDocString {
+				// This is only currently used in WGPUBindGroupLayoutEntry.
 				return "zero (which sets the entry to `BindingNotUsed`)"
 			} else {
-				return literal("_wgpu_STRUCT_ZERO_INIT")
+				return "_wgpu_STRUCT_ZERO_INIT"
 			}
 		} else {
 			panic("unknown default for struct type")
@@ -629,7 +630,11 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 	case member.Type == "c_void":
 		return literal("NULL")
 	case member.Type == "post_task_hook_info":
-		return literal("NULL")
+		if isDocString {
+			return "zero-initialized"
+		} else {
+			return "_wgpu_STRUCT_ZERO_INIT"
+		}
 	default:
 		panic("invalid prefix: " + member.Type + " in member " + member.Name)
 	}

@@ -1452,7 +1452,9 @@ bitflags:
         doc: |
           TODO
   - name: implementation_task_flags
-    doc: Flags indicating types of work contained in the task.
+    doc: |
+      Flags indicating types of work contained in the task.
+      Implementations may return flags not defined here. Applications must handle or ignore them robustly.
     entries:
       - name: none
         doc: TODO
