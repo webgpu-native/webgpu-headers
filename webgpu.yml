@@ -1451,6 +1451,17 @@ bitflags:
           - alpha
         doc: |
           TODO
+  - name: implementation_task_flags
+    doc: |
+      Flags indicating types of work contained in the task.
+      Implementations may return flags not defined here. Applications must handle or ignore them robustly.
+    entries:
+      - name: none
+        doc: TODO
+      - name: CPU_work
+        doc: TODO
+      - name: blocking_IO
+        doc: TODO
   - name: map_mode
     doc: |
       TODO
@@ -2066,6 +2077,9 @@ structs:
       - name: features
         doc: Instance features to enable
         type: struct.instance_capabilities
+      - name: post_task_hook
+        doc: TODO
+        type: post_task_hook_info
   - name: limits
     doc: |
       TODO

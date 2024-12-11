@@ -134,6 +134,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 					s += "\n\nThis is a \\ref NonNullInputString."
 				case "out_string":
 					s += "\n\nThis is an \\ref OutputString."
+				case "post_task_hook_info":
 				}
 
 				s += "\n\nThe `INIT` macro sets this to " + g.DefaultValue(*member, true /* isDocString */) + "."
@@ -252,6 +253,8 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 		return appendModifiers("WGPUBool", pointerType)
 	case "nullable_string", "string_with_default_empty", "out_string":
 		return "WGPUStringView"
+	case "post_task_hook_info":
+		return "WGPUPostTaskHookInfo"
 	case "uint16":
 		return appendModifiers("uint16_t", pointerType)
 	case "uint32":
@@ -603,9 +606,10 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
 		} else if *member.Default == "zero" {
 			if isDocString {
+				// This is only currently used in WGPUBindGroupLayoutEntry.
 				return "zero (which sets the entry to `BindingNotUsed`)"
 			} else {
-				return literal("_wgpu_STRUCT_ZERO_INIT")
+				return "_wgpu_STRUCT_ZERO_INIT"
 			}
 		} else {
 			panic("unknown default for struct type")
@@ -625,6 +629,12 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		return ref("WGPU_STRING_VIEW_INIT")
 	case member.Type == "c_void":
 		return literal("NULL")
+	case member.Type == "post_task_hook_info":
+		if isDocString {
+			return "zero-initialized"
+		} else {
+			return "_wgpu_STRUCT_ZERO_INIT"
+		}
 	default:
 		panic("invalid prefix: " + member.Type + " in member " + member.Name)
 	}

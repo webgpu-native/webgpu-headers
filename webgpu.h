@@ -277,6 +277,7 @@ struct WGPURequestAdapterCallbackInfo;
 struct WGPURequestDeviceCallbackInfo;
 struct WGPUUncapturedErrorCallbackInfo;
 
+struct WGPUPostTaskCallbackInfo;
 
 /**
  * \defgroup Enumerations Enumerations
@@ -1173,6 +1174,15 @@ static const WGPUColorWriteMask WGPUColorWriteMask_Blue = 0x0000000000000004;
 static const WGPUColorWriteMask WGPUColorWriteMask_Alpha = 0x0000000000000008;
 static const WGPUColorWriteMask WGPUColorWriteMask_All = 0x000000000000000F /* Red | Green | Blue | Alpha */;
 
+/**
+ * Flags indicating types of work contained in the task.
+ * Implementations may return flags not defined here. Applications must handle or ignore them robustly.
+ */
+typedef WGPUFlags WGPUImplementationTaskFlags;
+static const WGPUImplementationTaskFlags WGPUImplementationTaskFlags_None = 0x0000000000000000;
+static const WGPUImplementationTaskFlags WGPUImplementationTaskFlags_CPUWork = 0x0000000000000001;
+static const WGPUImplementationTaskFlags WGPUImplementationTaskFlags_BlockingIO = 0x0000000000000002;
+
 typedef WGPUFlags WGPUMapMode;
 static const WGPUMapMode WGPUMapMode_None = 0x0000000000000000;
 static const WGPUMapMode WGPUMapMode_Read = 0x0000000000000001;
@@ -1511,6 +1521,14 @@ typedef struct WGPUUncapturedErrorCallbackInfo {
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
 })
+
+typedef void (*WGPUImplementationTaskFunction)(void* impldata);
+typedef void (*WGPUPostTaskHook)(WGPUImplementationTaskFlags flags, WGPUImplementationTaskFunction task, void* impldata, void* userdata1, void* userdata2);
+typedef struct WGPUPostTaskHookInfo {
+    WGPUPostTaskHook hook;
+    WGPU_NULLABLE void* userdata1;
+    WGPU_NULLABLE void* userdata2;
+} WGPUPostTaskHookInfo;
 
 /** @} */
 
@@ -3799,6 +3817,10 @@ typedef struct WGPUInstanceDescriptor {
      * The `INIT` macro sets this to @ref WGPU_INSTANCE_CAPABILITIES_INIT.
      */
     WGPUInstanceCapabilities features;
+    /**
+     * The `INIT` macro sets this to zero-initialized.
+     */
+    WGPUPostTaskHookInfo postTaskHook;
 } WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -3807,6 +3829,7 @@ typedef struct WGPUInstanceDescriptor {
 #define WGPU_INSTANCE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.features=*/WGPU_INSTANCE_CAPABILITIES_INIT _wgpu_COMMA \
+    /*.postTaskHook=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
 })
 
 /**
