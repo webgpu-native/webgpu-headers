@@ -47,10 +47,10 @@ func (g *Generator) Gen(dst io.Writer) error {
 					}
 				}
 				for _, arg := range fn.Args {
-					var argDoc = strings.TrimSpace(arg.Doc)
+					argDoc := strings.TrimSpace(arg.Doc)
 					var sArg string
 					if argDoc != "" && argDoc != "TODO" {
-						sArg += argDoc
+						sArg = argDoc
 					}
 
 					if arg.PassedWithOwnership != nil {
@@ -68,8 +68,22 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				if fn.Returns != nil {
 					returnsDoc := strings.TrimSpace(fn.Returns.Doc)
+					var sRet string
 					if returnsDoc != "" && returnsDoc != "TODO" {
-						s += "\n\n@returns\n" + returnsDoc
+						sRet = returnsDoc
+					}
+
+					if fn.Returns.PassedWithOwnership != nil {
+						if *fn.Returns.PassedWithOwnership {
+							sRet += "\nThis value is @ref ReturnedWithOwnership."
+						} else {
+							panic("invalid")
+						}
+					}
+
+					sRet = strings.TrimSpace(sRet)
+					if sRet != "" {
+						s += "\n\n@returns\n" + sRet
 					}
 				}
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
@@ -584,17 +598,25 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		} else {
 			return *member.Default
 		}
+	case strings.HasPrefix(member.Type, "struct."):
+		if member.Optional {
+			return literal("NULL")
+		} else if member.Default == nil {
+			typ := strings.TrimPrefix(member.Type, "struct.")
+			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
+		} else if *member.Default == "zero" {
+			if isDocString {
+				return "zero (which sets the entry to `BindingNotUsed`)"
+			} else {
+				return literal("_wgpu_STRUCT_ZERO_INIT")
+			}
+		} else {
+			panic("unknown default for struct type")
+		}
 	case member.Default != nil:
 		panic(fmt.Errorf("type %s should not have a default", member.Type))
 
 	// Cases that should not have member.Default
-	case strings.HasPrefix(member.Type, "struct."):
-		if member.Optional {
-			return literal("NULL")
-		} else {
-			typ := strings.TrimPrefix(member.Type, "struct.")
-			return ref("WGPU_" + ConstantCase(typ) + g.ConstantExtSuffix() + "_INIT")
-		}
 	case strings.HasPrefix(member.Type, "callback."):
 		typ := strings.TrimPrefix(member.Type, "callback.")
 		return ref("WGPU_" + ConstantCase(typ) + "_CALLBACK_INFO" + g.ConstantExtSuffix() + "_INIT")

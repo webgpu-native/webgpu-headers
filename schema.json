@@ -161,7 +161,7 @@
                         "number",
                         "boolean"
                     ],
-                    "description": "Default value assigned to this parameter when using initializer macro"
+                    "description": "Default value assigned to this parameter when using initializer macro. Special context-dependent values include constant names (`constant.*`), bitflag names (unprefixed), and `zero` for struct-zero-init (where zero-init is known to have the desired result)."
                 }
             },
             "required": [
@@ -205,7 +205,9 @@
                     "description": "Optional property, return type of the function",
                     "properties": {
                         "doc": {
-                            "type": "string"
+                            "type": "string",
+                            "$comment": "Doxygen doesn't support multi-paragraph return docs (containing \\n\\n)",
+                            "pattern": "^\n?.+(\n.+)*\n?$"
                         },
                         "type": {
                             "$ref": "#/definitions/Type",
@@ -434,12 +436,8 @@
                         "type": "string",
                         "description": "Type of the structure",
                         "enum": [
-                            "base_in",
-                            "base_out",
-                            "base_in_or_out",
-                            "extension_in",
-                            "extension_out",
-                            "extension_in_or_out",
+                            "extensible",
+                            "extension",
                             "standalone"
                         ]
                     },
