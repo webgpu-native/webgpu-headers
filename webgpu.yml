@@ -2437,7 +2437,11 @@ structs:
         default: undefined
       - name: depth_clear_value
         doc: |
-          If NaN (`isnan()` returns true), indicates an `undefined` value (as defined by the JS spec).
+          If NaN, indicates an `undefined` value (as defined by the JS spec).
+          Use @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED to indicate this semantically.
+
+          NaN is determined by `isnan(depthClearValue) != 0`.
+          (Do not use an equality check, because `NaN == NaN` is false.)
         type: float32
         default: constant.depth_clear_value_undefined
       - name: depth_read_only
