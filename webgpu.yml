@@ -830,9 +830,9 @@ enums:
       - name: outdated
         doc: The surface is too different to be used, compared to when it was originally created.
       - name: lost
-        doc: The connection to whatever owns the surface was lost.
+        doc: The connection to whatever owns the surface was lost, or generally needs to be fully reinitialized.
       - name: error
-        doc: The surface is not configured, or there was an @ref OutStructChainError.
+        doc: There was some deterministic error (for example, the surface is not configured, or there was an @ref OutStructChainError). Should produce @ref ImplementationDefinedLogging containing details.
   - name: texture_aspect
     doc: |
       TODO
