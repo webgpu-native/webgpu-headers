@@ -273,14 +273,9 @@ typedef void (*WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}})({{CallbackArgs
  */
 
 typedef struct WGPUChainedStruct {
-    struct WGPUChainedStruct const * next;
+    struct WGPUChainedStruct * next;
     WGPUSType sType;
 } WGPUChainedStruct WGPU_STRUCTURE_ATTRIBUTE;
-
-typedef struct WGPUChainedStructOut {
-    struct WGPUChainedStructOut * next;
-    WGPUSType sType;
-} WGPUChainedStructOut WGPU_STRUCTURE_ATTRIBUTE;
 
 /** @} */
 {{  end}}
@@ -331,20 +326,10 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 {{- range $struct := .Structs}}
 {{-   MCommentStruct . 0}}
 typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
-{{-   if eq .Type "base_in" }}
-    WGPUChainedStruct const * nextInChain;
-{{-   else if eq .Type "base_out" }}
-    WGPUChainedStructOut * nextInChain;
-{{-   else if eq .Type "base_in_or_out" }}
-    /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut * nextInChain;
-{{-   else if eq .Type "extension_in"}}
+{{-   if eq .Type "extensible" }}
+    WGPUChainedStruct * nextInChain;
+{{-   else if eq .Type "extension"}}
     WGPUChainedStruct chain;
-{{-   else if eq .Type "extension_out"}}
-    WGPUChainedStructOut chain;
-{{-   else if eq .Type "extension_in_or_out"}}
-    /** This struct chain is used as mutable in some places and immutable in others. */
-    WGPUChainedStructOut chain;
 {{-   end}}
 {{-   range $memberIndex, $_ := .Members}}
 {{-     if (.Type | IsArray)}}
@@ -365,15 +350,10 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
  * Initializer for @ref WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}.
  */
 #define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}, { \
-{{-   if eq .Type "base_in" "base_out" "base_in_or_out" }}
+{{-   if eq .Type "extensible" }}
     /*.nextInChain=*/NULL _wgpu_COMMA \
-{{-   else if eq .Type "extension_in" }}
+{{-   else if eq .Type "extension" }}
     /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
-        /*.next=*/NULL _wgpu_COMMA \
-        /*.sType=*/WGPUSType_{{.Name | PascalCase}}{{$.ExtSuffix}} _wgpu_COMMA \
-    }) _wgpu_COMMA \
-{{-   else if eq .Type "extension_out" "extension_in_or_out" }}
-    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStructOut, { \
         /*.next=*/NULL _wgpu_COMMA \
         /*.sType=*/WGPUSType_{{.Name | PascalCase}}{{$.ExtSuffix}} _wgpu_COMMA \
     }) _wgpu_COMMA \
