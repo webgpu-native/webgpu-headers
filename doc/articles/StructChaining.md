@@ -62,8 +62,10 @@ The pointer links in a struct chain are all mutable pointers. Whether the struct
 A struct-chaining error occurs if a struct chain is incorrectly constructed (in a detectable way).
 They occur if and only if:
 
-- The `sType` of a struct in the chain is not valid for the type of the chain root.
+- The `sType` of a struct in the chain is not valid _in the context of the chain root's static type_.
+    - If this happens, the implementation must not downcast the pointer to access the rest of the struct (even if it would know how to downcast it in other contexts).
 - Multiple instances of the same `sType` value are seen in the same struct chain. (Note this also detects and disallows cycles.)
+    - Implementation-specific extensions also _should_ avoid designs that use unbounded recursion (such as linked lists) in favor of iterative designs (arrays or arrays-of-pointers). This is to avoid stack overflows in struct handling and serialization/deserialization.
 
 Struct chains which are used in device-timeline validation/operations (e.g. @ref WGPUBufferDescriptor in @ref wgpuDeviceCreateBuffer) have their chain errors surfaced asynchronously, like any other validation error.
 
