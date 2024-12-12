@@ -866,12 +866,12 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
     WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000004,
     /**
      * `0x00000005`.
-     * The connection to whatever owns the surface was lost.
+     * The connection to whatever owns the surface was lost, or generally needs to be fully reinitialized.
      */
     WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000005,
     /**
      * `0x00000006`.
-     * The surface is not configured, or there was an @ref OutStructChainError.
+     * There was some deterministic error (for example, the surface is not configured, or there was an @ref OutStructChainError). Should produce @ref ImplementationDefinedLogging containing details.
      */
     WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000006,
     WGPUSurfaceGetCurrentTextureStatus_Force32 = 0x7FFFFFFF
