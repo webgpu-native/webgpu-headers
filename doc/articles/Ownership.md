@@ -14,10 +14,12 @@ The application must `Release` this ref before losing the pointer.
 Variable-sized outputs returned from the API (e.g. the strings in \ref WGPUAdapterInfo, from \ref wgpuAdapterGetInfo) are application-owned.
 The application must call the appropriate `FreeMembers` function (e.g. \ref wgpuAdapterInfoFreeMembers) before losing the pointers.
 
-Note that such functions will *not* free any previously-allocated data: overwriting an output structure without first freeing members will leak the allocations; e.g.:
+Note that such functions will *not* free any previously-allocated data: overwriting an output structure without first releasing ownership will leak the allocations; e.g.:
 
 - Overwriting the strings in \ref WGPUAdapterInfo with \ref wgpuAdapterGetInfo without first calling \ref wgpuAdapterInfoFreeMembers.
 - Overwriting the `texture` in \ref WGPUSurfaceTexture with \ref wgpuSurfaceGetCurrentTexture without first calling \ref wgpuTextureRelease.
+
+Note also that some structs with `FreeMembers` functions may be used as both inputs and outputs. In this case `FreeMembers` must only be used if the member allocations were made by the `webgpu.h` implementation (as an output), not if they were made by the applcation (as an input).
 
 ## Callback Arguments {#CallbackArgs}
 

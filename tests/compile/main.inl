@@ -38,6 +38,31 @@ int main(void) {
         a.endOfPassWriteIndex = WGPU_QUERY_SET_INDEX_UNDEFINED;
     }
 
+    // Simple chaining smoke test
+    {
+        // It's not valid to use both WGSL and SPIRV but this test doesn't care.
+        WGPUShaderSourceSPIRV descSPIRV = WGPU_SHADER_SOURCE_SPIRV_INIT;
+        WGPUShaderSourceWGSL descWGSL = WGPU_SHADER_SOURCE_WGSL_INIT;
+        WGPUShaderModuleDescriptor desc = WGPU_SHADER_MODULE_DESCRIPTOR_INIT;
+
+        // Test of linking one extension to another.
+        descWGSL.chain.next = &descSPIRV.chain;
+        // Test of linking base struct to an extension.
+        desc.nextInChain = &descWGSL.chain;
+
+        // Also test the alternate linking style using a cast.
+#ifdef __cplusplus
+#    if __cplusplus >= 201103L
+        static_assert(offsetof(WGPUShaderSourceWGSL, chain) == 0, "");
+#    endif
+        descWGSL.chain.next = reinterpret_cast<WGPUChainedStruct*>(&descSPIRV);
+        desc.nextInChain = reinterpret_cast<WGPUChainedStruct*>(&descWGSL);
+#else
+        descWGSL.chain.next = (WGPUChainedStruct*) &descSPIRV;
+        desc.nextInChain = (WGPUChainedStruct*) &descWGSL;
+#endif
+    }
+
     // Check that generated initializers are valid
     // TODO: Would be nice to autogenerate this so we don't forget to test any new structs.
     { WGPUBufferMapCallbackInfo x = WGPU_BUFFER_MAP_CALLBACK_INFO_INIT; }

@@ -6,3 +6,4 @@
 - \subpage Surfaces
 - \subpage SentinelValues
 - \subpage Strings
+- \subpage StructChaining
