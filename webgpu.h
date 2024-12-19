@@ -2034,7 +2034,23 @@ typedef struct WGPULimits {
     /**
      * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
      */
+    uint32_t maxStorageBuffersInVertexStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageBuffersInFragmentStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
     uint32_t maxStorageTexturesPerShaderStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageTexturesInVertexStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageTexturesInFragmentStage;
     /**
      * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
      */
@@ -2126,7 +2142,11 @@ typedef struct WGPULimits {
     /*.maxSampledTexturesPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxSamplersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxStorageBuffersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageBuffersInVertexStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageBuffersInFragmentStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxStorageTexturesPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageTexturesInVertexStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageTexturesInFragmentStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxUniformBuffersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxUniformBufferBindingSize=*/WGPU_LIMIT_U64_UNDEFINED _wgpu_COMMA \
     /*.maxStorageBufferBindingSize=*/WGPU_LIMIT_U64_UNDEFINED _wgpu_COMMA \

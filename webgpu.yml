@@ -2142,7 +2142,27 @@ structs:
           TODO
         type: uint32
         default: constant.limit_u32_undefined
+      - name: max_storage_buffers_in_vertex_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_buffers_in_fragment_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
       - name: max_storage_textures_per_shader_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_textures_in_vertex_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_textures_in_fragment_stage
         doc: |
           TODO
         type: uint32
