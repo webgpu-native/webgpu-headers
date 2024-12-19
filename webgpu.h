@@ -1326,6 +1326,11 @@ typedef struct WGPUChainedStruct {
  */
 typedef struct WGPUBufferMapCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPUBufferMapCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1337,7 +1342,7 @@ typedef struct WGPUBufferMapCallbackInfo {
  */
 #define WGPU_BUFFER_MAP_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBufferMapCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1345,6 +1350,11 @@ typedef struct WGPUBufferMapCallbackInfo {
 
 typedef struct WGPUCompilationInfoCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPUCompilationInfoCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1356,7 +1366,7 @@ typedef struct WGPUCompilationInfoCallbackInfo {
  */
 #define WGPU_COMPILATION_INFO_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUCompilationInfoCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1364,6 +1374,11 @@ typedef struct WGPUCompilationInfoCallbackInfo {
 
 typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPUCreateComputePipelineAsyncCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1375,7 +1390,7 @@ typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
  */
 #define WGPU_CREATE_COMPUTE_PIPELINE_ASYNC_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUCreateComputePipelineAsyncCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1383,6 +1398,11 @@ typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
 
 typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPUCreateRenderPipelineAsyncCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1394,7 +1414,7 @@ typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
  */
 #define WGPU_CREATE_RENDER_PIPELINE_ASYNC_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUCreateRenderPipelineAsyncCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1402,6 +1422,11 @@ typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
 
 typedef struct WGPUDeviceLostCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPUDeviceLostCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1413,7 +1438,7 @@ typedef struct WGPUDeviceLostCallbackInfo {
  */
 #define WGPU_DEVICE_LOST_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDeviceLostCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1421,6 +1446,11 @@ typedef struct WGPUDeviceLostCallbackInfo {
 
 typedef struct WGPUPopErrorScopeCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPUPopErrorScopeCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1432,7 +1462,7 @@ typedef struct WGPUPopErrorScopeCallbackInfo {
  */
 #define WGPU_POP_ERROR_SCOPE_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUPopErrorScopeCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1440,6 +1470,11 @@ typedef struct WGPUPopErrorScopeCallbackInfo {
 
 typedef struct WGPUQueueWorkDoneCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPUQueueWorkDoneCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1451,7 +1486,7 @@ typedef struct WGPUQueueWorkDoneCallbackInfo {
  */
 #define WGPU_QUEUE_WORK_DONE_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUQueueWorkDoneCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1459,6 +1494,11 @@ typedef struct WGPUQueueWorkDoneCallbackInfo {
 
 typedef struct WGPURequestAdapterCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPURequestAdapterCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1470,7 +1510,7 @@ typedef struct WGPURequestAdapterCallbackInfo {
  */
 #define WGPU_REQUEST_ADAPTER_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
@@ -1478,6 +1518,11 @@ typedef struct WGPURequestAdapterCallbackInfo {
 
 typedef struct WGPURequestDeviceCallbackInfo {
     WGPUChainedStruct const * nextInChain;
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
     WGPURequestDeviceCallback callback;
     WGPU_NULLABLE void* userdata1;
@@ -1489,7 +1534,7 @@ typedef struct WGPURequestDeviceCallbackInfo {
  */
 #define WGPU_REQUEST_DEVICE_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestDeviceCallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \

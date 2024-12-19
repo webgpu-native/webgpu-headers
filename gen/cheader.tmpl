@@ -285,6 +285,11 @@ typedef struct WGPUChainedStruct {
 typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
     WGPUChainedStruct const * nextInChain;
 {{-   if eq .Style "callback_mode" }}
+    /**
+     * Controls when the callback may be called.
+     *
+     * Has no default. The `INIT` macro sets this to (@ref WGPUCallbackMode)0.
+     */
     WGPUCallbackMode mode;
 {{-   end}}
     WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}} callback;
@@ -298,7 +303,7 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 #define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
 {{-   if eq .Style "callback_mode" }}
-    /*.mode=*/WGPUCallbackMode_WaitAnyOnly _wgpu_COMMA \
+    /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
 {{-   end}}
     /*.callback=*/NULL _wgpu_COMMA \
     /*.userdata1=*/NULL _wgpu_COMMA \
