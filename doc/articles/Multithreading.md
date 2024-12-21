@@ -25,8 +25,8 @@ Once the JS API is multithreading-capable, there are still expected to be some t
 
 - Buffer mapping state may be thread-local.
     - Implementations *should* make this state thread-global if feasible (e.g. by proxying all mapping calls to a single JS thread).
-- Any object which is not thread-shareable in JS may not be thread-shareable in Wasm (e.g. encoder objects may not be thread-shareable, similar to how they are not thread safe in `webgpu.h` in general).
-    - Implementations *may* make them thread-global but this is not expected to be performant.
+- Any object which is non-shareable or non-transferable in JS may also be fully or partially non-shareable or non-transferable in Wasm (e.g. encoder objects may be thread-locked, similar to how they are not thread safe in `webgpu.h` in general). (In Rust terms, shareable = `Send`+`Sync`, transferable = `Send`.)
+    - Implementations *may* make them shareable. (For example, proxying all encoder methods to a single thread would make them fully shareable but be inefficient; alternatively, encoder commands can be buffered, which might enable some multithreaded use-cases even if `Finish()` still must happen on the thread that created the encoder.)
 
 ## Thread Safety {#ThreadSafety}
 
