@@ -2074,8 +2074,8 @@ structs:
       TODO
     type: extensible
     members:
-      - name: features
-        doc: Instance features to enable
+      - name: capabilities
+        doc: Instance capabilities to enable.
         type: struct.instance_capabilities
   - name: limits
     doc: |
