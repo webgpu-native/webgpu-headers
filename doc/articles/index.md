@@ -2,6 +2,7 @@
 
 - \subpage Asynchronous-Operations
 - \subpage Errors
+- \subpage Extensions
 - \subpage Ownership
 - \subpage Surfaces
 - \subpage SentinelValues
