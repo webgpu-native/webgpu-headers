@@ -30,8 +30,14 @@ Once the JS API is multithreading-capable, there are still expected to be some t
 
 ## Thread Safety {#ThreadSafety}
 
-TODO
+The `webgpu.h` API is thread-safe (when multithreading is supported). That is, its functions are reentrant and may be called during the execution of other functions, with the following exceptions:
 
-### Callback Reentrancy
+- Encoder objects (@ref WGPUCommandEncoder, @ref WGPUComputePassEncoder, @ref WGPURenderPassEncoder, and @ref WGPURenderBundleEncoder) are not thread-safe. Note these objects appear only in their own methods.
+    - Additionally, in Wasm, note these objects may be thread-locked as discussed above.
+- API calls may not be made during @ref WGPUCallbackMode_AllowSpontaneous callbacks. See @ref CallbackReentrancy.
 
-See @ref CallbackReentrancy.
+The following _are_ thread safe:
+
+- @ref wgpuInstanceWaitAny() and @ref wgpuInstanceProcessEvents
+- @ref wgpuDeviceDestroy()
+- @ref wgpuBufferDestroy(), @ref wgpuTextureDestroy(), and @ref wgpuQuerySetDestroy()
