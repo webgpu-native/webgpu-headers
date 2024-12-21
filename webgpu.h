@@ -3792,6 +3792,8 @@ typedef struct WGPUDeviceDescriptor {
      * Called when there is an uncaptured error on this device, from any thread.
      * See @ref ErrorScopes.
      *
+     * **Important:** This callback does not have a configurable @ref WGPUCallbackMode; it may be called at any time (like @ref WGPUCallbackMode_AllowSpontaneous). As such, calls into the `webgpu.h` API from this callback are unsafe. See @ref CallbackReentrancy.
+     *
      * The `INIT` macro sets this to @ref WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT.
      */
     WGPUUncapturedErrorCallbackInfo uncapturedErrorCallbackInfo;
