@@ -212,6 +212,10 @@
                             "$ref": "#/definitions/Type",
                             "description": "Return type of the function"
                         },
+                        "optional": {
+                            "type": "boolean",
+                            "description": "Indicates if the return type is optional/nullable"
+                        },
                         "passed_with_ownership": {
                             "type": "boolean",
                             "description": "Whether the value is passed with ownership or without ownership"

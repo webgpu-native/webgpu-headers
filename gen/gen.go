@@ -179,17 +179,9 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				return ""
 			},
-			"Singularize": Singularize,
-			"IsLast":      func(i int, s any) bool { return i == reflect.ValueOf(s).Len()-1 },
-			"FunctionReturns": func(f Function) string {
-				if f.Callback != nil {
-					return "WGPUFuture"
-				}
-				if f.Returns != nil {
-					return g.CType(f.Returns.Type, f.Returns.Pointer, "")
-				}
-				return "void"
-			},
+			"Singularize":             Singularize,
+			"IsLast":                  func(i int, s any) bool { return i == reflect.ValueOf(s).Len()-1 },
+			"FunctionReturns":         g.FunctionReturns,
 			"FunctionArgs":            g.FunctionArgs,
 			"CallbackArgs":            g.CallbackArgs,
 			"StructMember":            g.StructMember,
@@ -303,6 +295,20 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 	default:
 		return ""
 	}
+}
+func (g *Generator) FunctionReturns(f Function) string {
+	if f.Callback != nil {
+		return "WGPUFuture"
+	}
+	if f.Returns != nil {
+		sb := &strings.Builder{}
+		if f.Returns.Optional {
+			sb.WriteString("WGPU_NULLABLE ")
+		}
+		sb.WriteString(g.CType(f.Returns.Type, f.Returns.Pointer, ""))
+		return sb.String()
+	}
+	return "void"
 }
 
 func (g *Generator) FunctionArgs(f Function, o *Object) string {

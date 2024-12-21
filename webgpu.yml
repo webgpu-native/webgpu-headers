@@ -3977,10 +3977,14 @@ objects:
       - name: create_buffer
         doc: |
           TODO
+
+          If @ref WGPUBufferDescriptor::mapAtCreation is `true` and the mapping allocation fails,
+          returns `NULL`.
         returns:
           doc: |
             TODO
           type: object.buffer
+          optional: true
           passed_with_ownership: true
         args:
           - name: descriptor
