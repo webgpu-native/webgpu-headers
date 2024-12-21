@@ -19,6 +19,9 @@
  * The WebIDL-based Web specification is mapped into C as faithfully (and
  * bidirectionally) as practical/possible.
  * The working draft of WebGPU can be found at <https://www.w3.org/TR/webgpu/>.
+ *
+ * The standard include directive for this header is `#include <webgpu/webgpu.h>`
+ * (if it is provided in a system-wide or toolchain-wide include directory).
  */
 
 #ifndef WEBGPU_H_
