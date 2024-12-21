@@ -1752,25 +1752,23 @@ structs:
         default: false
   - name: color
     doc: |
-      TODO
+      An RGBA color. Represents a `f32`, `i32`, or `u32` color using @ref DoubleAsSupertype.
+
+      If any channel is non-finite, produces a @ref NonFiniteFloatValueError.
     type: standalone
     members:
       - name: r
-        doc: |
-          TODO
-        type: float64
+        doc: ""
+        type: float64_supertype
       - name: g
-        doc: |
-          TODO
-        type: float64
+        doc: ""
+        type: float64_supertype
       - name: b
-        doc: |
-          TODO
-        type: float64
+        doc: ""
+        type: float64_supertype
       - name: a
-        doc: |
-          TODO
-        type: float64
+        doc: ""
+        type: float64_supertype
   - name: color_target_state
     doc: |
       TODO
@@ -1913,8 +1911,10 @@ structs:
         type: string_with_default_empty
       - name: value
         doc: |
-          TODO
-        type: float64
+          Represents a WGSL numeric or boolean value using @ref DoubleAsSupertype.
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
+        type: float64_supertype
   - name: depth_stencil_state
     doc: |
       TODO
@@ -1959,11 +1959,15 @@ structs:
       - name: depth_bias_slope_scale
         doc: |
           TODO
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
         type: float32
         default: 0.0
       - name: depth_bias_clamp
         doc: |
           TODO
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
         type: float32
         default: 0.0
   - name: device_descriptor
@@ -2465,12 +2469,13 @@ structs:
         default: undefined
       - name: depth_clear_value
         doc: |
-          If NaN, indicates an `undefined` value (as defined by the JS spec).
+          This is a @ref NullableFloatingPointType.
+
+          If `NaN`, indicates an `undefined` value (as defined by the JS spec).
           Use @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED to indicate this semantically.
 
-          NaN is determined by `isnan(depthClearValue) != 0`.
-          (Do not use an equality check, because `NaN == NaN` is false.)
-        type: float32
+          If infinite, produces a @ref NonFiniteFloatValueError.
+        type: nullable_float32
         default: constant.depth_clear_value_undefined
       - name: depth_read_only
         doc: |
@@ -2674,11 +2679,15 @@ structs:
       - name: lod_min_clamp
         doc: |
           TODO
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
         type: float32
         default: 0.0
       - name: lod_max_clamp
         doc: |
           TODO
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
         type: float32
         default: 32.0
       - name: compare
@@ -4751,12 +4760,14 @@ objects:
         args:
           - name: color
             doc: |
-              TODO
+              The RGBA blend constant. Represents an `f32` color using @ref DoubleAsSupertype.
             type: struct.color
             pointer: immutable
       - name: set_viewport
         doc: |
           TODO
+
+          If any argument is non-finite, produces a @ref NonFiniteFloatValueError.
         args:
           - name: x
             doc: |
