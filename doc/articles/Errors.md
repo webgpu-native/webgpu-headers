@@ -16,6 +16,7 @@ These errors include:
 - Enum values which are numerically invalid (this is not possible in JavaScript).
 - Enum values which are require features not enabled on the device (a [content-timeline](https://www.w3.org/TR/webgpu/#content-timeline) error in JavaScript), for example compressed texture formats.
 - Other content-timeline errors where specified.
+- @ref NonFiniteFloatValueError (except when they interrupt Wasm execution)
 
 ### Error Scopes {#ErrorScopes}
 
