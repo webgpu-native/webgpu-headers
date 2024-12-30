@@ -1217,6 +1217,8 @@ typedef void (*WGPUBufferMapCallback)(WGPUMapAsyncStatus status, WGPUStringView 
  * See also @ref CallbackError.
  *
  * @param compilationInfo
+ * This argument contains multiple @ref ImplementationAllocatedStructChain roots.
+ * Arbitrary chains must be handled gracefully by the application!
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUCompilationInfoCallback)(WGPUCompilationInfoRequestStatus status, struct WGPUCompilationInfo const * compilationInfo, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
@@ -1865,6 +1867,11 @@ typedef struct WGPUCommandEncoderDescriptor {
 })
 
 /**
+ * TODO
+ *
+ * This is an @ref ImplementationAllocatedStructChain root.
+ * Arbitrary chains must be handled gracefully by the application!
+ *
  * Default values can be set using @ref WGPU_COMPILATION_MESSAGE_INIT as initializer.
  */
 typedef struct WGPUCompilationMessage {
@@ -3611,6 +3618,11 @@ typedef struct WGPUBlendState {
 })
 
 /**
+ * TODO
+ *
+ * This is an @ref ImplementationAllocatedStructChain root.
+ * Arbitrary chains must be handled gracefully by the application!
+ *
  * Default values can be set using @ref WGPU_COMPILATION_INFO_INIT as initializer.
  */
 typedef struct WGPUCompilationInfo {
