@@ -1791,6 +1791,10 @@ typedef struct WGPUBufferDescriptor {
 })
 
 /**
+ * An RGBA color. Represents a `f32`, `i32`, or `u32` color using @ref DoubleAsSupertype.
+ *
+ * If any channel is non-finite, produces a @ref NonFiniteFloatValueError.
+ *
  * Default values can be set using @ref WGPU_COLOR_INIT as initializer.
  */
 typedef struct WGPUColor {
@@ -1934,6 +1938,10 @@ typedef struct WGPUConstantEntry {
      */
     WGPUStringView key;
     /**
+     * Represents a WGSL numeric or boolean value using @ref DoubleAsSupertype.
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `0.`.
      */
     double value;
@@ -2503,11 +2511,12 @@ typedef struct WGPURenderPassDepthStencilAttachment {
      */
     WGPUStoreOp depthStoreOp;
     /**
-     * If NaN, indicates an `undefined` value (as defined by the JS spec).
+     * This is a @ref NullableFloatingPointType.
+     *
+     * If `NaN`, indicates an `undefined` value (as defined by the JS spec).
      * Use @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED to indicate this semantically.
      *
-     * NaN is determined by `isnan(depthClearValue) != 0`.
-     * (Do not use an equality check, because `NaN == NaN` is false.)
+     * If infinite, produces a @ref NonFiniteFloatValueError.
      *
      * The `INIT` macro sets this to @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED.
      */
@@ -2703,10 +2712,18 @@ typedef struct WGPUSamplerDescriptor {
      */
     WGPUMipmapFilterMode mipmapFilter;
     /**
+     * TODO
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `0.f`.
      */
     float lodMinClamp;
     /**
+     * TODO
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `32.f`.
      */
     float lodMaxClamp;
@@ -3734,10 +3751,18 @@ typedef struct WGPUDepthStencilState {
      */
     int32_t depthBias;
     /**
+     * TODO
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `0.f`.
      */
     float depthBiasSlopeScale;
     /**
+     * TODO
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `0.f`.
      */
     float depthBiasClamp;
@@ -5896,6 +5921,10 @@ WGPU_EXPORT void wgpuRenderPassEncoderInsertDebugMarker(WGPURenderPassEncoder re
 WGPU_EXPORT void wgpuRenderPassEncoderPopDebugGroup(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderPushDebugGroup(WGPURenderPassEncoder renderPassEncoder, WGPUStringView groupLabel) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetBindGroup(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param color
+ * The RGBA blend constant. Represents an `f32` color using @ref DoubleAsSupertype.
+ */
 WGPU_EXPORT void wgpuRenderPassEncoderSetBlendConstant(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetIndexBuffer(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetLabel(WGPURenderPassEncoder renderPassEncoder, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
@@ -5903,6 +5932,11 @@ WGPU_EXPORT void wgpuRenderPassEncoderSetPipeline(WGPURenderPassEncoder renderPa
 WGPU_EXPORT void wgpuRenderPassEncoderSetScissorRect(WGPURenderPassEncoder renderPassEncoder, uint32_t x, uint32_t y, uint32_t width, uint32_t height) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetStencilReference(WGPURenderPassEncoder renderPassEncoder, uint32_t reference) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetVertexBuffer(WGPURenderPassEncoder renderPassEncoder, uint32_t slot, WGPU_NULLABLE WGPUBuffer buffer, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * TODO
+ *
+ * If any argument is non-finite, produces a @ref NonFiniteFloatValueError.
+ */
 WGPU_EXPORT void wgpuRenderPassEncoderSetViewport(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderAddRef(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderRelease(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
