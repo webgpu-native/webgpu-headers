@@ -3873,11 +3873,11 @@ typedef struct WGPUFutureWaitInfo {
 typedef struct WGPUInstanceDescriptor {
     WGPUChainedStruct * nextInChain;
     /**
-     * Instance features to enable
+     * Instance capabilities to enable.
      *
      * The `INIT` macro sets this to @ref WGPU_INSTANCE_CAPABILITIES_INIT.
      */
-    WGPUInstanceCapabilities features;
+    WGPUInstanceCapabilities capabilities;
 } WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -3885,7 +3885,7 @@ typedef struct WGPUInstanceDescriptor {
  */
 #define WGPU_INSTANCE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.features=*/WGPU_INSTANCE_CAPABILITIES_INIT _wgpu_COMMA \
+    /*.capabilities=*/WGPU_INSTANCE_CAPABILITIES_INIT _wgpu_COMMA \
 })
 
 /**
