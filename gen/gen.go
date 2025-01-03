@@ -262,9 +262,9 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 		return appendModifiers("int16_t", pointerType)
 	case "int32":
 		return appendModifiers("int32_t", pointerType)
-	case "float32":
+	case "float32", "nullable_float32":
 		return appendModifiers("float", pointerType)
-	case "float64":
+	case "float64", "float64_supertype":
 		return appendModifiers("double", pointerType)
 	case "c_void":
 		return appendModifiers("void", pointerType)
@@ -577,7 +577,7 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		} else {
 			return literal(*member.Default)
 		}
-	case member.Type == "float32":
+	case member.Type == "float32" || member.Type == "nullable_float32":
 		if member.Default == nil {
 			return literal("0.f")
 		} else if strings.HasPrefix(*member.Default, "constant.") {
@@ -587,7 +587,7 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		} else {
 			return literal(*member.Default + ".f")
 		}
-	case member.Type == "float64":
+	case member.Type == "float64" || member.Type == "float64_supertype":
 		if member.Default == nil {
 			return literal("0.")
 		} else if strings.HasPrefix(*member.Default, "constant.") {

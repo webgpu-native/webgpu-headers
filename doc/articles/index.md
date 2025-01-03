@@ -2,8 +2,9 @@
 
 - \subpage Asynchronous-Operations
 - \subpage Errors
+- \subpage FloatingPointNumbers
 - \subpage Ownership
-- \subpage Surfaces
 - \subpage SentinelValues
 - \subpage Strings
 - \subpage StructChaining
+- \subpage Surfaces
