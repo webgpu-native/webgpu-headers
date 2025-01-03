@@ -5672,7 +5672,7 @@ WGPU_EXPORT WGPUBindGroupLayout wgpuDeviceCreateBindGroupLayout(WGPUDevice devic
 /**
  * TODO
  *
- * If @ref WGPUBufferDescriptor::mapAtCreation is `true` and the mapping allocation fails,
+ * If @ref WGPUBufferDescriptor::mappedAtCreation is `true` and the mapping allocation fails,
  * returns `NULL`.
  *
  * @returns
