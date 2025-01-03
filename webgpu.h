@@ -4739,7 +4739,7 @@ typedef WGPUBindGroupLayout (*WGPUProcDeviceCreateBindGroupLayout)(WGPUDevice de
  * Proc pointer type for @ref wgpuDeviceCreateBuffer:
  * > @copydoc wgpuDeviceCreateBuffer
  */
-typedef WGPUBuffer (*WGPUProcDeviceCreateBuffer)(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPU_NULLABLE WGPUBuffer (*WGPUProcDeviceCreateBuffer)(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceCreateCommandEncoder:
  * > @copydoc wgpuDeviceCreateCommandEncoder
@@ -5670,10 +5670,15 @@ WGPU_EXPORT WGPUBindGroup wgpuDeviceCreateBindGroup(WGPUDevice device, WGPUBindG
  */
 WGPU_EXPORT WGPUBindGroupLayout wgpuDeviceCreateBindGroupLayout(WGPUDevice device, WGPUBindGroupLayoutDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * TODO
+ *
+ * If @ref WGPUBufferDescriptor::mappedAtCreation is `true` and the mapping allocation fails,
+ * returns `NULL`.
+ *
  * @returns
  * This value is @ref ReturnedWithOwnership.
  */
-WGPU_EXPORT WGPUBuffer wgpuDeviceCreateBuffer(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPU_NULLABLE WGPUBuffer wgpuDeviceCreateBuffer(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @returns
  * This value is @ref ReturnedWithOwnership.
