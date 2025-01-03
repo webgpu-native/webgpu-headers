@@ -5531,10 +5531,7 @@ WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
  * @returns
  * Returns a const pointer to beginning of the mapped range.
  * It must not be written; writing to this range causes undefined behavior.
- * Returns `NULL` with @ref ImplementationDefinedLogging if:
- * - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
- *   **except** for overlaps with other *const* ranges, which are allowed in C.
- *   (JS does not allow this because const ranges do not exist.)
+ * See @ref GetMappedRangeBehavior for error conditions and guarantees.
  */
 WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
@@ -5547,9 +5544,7 @@ WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUN
  *
  * @returns
  * Returns a mutable pointer to beginning of the mapped range.
- * Returns `NULL` with @ref ImplementationDefinedLogging if:
- * - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
- * - The buffer is not mapped with @ref WGPUMapMode_Write.
+ * See @ref GetMappedRangeBehavior for error conditions and guarantees.
  */
 WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
