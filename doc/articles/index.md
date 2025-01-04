@@ -4,6 +4,7 @@
 - \subpage BufferMapping
 - \subpage Errors
 - \subpage FloatingPointNumbers
+- \subpage Multithreading
 - \subpage Ownership
 - \subpage SentinelValues
 - \subpage Strings
