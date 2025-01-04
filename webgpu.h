@@ -1864,8 +1864,6 @@ typedef struct WGPUCommandEncoderDescriptor {
 })
 
 /**
- * TODO
- *
  * This is an @ref ImplementationAllocatedStructChain root.
  * Arbitrary chains must be handled gracefully by the application!
  *
@@ -3615,8 +3613,6 @@ typedef struct WGPUBlendState {
 })
 
 /**
- * TODO
- *
  * This is an @ref ImplementationAllocatedStructChain root.
  * Arbitrary chains must be handled gracefully by the application!
  *

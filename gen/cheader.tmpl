@@ -317,7 +317,7 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
 {{- range $struct := .Structs}}
 {{-   MCommentStruct . 0}}
 typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
-{{-   if eq .Type "extensible" }}
+{{-   if or (eq .Type "extensible") (eq .Type "extensible_callback_arg") }}
     WGPUChainedStruct * nextInChain;
 {{-   else if eq .Type "extension"}}
     WGPUChainedStruct chain;
@@ -341,7 +341,7 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
  * Initializer for @ref WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}.
  */
 #define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}, { \
-{{-   if eq .Type "extensible" }}
+{{-   if or (eq .Type "extensible") (eq .Type "extensible_callback_arg") }}
     /*.nextInChain=*/NULL _wgpu_COMMA \
 {{-   else if eq .Type "extension" }}
     /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
