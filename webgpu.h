@@ -19,6 +19,9 @@
  * The WebIDL-based Web specification is mapped into C as faithfully (and
  * bidirectionally) as practical/possible.
  * The working draft of WebGPU can be found at <https://www.w3.org/TR/webgpu/>.
+ *
+ * The standard include directive for this header is `#include <webgpu/webgpu.h>`
+ * (if it is provided in a system-wide or toolchain-wide include directory).
  */
 
 #ifndef WEBGPU_H_
@@ -1790,6 +1793,10 @@ typedef struct WGPUBufferDescriptor {
 })
 
 /**
+ * An RGBA color. Represents a `f32`, `i32`, or `u32` color using @ref DoubleAsSupertype.
+ *
+ * If any channel is non-finite, produces a @ref NonFiniteFloatValueError.
+ *
  * Default values can be set using @ref WGPU_COLOR_INIT as initializer.
  */
 typedef struct WGPUColor {
@@ -1936,6 +1943,10 @@ typedef struct WGPUConstantEntry {
      */
     WGPUStringView key;
     /**
+     * Represents a WGSL numeric or boolean value using @ref DoubleAsSupertype.
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `0.`.
      */
     double value;
@@ -2505,11 +2516,12 @@ typedef struct WGPURenderPassDepthStencilAttachment {
      */
     WGPUStoreOp depthStoreOp;
     /**
-     * If NaN, indicates an `undefined` value (as defined by the JS spec).
+     * This is a @ref NullableFloatingPointType.
+     *
+     * If `NaN`, indicates an `undefined` value (as defined by the JS spec).
      * Use @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED to indicate this semantically.
      *
-     * NaN is determined by `isnan(depthClearValue) != 0`.
-     * (Do not use an equality check, because `NaN == NaN` is false.)
+     * If infinite, produces a @ref NonFiniteFloatValueError.
      *
      * The `INIT` macro sets this to @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED.
      */
@@ -2705,10 +2717,18 @@ typedef struct WGPUSamplerDescriptor {
      */
     WGPUMipmapFilterMode mipmapFilter;
     /**
+     * TODO
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `0.f`.
      */
     float lodMinClamp;
     /**
+     * TODO
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `32.f`.
      */
     float lodMaxClamp;
@@ -3739,10 +3759,18 @@ typedef struct WGPUDepthStencilState {
      */
     int32_t depthBias;
     /**
+     * TODO
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `0.f`.
      */
     float depthBiasSlopeScale;
     /**
+     * TODO
+     *
+     * If non-finite, produces a @ref NonFiniteFloatValueError.
+     *
      * The `INIT` macro sets this to `0.f`.
      */
     float depthBiasClamp;
@@ -3853,11 +3881,11 @@ typedef struct WGPUFutureWaitInfo {
 typedef struct WGPUInstanceDescriptor {
     WGPUChainedStruct * nextInChain;
     /**
-     * Instance features to enable
+     * Instance capabilities to enable.
      *
      * The `INIT` macro sets this to @ref WGPU_INSTANCE_CAPABILITIES_INIT.
      */
-    WGPUInstanceCapabilities features;
+    WGPUInstanceCapabilities capabilities;
 } WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -3865,7 +3893,7 @@ typedef struct WGPUInstanceDescriptor {
  */
 #define WGPU_INSTANCE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.features=*/WGPU_INSTANCE_CAPABILITIES_INIT _wgpu_COMMA \
+    /*.capabilities=*/WGPU_INSTANCE_CAPABILITIES_INIT _wgpu_COMMA \
 })
 
 /**
@@ -4719,7 +4747,7 @@ typedef WGPUBindGroupLayout (*WGPUProcDeviceCreateBindGroupLayout)(WGPUDevice de
  * Proc pointer type for @ref wgpuDeviceCreateBuffer:
  * > @copydoc wgpuDeviceCreateBuffer
  */
-typedef WGPUBuffer (*WGPUProcDeviceCreateBuffer)(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPU_NULLABLE WGPUBuffer (*WGPUProcDeviceCreateBuffer)(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceCreateCommandEncoder:
  * > @copydoc wgpuDeviceCreateCommandEncoder
@@ -5511,10 +5539,7 @@ WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
  * @returns
  * Returns a const pointer to beginning of the mapped range.
  * It must not be written; writing to this range causes undefined behavior.
- * Returns `NULL` with @ref ImplementationDefinedLogging if:
- * - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
- *   **except** for overlaps with other *const* ranges, which are allowed in C.
- *   (JS does not allow this because const ranges do not exist.)
+ * See @ref GetMappedRangeBehavior for error conditions and guarantees.
  */
 WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
@@ -5527,9 +5552,7 @@ WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUN
  *
  * @returns
  * Returns a mutable pointer to beginning of the mapped range.
- * Returns `NULL` with @ref ImplementationDefinedLogging if:
- * - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
- * - The buffer is not mapped with @ref WGPUMapMode_Write.
+ * See @ref GetMappedRangeBehavior for error conditions and guarantees.
  */
 WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
@@ -5650,10 +5673,15 @@ WGPU_EXPORT WGPUBindGroup wgpuDeviceCreateBindGroup(WGPUDevice device, WGPUBindG
  */
 WGPU_EXPORT WGPUBindGroupLayout wgpuDeviceCreateBindGroupLayout(WGPUDevice device, WGPUBindGroupLayoutDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * TODO
+ *
+ * If @ref WGPUBufferDescriptor::mappedAtCreation is `true` and the mapping allocation fails,
+ * returns `NULL`.
+ *
  * @returns
  * This value is @ref ReturnedWithOwnership.
  */
-WGPU_EXPORT WGPUBuffer wgpuDeviceCreateBuffer(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPU_NULLABLE WGPUBuffer wgpuDeviceCreateBuffer(WGPUDevice device, WGPUBufferDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @returns
  * This value is @ref ReturnedWithOwnership.
@@ -5901,6 +5929,10 @@ WGPU_EXPORT void wgpuRenderPassEncoderInsertDebugMarker(WGPURenderPassEncoder re
 WGPU_EXPORT void wgpuRenderPassEncoderPopDebugGroup(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderPushDebugGroup(WGPURenderPassEncoder renderPassEncoder, WGPUStringView groupLabel) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetBindGroup(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPU_NULLABLE WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param color
+ * The RGBA blend constant. Represents an `f32` color using @ref DoubleAsSupertype.
+ */
 WGPU_EXPORT void wgpuRenderPassEncoderSetBlendConstant(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetIndexBuffer(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetLabel(WGPURenderPassEncoder renderPassEncoder, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
@@ -5908,6 +5940,11 @@ WGPU_EXPORT void wgpuRenderPassEncoderSetPipeline(WGPURenderPassEncoder renderPa
 WGPU_EXPORT void wgpuRenderPassEncoderSetScissorRect(WGPURenderPassEncoder renderPassEncoder, uint32_t x, uint32_t y, uint32_t width, uint32_t height) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetStencilReference(WGPURenderPassEncoder renderPassEncoder, uint32_t reference) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderSetVertexBuffer(WGPURenderPassEncoder renderPassEncoder, uint32_t slot, WGPU_NULLABLE WGPUBuffer buffer, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * TODO
+ *
+ * If any argument is non-finite, produces a @ref NonFiniteFloatValueError.
+ */
 WGPU_EXPORT void wgpuRenderPassEncoderSetViewport(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderAddRef(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderRelease(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;

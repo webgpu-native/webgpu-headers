@@ -45,7 +45,9 @@
                 "int16",
                 "int32",
                 "float32",
+                "nullable_float32",
                 "float64",
+                "float64_supertype",
                 "array<bool>",
                 "array<string>",
                 "array<uint16>",
@@ -211,6 +213,10 @@
                         "type": {
                             "$ref": "#/definitions/Type",
                             "description": "Return type of the function"
+                        },
+                        "optional": {
+                            "type": "boolean",
+                            "description": "Indicates if the return type is optional/nullable"
                         },
                         "passed_with_ownership": {
                             "type": "boolean",

@@ -3,6 +3,8 @@
 Objects in `webgpu.h` are refcounted via the `AddRef` and `Release` functions.
 The refcount only changes when these methods are called explicitly (not, for example, in \ref wgpuCommandEncoderFinish or \ref wgpuQueueSubmit).
 
+Applications are *not* required to maintain refs to WebGPU objects which are internally used by other WebGPU objects (CommandBuffer→BindGroup, BindGroup→TextureView, TextureView→Texture, etc.); `webgpu.h` implementations must maintain internal references, as needed, to be internally memory safe. These *internal* references do *not* make it safe to use objects that have ever reached an *external* refcount of 0.
+
 Memory for variable-sized outputs from the API (message strings, capability arrays, etc.) is managed in different ways depending on whether they are returned values or callback arguments.
 
 ## Returned with Ownership {#ReturnedWithOwnership}
