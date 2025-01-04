@@ -1816,7 +1816,7 @@ structs:
   - name: compilation_info
     doc: |
       TODO
-    type: extensible
+    type: extensible_callback_arg
     members:
       - name: messages
         doc: |
@@ -1826,7 +1826,7 @@ structs:
   - name: compilation_message
     doc: |
       TODO
-    type: extensible
+    type: extensible_callback_arg
     members:
       - name: message
         doc: |
@@ -3263,7 +3263,8 @@ callbacks:
         type: enum.compilation_info_request_status
       - name: compilation_info
         doc: |
-          TODO
+          This argument contains multiple @ref ImplementationAllocatedStructChain roots.
+          Arbitrary chains must be handled gracefully by the application!
         type: struct.compilation_info
         pointer: immutable
         passed_with_ownership: false

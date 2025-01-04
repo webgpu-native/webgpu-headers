@@ -32,11 +32,12 @@ Since the generator does some duplication validation, the order of the files mat
 | `float64`       |
 | `c_void`        |
 
-| Structure types |                                                        |
-| --------------- | ------------------------------------------------------ |
-| `extensible`    | structs that can be extended                           |
-| `extension`     | extension structs used in `extensible` structs' chains |
-| `standalone`    | structs that are neither extensions nor extensible     |
+| Structure types           |                                                        |
+| ------------------------- | ------------------------------------------------------ |
+| `extensible`              | structs that can be extended                           |
+| `extensible_callback_arg` | structs used as callback args that can be extended     |
+| `extension`               | extension structs used in `extensible` structs' chains |
+| `standalone`              | structs that are neither extensions nor extensible     |
 
 #### Arrays
 

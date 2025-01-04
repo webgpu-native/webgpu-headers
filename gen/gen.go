@@ -158,6 +158,10 @@ func (g *Generator) Gen(dst io.Writer) error {
 					s += srcDoc
 				}
 
+				if st.Type == "extensible_callback_arg" {
+					s += "\n\nThis is an @ref ImplementationAllocatedStructChain root.\nArbitrary chains must be handled gracefully by the application!"
+				}
+
 				s += "\n\nDefault values can be set using @ref WGPU_" + ConstantCase(st.Name) + "_INIT as initializer."
 
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)

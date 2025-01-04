@@ -445,6 +445,7 @@
                         "description": "Type of the structure",
                         "enum": [
                             "extensible",
+                            "extensible_callback_arg",
                             "extension",
                             "standalone"
                         ]
