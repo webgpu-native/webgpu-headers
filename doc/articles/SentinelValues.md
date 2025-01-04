@@ -43,3 +43,4 @@ WebIDL's more flexible typing:
     - \ref WGPUStorageTextureBindingLayout::access = \ref WGPUStorageTextureAccess_BindingNotUsed
     - \ref WGPURenderPassColorAttachment::view = `NULL`
     - \ref WGPUColorTargetState::format = \ref WGPUTextureFormat_Undefined
+- \ref NullableFloatingPointType
