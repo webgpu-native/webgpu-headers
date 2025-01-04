@@ -7,14 +7,14 @@ Where multithreading is supported:
 - The implementation must provide the documented @ref ThreadSafety guarantees.
 - All objects must be freely usable on any thread at any time, except:
     - Where APIs are specified as being non-thread-safe, they must mutexed.
-    - The exceptions for Wasm, below.
+    - The exceptions for Wasm, below: @ref MultithreadingInWasm.
 - State must be thread-global, except where otherwise defined.
     - For example, buffer map state is thread-global, and mapped memory ranges may be used from any thread.
     - Note: Error scope state is thread-local. See @ref ErrorScopes.
 
 Native (non-Wasm) implementations **should** support multithreading.
 
-## In WebAssembly
+## Multithreading In WebAssembly {#MultithreadingInWasm}
 
 At the time of this writing, the JS WebGPU API is not multithreading-capable.
 Initial `webgpu.h` implementations will not be multithreading-capable.
@@ -33,7 +33,7 @@ Once the JS API is multithreading-capable, there are still expected to be some t
 The `webgpu.h` API is thread-safe (when multithreading is supported). That is, its functions are reentrant and may be called during the execution of other functions, with the following exceptions:
 
 - Encoder objects (@ref WGPUCommandEncoder, @ref WGPUComputePassEncoder, @ref WGPURenderPassEncoder, and @ref WGPURenderBundleEncoder) are not thread-safe. Note these objects appear only in their own methods.
-    - Additionally, in Wasm, note these objects may be thread-locked as discussed above.
+    - Additionally, in Wasm, these objects may be thread-locked, as discussed above.
 - API calls may not be made during @ref WGPUCallbackMode_AllowSpontaneous callbacks. See @ref CallbackReentrancy.
 
 The following _are_ thread safe:
