@@ -3549,11 +3549,11 @@ objects:
             type: usize
       - name: get_mapped_range
         doc: |
-          TODO
+          Returns a mutable pointer to beginning of the mapped range.
+          See @ref GetMappedRangeBehavior for error conditions and guarantees.
+          This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
         returns:
-          doc: |
-            Returns a mutable pointer to beginning of the mapped range.
-            See @ref GetMappedRangeBehavior for error conditions and guarantees.
+          doc: ""
           type: c_void
           pointer: mutable
         args:
@@ -3567,12 +3567,12 @@ objects:
             type: usize
       - name: get_const_mapped_range
         doc: |
-          TODO
+          Returns a const pointer to beginning of the mapped range.
+          It must not be written; writing to this range causes undefined behavior.
+          See @ref GetMappedRangeBehavior for error conditions and guarantees.
+          This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
         returns:
-          doc: |
-            Returns a const pointer to beginning of the mapped range.
-            It must not be written; writing to this range causes undefined behavior.
-            See @ref GetMappedRangeBehavior for error conditions and guarantees.
+          doc: ""
           type: c_void
           pointer: immutable
         args:

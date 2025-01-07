@@ -80,7 +80,7 @@ There are three cases of async/callback re-entrancy:
     - This does not introduce any unsafety. Implementations are required to exit critical sections before invoking callbacks.
     - This includes making nested calls to @ref wgpuInstanceWaitAny() and @ref wgpuInstanceProcessEvents(). (However, beware of overflowing the call stack!)
 - Calls to the API are nested inside @ref WGPUCallbackMode_AllowSpontaneous callbacks, which may happen at any time (during a `webgpu.h` function call or on an arbitrary thread).
-    - Therefore, calls to the API should never be made in @ref WGPUCallbackMode_AllowSpontaneous callbacks, except where otherwise noted, due to the possibility of self-deadlock.
+    - Therefore, calls to the API should never be made in @ref WGPUCallbackMode_AllowSpontaneous callbacks, except where otherwise noted (e.g. @ref wgpuBufferGetMappedRange), due to the possibility of self-deadlock.
       Additionally, applications should take extra care even when accessing their *own* state (and locks) inside the callback.
     - This includes @ref WGPUDeviceDescriptor::uncapturedErrorCallbackInfo, which is always allowed to fire spontaneously.
 - Two threads are doing things in parallel, so calls to the API are made while callbacks (or API functions in general) are running on another thread.
