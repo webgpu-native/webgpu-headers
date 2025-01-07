@@ -80,4 +80,9 @@ Operations which take out-struct-chains (e.g. @ref WGPULimits, in @ref wgpuAdapt
 
 ## Ownership
 
-TODO(#264): Document whether `FreeMembers` functions traverse the chain (see @ref ReturnedWithOwnership).
+`FreeMembers` functions do not traverse the [struct chain](@ref StructChaining) and must be called separately on each struct (that has a `FreeMembers` function) in the chain.
+See @ref ReturnedWithOwnership.
+
+## Callbacks
+
+See @ref PassedWithoutOwnership.

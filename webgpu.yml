@@ -15,6 +15,9 @@ doc: |
   The WebIDL-based Web specification is mapped into C as faithfully (and
   bidirectionally) as practical/possible.
   The working draft of WebGPU can be found at <https://www.w3.org/TR/webgpu/>.
+
+  The standard include directive for this header is `#include <webgpu/webgpu.h>`
+  (if it is provided in a system-wide or toolchain-wide include directory).
 constants:
   - name: array_layer_count_undefined
     value: uint32_max
@@ -1752,25 +1755,23 @@ structs:
         default: false
   - name: color
     doc: |
-      TODO
+      An RGBA color. Represents a `f32`, `i32`, or `u32` color using @ref DoubleAsSupertype.
+
+      If any channel is non-finite, produces a @ref NonFiniteFloatValueError.
     type: standalone
     members:
       - name: r
-        doc: |
-          TODO
-        type: float64
+        doc: ""
+        type: float64_supertype
       - name: g
-        doc: |
-          TODO
-        type: float64
+        doc: ""
+        type: float64_supertype
       - name: b
-        doc: |
-          TODO
-        type: float64
+        doc: ""
+        type: float64_supertype
       - name: a
-        doc: |
-          TODO
-        type: float64
+        doc: ""
+        type: float64_supertype
   - name: color_target_state
     doc: |
       TODO
@@ -1815,7 +1816,7 @@ structs:
   - name: compilation_info
     doc: |
       TODO
-    type: extensible
+    type: extensible_callback_arg
     members:
       - name: messages
         doc: |
@@ -1825,7 +1826,7 @@ structs:
   - name: compilation_message
     doc: |
       TODO
-    type: extensible
+    type: extensible_callback_arg
     members:
       - name: message
         doc: |
@@ -1913,8 +1914,10 @@ structs:
         type: string_with_default_empty
       - name: value
         doc: |
-          TODO
-        type: float64
+          Represents a WGSL numeric or boolean value using @ref DoubleAsSupertype.
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
+        type: float64_supertype
   - name: depth_stencil_state
     doc: |
       TODO
@@ -1959,11 +1962,15 @@ structs:
       - name: depth_bias_slope_scale
         doc: |
           TODO
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
         type: float32
         default: 0.0
       - name: depth_bias_clamp
         doc: |
           TODO
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
         type: float32
         default: 0.0
   - name: device_descriptor
@@ -2076,8 +2083,8 @@ structs:
       TODO
     type: extensible
     members:
-      - name: features
-        doc: Instance features to enable
+      - name: capabilities
+        doc: Instance capabilities to enable.
         type: struct.instance_capabilities
   - name: limits
     doc: |
@@ -2467,12 +2474,13 @@ structs:
         default: undefined
       - name: depth_clear_value
         doc: |
-          If NaN, indicates an `undefined` value (as defined by the JS spec).
+          This is a @ref NullableFloatingPointType.
+
+          If `NaN`, indicates an `undefined` value (as defined by the JS spec).
           Use @ref WGPU_DEPTH_CLEAR_VALUE_UNDEFINED to indicate this semantically.
 
-          NaN is determined by `isnan(depthClearValue) != 0`.
-          (Do not use an equality check, because `NaN == NaN` is false.)
-        type: float32
+          If infinite, produces a @ref NonFiniteFloatValueError.
+        type: nullable_float32
         default: constant.depth_clear_value_undefined
       - name: depth_read_only
         doc: |
@@ -2676,11 +2684,15 @@ structs:
       - name: lod_min_clamp
         doc: |
           TODO
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
         type: float32
         default: 0.0
       - name: lod_max_clamp
         doc: |
           TODO
+
+          If non-finite, produces a @ref NonFiniteFloatValueError.
         type: float32
         default: 32.0
       - name: compare
@@ -3253,7 +3265,8 @@ callbacks:
         type: enum.compilation_info_request_status
       - name: compilation_info
         doc: |
-          TODO
+          This argument contains multiple @ref ImplementationAllocatedStructChain roots.
+          Arbitrary chains must be handled gracefully by the application!
         type: struct.compilation_info
         pointer: immutable
         passed_with_ownership: false
@@ -3540,9 +3553,7 @@ objects:
         returns:
           doc: |
             Returns a mutable pointer to beginning of the mapped range.
-            Returns `NULL` with @ref ImplementationDefinedLogging if:
-            - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
-            - The buffer is not mapped with @ref WGPUMapMode_Write.
+            See @ref GetMappedRangeBehavior for error conditions and guarantees.
           type: c_void
           pointer: mutable
         args:
@@ -3561,10 +3572,7 @@ objects:
           doc: |
             Returns a const pointer to beginning of the mapped range.
             It must not be written; writing to this range causes undefined behavior.
-            Returns `NULL` with @ref ImplementationDefinedLogging if:
-            - There is any content-timeline error as defined in the WebGPU specification for `getMappedRange()` (alignments, overlaps, etc.)
-              **except** for overlaps with other *const* ranges, which are allowed in C.
-              (JS does not allow this because const ranges do not exist.)
+            See @ref GetMappedRangeBehavior for error conditions and guarantees.
           type: c_void
           pointer: immutable
         args:
@@ -3979,10 +3987,14 @@ objects:
       - name: create_buffer
         doc: |
           TODO
+
+          If @ref WGPUBufferDescriptor::mappedAtCreation is `true` and the mapping allocation fails,
+          returns `NULL`.
         returns:
           doc: |
             TODO
           type: object.buffer
+          optional: true
           passed_with_ownership: true
         args:
           - name: descriptor
@@ -4753,12 +4765,14 @@ objects:
         args:
           - name: color
             doc: |
-              TODO
+              The RGBA blend constant. Represents an `f32` color using @ref DoubleAsSupertype.
             type: struct.color
             pointer: immutable
       - name: set_viewport
         doc: |
           TODO
+
+          If any argument is non-finite, produces a @ref NonFiniteFloatValueError.
         args:
           - name: x
             doc: |
