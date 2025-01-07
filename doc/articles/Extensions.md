@@ -29,9 +29,9 @@ WGPU_PREFIX_NEW_CONSTANT
 
 When an application is running against an unknown `webgpu.h` implementation, extension support may be detected at runtime as follows:
 
-- New functions/methods may be detected via @ref wgpuGetProcAddress().
+- New functions/methods may be runtime-detected by loading them dynamically, and checking whether loading succeeds. (@ref wgpuGetProcAddress() returns `NULL` for unknown function names.)
     - New objects may be detected by the presence of the methods that create them.
-    - New (root) structs and callback types are only relevant if the methods that accept them exist.
+    - New (root) structs and callback types are always supported if the methods that accept them exist.
 - New enums, bit flags, [chained structs](@ref StructChaining) are available iff enabled. Like other features, these must be both detected and enabled:
     - Device features are detected via @ref wgpuAdapterGetFeatures() and enabled via @ref WGPUDeviceDescriptor::requiredFeatures.
     - Instance features are detected via @ref wgpuGetInstanceCapabilities() and enabled via @ref WGPUInstanceDescriptor::capabilities.
