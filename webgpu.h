@@ -5532,29 +5532,29 @@ WGPU_EXPORT void wgpuBindGroupLayoutRelease(WGPUBindGroupLayout bindGroupLayout)
  */
 WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * Returns a const pointer to beginning of the mapped range.
+ * It must not be written; writing to this range causes undefined behavior.
+ * See @ref GetMappedRangeBehavior for error conditions and guarantees.
+ * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+ *
  * @param offset
  * Byte offset relative to the beginning of the buffer.
  *
  * @param size
  * Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
- *
- * @returns
- * Returns a const pointer to beginning of the mapped range.
- * It must not be written; writing to this range causes undefined behavior.
- * See @ref GetMappedRangeBehavior for error conditions and guarantees.
  */
 WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * Returns a mutable pointer to beginning of the mapped range.
+ * See @ref GetMappedRangeBehavior for error conditions and guarantees.
+ * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+ *
  * @param offset
  * Byte offset relative to the beginning of the buffer.
  *
  * @param size
  * Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
- *
- * @returns
- * Returns a mutable pointer to beginning of the mapped range.
- * See @ref GetMappedRangeBehavior for error conditions and guarantees.
  */
 WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
