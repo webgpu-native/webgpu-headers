@@ -158,6 +158,10 @@ func (g *Generator) Gen(dst io.Writer) error {
 					s += srcDoc
 				}
 
+				if st.Type == "extensible_callback_arg" {
+					s += "\n\nThis is an @ref ImplementationAllocatedStructChain root.\nArbitrary chains must be handled gracefully by the application!"
+				}
+
 				s += "\n\nDefault values can be set using @ref WGPU_" + ConstantCase(st.Name) + "_INIT as initializer."
 
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
@@ -179,17 +183,9 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				return ""
 			},
-			"Singularize": Singularize,
-			"IsLast":      func(i int, s any) bool { return i == reflect.ValueOf(s).Len()-1 },
-			"FunctionReturns": func(f Function) string {
-				if f.Callback != nil {
-					return "WGPUFuture"
-				}
-				if f.Returns != nil {
-					return g.CType(f.Returns.Type, f.Returns.Pointer, "")
-				}
-				return "void"
-			},
+			"Singularize":             Singularize,
+			"IsLast":                  func(i int, s any) bool { return i == reflect.ValueOf(s).Len()-1 },
+			"FunctionReturns":         g.FunctionReturns,
 			"FunctionArgs":            g.FunctionArgs,
 			"CallbackArgs":            g.CallbackArgs,
 			"StructMember":            g.StructMember,
@@ -270,9 +266,9 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 		return appendModifiers("int16_t", pointerType)
 	case "int32":
 		return appendModifiers("int32_t", pointerType)
-	case "float32":
+	case "float32", "nullable_float32":
 		return appendModifiers("float", pointerType)
-	case "float64":
+	case "float64", "float64_supertype":
 		return appendModifiers("double", pointerType)
 	case "c_void":
 		return appendModifiers("void", pointerType)
@@ -303,6 +299,20 @@ func (g *Generator) CType(typ string, pointerType PointerType, suffix string) st
 	default:
 		return ""
 	}
+}
+func (g *Generator) FunctionReturns(f Function) string {
+	if f.Callback != nil {
+		return "WGPUFuture"
+	}
+	if f.Returns != nil {
+		sb := &strings.Builder{}
+		if f.Returns.Optional {
+			sb.WriteString("WGPU_NULLABLE ")
+		}
+		sb.WriteString(g.CType(f.Returns.Type, f.Returns.Pointer, ""))
+		return sb.String()
+	}
+	return "void"
 }
 
 func (g *Generator) FunctionArgs(f Function, o *Object) string {
@@ -571,7 +581,7 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		} else {
 			return literal(*member.Default)
 		}
-	case member.Type == "float32":
+	case member.Type == "float32" || member.Type == "nullable_float32":
 		if member.Default == nil {
 			return literal("0.f")
 		} else if strings.HasPrefix(*member.Default, "constant.") {
@@ -581,7 +591,7 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		} else {
 			return literal(*member.Default + ".f")
 		}
-	case member.Type == "float64":
+	case member.Type == "float64" || member.Type == "float64_supertype":
 		if member.Default == nil {
 			return literal("0.")
 		} else if strings.HasPrefix(*member.Default, "constant.") {

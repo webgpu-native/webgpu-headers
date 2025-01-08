@@ -28,6 +28,7 @@ The `callback` function pointer is called when the application _observes complet
 > @copydoc ::WGPUCallbackMode_AllowSpontaneous
 
 ## wgpuInstanceWaitAny {#Wait-Any}
+
 `WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance, size_t futureCount, WGPUFutureWaitInfo * futures, uint64_t timeoutNS)`
 
 Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nanoseconds. Returns when at least one `WGPUFuture` is completed or `timeoutNS` elapses, whichever is first. If `timeoutNS` is zero, all `futures` are polled once, without blocking.
@@ -35,6 +36,7 @@ Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nan
 Returns @ref WGPUWaitStatus_Success if at least one `WGPUFuture` completes. WGPUFutureWaitInfo::completed is set to true for all completed futures. See @ref WGPUWaitStatus for other status codes.
 
 Within this call, for any `WGPUFuture`s that completed, their respective callbacks will fire.
+Note that the timeout applies only to the "wait" phase, and does not affect the callback firing phase.
 
 ### Timed Wait {#Timed-Wait}
 
@@ -69,3 +71,17 @@ Device events are slightly different in that their callback info (`WGPUDeviceLos
 The `WGPUUncapturedErrorCallbackInfo` _does not_ have a callback mode member. It is always as-if it were @ref WGPUCallbackMode_AllowSpontaneous. Note also that the uncaptured error callback is a _repeating_ callback that fires multiple times, unlike other callbacks in webgpu.h.
 
 The uncaptured error callback is guaranteed not to fire after the device becomes lost. When the device is lost, it is an appropriate time for the application to free userdata variables for the uncaptured error callback. Note that the device becomes lost _before_ the actual device lost callback fires. First the device state transitions to lost, then the device lost callback fires. The timing of the callback depends on the device lost callback mode.
+
+## Callback Reentrancy {#CallbackReentrancy}
+
+There are three cases of async/callback re-entrancy:
+
+- Calls to the API are nested inside non-spontaneous callbacks (those with @ref WGPUCallbackMode_WaitAnyOnly or @ref WGPUCallbackMode_AllowProcessEvents). Such callbacks always happen in @ref wgpuInstanceWaitAny() or @ref wgpuInstanceProcessEvents().
+    - This does not introduce any unsafety. Implementations are required to exit critical sections before invoking callbacks.
+    - This includes making nested calls to @ref wgpuInstanceWaitAny() and @ref wgpuInstanceProcessEvents(). (However, beware of overflowing the call stack!)
+- Calls to the API are nested inside @ref WGPUCallbackMode_AllowSpontaneous callbacks, which may happen at any time (during a `webgpu.h` function call or on an arbitrary thread).
+    - Therefore, calls to the API should never be made in @ref WGPUCallbackMode_AllowSpontaneous callbacks, except where otherwise noted, due to the possibility of self-deadlock.
+      Additionally, applications should take extra care even when accessing their *own* state (and locks) inside the callback.
+    - This includes @ref WGPUDeviceDescriptor::uncapturedErrorCallbackInfo, which is always allowed to fire spontaneously.
+- Two threads are doing things in parallel, so calls to the API are made while callbacks (or API functions in general) are running on another thread.
+    - In general, most API calls are thread-safe (see @ref ThreadSafety).
