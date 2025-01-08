@@ -3,6 +3,7 @@
 - \subpage Asynchronous-Operations
 - \subpage BufferMapping
 - \subpage Errors
+- \subpage Extensions
 - \subpage FloatingPointNumbers
 - \subpage Multithreading
 - \subpage Ownership
