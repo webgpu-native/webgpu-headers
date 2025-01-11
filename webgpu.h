@@ -4536,6 +4536,11 @@ typedef WGPUBufferUsage (*WGPUProcBufferGetUsage)(WGPUBuffer buffer) WGPU_FUNCTI
  */
 typedef WGPUFuture (*WGPUProcBufferMapAsync)(WGPUBuffer buffer, WGPUMapMode mode, size_t offset, size_t size, WGPUBufferMapCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * Proc pointer type for @ref wgpuBufferReadMappedRange:
+ * > @copydoc wgpuBufferReadMappedRange
+ */
+typedef WGPUStatus (*WGPUProcBufferReadMappedRange)(WGPUBuffer buffer, size_t offset, void * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
  * Proc pointer type for @ref wgpuBufferSetLabel:
  * > @copydoc wgpuBufferSetLabel
  */
@@ -4545,6 +4550,11 @@ typedef void (*WGPUProcBufferSetLabel)(WGPUBuffer buffer, WGPUStringView label) 
  * > @copydoc wgpuBufferUnmap
  */
 typedef void (*WGPUProcBufferUnmap)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferWriteMappedRange:
+ * > @copydoc wgpuBufferWriteMappedRange
+ */
+typedef WGPUStatus (*WGPUProcBufferWriteMappedRange)(WGPUBuffer buffer, size_t offset, void * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuBufferAddRef.
  * > @copydoc wgpuBufferAddRef
@@ -5534,7 +5544,7 @@ WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns a const pointer to beginning of the mapped range.
  * It must not be written; writing to this range causes undefined behavior.
- * See @ref GetMappedRangeBehavior for error conditions and guarantees.
+ * See @ref MappedRangeBehavior for error conditions and guarantees.
  * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
  *
  * @param offset
@@ -5547,7 +5557,7 @@ WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer, size_t
 WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns a mutable pointer to beginning of the mapped range.
- * See @ref GetMappedRangeBehavior for error conditions and guarantees.
+ * See @ref MappedRangeBehavior for error conditions and guarantees.
  * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
  *
  * @param offset
@@ -5560,8 +5570,44 @@ WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer, size_t offset, si
 WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferUsage wgpuBufferGetUsage(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuBufferMapAsync(WGPUBuffer buffer, WGPUMapMode mode, size_t offset, size_t size, WGPUBufferMapCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Copies a range of data from the buffer mapping into the provided destination pointer.
+ * See @ref MappedRangeBehavior for error conditions and guarantees.
+ * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+ *
+ * @param offset
+ * Byte offset relative to the beginning of the buffer.
+ *
+ * @param data
+ * Destination, to read buffer data into.
+ *
+ * @param size
+ * Number of bytes of data to read from the buffer.
+ *
+ * @returns
+ * @ref WGPUStatus_Error if the copy did not occur.
+ */
+WGPU_EXPORT WGPUStatus wgpuBufferReadMappedRange(WGPUBuffer buffer, size_t offset, void * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBufferSetLabel(WGPUBuffer buffer, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Copies a range of data from the provided source pointer into the buffer mapping.
+ * See @ref MappedRangeBehavior for error conditions and guarantees.
+ * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+ *
+ * @param offset
+ * Byte offset relative to the beginning of the buffer.
+ *
+ * @param data
+ * Source, to write buffer data from.
+ *
+ * @param size
+ * Number of bytes of data to write to the buffer.
+ *
+ * @returns
+ * @ref WGPUStatus_Error if the copy did not occur.
+ */
+WGPU_EXPORT WGPUStatus wgpuBufferWriteMappedRange(WGPUBuffer buffer, size_t offset, void * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBufferAddRef(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBufferRelease(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */

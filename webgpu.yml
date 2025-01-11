@@ -3550,7 +3550,7 @@ objects:
       - name: get_mapped_range
         doc: |
           Returns a mutable pointer to beginning of the mapped range.
-          See @ref GetMappedRangeBehavior for error conditions and guarantees.
+          See @ref MappedRangeBehavior for error conditions and guarantees.
           This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
         returns:
           doc: ""
@@ -3569,7 +3569,7 @@ objects:
         doc: |
           Returns a const pointer to beginning of the mapped range.
           It must not be written; writing to this range causes undefined behavior.
-          See @ref GetMappedRangeBehavior for error conditions and guarantees.
+          See @ref MappedRangeBehavior for error conditions and guarantees.
           This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
         returns:
           doc: ""
@@ -3583,6 +3583,54 @@ objects:
           - name: size
             doc: |
               Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+            type: usize
+      - name: read_mapped_range
+        doc: |
+          Copies a range of data from the buffer mapping into the provided destination pointer.
+          In Wasm, this is more efficient than copying from a mapped range into a `malloc`'d range.
+          See @ref MappedRangeBehavior for error conditions and guarantees.
+          This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+        returns:
+          doc: |
+            @ref WGPUStatus_Error if the copy did not occur.
+          type: enum.status
+        args:
+          - name: offset
+            doc: |
+              Byte offset relative to the beginning of the buffer.
+            type: usize
+          - name: data
+            doc: |
+              Destination, to read buffer data into.
+            type: c_void
+            pointer: mutable
+          - name: size
+            doc: |
+              Number of bytes of data to read from the buffer.
+            type: usize
+      - name: write_mapped_range
+        doc: |
+          Copies a range of data from the provided source pointer into the buffer mapping.
+          In Wasm, this is more efficient than copying from a `malloc`'d range into a mapped range.
+          See @ref MappedRangeBehavior for error conditions and guarantees.
+          This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+        returns:
+          doc: |
+            @ref WGPUStatus_Error if the copy did not occur.
+          type: enum.status
+        args:
+          - name: offset
+            doc: |
+              Byte offset relative to the beginning of the buffer.
+            type: usize
+          - name: data
+            doc: |
+              Source, to write buffer data from.
+            type: c_void
+            pointer: mutable
+          - name: size
+            doc: |
+              Number of bytes of data to write to the buffer.
             type: usize
       - name: set_label
         doc: |
