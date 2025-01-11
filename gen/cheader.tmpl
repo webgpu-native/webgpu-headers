@@ -222,10 +222,10 @@ typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
  */
 
 {{- range $bitflag := .Bitflags}}
-{{-   MComment .Doc 0}}
+{{-   MCommentBitflagType .Doc 0}}
 typedef WGPUFlags WGPU{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}};
 {{-   range $entryIndex, $_ := .Entries}}
-{{-     MCommentBitflag .Doc 4 $bitflag $entryIndex }}
+{{-     MCommentBitflagValue .Doc 0 $bitflag $entryIndex }}
 static const WGPU{{$bitflag.Name | PascalCase}} WGPU{{$bitflag.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{BitflagValue $bitflag $entryIndex}};
 {{-   end}}
 {{  end}}
