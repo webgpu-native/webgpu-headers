@@ -3552,6 +3552,9 @@ objects:
           Returns a mutable pointer to beginning of the mapped range.
           See @ref MappedRangeBehavior for error conditions and guarantees.
           This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+
+          In Wasm, if `memcpy`ing into this range, prefer using @ref wgpuBufferWriteMappedRange
+          instead for better performance.
         returns:
           doc: ""
           type: c_void
@@ -3571,6 +3574,9 @@ objects:
           It must not be written; writing to this range causes undefined behavior.
           See @ref MappedRangeBehavior for error conditions and guarantees.
           This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+
+          In Wasm, if `memcpy`ing from this range, prefer using @ref wgpuBufferReadMappedRange
+          instead for better performance.
         returns:
           doc: ""
           type: c_void
@@ -3587,9 +3593,10 @@ objects:
       - name: read_mapped_range
         doc: |
           Copies a range of data from the buffer mapping into the provided destination pointer.
-          In Wasm, this is more efficient than copying from a mapped range into a `malloc`'d range.
           See @ref MappedRangeBehavior for error conditions and guarantees.
           This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+
+          In Wasm, this is more efficient than copying from a mapped range into a `malloc`'d range.
         returns:
           doc: |
             @ref WGPUStatus_Error if the copy did not occur.
@@ -3611,9 +3618,10 @@ objects:
       - name: write_mapped_range
         doc: |
           Copies a range of data from the provided source pointer into the buffer mapping.
-          In Wasm, this is more efficient than copying from a `malloc`'d range into a mapped range.
           See @ref MappedRangeBehavior for error conditions and guarantees.
           This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+
+          In Wasm, this is more efficient than copying from a `malloc`'d range into a mapped range.
         returns:
           doc: |
             @ref WGPUStatus_Error if the copy did not occur.

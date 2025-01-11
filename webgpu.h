@@ -5547,6 +5547,9 @@ WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
  * See @ref MappedRangeBehavior for error conditions and guarantees.
  * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
  *
+ * In Wasm, if `memcpy`ing from this range, prefer using @ref wgpuBufferReadMappedRange
+ * instead for better performance.
+ *
  * @param offset
  * Byte offset relative to the beginning of the buffer.
  *
@@ -5559,6 +5562,9 @@ WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUN
  * Returns a mutable pointer to beginning of the mapped range.
  * See @ref MappedRangeBehavior for error conditions and guarantees.
  * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+ *
+ * In Wasm, if `memcpy`ing into this range, prefer using @ref wgpuBufferWriteMappedRange
+ * instead for better performance.
  *
  * @param offset
  * Byte offset relative to the beginning of the buffer.
@@ -5574,6 +5580,8 @@ WGPU_EXPORT WGPUFuture wgpuBufferMapAsync(WGPUBuffer buffer, WGPUMapMode mode, s
  * Copies a range of data from the buffer mapping into the provided destination pointer.
  * See @ref MappedRangeBehavior for error conditions and guarantees.
  * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+ *
+ * In Wasm, this is more efficient than copying from a mapped range into a `malloc`'d range.
  *
  * @param offset
  * Byte offset relative to the beginning of the buffer.
@@ -5594,6 +5602,8 @@ WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
  * Copies a range of data from the provided source pointer into the buffer mapping.
  * See @ref MappedRangeBehavior for error conditions and guarantees.
  * This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+ *
+ * In Wasm, this is more efficient than copying from a `malloc`'d range into a mapped range.
  *
  * @param offset
  * Byte offset relative to the beginning of the buffer.
