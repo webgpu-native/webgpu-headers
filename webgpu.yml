@@ -716,7 +716,6 @@ enums:
       - name: render_pass_max_draw_count
         doc: |
           TODO
-      # TODO(#214): Move all of the surface sources into block 0x0001
       - name: surface_source_metal_layer
         doc: |
           TODO
