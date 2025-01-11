@@ -62,6 +62,8 @@ If an implementation does not have an assigned prefix and block, it **should** b
 | Emscripten           | `Emscripten` | `0x0004_????` |
 | Dawn                 | `Dawn`       | `0x0005_????` |
 
+Note all negative values (values with the most-significant bit set to 1) are reserved for future use.
+
 ## Registry of extension bit flag values
 
 Implementation-specific and multi-implementation extensions **should** (*TBD: **must**?*) register new bit flag values of existing bit flag types here.
