@@ -41,7 +41,7 @@ The `callback` function pointer is called when the application _observes complet
 
 Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nanoseconds. Returns when at least one `WGPUFuture` is completed or `timeoutNS` elapses, whichever is first. If `timeoutNS` is zero, all `futures` are polled once, without blocking.
 
-- Returns @ref WGPUWaitStatus_Success if at least one `WGPUFuture` completes. Each future which _just_ completed has its respective callback fired. Each future which _is_ complete has its corresponding @ref WGPUFutureWaitInfo::completed is set to true.
+- Returns @ref WGPUWaitStatus_Success if at least one `WGPUFuture` completes. Each future which _just_ completed has its respective callback fired. Each future which _is_ complete has its corresponding @ref WGPUFutureWaitInfo::completed set to true.
     - Note that the timeout applies only to the "wait" phase, and does not affect the callback firing phase.
 - Returns @ref WGPUWaitStatus_TimedOut if the timeout passed without any futures completing.
 - Returns @ref WGPUWaitStatus_Error if the call was invalid for any of the following reasons:
