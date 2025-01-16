@@ -42,12 +42,12 @@ The `callback` function pointer is called when the application _observes complet
 Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nanoseconds. Returns when at least one `WGPUFuture` is completed or `timeoutNS` elapses, whichever is first. If `timeoutNS` is zero, all `futures` are polled once, without blocking.
 
 - Returns @ref WGPUWaitStatus_Success if at least one `WGPUFuture` completes. Each future which _just_ completed has its respective callback fired. Each future which _is_ complete has its corresponding @ref WGPUFutureWaitInfo::completed is set to true.
-  - Note that the timeout applies only to the "wait" phase, and does not affect the callback firing phase.
+    - Note that the timeout applies only to the "wait" phase, and does not affect the callback firing phase.
 - Returns @ref WGPUWaitStatus_TimedOut if the timeout passed without any futures completing.
 - Returns @ref WGPUWaitStatus_Error if the call was invalid for any of the following reasons:
-  - A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is not enabled.
-  - The number of futures waited on in a @ref Timed-Wait is greater than the enabled WGPUInstanceFeatures::timedWaitAnyMaxCount.
-  - A wait was attempted with @ref Mixed-Sources.
+    - A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is not enabled.
+    - The number of futures waited on in a @ref Timed-Wait is greater than the enabled WGPUInstanceFeatures::timedWaitAnyMaxCount.
+    - A wait was attempted with @ref Mixed-Sources.
 
 ### Timed Wait {#Timed-Wait}
 
@@ -58,16 +58,18 @@ Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in @
 Asynchronous operations may originate from different sources. There are CPU-timeline operations and there are Queue-timeline operations. Within a _timed wait_, it is only valid to wait on `WGPUFuture`s originating from a single `WGPUQueue`. Waiting on two futures from different queues, or waiting on a Queue-timeline future and some other CPU-timeline future is an error.
 
 #### CPU-Timeline Operations
- - ::wgpuInstanceRequestAdapter
- - ::wgpuAdapterRequestDevice
- - ::wgpuShaderModuleGetCompilationInfo
- - ::wgpuDeviceCreateRenderPipelineAsync
- - ::wgpuDeviceCreateComputePipelineAsync
- - ::wgpuDevicePopErrorScope
+
+- ::wgpuInstanceRequestAdapter
+- ::wgpuAdapterRequestDevice
+- ::wgpuShaderModuleGetCompilationInfo
+- ::wgpuDeviceCreateRenderPipelineAsync
+- ::wgpuDeviceCreateComputePipelineAsync
+- ::wgpuDevicePopErrorScope
 
 #### Queue-Timeline Operations
- - ::wgpuBufferMapAsync
- - ::wgpuQueueOnSubmittedWorkDone
+
+- ::wgpuBufferMapAsync
+- ::wgpuQueueOnSubmittedWorkDone
 
 ## wgpuInstanceProcessEvents {#Process-Events}
 `void wgpuInstanceProcessEvents(WGPUInstance)`
