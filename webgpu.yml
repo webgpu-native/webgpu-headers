@@ -1375,13 +1375,11 @@ enums:
       - name: success
         doc: At least one WGPUFuture completed successfully.
       - name: timed_out
-        doc: No WGPUFutures completed within the timeout.
-      - name: unsupported_timeout
-        doc: A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
-      - name: unsupported_count
-        doc: The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
-      - name: unsupported_mixed_sources
-        doc: An invalid wait was performed with @ref Mixed-Sources.
+        doc: The wait operation succeeded, but no WGPUFutures completed within the timeout.
+      - name: error
+        doc: |
+          The call was invalid for some reason (see @ref Wait-Any).
+          Should produce @ref ImplementationDefinedLogging containing details.
   - name: WGSL_language_feature_name
     doc: |
       TODO
