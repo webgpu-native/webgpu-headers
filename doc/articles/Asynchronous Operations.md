@@ -23,8 +23,16 @@ All asynchronous operations start when the application calls an asynchronous web
 
 The `callback` function pointer is called when the application _observes completion_ of the asynchronous operation. The `userdata1` and `userdata2` members are passed back to the application as the last two arguments in the callback function. Callbacks **might not** be called unless the application explicitly flushes them in order to _observe completion_. The point in time a callback is called depends on the @ref WGPUCallbackMode of the operation. webgpu.h provides three callback modes: @ref WGPUCallbackMode_WaitAnyOnly, @ref WGPUCallbackMode_AllowProcessEvents, and @ref WGPUCallbackMode_AllowSpontaneous.
 
+@ref WGPUCallbackMode_WaitAnyOnly
+
 > @copydoc ::WGPUCallbackMode_WaitAnyOnly
+
+@ref WGPUCallbackMode_AllowProcessEvents
+
 > @copydoc ::WGPUCallbackMode_AllowProcessEvents
+
+@ref WGPUCallbackMode_AllowSpontaneous
+
 > @copydoc ::WGPUCallbackMode_AllowSpontaneous
 
 ## wgpuInstanceWaitAny {#Wait-Any}
