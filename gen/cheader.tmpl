@@ -195,7 +195,7 @@ struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
 {{-   if .Extended}}
 {{-     range $entryIndex, $_ := .Entries}}
 {{-       if .}}
-_wgpu_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue $.EnumPrefix $enum $entryIndex}});
+_wgpu_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue32 $.EnumPrefix $enum $entryIndex | printf "0x%.8X"}});
 {{-       end}}
 {{-     end}}
 {{-   else}}
@@ -203,8 +203,8 @@ _wgpu_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase
 typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
 {{-     range $entryIndex, $_ := .Entries}}
 {{-       if .}}
-{{-         MCommentEnum .Doc 4 $.EnumPrefix $enum $entryIndex }}
-    WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{EnumValue $.EnumPrefix $enum $entryIndex}},
+{{-         MCommentEnumValue .Doc 4 $.EnumPrefix $enum $entryIndex }}
+    WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{EnumValue32 $.EnumPrefix $enum $entryIndex | printf "0x%.8X"}},
 {{-       end}}
 {{-     end}}
     WGPU{{$enum.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF

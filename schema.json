@@ -260,8 +260,9 @@
             "description": "The name/namespace of the specification"
         },
         "enum_prefix": {
-            "type": "string",
-            "pattern": "^0x[0-9]{4}$",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 65535,
             "description": "The dedicated enum prefix for the implementation specific header to avoid collisions"
         },
         "doc": {

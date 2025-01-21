@@ -30,12 +30,17 @@ func (g *Generator) Gen(dst io.Writer) error {
 				}
 				return Comment("\\mainpage\n\n"+strings.TrimSpace(v), CommentTypeMultiLine, indent, true)
 			},
-			"MCommentEnum": func(v string, indent int, prefix string, e Enum, entryIndex int) string {
-				if v == "" || strings.TrimSpace(v) == "TODO" {
-					return ""
+			"MCommentEnumValue": func(v string, indent int, prefix uint16, e Enum, entryIndex int) string {
+				var s string
+				v = strings.TrimSpace(v)
+				if v != "" && v != "TODO" {
+					s += v
 				}
-				value, _ := g.EnumValue(prefix, e, entryIndex)
-				return Comment("`"+value+"`.\n"+strings.TrimSpace(v), CommentTypeMultiLine, indent, true)
+				value, _ := g.EnumValue32(prefix, e, entryIndex)
+				if value == 0 {
+					s = "`0`. " + s
+				}
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
 			},
 			"MCommentBitflagType": func(v string, indent int) string {
 				var s string
@@ -48,7 +53,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 			},
 			"MCommentBitflagValue": func(v string, indent int, b Bitflag, entryIndex int) string {
 				value, _ := g.BitflagValue(b, entryIndex, true)
-				s := value + ".\n"
+				s := value + "\n"
 				v = strings.TrimSpace(v)
 				if v != "" && v != "TODO" {
 					s += v
@@ -182,7 +187,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 			"CamelCase":    CamelCase,
 			"CType":        g.CType,
 			"CValue":       g.CValue,
-			"EnumValue":    g.EnumValue,
+			"EnumValue32":  g.EnumValue32,
 			"BitflagValue": func(b Bitflag, entryIndex int) (string, error) {
 				return g.BitflagValue(b, entryIndex, false)
 			},
@@ -383,11 +388,10 @@ func (g *Generator) CallbackArgs(f Callback) string {
 	return sb.String()
 }
 
-func (g *Generator) EnumValue(prefix string, e Enum, entryIndex int) (string, error) {
-	var entryValue uint16
+func (g *Generator) EnumValue16(e Enum, entryIndex int) (uint16, error) {
 	entry := e.Entries[entryIndex]
 	if entry.Value == "" {
-		entryValue = uint16(entryIndex)
+		return uint16(entryIndex), nil
 	} else {
 		var num string
 		var base int
@@ -400,11 +404,18 @@ func (g *Generator) EnumValue(prefix string, e Enum, entryIndex int) (string, er
 		}
 		value, err := strconv.ParseUint(num, base, 16)
 		if err != nil {
-			return "", err
+			return 0, err
 		}
-		entryValue = uint16(value)
+		return uint16(value), nil
 	}
-	return fmt.Sprintf("%s%.4X", prefix, entryValue), nil
+}
+
+func (g *Generator) EnumValue32(prefix uint16, e Enum, entryIndex int) (uint32, error) {
+	value16, err := g.EnumValue16(e, entryIndex)
+	if err != nil {
+		return 0, err
+	}
+	return uint32(prefix)<<16 | uint32(value16), nil
 }
 
 func bitflagEntryValue(entry BitflagEntry, entryIndex int) (uint64, error) {
@@ -434,7 +445,7 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int, isDocString bool) (s
 		if entry.Value != "" {
 			return "", fmt.Errorf("BitflagValue: found conflicting 'value' and 'value_combination' in '%s'", b.Name)
 		}
-		entryComment += " (`"
+		entryComment += "`"
 		for valueIndex, v := range entry.ValueCombination {
 			// find the value by searching in b, bitwise-OR it into the result
 			for searchIndex, search := range b.Entries {
@@ -456,16 +467,19 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int, isDocString bool) (s
 				entryComment += " | "
 			}
 		}
-		entryComment += "`)"
+		entryComment += "`."
 	} else {
 		var err error
 		value, err = bitflagEntryValue(entry, entryIndex)
 		if err != nil {
 			return "", nil
 		}
+		if value == 0 {
+			entryComment = "`0`."
+		}
 	}
 	if isDocString {
-		return fmt.Sprintf("`0x%.16X`%s", value, entryComment), nil
+		return entryComment, nil
 	} else {
 		return fmt.Sprintf("0x%.16X", value), nil
 	}
