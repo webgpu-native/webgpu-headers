@@ -58,9 +58,9 @@ If an implementation does not have an assigned prefix and block, it **should** b
 |----------------------|--------------|---------------|------------
 | Standard             | (none)       | `0x0000_????` | Extensions standardized in webgpu.h
 | Compatibility Mode   | *TBD*        | `0x0002_????` | **Special:** implementations that don't support Compatibility Mode must ignore any chained structs with @ref WGPUSType values in this block, instead of erroring. This block must only be used for Compat additions that can be ignored without affecting the semantics of a non-erroring program.
-| wgpu-native          | `Wgpu`       | `0x0003_????` |
-| Emscripten           | `Emscripten` | `0x0004_????` |
-| Dawn                 | `Dawn`       | `0x0005_????` |
+| wgpu-native          | `Wgpu`       | `0x0003_????` | -
+| Emscripten           | `Emscripten` | `0x0004_????` | -
+| Dawn                 | `Dawn`       | `0x0005_????` | -
 
 Note all negative values (values with the most-significant bit set to 1) are reserved for future use.
 
