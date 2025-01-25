@@ -1077,21 +1077,14 @@ typedef enum WGPUWaitStatus {
      */
     WGPUWaitStatus_Success = 0x00000001,
     /**
-     * No WGPUFutures completed within the timeout.
+     * The wait operation succeeded, but no WGPUFutures completed within the timeout.
      */
     WGPUWaitStatus_TimedOut = 0x00000002,
     /**
-     * A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
+     * The call was invalid for some reason (see @ref Wait-Any).
+     * Should produce @ref ImplementationDefinedLogging containing details.
      */
-    WGPUWaitStatus_UnsupportedTimeout = 0x00000003,
-    /**
-     * The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
-     */
-    WGPUWaitStatus_UnsupportedCount = 0x00000004,
-    /**
-     * An invalid wait was performed with @ref Mixed-Sources.
-     */
-    WGPUWaitStatus_UnsupportedMixedSources = 0x00000005,
+    WGPUWaitStatus_Error = 0x00000003,
     WGPUWaitStatus_Force32 = 0x7FFFFFFF
 } WGPUWaitStatus WGPU_ENUM_ATTRIBUTE;
 
