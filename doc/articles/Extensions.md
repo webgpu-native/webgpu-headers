@@ -58,17 +58,19 @@ If an implementation does not have an assigned prefix and block, it **should** b
 |----------------------|--------------|---------------|------------
 | Standard             | (none)       | `0x0000_????` | Extensions standardized in webgpu.h
 | Compatibility Mode   | *TBD*        | `0x0002_????` | **Special:** implementations that don't support Compatibility Mode must ignore any chained structs with @ref WGPUSType values in this block, instead of erroring. This block must only be used for Compat additions that can be ignored without affecting the semantics of a non-erroring program.
-| wgpu-native          | `Wgpu`       | `0x0003_????` |
-| Emscripten           | `Emscripten` | `0x0004_????` |
-| Dawn                 | `Dawn`       | `0x0005_????` |
+| wgpu-native          | `Wgpu`       | `0x0003_????` | -
+| Emscripten           | `Emscripten` | `0x0004_????` | -
+| Dawn                 | `Dawn`       | `0x0005_????` | -
 
 Note all negative values (values with the most-significant bit set to 1) are reserved for future use.
 
-## Registry of extension bit flag values
+## Bitflag Registry {#BitflagRegistry}
 
-Implementation-specific and multi-implementation extensions **should** (*TBD: **must**?*) register new bit flag values of existing bit flag types here.
+Implementation-specific extensions **must** choose one of the following options when adding new bitflag values:
+- Register their reserved bitflag values in this document.
+- Add a new bitflag type, and use it via an extension struct.
 
 Core and Compatibility Mode bits will always be in the least-significant 53 bits, because the JS API can only represent 53 bits.
-Therefore, extended bit flag values **should** be in the most-significant 11 bits, overflowing into the most-significant end of the least-significant 53 bits if necessary (or avoiding doing so by adding a new bit flag type entirely).
+Therefore, extended bitflag values **should** be in the most-significant 11 bits, overflowing into the most-significant end of the least-significant 53 bits if necessary (or avoiding doing so by adding a new bitflag type entirely).
 
 - (None have been registered yet!)

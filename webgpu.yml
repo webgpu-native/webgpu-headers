@@ -3,7 +3,7 @@ copyright: |
 
   SPDX-License-Identifier: BSD-3-Clause
 name: webgpu
-enum_prefix: '0x0000'
+enum_prefix: 0x0000
 doc: |
   **Important:** *This documentation is a Work In Progress.*
 
@@ -212,7 +212,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: uniform
         doc: |
           TODO
@@ -747,7 +748,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: filtering
         doc: |
           TODO
@@ -808,7 +810,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: write_only
         doc: |
           TODO
@@ -1177,7 +1180,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: float
         doc: |
           TODO
