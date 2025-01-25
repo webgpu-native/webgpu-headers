@@ -478,6 +478,10 @@ enums:
       - name: dual_source_blending
         doc: |
           TODO
+      - name: mixable_queue_events
+        doc: |
+          If enabled, queue events from this device are mixable with other events.
+          See @ref Mixed-Sources.
   - name: filter_mode
     doc: |
       TODO

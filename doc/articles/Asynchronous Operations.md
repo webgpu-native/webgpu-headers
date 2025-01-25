@@ -55,21 +55,27 @@ Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in @
 
 ### Mixed Sources {#Mixed-Sources}
 
-Asynchronous operations may originate from different sources. There are CPU-timeline operations and there are Queue-timeline operations. Within a _timed wait_, it is only valid to wait on `WGPUFuture`s originating from a single `WGPUQueue`. Waiting on two futures from different queues, or waiting on a Queue-timeline future and some other CPU-timeline future is an error.
+Asynchronous operations come from different sources.
+Each event source produces events with an _exclusive device_ of type `Maybe<Device>`.
 
-#### CPU-Timeline Operations
+When performing a timed wait, all `WGPUFuture`s must have the same "exclusive device".
 
-- ::wgpuInstanceRequestAdapter
-- ::wgpuAdapterRequestDevice
-- ::wgpuShaderModuleGetCompilationInfo
-- ::wgpuDeviceCreateRenderPipelineAsync
-- ::wgpuDeviceCreateComputePipelineAsync
-- ::wgpuDevicePopErrorScope
+- A _device-exclusive queue event_, for which the "exclusive device" is `Some(device)`.
+- A _mixable event_, for which the "exclusive device" is `None`.
 
-#### Queue-Timeline Operations
+Events:
 
-- ::wgpuBufferMapAsync
-- ::wgpuQueueOnSubmittedWorkDone
+- Events which come from the CPU are always "mixable events".
+    - ::wgpuInstanceRequestAdapter
+    - ::wgpuAdapterRequestDevice
+    - ::wgpuShaderModuleGetCompilationInfo
+    - ::wgpuDeviceCreateRenderPipelineAsync
+    - ::wgpuDeviceCreateComputePipelineAsync
+    - ::wgpuDevicePopErrorScope
+- Events which come from the GPU are "mixable events" *if* @ref WGPUFeatureName_MixableQueueEvents
+  is enabled on the device, and "device-exclusive queue events" otherwise.
+    - ::wgpuBufferMapAsync
+    - ::wgpuQueueOnSubmittedWorkDone
 
 ## wgpuInstanceProcessEvents {#Process-Events}
 `void wgpuInstanceProcessEvents(WGPUInstance)`

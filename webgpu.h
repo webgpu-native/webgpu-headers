@@ -552,6 +552,11 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_Float32Blendable = 0x0000000E,
     WGPUFeatureName_ClipDistances = 0x0000000F,
     WGPUFeatureName_DualSourceBlending = 0x00000010,
+    /**
+     * If enabled, queue events from this device are mixable with other events.
+     * See @ref Mixed-Sources.
+     */
+    WGPUFeatureName_MixableQueueEvents = 0x00000011,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 
