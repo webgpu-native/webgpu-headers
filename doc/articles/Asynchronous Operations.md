@@ -73,8 +73,10 @@ Processes asynchronous events on this `WGPUInstance`, calling any callbacks for 
 
 ## Device Events
 
-Device events are slightly different in that their callback info (`WGPUDeviceLostCallbackInfo` and `WGPUUncapturedErrorCallbackInfo`) are passed on the `WGPUDeviceDescriptor`, instead of in a function argument. There is no `WGPUFuture` returned for either callback.
-@todo Add a getter for the device lost WGPUFuture. See discussion at https://github.com/webgpu-native/webgpu-headers/issues/199#issuecomment-1866850031.
+Device events are slightly different in that their callback info (`WGPUDeviceLostCallbackInfo` and `WGPUUncapturedErrorCallbackInfo`) are passed on the `WGPUDeviceDescriptor`, instead of in a function argument.
+
+- The device lost future is @ref wgpuDeviceGetLostFuture.
+- There is no future for the uncaptured error callback (it's a repeating event, not a future).
 
 The `WGPUUncapturedErrorCallbackInfo` _does not_ have a callback mode member. It is always as-if it were @ref WGPUCallbackMode_AllowSpontaneous. Note also that the uncaptured error callback is a _repeating_ callback that fires multiple times, unlike other callbacks in webgpu.h.
 
