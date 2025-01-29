@@ -742,6 +742,9 @@ enums:
       - name: surface_color_management
         doc: |
           TODO
+      - name: request_adapter_WebXR_options
+        doc: |
+          TODO
   - name: sampler_binding_type
     doc: |
       TODO
@@ -2630,6 +2633,18 @@ structs:
           If this is not possible, the request returns null.
         type: object.surface
         optional: true
+  - name: request_adapter_WebXR_options
+    doc: |
+      Extension providing requestAdapter options for implementations with WebXR interop (i.e. Wasm).
+    type: extension
+    extends:
+      - request_adapter_options
+    members:
+      - name: xr_compatible
+        doc: |
+          Sets the `xrCompatible` option in the JS API.
+        type: bool
+        default: false
   - name: sampler_binding_layout
     doc: |
       TODO
