@@ -66,16 +66,17 @@ When performing a timed wait, all `WGPUFuture`s must have the same "exclusive de
 Events:
 
 - Events which come from the CPU are always "mixable events".
-    - ::wgpuInstanceRequestAdapter
-    - ::wgpuAdapterRequestDevice
-    - ::wgpuShaderModuleGetCompilationInfo
-    - ::wgpuDeviceCreateRenderPipelineAsync
-    - ::wgpuDeviceCreateComputePipelineAsync
-    - ::wgpuDevicePopErrorScope
+    - @ref wgpuInstanceRequestAdapter
+    - @ref wgpuAdapterRequestDevice
+    - @ref wgpuShaderModuleGetCompilationInfo
+    - @ref wgpuDeviceCreateRenderPipelineAsync
+    - @ref wgpuDeviceCreateComputePipelineAsync
+    - @ref wgpuDevicePopErrorScope
+    - Device loss (@ref WGPUDeviceDescriptor::deviceLostCallbackInfo + @ref wgpuDeviceGetLostFuture)
 - Events which come from the GPU are "mixable events" *if* @ref WGPUFeatureName_MixableQueueEvents
   is enabled on the device, and "device-exclusive queue events" otherwise.
-    - ::wgpuBufferMapAsync
-    - ::wgpuQueueOnSubmittedWorkDone
+    - @ref wgpuBufferMapAsync
+    - @ref wgpuQueueOnSubmittedWorkDone
 
 ## wgpuInstanceProcessEvents {#Process-Events}
 `void wgpuInstanceProcessEvents(WGPUInstance)`
