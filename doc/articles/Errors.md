@@ -26,7 +26,7 @@ Error scopes are used via @ref wgpuDevicePushErrorScope, @ref wgpuDevicePopError
     Note in particular:
     - Async callbacks run on various threads and with unpredictable timing (see @ref Asynchronous-Operations), except when using @ref wgpuInstanceWaitAny. To avoid race conditions, if error scopes are used, applications generally should avoid having device errors escape from an async function, and/or should not keep scopes open when callbacks that could produce errors may run.
     - Runtimes with async task support (I/O runtimes, language async/coroutines/futures, etc.) may use "green threads" style systems to schedule tasks on different OS threads. Error scope stack state is OS-thread-local, not green-thread-local.
-- The UncapturedError callback receives uncaptured errors from all threads.
+- The UncapturedError callback (@ref WGPUDeviceDescriptor::uncapturedErrorCallbackInfo) is called for uncaptured errors on all threads. It **may** be called inline inside of a call to the API.
 
 ## Callback Error {#CallbackError}
 

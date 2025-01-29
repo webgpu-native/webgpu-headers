@@ -85,10 +85,12 @@ Processes asynchronous events on this `WGPUInstance`, calling any callbacks for 
 
 ## Device Events
 
-Device events are slightly different in that their callback info (`WGPUDeviceLostCallbackInfo` and `WGPUUncapturedErrorCallbackInfo`) are passed on the `WGPUDeviceDescriptor`, instead of in a function argument. There is no `WGPUFuture` returned for either callback.
-@todo Add a getter for the device lost WGPUFuture. See discussion at https://github.com/webgpu-native/webgpu-headers/issues/199#issuecomment-1866850031.
+Device events are slightly different in that their callback info are passed on the `WGPUDeviceDescriptor`, instead of in a function argument.
 
-The `WGPUUncapturedErrorCallbackInfo` _does not_ have a callback mode member. It is always as-if it were @ref WGPUCallbackMode_AllowSpontaneous. Note also that the uncaptured error callback is a _repeating_ callback that fires multiple times, unlike other callbacks in webgpu.h.
+- The DeviceLost callback is set via @ref WGPUDeviceDescriptor::deviceLostCallbackInfo.
+  The Future for that event is @ref wgpuDeviceGetLostFuture.
+- The UncapturedError callback is set via @ref WGPUDeviceDescriptor::uncapturedErrorCallbackInfo.
+  It is a repeating event, not a future, and it does not have a callback mode (see docs).
 
 The uncaptured error callback is guaranteed not to fire after the device becomes lost. When the device is lost, it is an appropriate time for the application to free userdata variables for the uncaptured error callback. Note that the device becomes lost _before_ the actual device lost callback fires. First the device state transitions to lost, then the device lost callback fires. The timing of the callback depends on the device lost callback mode.
 

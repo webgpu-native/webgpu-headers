@@ -676,6 +676,10 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
+      - name: error
+        doc: |
+          There was some deterministic error. (Note this is currently never used,
+          but it will be relevant when it's possible to create a queue object.)
   - name: request_adapter_status
     doc: |
       TODO

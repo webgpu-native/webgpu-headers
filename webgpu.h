@@ -712,6 +712,11 @@ typedef enum WGPUQueryType {
 typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_Success = 0x00000001,
     WGPUQueueWorkDoneStatus_InstanceDropped = 0x00000002,
+    /**
+     * There was some deterministic error. (Note this is currently never used,
+     * but it will be relevant when it's possible to create a queue object.)
+     */
+    WGPUQueueWorkDoneStatus_Error = 0x00000003,
     WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
 } WGPUQueueWorkDoneStatus WGPU_ENUM_ATTRIBUTE;
 
