@@ -3,7 +3,7 @@ copyright: |
 
   SPDX-License-Identifier: BSD-3-Clause
 name: webgpu
-enum_prefix: '0x0000'
+enum_prefix: 0x0000
 doc: |
   **Important:** *This documentation is a Work In Progress.*
 
@@ -212,7 +212,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: uniform
         doc: |
           TODO
@@ -671,6 +672,10 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
+      - name: error
+        doc: |
+          There was some deterministic error. (Note this is currently never used,
+          but it will be relevant when it's possible to create a queue object.)
   - name: request_adapter_status
     doc: |
       TODO
@@ -747,7 +752,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: filtering
         doc: |
           TODO
@@ -808,7 +814,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: write_only
         doc: |
           TODO
@@ -1177,7 +1184,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: float
         doc: |
           TODO
@@ -1375,13 +1383,11 @@ enums:
       - name: success
         doc: At least one WGPUFuture completed successfully.
       - name: timed_out
-        doc: No WGPUFutures completed within the timeout.
-      - name: unsupported_timeout
-        doc: A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
-      - name: unsupported_count
-        doc: The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
-      - name: unsupported_mixed_sources
-        doc: An invalid wait was performed with @ref Mixed-Sources.
+        doc: The wait operation succeeded, but no WGPUFutures completed within the timeout.
+      - name: error
+        doc: |
+          The call was invalid for some reason (see @ref Wait-Any).
+          Should produce @ref ImplementationDefinedLogging containing details.
   - name: WGSL_language_feature_name
     doc: |
       TODO
