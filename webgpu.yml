@@ -478,6 +478,9 @@ enums:
       - name: dual_source_blending
         doc: |
           TODO
+      - name: subgroups
+        doc: |
+          TODO
   - name: filter_mode
     doc: |
       TODO
@@ -1561,6 +1564,14 @@ structs:
           TODO
         type: uint32
       - name: device_ID
+        doc: |
+          TODO
+        type: uint32
+      - name: subgroup_min_size
+        doc: |
+          TODO
+        type: uint32
+      - name: subgroup_max_size
         doc: |
           TODO
         type: uint32
