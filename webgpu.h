@@ -221,6 +221,7 @@ struct WGPURenderBundleEncoderDescriptor;
 struct WGPURenderPassDepthStencilAttachment;
 struct WGPURenderPassMaxDrawCount;
 struct WGPURequestAdapterOptions;
+struct WGPURequestAdapterWebXROptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
 struct WGPUShaderModuleDescriptor;
@@ -741,6 +742,7 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
     WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
     WGPUSType_SurfaceColorManagement = 0x0000000A,
+    WGPUSType_RequestAdapterWebXROptions = 0x0000000B,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -2619,6 +2621,32 @@ typedef struct WGPURequestAdapterOptions {
     /*.forceFallbackAdapter=*/0 _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
     /*.compatibleSurface=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Extension providing requestAdapter options for implementations with WebXR interop (i.e. Wasm).
+ *
+ * Default values can be set using @ref WGPU_REQUEST_ADAPTER_WEBXR_OPTIONS_INIT as initializer.
+ */
+typedef struct WGPURequestAdapterWebXROptions {
+    WGPUChainedStruct chain;
+    /**
+     * Sets the `xrCompatible` option in the JS API.
+     *
+     * The `INIT` macro sets this to `0`.
+     */
+    WGPUBool xrCompatible;
+} WGPURequestAdapterWebXROptions WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPURequestAdapterWebXROptions.
+ */
+#define WGPU_REQUEST_ADAPTER_WEBXR_OPTIONS_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterWebXROptions, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_RequestAdapterWebXROptions _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.xrCompatible=*/0 _wgpu_COMMA \
 })
 
 /**
