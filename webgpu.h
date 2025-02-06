@@ -553,6 +553,7 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_Float32Blendable = 0x0000000E,
     WGPUFeatureName_ClipDistances = 0x0000000F,
     WGPUFeatureName_DualSourceBlending = 0x00000010,
+    WGPUFeatureName_Subgroups = 0x00000011,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 
@@ -1591,6 +1592,14 @@ typedef struct WGPUAdapterInfo {
      * The `INIT` macro sets this to `0`.
      */
     uint32_t deviceID;
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t subgroupMinSize;
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t subgroupMaxSize;
 } WGPUAdapterInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -1606,6 +1615,8 @@ typedef struct WGPUAdapterInfo {
     /*.adapterType=*/_wgpu_ENUM_ZERO_INIT(WGPUAdapterType) _wgpu_COMMA \
     /*.vendorID=*/0 _wgpu_COMMA \
     /*.deviceID=*/0 _wgpu_COMMA \
+    /*.subgroupMinSize=*/0 _wgpu_COMMA \
+    /*.subgroupMaxSize=*/0 _wgpu_COMMA \
 })
 
 /**
