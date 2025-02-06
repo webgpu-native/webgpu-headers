@@ -61,6 +61,7 @@ If an implementation does not have an assigned prefix and block, it **should** b
 | wgpu-native          | `Wgpu`       | `0x0003_????` | -
 | Emscripten           | `Emscripten` | `0x0004_????` | -
 | Dawn                 | `Dawn`       | `0x0005_????` | -
+| Wagyu                | `Wagyu`      | `0x0006_????` | -
 
 Note all negative values (values with the most-significant bit set to 1) are reserved for future use.
 
