@@ -6,8 +6,9 @@ The @ref wgpuBufferGetMappedRange, @ref wgpuBufferGetConstMappedRange, @ref wgpu
 
 - Fail (return `NULL` or `WGPUStatus_Error`) with @ref ImplementationDefinedLogging if:
     - There is any content-timeline error, as defined in the WebGPU specification for `getMappedRange()`, given the same buffer, offset, and size (buffer is not mapped, alignment constraints, overlaps, etc.)
-        - All four calls reserve a range which cannot be overlapped by any future call.
-        - Note that implementations must validate overlap rules, even if they do not have such constraints or could avoid them.
+        - **Except** for overlaps between *const* ranges, which are allowed in C *in non-Wasm targets only*.
+            (Wasm does not allow this because const ranges do not exist in JS.
+            All of these calls are implemented on top of `getMappedRange()`.)
     - @ref wgpuBufferGetMappedRange or @ref wgpuBufferWriteMappedRange is called, but the buffer is not mapped with @ref WGPUMapMode_Write.
 
 @ref wgpuBufferGetMappedRange, @ref wgpuBufferGetConstMappedRange additionally:
