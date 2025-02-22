@@ -3666,7 +3666,7 @@ objects:
             doc: |
               Source, to write buffer data from.
             type: c_void
-            pointer: mutable
+            pointer: immutable
           - name: size
             doc: |
               Number of bytes of data to write to the buffer.
