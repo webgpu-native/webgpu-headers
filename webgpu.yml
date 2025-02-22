@@ -3572,11 +3572,13 @@ objects:
             type: bitflag.map_mode
           - name: offset
             doc: |
-              TODO
+              Byte offset relative to beginning of the buffer.
             type: usize
           - name: size
             doc: |
-              TODO
+              Byte size of the region to map.
+
+              If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
             type: usize
       - name: get_mapped_range
         doc: |
@@ -3598,6 +3600,8 @@ objects:
           - name: size
             doc: |
               Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+
+              If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
             type: usize
       - name: get_const_mapped_range
         doc: |
@@ -3620,6 +3624,8 @@ objects:
           - name: size
             doc: |
               Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+
+              If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
             type: usize
       - name: read_mapped_range
         doc: |
@@ -3645,6 +3651,7 @@ objects:
           - name: size
             doc: |
               Number of bytes of data to read from the buffer.
+              (Note @ref WGPU_WHOLE_MAP_SIZE is *not* accepted here.)
             type: usize
       - name: write_mapped_range
         doc: |
@@ -3670,6 +3677,7 @@ objects:
           - name: size
             doc: |
               Number of bytes of data to write to the buffer.
+              (Note @ref WGPU_WHOLE_MAP_SIZE is *not* accepted here.)
             type: usize
       - name: set_label
         doc: |
