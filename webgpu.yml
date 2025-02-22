@@ -3,7 +3,7 @@ copyright: |
 
   SPDX-License-Identifier: BSD-3-Clause
 name: webgpu
-enum_prefix: '0x0000'
+enum_prefix: 0x0000
 doc: |
   **Important:** *This documentation is a Work In Progress.*
 
@@ -212,7 +212,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: uniform
         doc: |
           TODO
@@ -477,6 +478,9 @@ enums:
       - name: dual_source_blending
         doc: |
           TODO
+      - name: subgroups
+        doc: |
+          TODO
   - name: filter_mode
     doc: |
       TODO
@@ -671,6 +675,10 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
+      - name: error
+        doc: |
+          There was some deterministic error. (Note this is currently never used,
+          but it will be relevant when it's possible to create a queue object.)
   - name: request_adapter_status
     doc: |
       TODO
@@ -716,7 +724,6 @@ enums:
       - name: render_pass_max_draw_count
         doc: |
           TODO
-      # TODO(#214): Move all of the surface sources into block 0x0001
       - name: surface_source_metal_layer
         doc: |
           TODO
@@ -738,6 +745,9 @@ enums:
       - name: surface_color_management
         doc: |
           TODO
+      - name: request_adapter_WebXR_options
+        doc: |
+          TODO
   - name: sampler_binding_type
     doc: |
       TODO
@@ -748,7 +758,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: filtering
         doc: |
           TODO
@@ -809,7 +820,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: write_only
         doc: |
           TODO
@@ -1178,7 +1190,8 @@ enums:
           its parent @ref WGPUBindGroupLayoutEntry is not used.
           (See also @ref SentinelValues.)
       - name: undefined
-        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+        doc: |
+          `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: float
         doc: |
           TODO
@@ -1376,13 +1389,11 @@ enums:
       - name: success
         doc: At least one WGPUFuture completed successfully.
       - name: timed_out
-        doc: No WGPUFutures completed within the timeout.
-      - name: unsupported_timeout
-        doc: A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
-      - name: unsupported_count
-        doc: The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
-      - name: unsupported_mixed_sources
-        doc: An invalid wait was performed with @ref Mixed-Sources.
+        doc: The wait operation succeeded, but no WGPUFutures completed within the timeout.
+      - name: error
+        doc: |
+          The call was invalid for some reason (see @ref Wait-Any).
+          Should produce @ref ImplementationDefinedLogging containing details.
   - name: WGSL_language_feature_name
     doc: |
       TODO
@@ -1553,6 +1564,14 @@ structs:
           TODO
         type: uint32
       - name: device_ID
+        doc: |
+          TODO
+        type: uint32
+      - name: subgroup_min_size
+        doc: |
+          TODO
+        type: uint32
+      - name: subgroup_max_size
         doc: |
           TODO
         type: uint32
@@ -2625,6 +2644,18 @@ structs:
           If this is not possible, the request returns null.
         type: object.surface
         optional: true
+  - name: request_adapter_WebXR_options
+    doc: |
+      Extension providing requestAdapter options for implementations with WebXR interop (i.e. Wasm).
+    type: extension
+    extends:
+      - request_adapter_options
+    members:
+      - name: xr_compatible
+        doc: |
+          Sets the `xrCompatible` option in the JS API.
+        type: bool
+        default: false
   - name: sampler_binding_layout
     doc: |
       TODO

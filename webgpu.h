@@ -221,6 +221,7 @@ struct WGPURenderBundleEncoderDescriptor;
 struct WGPURenderPassDepthStencilAttachment;
 struct WGPURenderPassMaxDrawCount;
 struct WGPURequestAdapterOptions;
+struct WGPURequestAdapterWebXROptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
 struct WGPUShaderModuleDescriptor;
@@ -297,8 +298,7 @@ typedef enum WGPUAdapterType {
 
 typedef enum WGPUAddressMode {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUAddressMode_Undefined = 0x00000000,
     WGPUAddressMode_ClampToEdge = 0x00000001,
@@ -309,8 +309,7 @@ typedef enum WGPUAddressMode {
 
 typedef enum WGPUBackendType {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUBackendType_Undefined = 0x00000000,
     WGPUBackendType_Null = 0x00000001,
@@ -326,8 +325,7 @@ typedef enum WGPUBackendType {
 
 typedef enum WGPUBlendFactor {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUBlendFactor_Undefined = 0x00000000,
     WGPUBlendFactor_Zero = 0x00000001,
@@ -352,8 +350,7 @@ typedef enum WGPUBlendFactor {
 
 typedef enum WGPUBlendOperation {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUBlendOperation_Undefined = 0x00000000,
     WGPUBlendOperation_Add = 0x00000001,
@@ -366,15 +363,13 @@ typedef enum WGPUBlendOperation {
 
 typedef enum WGPUBufferBindingType {
     /**
-     * `0x00000000`.
-     * Indicates that this @ref WGPUBufferBindingLayout member of
+     * `0`. Indicates that this @ref WGPUBufferBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
      * (See also @ref SentinelValues.)
      */
     WGPUBufferBindingType_BindingNotUsed = 0x00000000,
     /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUBufferBindingType_Undefined = 0x00000001,
     WGPUBufferBindingType_Uniform = 0x00000002,
@@ -395,21 +390,18 @@ typedef enum WGPUBufferMapState {
  */
 typedef enum WGPUCallbackMode {
     /**
-     * `0x00000001`.
      * Callbacks created with `WGPUCallbackMode_WaitAnyOnly`:
      * - fire when the asynchronous operation's future is passed to a call to @ref wgpuInstanceWaitAny
      *   AND the operation has already completed or it completes inside the call to @ref wgpuInstanceWaitAny.
      */
     WGPUCallbackMode_WaitAnyOnly = 0x00000001,
     /**
-     * `0x00000002`.
      * Callbacks created with `WGPUCallbackMode_AllowProcessEvents`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_WaitAnyOnly`
      * - fire inside a call to @ref wgpuInstanceProcessEvents if the asynchronous operation is complete.
      */
     WGPUCallbackMode_AllowProcessEvents = 0x00000002,
     /**
-     * `0x00000003`.
      * Callbacks created with `WGPUCallbackMode_AllowSpontaneous`:
      * - fire for the same reasons as callbacks created with `WGPUCallbackMode_AllowProcessEvents`
      * - **may** fire spontaneously on an arbitrary or application thread, when the WebGPU implementations discovers that the asynchronous operation is complete.
@@ -424,8 +416,7 @@ typedef enum WGPUCallbackMode {
 
 typedef enum WGPUCompareFunction {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUCompareFunction_Undefined = 0x00000000,
     WGPUCompareFunction_Never = 0x00000001,
@@ -457,27 +448,22 @@ typedef enum WGPUCompilationMessageType {
  */
 typedef enum WGPUCompositeAlphaMode {
     /**
-     * `0x00000000`.
-     * Lets the WebGPU implementation choose the best mode (supported, and with the best performance) between @ref WGPUCompositeAlphaMode_Opaque or @ref WGPUCompositeAlphaMode_Inherit.
+     * `0`. Lets the WebGPU implementation choose the best mode (supported, and with the best performance) between @ref WGPUCompositeAlphaMode_Opaque or @ref WGPUCompositeAlphaMode_Inherit.
      */
     WGPUCompositeAlphaMode_Auto = 0x00000000,
     /**
-     * `0x00000001`.
      * The alpha component of the image is ignored and teated as if it is always 1.0.
      */
     WGPUCompositeAlphaMode_Opaque = 0x00000001,
     /**
-     * `0x00000002`.
      * The alpha component is respected and non-alpha components are assumed to be already multiplied with the alpha component. For example, (0.5, 0, 0, 0.5) is semi-transparent bright red.
      */
     WGPUCompositeAlphaMode_Premultiplied = 0x00000002,
     /**
-     * `0x00000003`.
      * The alpha component is respected and non-alpha components are assumed to NOT be already multiplied with the alpha component. For example, (1.0, 0, 0, 0.5) is semi-transparent bright red.
      */
     WGPUCompositeAlphaMode_Unpremultiplied = 0x00000003,
     /**
-     * `0x00000004`.
      * The handling of the alpha component is unknown to WebGPU and should be handled by the application using system-specific APIs. This mode may be unavailable (for example on Wasm).
      */
     WGPUCompositeAlphaMode_Inherit = 0x00000004,
@@ -494,8 +480,7 @@ typedef enum WGPUCreatePipelineAsyncStatus {
 
 typedef enum WGPUCullMode {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUCullMode_Undefined = 0x00000000,
     WGPUCullMode_None = 0x00000001,
@@ -533,17 +518,14 @@ typedef enum WGPUErrorType {
  */
 typedef enum WGPUFeatureLevel {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUFeatureLevel_Undefined = 0x00000000,
     /**
-     * `0x00000001`.
      * "Compatibility" profile which can be supported on OpenGL ES 3.1 and D3D11.
      */
     WGPUFeatureLevel_Compatibility = 0x00000001,
     /**
-     * `0x00000002`.
      * "Core" profile which can be supported on Vulkan/Metal/D3D12 (at least).
      */
     WGPUFeatureLevel_Core = 0x00000002,
@@ -551,6 +533,9 @@ typedef enum WGPUFeatureLevel {
 } WGPUFeatureLevel WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUFeatureName {
+    /**
+     * `0`.
+     */
     WGPUFeatureName_Undefined = 0x00000000,
     WGPUFeatureName_DepthClipControl = 0x00000001,
     WGPUFeatureName_Depth32FloatStencil8 = 0x00000002,
@@ -568,13 +553,13 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_Float32Blendable = 0x0000000E,
     WGPUFeatureName_ClipDistances = 0x0000000F,
     WGPUFeatureName_DualSourceBlending = 0x00000010,
+    WGPUFeatureName_Subgroups = 0x00000011,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUFilterMode {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUFilterMode_Undefined = 0x00000000,
     WGPUFilterMode_Nearest = 0x00000001,
@@ -584,8 +569,7 @@ typedef enum WGPUFilterMode {
 
 typedef enum WGPUFrontFace {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUFrontFace_Undefined = 0x00000000,
     WGPUFrontFace_CCW = 0x00000001,
@@ -595,8 +579,7 @@ typedef enum WGPUFrontFace {
 
 typedef enum WGPUIndexFormat {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUIndexFormat_Undefined = 0x00000000,
     WGPUIndexFormat_Uint16 = 0x00000001,
@@ -606,8 +589,7 @@ typedef enum WGPUIndexFormat {
 
 typedef enum WGPULoadOp {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPULoadOp_Undefined = 0x00000000,
     WGPULoadOp_Load = 0x00000001,
@@ -625,8 +607,7 @@ typedef enum WGPUMapAsyncStatus {
 
 typedef enum WGPUMipmapFilterMode {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUMipmapFilterMode_Undefined = 0x00000000,
     WGPUMipmapFilterMode_Nearest = 0x00000001,
@@ -635,6 +616,9 @@ typedef enum WGPUMipmapFilterMode {
 } WGPUMipmapFilterMode WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUOptionalBool {
+    /**
+     * `0`.
+     */
     WGPUOptionalBool_False = 0x00000000,
     WGPUOptionalBool_True = 0x00000001,
     WGPUOptionalBool_Undefined = 0x00000002,
@@ -643,13 +627,11 @@ typedef enum WGPUOptionalBool {
 
 typedef enum WGPUPopErrorScopeStatus {
     /**
-     * `0x00000001`.
      * The error scope stack was successfully popped and a result was reported.
      */
     WGPUPopErrorScopeStatus_Success = 0x00000001,
     WGPUPopErrorScopeStatus_InstanceDropped = 0x00000002,
     /**
-     * `0x00000003`.
      * The error scope stack could not be popped, because it was empty.
      */
     WGPUPopErrorScopeStatus_Error = 0x00000003,
@@ -658,8 +640,7 @@ typedef enum WGPUPopErrorScopeStatus {
 
 typedef enum WGPUPowerPreference {
     /**
-     * `0x00000000`.
-     * No preference. (See also @ref SentinelValues.)
+     * `0`. No preference. (See also @ref SentinelValues.)
      */
     WGPUPowerPreference_Undefined = 0x00000000,
     WGPUPowerPreference_LowPower = 0x00000001,
@@ -678,32 +659,27 @@ typedef enum WGPUPredefinedColorSpace {
  */
 typedef enum WGPUPresentMode {
     /**
-     * `0x00000000`.
-     * Present mode is not specified. Use the default.
+     * `0`. Present mode is not specified. Use the default.
      */
     WGPUPresentMode_Undefined = 0x00000000,
     /**
-     * `0x00000001`.
      * The presentation of the image to the user waits for the next vertical blanking period to update in a first-in, first-out manner.
      * Tearing cannot be observed and frame-loop will be limited to the display's refresh rate.
      * This is the only mode that's always available.
      */
     WGPUPresentMode_Fifo = 0x00000001,
     /**
-     * `0x00000002`.
      * The presentation of the image to the user tries to wait for the next vertical blanking period but may decide to not wait if a frame is presented late.
      * Tearing can sometimes be observed but late-frame don't produce a full-frame stutter in the presentation.
      * This is still a first-in, first-out mechanism so a frame-loop will be limited to the display's refresh rate.
      */
     WGPUPresentMode_FifoRelaxed = 0x00000002,
     /**
-     * `0x00000003`.
      * The presentation of the image to the user is updated immediately without waiting for a vertical blank.
      * Tearing can be observed but latency is minimized.
      */
     WGPUPresentMode_Immediate = 0x00000003,
     /**
-     * `0x00000004`.
      * The presentation of the image to the user waits for the next vertical blanking period to update to the latest provided image.
      * Tearing cannot be observed and a frame-loop is not limited to the display's refresh rate.
      */
@@ -713,8 +689,7 @@ typedef enum WGPUPresentMode {
 
 typedef enum WGPUPrimitiveTopology {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUPrimitiveTopology_Undefined = 0x00000000,
     WGPUPrimitiveTopology_PointList = 0x00000001,
@@ -734,6 +709,11 @@ typedef enum WGPUQueryType {
 typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_Success = 0x00000001,
     WGPUQueueWorkDoneStatus_InstanceDropped = 0x00000002,
+    /**
+     * There was some deterministic error. (Note this is currently never used,
+     * but it will be relevant when it's possible to create a queue object.)
+     */
+    WGPUQueueWorkDoneStatus_Error = 0x00000003,
     WGPUQueueWorkDoneStatus_Force32 = 0x7FFFFFFF
 } WGPUQueueWorkDoneStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -763,20 +743,19 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
     WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
     WGPUSType_SurfaceColorManagement = 0x0000000A,
+    WGPUSType_RequestAdapterWebXROptions = 0x0000000B,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUSamplerBindingType {
     /**
-     * `0x00000000`.
-     * Indicates that this @ref WGPUSamplerBindingLayout member of
+     * `0`. Indicates that this @ref WGPUSamplerBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
      * (See also @ref SentinelValues.)
      */
     WGPUSamplerBindingType_BindingNotUsed = 0x00000000,
     /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUSamplerBindingType_Undefined = 0x00000001,
     WGPUSamplerBindingType_Filtering = 0x00000002,
@@ -798,8 +777,7 @@ typedef enum WGPUStatus {
 
 typedef enum WGPUStencilOperation {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUStencilOperation_Undefined = 0x00000000,
     WGPUStencilOperation_Keep = 0x00000001,
@@ -815,15 +793,13 @@ typedef enum WGPUStencilOperation {
 
 typedef enum WGPUStorageTextureAccess {
     /**
-     * `0x00000000`.
-     * Indicates that this @ref WGPUStorageTextureBindingLayout member of
+     * `0`. Indicates that this @ref WGPUStorageTextureBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
      * (See also @ref SentinelValues.)
      */
     WGPUStorageTextureAccess_BindingNotUsed = 0x00000000,
     /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUStorageTextureAccess_Undefined = 0x00000001,
     WGPUStorageTextureAccess_WriteOnly = 0x00000002,
@@ -834,8 +810,7 @@ typedef enum WGPUStorageTextureAccess {
 
 typedef enum WGPUStoreOp {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUStoreOp_Undefined = 0x00000000,
     WGPUStoreOp_Store = 0x00000001,
@@ -848,32 +823,26 @@ typedef enum WGPUStoreOp {
  */
 typedef enum WGPUSurfaceGetCurrentTextureStatus {
     /**
-     * `0x00000001`.
      * Yay! Everything is good and we can render this frame.
      */
     WGPUSurfaceGetCurrentTextureStatus_SuccessOptimal = 0x00000001,
     /**
-     * `0x00000002`.
      * Still OK - the surface can present the frame, but in a suboptimal way. The surface may need reconfiguration.
      */
     WGPUSurfaceGetCurrentTextureStatus_SuccessSuboptimal = 0x00000002,
     /**
-     * `0x00000003`.
      * Some operation timed out while trying to acquire the frame.
      */
     WGPUSurfaceGetCurrentTextureStatus_Timeout = 0x00000003,
     /**
-     * `0x00000004`.
      * The surface is too different to be used, compared to when it was originally created.
      */
     WGPUSurfaceGetCurrentTextureStatus_Outdated = 0x00000004,
     /**
-     * `0x00000005`.
      * The connection to whatever owns the surface was lost, or generally needs to be fully reinitialized.
      */
     WGPUSurfaceGetCurrentTextureStatus_Lost = 0x00000005,
     /**
-     * `0x00000006`.
      * There was some deterministic error (for example, the surface is not configured, or there was an @ref OutStructChainError). Should produce @ref ImplementationDefinedLogging containing details.
      */
     WGPUSurfaceGetCurrentTextureStatus_Error = 0x00000006,
@@ -882,8 +851,7 @@ typedef enum WGPUSurfaceGetCurrentTextureStatus {
 
 typedef enum WGPUTextureAspect {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureAspect_Undefined = 0x00000000,
     WGPUTextureAspect_All = 0x00000001,
@@ -894,8 +862,7 @@ typedef enum WGPUTextureAspect {
 
 typedef enum WGPUTextureDimension {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureDimension_Undefined = 0x00000000,
     WGPUTextureDimension_1D = 0x00000001,
@@ -906,8 +873,7 @@ typedef enum WGPUTextureDimension {
 
 typedef enum WGPUTextureFormat {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureFormat_Undefined = 0x00000000,
     WGPUTextureFormat_R8Unorm = 0x00000001,
@@ -1010,15 +976,13 @@ typedef enum WGPUTextureFormat {
 
 typedef enum WGPUTextureSampleType {
     /**
-     * `0x00000000`.
-     * Indicates that this @ref WGPUTextureBindingLayout member of
+     * `0`. Indicates that this @ref WGPUTextureBindingLayout member of
      * its parent @ref WGPUBindGroupLayoutEntry is not used.
      * (See also @ref SentinelValues.)
      */
     WGPUTextureSampleType_BindingNotUsed = 0x00000000,
     /**
-     * `0x00000001`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `1`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureSampleType_Undefined = 0x00000001,
     WGPUTextureSampleType_Float = 0x00000002,
@@ -1031,8 +995,7 @@ typedef enum WGPUTextureSampleType {
 
 typedef enum WGPUTextureViewDimension {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUTextureViewDimension_Undefined = 0x00000000,
     WGPUTextureViewDimension_1D = 0x00000001,
@@ -1097,8 +1060,7 @@ typedef enum WGPUVertexFormat {
 
 typedef enum WGPUVertexStepMode {
     /**
-     * `0x00000000`.
-     * Indicates no value is passed for this argument. See @ref SentinelValues.
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUVertexStepMode_Undefined = 0x00000000,
     WGPUVertexStepMode_Vertex = 0x00000001,
@@ -1119,30 +1081,18 @@ typedef enum WGPUWGSLLanguageFeatureName {
  */
 typedef enum WGPUWaitStatus {
     /**
-     * `0x00000001`.
      * At least one WGPUFuture completed successfully.
      */
     WGPUWaitStatus_Success = 0x00000001,
     /**
-     * `0x00000002`.
-     * No WGPUFutures completed within the timeout.
+     * The wait operation succeeded, but no WGPUFutures completed within the timeout.
      */
     WGPUWaitStatus_TimedOut = 0x00000002,
     /**
-     * `0x00000003`.
-     * A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is false.
+     * The call was invalid for some reason (see @ref Wait-Any).
+     * Should produce @ref ImplementationDefinedLogging containing details.
      */
-    WGPUWaitStatus_UnsupportedTimeout = 0x00000003,
-    /**
-     * `0x00000004`.
-     * The number of futures waited on in a @ref Timed-Wait is greater than the supported WGPUInstanceFeatures::timedWaitAnyMaxCount.
-     */
-    WGPUWaitStatus_UnsupportedCount = 0x00000004,
-    /**
-     * `0x00000005`.
-     * An invalid wait was performed with @ref Mixed-Sources.
-     */
-    WGPUWaitStatus_UnsupportedMixedSources = 0x00000005,
+    WGPUWaitStatus_Error = 0x00000003,
     WGPUWaitStatus_Force32 = 0x7FFFFFFF
 } WGPUWaitStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -1155,7 +1105,13 @@ typedef enum WGPUWaitStatus {
  *
  * @{
  */
+/**
+ * For reserved non-standard bitflag values, see @ref BitflagRegistry.
+ */
 typedef WGPUFlags WGPUBufferUsage;
+/**
+ * `0`.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_None = 0x0000000000000000;
 static const WGPUBufferUsage WGPUBufferUsage_MapRead = 0x0000000000000001;
 static const WGPUBufferUsage WGPUBufferUsage_MapWrite = 0x0000000000000002;
@@ -1168,26 +1124,53 @@ static const WGPUBufferUsage WGPUBufferUsage_Storage = 0x0000000000000080;
 static const WGPUBufferUsage WGPUBufferUsage_Indirect = 0x0000000000000100;
 static const WGPUBufferUsage WGPUBufferUsage_QueryResolve = 0x0000000000000200;
 
+/**
+ * For reserved non-standard bitflag values, see @ref BitflagRegistry.
+ */
 typedef WGPUFlags WGPUColorWriteMask;
+/**
+ * `0`.
+ */
 static const WGPUColorWriteMask WGPUColorWriteMask_None = 0x0000000000000000;
 static const WGPUColorWriteMask WGPUColorWriteMask_Red = 0x0000000000000001;
 static const WGPUColorWriteMask WGPUColorWriteMask_Green = 0x0000000000000002;
 static const WGPUColorWriteMask WGPUColorWriteMask_Blue = 0x0000000000000004;
 static const WGPUColorWriteMask WGPUColorWriteMask_Alpha = 0x0000000000000008;
-static const WGPUColorWriteMask WGPUColorWriteMask_All = 0x000000000000000F /* Red | Green | Blue | Alpha */;
+/**
+ * `Red | Green | Blue | Alpha`.
+ */
+static const WGPUColorWriteMask WGPUColorWriteMask_All = 0x000000000000000F;
 
+/**
+ * For reserved non-standard bitflag values, see @ref BitflagRegistry.
+ */
 typedef WGPUFlags WGPUMapMode;
+/**
+ * `0`.
+ */
 static const WGPUMapMode WGPUMapMode_None = 0x0000000000000000;
 static const WGPUMapMode WGPUMapMode_Read = 0x0000000000000001;
 static const WGPUMapMode WGPUMapMode_Write = 0x0000000000000002;
 
+/**
+ * For reserved non-standard bitflag values, see @ref BitflagRegistry.
+ */
 typedef WGPUFlags WGPUShaderStage;
+/**
+ * `0`.
+ */
 static const WGPUShaderStage WGPUShaderStage_None = 0x0000000000000000;
 static const WGPUShaderStage WGPUShaderStage_Vertex = 0x0000000000000001;
 static const WGPUShaderStage WGPUShaderStage_Fragment = 0x0000000000000002;
 static const WGPUShaderStage WGPUShaderStage_Compute = 0x0000000000000004;
 
+/**
+ * For reserved non-standard bitflag values, see @ref BitflagRegistry.
+ */
 typedef WGPUFlags WGPUTextureUsage;
+/**
+ * `0`.
+ */
 static const WGPUTextureUsage WGPUTextureUsage_None = 0x0000000000000000;
 static const WGPUTextureUsage WGPUTextureUsage_CopySrc = 0x0000000000000001;
 static const WGPUTextureUsage WGPUTextureUsage_CopyDst = 0x0000000000000002;
@@ -1609,6 +1592,14 @@ typedef struct WGPUAdapterInfo {
      * The `INIT` macro sets this to `0`.
      */
     uint32_t deviceID;
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t subgroupMinSize;
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t subgroupMaxSize;
 } WGPUAdapterInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -1624,6 +1615,8 @@ typedef struct WGPUAdapterInfo {
     /*.adapterType=*/_wgpu_ENUM_ZERO_INIT(WGPUAdapterType) _wgpu_COMMA \
     /*.vendorID=*/0 _wgpu_COMMA \
     /*.deviceID=*/0 _wgpu_COMMA \
+    /*.subgroupMinSize=*/0 _wgpu_COMMA \
+    /*.subgroupMaxSize=*/0 _wgpu_COMMA \
 })
 
 /**
@@ -2639,6 +2632,32 @@ typedef struct WGPURequestAdapterOptions {
     /*.forceFallbackAdapter=*/0 _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
     /*.compatibleSurface=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Extension providing requestAdapter options for implementations with WebXR interop (i.e. Wasm).
+ *
+ * Default values can be set using @ref WGPU_REQUEST_ADAPTER_WEBXR_OPTIONS_INIT as initializer.
+ */
+typedef struct WGPURequestAdapterWebXROptions {
+    WGPUChainedStruct chain;
+    /**
+     * Sets the `xrCompatible` option in the JS API.
+     *
+     * The `INIT` macro sets this to `0`.
+     */
+    WGPUBool xrCompatible;
+} WGPURequestAdapterWebXROptions WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPURequestAdapterWebXROptions.
+ */
+#define WGPU_REQUEST_ADAPTER_WEBXR_OPTIONS_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterWebXROptions, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_RequestAdapterWebXROptions _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.xrCompatible=*/0 _wgpu_COMMA \
 })
 
 /**

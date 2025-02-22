@@ -23,8 +23,16 @@ All asynchronous operations start when the application calls an asynchronous web
 
 The `callback` function pointer is called when the application _observes completion_ of the asynchronous operation. The `userdata1` and `userdata2` members are passed back to the application as the last two arguments in the callback function. Callbacks **might not** be called unless the application explicitly flushes them in order to _observe completion_. The point in time a callback is called depends on the @ref WGPUCallbackMode of the operation. webgpu.h provides three callback modes: @ref WGPUCallbackMode_WaitAnyOnly, @ref WGPUCallbackMode_AllowProcessEvents, and @ref WGPUCallbackMode_AllowSpontaneous.
 
+@ref WGPUCallbackMode_WaitAnyOnly
+
 > @copydoc ::WGPUCallbackMode_WaitAnyOnly
+
+@ref WGPUCallbackMode_AllowProcessEvents
+
 > @copydoc ::WGPUCallbackMode_AllowProcessEvents
+
+@ref WGPUCallbackMode_AllowSpontaneous
+
 > @copydoc ::WGPUCallbackMode_AllowSpontaneous
 
 ## wgpuInstanceWaitAny {#Wait-Any}
@@ -33,10 +41,13 @@ The `callback` function pointer is called when the application _observes complet
 
 Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nanoseconds. Returns when at least one `WGPUFuture` is completed or `timeoutNS` elapses, whichever is first. If `timeoutNS` is zero, all `futures` are polled once, without blocking.
 
-Returns @ref WGPUWaitStatus_Success if at least one `WGPUFuture` completes. WGPUFutureWaitInfo::completed is set to true for all completed futures. See @ref WGPUWaitStatus for other status codes.
-
-Within this call, for any `WGPUFuture`s that completed, their respective callbacks will fire.
-Note that the timeout applies only to the "wait" phase, and does not affect the callback firing phase.
+- Returns @ref WGPUWaitStatus_Success if at least one `WGPUFuture` completes. Each future which _just_ completed has its respective callback fired. Each future which _is_ complete has its corresponding @ref WGPUFutureWaitInfo::completed set to true.
+    - Note that the timeout applies only to the "wait" phase, and does not affect the callback firing phase.
+- Returns @ref WGPUWaitStatus_TimedOut if the timeout passed without any futures completing.
+- Returns @ref WGPUWaitStatus_Error if the call was invalid for any of the following reasons:
+    - A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is not enabled.
+    - The number of futures waited on in a @ref Timed-Wait is greater than the enabled WGPUInstanceFeatures::timedWaitAnyMaxCount.
+    - A wait was attempted with @ref Mixed-Sources.
 
 ### Timed Wait {#Timed-Wait}
 
@@ -47,16 +58,18 @@ Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in @
 Asynchronous operations may originate from different sources. There are CPU-timeline operations and there are Queue-timeline operations. Within a _timed wait_, it is only valid to wait on `WGPUFuture`s originating from a single `WGPUQueue`. Waiting on two futures from different queues, or waiting on a Queue-timeline future and some other CPU-timeline future is an error.
 
 #### CPU-Timeline Operations
- - ::wgpuInstanceRequestAdapter
- - ::wgpuAdapterRequestDevice
- - ::wgpuShaderModuleGetCompilationInfo
- - ::wgpuDeviceCreateRenderPipelineAsync
- - ::wgpuDeviceCreateComputePipelineAsync
- - ::wgpuDevicePopErrorScope
+
+- ::wgpuInstanceRequestAdapter
+- ::wgpuAdapterRequestDevice
+- ::wgpuShaderModuleGetCompilationInfo
+- ::wgpuDeviceCreateRenderPipelineAsync
+- ::wgpuDeviceCreateComputePipelineAsync
+- ::wgpuDevicePopErrorScope
 
 #### Queue-Timeline Operations
- - ::wgpuBufferMapAsync
- - ::wgpuQueueOnSubmittedWorkDone
+
+- ::wgpuBufferMapAsync
+- ::wgpuQueueOnSubmittedWorkDone
 
 ## wgpuInstanceProcessEvents {#Process-Events}
 `void wgpuInstanceProcessEvents(WGPUInstance)`
@@ -65,10 +78,12 @@ Processes asynchronous events on this `WGPUInstance`, calling any callbacks for 
 
 ## Device Events
 
-Device events are slightly different in that their callback info (`WGPUDeviceLostCallbackInfo` and `WGPUUncapturedErrorCallbackInfo`) are passed on the `WGPUDeviceDescriptor`, instead of in a function argument. There is no `WGPUFuture` returned for either callback.
-@todo Add a getter for the device lost WGPUFuture. See discussion at https://github.com/webgpu-native/webgpu-headers/issues/199#issuecomment-1866850031.
+Device events are slightly different in that their callback info are passed on the `WGPUDeviceDescriptor`, instead of in a function argument.
 
-The `WGPUUncapturedErrorCallbackInfo` _does not_ have a callback mode member. It is always as-if it were @ref WGPUCallbackMode_AllowSpontaneous. Note also that the uncaptured error callback is a _repeating_ callback that fires multiple times, unlike other callbacks in webgpu.h.
+- The DeviceLost callback is set via @ref WGPUDeviceDescriptor::deviceLostCallbackInfo.
+  The Future for that event is @ref wgpuDeviceGetLostFuture.
+- The UncapturedError callback is set via @ref WGPUDeviceDescriptor::uncapturedErrorCallbackInfo.
+  It is a repeating event, not a future, and it does not have a callback mode (see docs).
 
 The uncaptured error callback is guaranteed not to fire after the device becomes lost. When the device is lost, it is an appropriate time for the application to free userdata variables for the uncaptured error callback. Note that the device becomes lost _before_ the actual device lost callback fires. First the device state transitions to lost, then the device lost callback fires. The timing of the callback depends on the device lost callback mode.
 
