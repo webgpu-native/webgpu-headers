@@ -3572,17 +3572,21 @@ objects:
             type: bitflag.map_mode
           - name: offset
             doc: |
-              TODO
+              Byte offset relative to beginning of the buffer.
             type: usize
           - name: size
             doc: |
-              TODO
+              Byte size of the region to map.
+              If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
             type: usize
       - name: get_mapped_range
         doc: |
           Returns a mutable pointer to beginning of the mapped range.
-          See @ref GetMappedRangeBehavior for error conditions and guarantees.
+          See @ref MappedRangeBehavior for error conditions and guarantees.
           This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+
+          In Wasm, if `memcpy`ing into this range, prefer using @ref wgpuBufferWriteMappedRange
+          instead for better performance.
         returns:
           doc: ""
           type: c_void
@@ -3594,14 +3598,19 @@ objects:
             type: usize
           - name: size
             doc: |
-              Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+              Byte size of the range to get.
+              If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
+              The returned pointer is valid for exactly this many bytes.
             type: usize
       - name: get_const_mapped_range
         doc: |
           Returns a const pointer to beginning of the mapped range.
           It must not be written; writing to this range causes undefined behavior.
-          See @ref GetMappedRangeBehavior for error conditions and guarantees.
+          See @ref MappedRangeBehavior for error conditions and guarantees.
           This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+
+          In Wasm, if `memcpy`ing from this range, prefer using @ref wgpuBufferReadMappedRange
+          instead for better performance.
         returns:
           doc: ""
           type: c_void
@@ -3613,7 +3622,61 @@ objects:
             type: usize
           - name: size
             doc: |
-              Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+              Byte size of the range to get.
+              If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
+              The returned pointer is valid for exactly this many bytes.
+            type: usize
+      - name: read_mapped_range
+        doc: |
+          Copies a range of data from the buffer mapping into the provided destination pointer.
+          See @ref MappedRangeBehavior for error conditions and guarantees.
+          This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+
+          In Wasm, this is more efficient than copying from a mapped range into a `malloc`'d range.
+        returns:
+          doc: |
+            @ref WGPUStatus_Error if the copy did not occur.
+          type: enum.status
+        args:
+          - name: offset
+            doc: |
+              Byte offset relative to the beginning of the buffer.
+            type: usize
+          - name: data
+            doc: |
+              Destination, to read buffer data into.
+            type: c_void
+            pointer: mutable
+          - name: size
+            doc: |
+              Number of bytes of data to read from the buffer.
+              (Note @ref WGPU_WHOLE_MAP_SIZE is *not* accepted here.)
+            type: usize
+      - name: write_mapped_range
+        doc: |
+          Copies a range of data from the provided source pointer into the buffer mapping.
+          See @ref MappedRangeBehavior for error conditions and guarantees.
+          This function is safe to call inside spontaneous callbacks (see @ref CallbackReentrancy).
+
+          In Wasm, this is more efficient than copying from a `malloc`'d range into a mapped range.
+        returns:
+          doc: |
+            @ref WGPUStatus_Error if the copy did not occur.
+          type: enum.status
+        args:
+          - name: offset
+            doc: |
+              Byte offset relative to the beginning of the buffer.
+            type: usize
+          - name: data
+            doc: |
+              Source, to write buffer data from.
+            type: c_void
+            pointer: immutable
+          - name: size
+            doc: |
+              Number of bytes of data to write to the buffer.
+              (Note @ref WGPU_WHOLE_MAP_SIZE is *not* accepted here.)
             type: usize
       - name: set_label
         doc: |
