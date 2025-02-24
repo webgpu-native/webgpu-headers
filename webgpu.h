@@ -5573,7 +5573,9 @@ WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
  * Byte offset relative to the beginning of the buffer.
  *
  * @param size
- * Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+ * Byte size of the range to get.
+ * If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
+ * The returned pointer is valid for exactly this many bytes.
  */
 WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
@@ -5589,11 +5591,21 @@ WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUN
  * Byte offset relative to the beginning of the buffer.
  *
  * @param size
- * Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
+ * Byte size of the range to get.
+ * If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
+ * The returned pointer is valid for exactly this many bytes.
  */
 WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferUsage wgpuBufferGetUsage(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * @param offset
+ * Byte offset relative to beginning of the buffer.
+ *
+ * @param size
+ * Byte size of the region to map.
+ * If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
+ */
 WGPU_EXPORT WGPUFuture wgpuBufferMapAsync(WGPUBuffer buffer, WGPUMapMode mode, size_t offset, size_t size, WGPUBufferMapCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Copies a range of data from the buffer mapping into the provided destination pointer.
@@ -5610,6 +5622,7 @@ WGPU_EXPORT WGPUFuture wgpuBufferMapAsync(WGPUBuffer buffer, WGPUMapMode mode, s
  *
  * @param size
  * Number of bytes of data to read from the buffer.
+ * (Note @ref WGPU_WHOLE_MAP_SIZE is *not* accepted here.)
  *
  * @returns
  * @ref WGPUStatus_Error if the copy did not occur.
@@ -5632,6 +5645,7 @@ WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
  *
  * @param size
  * Number of bytes of data to write to the buffer.
+ * (Note @ref WGPU_WHOLE_MAP_SIZE is *not* accepted here.)
  *
  * @returns
  * @ref WGPUStatus_Error if the copy did not occur.

@@ -3577,7 +3577,6 @@ objects:
           - name: size
             doc: |
               Byte size of the region to map.
-
               If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
             type: usize
       - name: get_mapped_range
@@ -3599,9 +3598,9 @@ objects:
             type: usize
           - name: size
             doc: |
-              Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
-
+              Byte size of the range to get.
               If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
+              The returned pointer is valid for exactly this many bytes.
             type: usize
       - name: get_const_mapped_range
         doc: |
@@ -3623,9 +3622,9 @@ objects:
             type: usize
           - name: size
             doc: |
-              Byte size of the range to get. The returned pointer is valid for exactly this many bytes.
-
+              Byte size of the range to get.
               If this is @ref WGPU_WHOLE_MAP_SIZE, it defaults to `buffer.size - offset`.
+              The returned pointer is valid for exactly this many bytes.
             type: usize
       - name: read_mapped_range
         doc: |
