@@ -634,7 +634,7 @@ typedef enum WGPUPopErrorScopeStatus {
     /**
      * The error scope stack could not be popped, because it was empty.
      */
-    WGPUPopErrorScopeStatus_Error = 0x00000003,
+    WGPUPopErrorScopeStatus_EmptyStack = 0x00000003,
     WGPUPopErrorScopeStatus_Force32 = 0x7FFFFFFF
 } WGPUPopErrorScopeStatus WGPU_ENUM_ATTRIBUTE;
 

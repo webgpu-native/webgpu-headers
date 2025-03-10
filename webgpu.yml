@@ -582,7 +582,7 @@ enums:
       - name: instance_dropped
         doc: |
           TODO
-      - name: error
+      - name: empty_stack
         doc: |
           The error scope stack could not be popped, because it was empty.
   - name: power_preference
