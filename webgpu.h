@@ -1313,7 +1313,7 @@ typedef struct WGPUChainedStruct {
  * @{
  */
 typedef struct WGPUBufferMapCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1337,7 +1337,7 @@ typedef struct WGPUBufferMapCallbackInfo {
 })
 
 typedef struct WGPUCompilationInfoCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1361,7 +1361,7 @@ typedef struct WGPUCompilationInfoCallbackInfo {
 })
 
 typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1385,7 +1385,7 @@ typedef struct WGPUCreateComputePipelineAsyncCallbackInfo {
 })
 
 typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1409,7 +1409,7 @@ typedef struct WGPUCreateRenderPipelineAsyncCallbackInfo {
 })
 
 typedef struct WGPUDeviceLostCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1433,7 +1433,7 @@ typedef struct WGPUDeviceLostCallbackInfo {
 })
 
 typedef struct WGPUPopErrorScopeCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1457,7 +1457,7 @@ typedef struct WGPUPopErrorScopeCallbackInfo {
 })
 
 typedef struct WGPUQueueWorkDoneCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1481,7 +1481,7 @@ typedef struct WGPUQueueWorkDoneCallbackInfo {
 })
 
 typedef struct WGPURequestAdapterCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1505,7 +1505,7 @@ typedef struct WGPURequestAdapterCallbackInfo {
 })
 
 typedef struct WGPURequestDeviceCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     /**
      * Controls when the callback may be called.
      *
@@ -1529,7 +1529,7 @@ typedef struct WGPURequestDeviceCallbackInfo {
 })
 
 typedef struct WGPUUncapturedErrorCallbackInfo {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
     WGPUUncapturedErrorCallback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
