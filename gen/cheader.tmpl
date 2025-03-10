@@ -283,7 +283,7 @@ typedef struct WGPUChainedStruct {
 {{- range .Callbacks}}
 {{-   MComment .Doc 0}}
 typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
-    WGPUChainedStruct const * nextInChain;
+    WGPUChainedStruct * nextInChain;
 {{-   if eq .Style "callback_mode" }}
     /**
      * Controls when the callback may be called.
