@@ -298,7 +298,7 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: cancelled
         doc: |
           TODO
   - name: compilation_message_type
@@ -336,7 +336,7 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: cancelled
         doc: |
           TODO
       - name: validation_error
@@ -371,7 +371,7 @@ enums:
       - name: destroyed
         doc: |
           TODO
-      - name: instance_dropped
+      - name: cancelled
         doc: |
           TODO
       - name: failed_creation
@@ -537,7 +537,7 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: cancelled
         doc: |
           TODO
       - name: error
@@ -579,7 +579,7 @@ enums:
       - name: success
         doc: |
           The error scope stack was successfully popped and a result was reported.
-      - name: instance_dropped
+      - name: cancelled
         doc: |
           TODO
       - name: error
@@ -672,7 +672,7 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: cancelled
         doc: |
           TODO
       - name: error
@@ -687,7 +687,7 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: cancelled
         doc: |
           TODO
       - name: unavailable
@@ -704,7 +704,7 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: cancelled
         doc: |
           TODO
       - name: error

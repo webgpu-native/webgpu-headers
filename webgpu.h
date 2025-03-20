@@ -432,7 +432,7 @@ typedef enum WGPUCompareFunction {
 
 typedef enum WGPUCompilationInfoRequestStatus {
     WGPUCompilationInfoRequestStatus_Success = 0x00000001,
-    WGPUCompilationInfoRequestStatus_InstanceDropped = 0x00000002,
+    WGPUCompilationInfoRequestStatus_Cancelled = 0x00000002,
     WGPUCompilationInfoRequestStatus_Force32 = 0x7FFFFFFF
 } WGPUCompilationInfoRequestStatus WGPU_ENUM_ATTRIBUTE;
 
@@ -472,7 +472,7 @@ typedef enum WGPUCompositeAlphaMode {
 
 typedef enum WGPUCreatePipelineAsyncStatus {
     WGPUCreatePipelineAsyncStatus_Success = 0x00000001,
-    WGPUCreatePipelineAsyncStatus_InstanceDropped = 0x00000002,
+    WGPUCreatePipelineAsyncStatus_Cancelled = 0x00000002,
     WGPUCreatePipelineAsyncStatus_ValidationError = 0x00000003,
     WGPUCreatePipelineAsyncStatus_InternalError = 0x00000004,
     WGPUCreatePipelineAsyncStatus_Force32 = 0x7FFFFFFF
@@ -492,7 +492,7 @@ typedef enum WGPUCullMode {
 typedef enum WGPUDeviceLostReason {
     WGPUDeviceLostReason_Unknown = 0x00000001,
     WGPUDeviceLostReason_Destroyed = 0x00000002,
-    WGPUDeviceLostReason_InstanceDropped = 0x00000003,
+    WGPUDeviceLostReason_Cancelled = 0x00000003,
     WGPUDeviceLostReason_FailedCreation = 0x00000004,
     WGPUDeviceLostReason_Force32 = 0x7FFFFFFF
 } WGPUDeviceLostReason WGPU_ENUM_ATTRIBUTE;
@@ -599,7 +599,7 @@ typedef enum WGPULoadOp {
 
 typedef enum WGPUMapAsyncStatus {
     WGPUMapAsyncStatus_Success = 0x00000001,
-    WGPUMapAsyncStatus_InstanceDropped = 0x00000002,
+    WGPUMapAsyncStatus_Cancelled = 0x00000002,
     WGPUMapAsyncStatus_Error = 0x00000003,
     WGPUMapAsyncStatus_Aborted = 0x00000004,
     WGPUMapAsyncStatus_Force32 = 0x7FFFFFFF
@@ -630,7 +630,7 @@ typedef enum WGPUPopErrorScopeStatus {
      * The error scope stack was successfully popped and a result was reported.
      */
     WGPUPopErrorScopeStatus_Success = 0x00000001,
-    WGPUPopErrorScopeStatus_InstanceDropped = 0x00000002,
+    WGPUPopErrorScopeStatus_Cancelled = 0x00000002,
     /**
      * The error scope stack could not be popped, because it was empty.
      */
@@ -708,7 +708,7 @@ typedef enum WGPUQueryType {
 
 typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_Success = 0x00000001,
-    WGPUQueueWorkDoneStatus_InstanceDropped = 0x00000002,
+    WGPUQueueWorkDoneStatus_Cancelled = 0x00000002,
     /**
      * There was some deterministic error. (Note this is currently never used,
      * but it will be relevant when it's possible to create a queue object.)
@@ -719,7 +719,7 @@ typedef enum WGPUQueueWorkDoneStatus {
 
 typedef enum WGPURequestAdapterStatus {
     WGPURequestAdapterStatus_Success = 0x00000001,
-    WGPURequestAdapterStatus_InstanceDropped = 0x00000002,
+    WGPURequestAdapterStatus_Cancelled = 0x00000002,
     WGPURequestAdapterStatus_Unavailable = 0x00000003,
     WGPURequestAdapterStatus_Error = 0x00000004,
     WGPURequestAdapterStatus_Force32 = 0x7FFFFFFF
@@ -727,7 +727,7 @@ typedef enum WGPURequestAdapterStatus {
 
 typedef enum WGPURequestDeviceStatus {
     WGPURequestDeviceStatus_Success = 0x00000001,
-    WGPURequestDeviceStatus_InstanceDropped = 0x00000002,
+    WGPURequestDeviceStatus_Cancelled = 0x00000002,
     WGPURequestDeviceStatus_Error = 0x00000003,
     WGPURequestDeviceStatus_Force32 = 0x7FFFFFFF
 } WGPURequestDeviceStatus WGPU_ENUM_ATTRIBUTE;
