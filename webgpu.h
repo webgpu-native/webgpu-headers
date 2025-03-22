@@ -432,6 +432,9 @@ typedef enum WGPUCompareFunction {
 
 typedef enum WGPUCompilationInfoRequestStatus {
     WGPUCompilationInfoRequestStatus_Success = 0x00000001,
+    /**
+     * See @ref CallbackStatuses.
+     */
     WGPUCompilationInfoRequestStatus_CallbackCancelled = 0x00000002,
     WGPUCompilationInfoRequestStatus_Force32 = 0x7FFFFFFF
 } WGPUCompilationInfoRequestStatus WGPU_ENUM_ATTRIBUTE;
@@ -472,6 +475,9 @@ typedef enum WGPUCompositeAlphaMode {
 
 typedef enum WGPUCreatePipelineAsyncStatus {
     WGPUCreatePipelineAsyncStatus_Success = 0x00000001,
+    /**
+     * See @ref CallbackStatuses.
+     */
     WGPUCreatePipelineAsyncStatus_CallbackCancelled = 0x00000002,
     WGPUCreatePipelineAsyncStatus_ValidationError = 0x00000003,
     WGPUCreatePipelineAsyncStatus_InternalError = 0x00000004,
@@ -492,6 +498,9 @@ typedef enum WGPUCullMode {
 typedef enum WGPUDeviceLostReason {
     WGPUDeviceLostReason_Unknown = 0x00000001,
     WGPUDeviceLostReason_Destroyed = 0x00000002,
+    /**
+     * See @ref CallbackStatuses.
+     */
     WGPUDeviceLostReason_CallbackCancelled = 0x00000003,
     WGPUDeviceLostReason_FailedCreation = 0x00000004,
     WGPUDeviceLostReason_Force32 = 0x7FFFFFFF
@@ -599,6 +608,9 @@ typedef enum WGPULoadOp {
 
 typedef enum WGPUMapAsyncStatus {
     WGPUMapAsyncStatus_Success = 0x00000001,
+    /**
+     * See @ref CallbackStatuses.
+     */
     WGPUMapAsyncStatus_CallbackCancelled = 0x00000002,
     WGPUMapAsyncStatus_Error = 0x00000003,
     WGPUMapAsyncStatus_Aborted = 0x00000004,
@@ -630,6 +642,9 @@ typedef enum WGPUPopErrorScopeStatus {
      * The error scope stack was successfully popped and a result was reported.
      */
     WGPUPopErrorScopeStatus_Success = 0x00000001,
+    /**
+     * See @ref CallbackStatuses.
+     */
     WGPUPopErrorScopeStatus_CallbackCancelled = 0x00000002,
     /**
      * The error scope stack could not be popped, because it was empty.
@@ -708,6 +723,9 @@ typedef enum WGPUQueryType {
 
 typedef enum WGPUQueueWorkDoneStatus {
     WGPUQueueWorkDoneStatus_Success = 0x00000001,
+    /**
+     * See @ref CallbackStatuses.
+     */
     WGPUQueueWorkDoneStatus_CallbackCancelled = 0x00000002,
     /**
      * There was some deterministic error. (Note this is currently never used,
@@ -719,6 +737,9 @@ typedef enum WGPUQueueWorkDoneStatus {
 
 typedef enum WGPURequestAdapterStatus {
     WGPURequestAdapterStatus_Success = 0x00000001,
+    /**
+     * See @ref CallbackStatuses.
+     */
     WGPURequestAdapterStatus_CallbackCancelled = 0x00000002,
     WGPURequestAdapterStatus_Unavailable = 0x00000003,
     WGPURequestAdapterStatus_Error = 0x00000004,
@@ -727,6 +748,9 @@ typedef enum WGPURequestAdapterStatus {
 
 typedef enum WGPURequestDeviceStatus {
     WGPURequestDeviceStatus_Success = 0x00000001,
+    /**
+     * See @ref CallbackStatuses.
+     */
     WGPURequestDeviceStatus_CallbackCancelled = 0x00000002,
     WGPURequestDeviceStatus_Error = 0x00000003,
     WGPURequestDeviceStatus_Force32 = 0x7FFFFFFF
