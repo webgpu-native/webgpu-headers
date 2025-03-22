@@ -298,9 +298,9 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: callback_cancelled
         doc: |
-          TODO
+          See @ref CallbackStatuses.
   - name: compilation_message_type
     doc: |
       TODO
@@ -336,9 +336,9 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: callback_cancelled
         doc: |
-          TODO
+          See @ref CallbackStatuses.
       - name: validation_error
         doc: |
           TODO
@@ -371,9 +371,9 @@ enums:
       - name: destroyed
         doc: |
           TODO
-      - name: instance_dropped
+      - name: callback_cancelled
         doc: |
-          TODO
+          See @ref CallbackStatuses.
       - name: failed_creation
         doc: |
           TODO
@@ -537,9 +537,9 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: callback_cancelled
         doc: |
-          TODO
+          See @ref CallbackStatuses.
       - name: error
         doc: |
           TODO
@@ -579,9 +579,9 @@ enums:
       - name: success
         doc: |
           The error scope stack was successfully popped and a result was reported.
-      - name: instance_dropped
+      - name: callback_cancelled
         doc: |
-          TODO
+          See @ref CallbackStatuses.
       - name: error
         doc: |
           The error scope stack could not be popped, because it was empty.
@@ -672,9 +672,9 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: callback_cancelled
         doc: |
-          TODO
+          See @ref CallbackStatuses.
       - name: error
         doc: |
           There was some deterministic error. (Note this is currently never used,
@@ -687,9 +687,9 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: callback_cancelled
         doc: |
-          TODO
+          See @ref CallbackStatuses.
       - name: unavailable
         doc: |
           TODO
@@ -704,9 +704,9 @@ enums:
       - name: success
         doc: |
           TODO
-      - name: instance_dropped
+      - name: callback_cancelled
         doc: |
-          TODO
+          See @ref CallbackStatuses.
       - name: error
         doc: |
           TODO

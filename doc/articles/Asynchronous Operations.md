@@ -35,6 +35,16 @@ The `callback` function pointer is called when the application _observes complet
 
 > @copydoc ::WGPUCallbackMode_AllowSpontaneous
 
+## Callback Statuses {#CallbackStatuses}
+
+Each event's callback has its own status enum. Generally, there will be one
+success case, and several failure cases.
+
+Every callback status enum has a `CallbackCancelled` status. This indicates that the callback was cancelled, though any background processing related to the event, like pipeline compilation, may not be complete.
+
+`CallbackCancelled` happens when the last (external) reference to the @ref WGPUInstance is dropped.
+At this point it becomes impossible to call @ref wgpuInstanceWaitAny or @ref wgpuInstanceProcessEvents.
+
 ## wgpuInstanceWaitAny {#Wait-Any}
 
 `WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance, size_t futureCount, WGPUFutureWaitInfo * futures, uint64_t timeoutNS)`
