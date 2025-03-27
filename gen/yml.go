@@ -23,39 +23,38 @@ type Yml struct {
 	Objects   []Object   `yaml:"objects"`
 }
 
+type Base struct {
+	Name      string `yaml:"name"`
+	Namespace string `yaml:"namespace"`
+	Doc       string `yaml:"doc"`
+	Extended  bool   `yaml:"extended"`
+}
+
 type Constant struct {
-	Name  string `yaml:"name"`
+	Base  `yaml:",inline"`
 	Value string `yaml:"value"`
-	Doc   string `yaml:"doc"`
 }
 
 type Typedef struct {
-	Name string `yaml:"name"`
-	Doc  string `yaml:"doc"`
+	Base `yaml:",inline"`
 	Type string `yaml:"type"`
 }
 
 type Enum struct {
-	Name     string       `yaml:"name"`
-	Doc      string       `yaml:"doc"`
-	Entries  []*EnumEntry `yaml:"entries"`
-	Extended bool         `yaml:"extended"`
+	Base    `yaml:",inline"`
+	Entries []*EnumEntry `yaml:"entries"`
 }
 type EnumEntry struct {
-	Name  string `yaml:"name"`
-	Doc   string `yaml:"doc"`
+	Base  `yaml:",inline"`
 	Value string `yaml:"value"`
 }
 
 type Bitflag struct {
-	Name     string         `yaml:"name"`
-	Doc      string         `yaml:"doc"`
-	Entries  []BitflagEntry `yaml:"entries"`
-	Extended bool           `yaml:"extended"`
+	Base    `yaml:",inline"`
+	Entries []BitflagEntry `yaml:"entries"`
 }
 type BitflagEntry struct {
-	Name             string   `yaml:"name"`
-	Doc              string   `yaml:"doc"`
+	Base             `yaml:",inline"`
 	Value            string   `yaml:"value"`
 	ValueCombination []string `yaml:"value_combination"`
 }
@@ -69,44 +68,38 @@ const (
 
 type ParameterType struct {
 	Name                string      `yaml:"name"`
+	Namespace           string      `yaml:"namespace"`
 	Doc                 string      `yaml:"doc"`
 	Type                string      `yaml:"type"`
 	PassedWithOwnership *bool       `yaml:"passed_with_ownership"`
 	Pointer             PointerType `yaml:"pointer"`
 	Optional            bool        `yaml:"optional"`
-	Namespace           string      `yaml:"namespace"`
 	Default             *string     `yaml:"default"`
 }
 
 type Callback struct {
-	Name  string          `yaml:"name"`
-	Doc   string          `yaml:"doc"`
+	Base  `yaml:",inline"`
 	Style string          `yaml:"style"`
 	Args  []ParameterType `yaml:"args"`
 }
 
 type Function struct {
-	Name     string          `yaml:"name"`
-	Doc      string          `yaml:"doc"`
+	Base     `yaml:",inline"`
 	Returns  *ParameterType  `yaml:"returns"`
 	Callback *string         `yaml:"callback"`
 	Args     []ParameterType `yaml:"args"`
 }
 
 type Struct struct {
-	Name        string          `yaml:"name"`
+	Base        `yaml:",inline"`
 	Type        string          `yaml:"type"`
-	Doc         string          `yaml:"doc"`
 	FreeMembers bool            `yaml:"free_members"`
 	Members     []ParameterType `yaml:"members"`
 }
 
 type Object struct {
-	Name      string     `yaml:"name"`
-	Doc       string     `yaml:"doc"`
-	Methods   []Function `yaml:"methods"`
-	Extended  bool       `yaml:"extended"`
-	Namespace string     `yaml:"namespace"`
+	Base    `yaml:",inline"`
+	Methods []Function `yaml:"methods"`
 
 	IsStruct bool `yaml:"-"`
 }

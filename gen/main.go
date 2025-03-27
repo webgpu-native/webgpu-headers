@@ -19,14 +19,14 @@ var (
 	schemaPath  string
 	headerPaths StringListFlag
 	yamlPaths   StringListFlag
-	extSuffix   bool
+	extPrefix   bool
 )
 
 func main() {
 	flag.StringVar(&schemaPath, "schema", "", "path of the json schema")
 	flag.Var(&yamlPaths, "yaml", "path of the yaml spec")
 	flag.Var(&headerPaths, "header", "output path of the header")
-	flag.BoolVar(&extSuffix, "extsuffix", true, "append suffix to extension identifiers")
+	flag.BoolVar(&extPrefix, "extprefix", true, "append prefix to extension identifiers")
 	flag.Parse()
 	if schemaPath == "" || len(headerPaths) == 0 || len(yamlPaths) == 0 || len(headerPaths) != len(yamlPaths) {
 		flag.Usage()
@@ -69,14 +69,14 @@ func main() {
 
 		SortAndTransform(&yml)
 
-		suffix := ""
-		if yml.Name != "webgpu" && extSuffix {
-			suffix = strings.ToUpper(yml.Name)
+		prefix := ""
+		if yml.Name != "webgpu" && extPrefix {
+			prefix = yml.Name
 		}
 		g := &Generator{
 			Yml:        &yml,
 			HeaderName: headerFileNameSplit[0],
-			ExtSuffix:  suffix,
+			ExtPrefix:  prefix,
 		}
 		if err := g.Gen(dst); err != nil {
 			panic(err)
@@ -115,14 +115,17 @@ func SortAndTransform(yml *Yml) {
 		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
 	})
 
+	// Add free_member function for relevant structs
 	for _, s := range yml.Structs {
 		if s.FreeMembers {
 			yml.Objects = append(yml.Objects, Object{
+				Base:     Base{Name: s.Name, Namespace: s.Namespace},
 				IsStruct: true,
-				Name:     s.Name,
 				Methods: []Function{{
-					Name: "free_members",
-					Doc:  "Frees array members of WGPU" + PascalCase(s.Name) + " which were allocated by the API.",
+					Base: Base{
+						Name:      "free_members",
+						Namespace: s.Namespace,
+						Doc:       "Frees members which were allocated by the API."},
 				}},
 			})
 		}
@@ -138,5 +141,26 @@ func SortAndTransform(yml *Yml) {
 		slices.SortStableFunc(obj.Methods, func(a, b Function) int {
 			return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
 		})
+	}
+
+	// Add add_ref and release methods for objects
+	for i, o := range yml.Objects {
+		if !o.Extended && !o.IsStruct {
+			yml.Objects[i].Methods = append(yml.Objects[i].Methods,
+				Function{
+					Base: Base{
+						Name:      "add_ref",
+						Namespace: o.Namespace,
+						Doc:       "TODO",
+					},
+				},
+				Function{
+					Base: Base{
+						Name:      "release",
+						Namespace: o.Namespace,
+						Doc:       "TODO",
+					},
+				})
+		}
 	}
 }

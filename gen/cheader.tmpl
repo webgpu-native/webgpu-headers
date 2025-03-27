@@ -6,6 +6,7 @@
 #ifndef {{.HeaderName | ConstantCase}}_H_
 #define {{.HeaderName | ConstantCase}}_H_
 
+{{ if eq .Name "webgpu" -}}
 #if defined(WGPU_SHARED_LIBRARY)
 #    if defined(_WIN32)
 #        if defined(WGPU_IMPLEMENTATION)
@@ -38,27 +39,12 @@
 #endif
 #if !defined(WGPU_NULLABLE)
 #define WGPU_NULLABLE
-#endif{{"\n" -}}
-
-{{- if ne .Name "webgpu"}}
-#if !defined(_wgpu_EXTEND_ENUM)
-#ifdef __cplusplus
-#define _wgpu_EXTEND_ENUM(E, N, V) static const E N = E(V)
-#else
-#define _wgpu_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
 #endif
-#endif // !defined(_wgpu_EXTEND_ENUM)
-{{ end}}
 
-{{- if eq .Name "webgpu"}}
 #include <stdint.h>
 #include <stddef.h>
 #include <math.h>
-{{else}}
-#include "webgpu.h"
-{{end}}
 
-{{- if eq .Name "webgpu"}}
 #define _wgpu_COMMA ,
 #if defined(__cplusplus)
 #  define _wgpu_ENUM_ZERO_INIT(type) type(0)
@@ -77,7 +63,17 @@
 #    define _wgpu_MAKE_INIT_STRUCT(type, value) value
 #  endif
 #endif
-{{end}}
+{{- else -}}
+#include "webgpu.h"
+
+#if !defined(_wgpu_EXTEND_ENUM)
+#ifdef __cplusplus
+#define _wgpu_EXTEND_ENUM(E, N, V) static const E N = E(V)
+#else
+#define _wgpu_EXTEND_ENUM(E, N, V) static const E N = (E)(V)
+#endif
+#endif // !defined(_wgpu_EXTEND_ENUM)
+{{- end }}
 
 /**
  * \defgroup Constants Constants
@@ -86,12 +82,10 @@
  * @{
  */
 
-{{- if .Constants}}
 {{-   range .Constants}}
 {{-     MComment .Doc 0}}
-#define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} ({{.Value | CValue}})
+#define WGPU_{{ConstantCaseName .Base}} ({{.Value | CValue}})
 {{-   end}}
-{{  end}}
 
 /** @} */
 
@@ -100,11 +94,7 @@
  *
  * @{
  */
-
-{{- if eq .Name "webgpu"}}
-typedef uint64_t WGPUFlags;
-typedef uint32_t WGPUBool;
-
+{{  if eq .Name "webgpu"}}
 /**
  * Nullable value defining a pointer+length view into a UTF-8 encoded string.
  *
@@ -144,11 +134,14 @@ typedef struct WGPUStringView {
     /*.data=*/NULL _wgpu_COMMA \
     /*.length=*/WGPU_STRLEN _wgpu_COMMA \
 })
-{{  end}}
+
+typedef uint64_t WGPUFlags;
+typedef uint32_t WGPUBool;
+{{- end }}
 {{- range .Typedefs}}
 {{-   MComment .Doc 0}}
-typedef {{CType .Type "" ""}} WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
-{{  end}}
+typedef {{CType .Type ""}} {{CType .Base ""}};
+{{- end}}
 
 /** @} */
 
@@ -159,30 +152,30 @@ typedef {{CType .Type "" ""}} WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
  * @{
  */
 
-{{- if .Objects}}
 {{-   range .Objects}}
-{{-     if not .IsStruct}}
+{{-     if and (not .IsStruct) (not .Extended)}}
 {{-   MComment .Doc 0}}
-typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}Impl* WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_OBJECT_ATTRIBUTE;
+typedef struct {{CType .Base ""}}Impl* {{CType .Base ""}} WGPU_OBJECT_ATTRIBUTE;
 {{-     end}}
 {{-   end}}
-{{  end}}
 
 /** @} */
 
 {{- if .Structs}}
+
 // Structure forward declarations
 {{-   range .Structs}}
-struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}};
+struct {{CType .Base ""}};
 {{-   end}}
-{{  end}}
+{{- end}}
 
 {{- if .Callbacks}}
+
 // Callback info structure forward declarations
 {{-   range .Callbacks}}
-struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
+struct {{CType .Base ""}}CallbackInfo;
 {{-   end}}
-{{  end}}
+{{- end}}
 
 /**
  * \defgroup Enumerations Enumerations
@@ -192,26 +185,26 @@ struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}};
  */
 
 {{- range $enum := .Enums}}
+{{    MComment .Doc 0}}
 {{-   if .Extended}}
 {{-     range $entryIndex, $_ := .Entries}}
 {{-       if .}}
-_wgpu_EXTEND_ENUM(WGPU{{$enum.Name | PascalCase}}, WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}, {{EnumValue32 $.EnumPrefix $enum $entryIndex | printf "0x%.8X"}});
+{{-         MCommentEnumValue .Doc 0 $enum $entryIndex }}
+_wgpu_EXTEND_ENUM({{CType $enum.Base ""}}, {{CEnumName $enum.Base .Base}}, {{EnumValue32 $enum $entryIndex | printf "0x%.8X"}});
 {{-       end}}
 {{-     end}}
 {{-   else}}
-{{-     MComment .Doc 0}}
-typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
+typedef enum {{CType .Base ""}} {
 {{-     range $entryIndex, $_ := .Entries}}
 {{-       if .}}
-{{-         MCommentEnumValue .Doc 4 $.EnumPrefix $enum $entryIndex }}
-    WGPU{{$enum.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{EnumValue32 $.EnumPrefix $enum $entryIndex | printf "0x%.8X"}},
+{{-         MCommentEnumValue .Doc 4 $enum $entryIndex }}
+    {{CEnumName $enum.Base .Base}} = {{EnumValue32 $enum $entryIndex | printf "0x%.8X"}},
 {{-       end}}
 {{-     end}}
-    WGPU{{$enum.Name | PascalCase}}_Force32{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = 0x7FFFFFFF
-} WGPU{{$enum.Name | PascalCase}}{{$.ExtSuffix}} WGPU_ENUM_ATTRIBUTE;
+    {{CType $enum.Base ""}}_Force32 = 0x7FFFFFFF
+} {{CType .Base ""}} WGPU_ENUM_ATTRIBUTE;
 {{-   end}}
-{{  end}}
-
+{{- end}}
 /** @} */
 
 /**
@@ -222,19 +215,22 @@ typedef enum WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
  */
 
 {{- range $bitflag := .Bitflags}}
-{{-   MCommentBitflagType .Doc 0}}
-typedef WGPUFlags WGPU{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}};
+{{    MCommentBitflagType .Doc 0}}
+{{-   if not .Extended}}
+typedef WGPUFlags {{CType .Base ""}};
+{{-   end}}
 {{-   range $entryIndex, $_ := .Entries}}
 {{-     MCommentBitflagValue .Doc 0 $bitflag $entryIndex }}
-static const WGPU{{$bitflag.Name | PascalCase}} WGPU{{$bitflag.Name | PascalCase}}_{{.Name | PascalCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}} = {{BitflagValue $bitflag $entryIndex}};
+static const {{CType $bitflag.Base ""}} {{CEnumName $bitflag.Base .Base}} = {{BitflagValue $bitflag $entryIndex}};
 {{-   end}}
-{{  end}}
+{{- end}}
 
 /** @} */
 
 {{- if eq .Name "webgpu"}}
+
 typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
-{{  end}}
+{{- end}}
 
 /**
  * \defgroup Callbacks Callbacks
@@ -244,8 +240,8 @@ typedef void (*WGPUProc)(void) WGPU_FUNCTION_ATTRIBUTE;
  */
 
 {{- range .Callbacks}}
-{{-   MCommentCallback . 0}}
-typedef void (*WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}})({{CallbackArgs .}}) WGPU_FUNCTION_ATTRIBUTE;
+{{    MCommentCallback . 0}}
+typedef void (*{{CType .Base ""}}Callback)({{CallbackArgs .}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 
 /** @} */
@@ -274,15 +270,15 @@ typedef struct WGPUChainedStruct {
  */
 
 /**
- * \defgroup WGPUCallbackInfo Callback Info Structs
+ * \defgroup CallbackInfoStructs Callback Info Structs
  * \brief Callback info structures that are used in asynchronous functions.
  *
  * @{
  */
 
 {{- range .Callbacks}}
-{{-   MComment .Doc 0}}
-typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
+{{    MComment .Doc 0}}
+typedef struct {{CType .Base ""}}CallbackInfo {
     WGPUChainedStruct * nextInChain;
 {{-   if eq .Style "callback_mode" }}
     /**
@@ -292,15 +288,15 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
      */
     WGPUCallbackMode mode;
 {{-   end}}
-    WGPU{{.Name | PascalCase}}Callback{{$.ExtSuffix}} callback;
+    {{CType .Base ""}}Callback callback;
     WGPU_NULLABLE void* userdata1;
     WGPU_NULLABLE void* userdata2;
-} WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
+} {{CType .Base ""}}CallbackInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}.
+ * Initializer for @ref {{CType .Base ""}}CallbackInfo.
  */
-#define WGPU_{{.Name | ConstantCase}}_CALLBACK_INFO{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}}, { \
+#define WGPU_{{ConstantCaseName .Base}}_CALLBACK_INFO_INIT _wgpu_MAKE_INIT_STRUCT({{CType .Base ""}}CallbackInfo, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
 {{-   if eq .Style "callback_mode" }}
     /*.mode=*/_wgpu_ENUM_ZERO_INIT(WGPUCallbackMode) _wgpu_COMMA \
@@ -309,14 +305,14 @@ typedef struct WGPU{{.Name | PascalCase}}CallbackInfo{{$.ExtSuffix}} {
     /*.userdata1=*/NULL _wgpu_COMMA \
     /*.userdata2=*/NULL _wgpu_COMMA \
 })
-{{  end}}{{"\n" -}}
+{{- end}}
 
 /** @} */
 
 {{- "\n"}}
 {{- range $struct := .Structs}}
 {{-   MCommentStruct . 0}}
-typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
+typedef struct {{CType .Base ""}} {
 {{-   if or (eq .Type "extensible") (eq .Type "extensible_callback_arg") }}
     WGPUChainedStruct * nextInChain;
 {{-   else if eq .Type "extension"}}
@@ -335,18 +331,18 @@ typedef struct WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} {
     {{  StructMember $struct $memberIndex}}
 {{-     end}}
 {{-   end}}
-} WGPU{{.Name | PascalCase}}{{$.ExtSuffix}} WGPU_STRUCTURE_ATTRIBUTE;
+} {{CType .Base ""}} WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}.
+ * Initializer for @ref {{CType .Base ""}}.
  */
-#define WGPU_{{.Name | ConstantCase}}{{if $.ExtSuffix}}_{{$.ExtSuffix}}{{end}}_INIT _wgpu_MAKE_INIT_STRUCT(WGPU{{.Name | PascalCase}}{{$.ExtSuffix}}, { \
+#define WGPU_{{ConstantCaseName .Base}}_INIT _wgpu_MAKE_INIT_STRUCT({{CType .Base ""}}, { \
 {{-   if or (eq .Type "extensible") (eq .Type "extensible_callback_arg") }}
     /*.nextInChain=*/NULL _wgpu_COMMA \
 {{-   else if eq .Type "extension" }}
     /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
         /*.next=*/NULL _wgpu_COMMA \
-        /*.sType=*/WGPUSType_{{.Name | PascalCase}}{{$.ExtSuffix}} _wgpu_COMMA \
+        /*.sType=*/WGPUSType_{{PascalCaseName .Base}} _wgpu_COMMA \
     }) _wgpu_COMMA \
 {{-   end }}
 {{-   range $memberIndex, $_ := .Members}}
@@ -363,12 +359,13 @@ extern "C" {
 
 #if !defined(WGPU_SKIP_PROCS){{"\n" -}}
 
+// Global procs
 {{- range .Functions}}
 /**
- * Proc pointer type for @ref wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}:
- * > @copydoc wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}
+ * Proc pointer type for @ref wgpu{{PascalCaseName .Base}}:
+ * > @copydoc wgpu{{PascalCaseName .Base}}
  */
-typedef {{FunctionReturns .}} (*WGPUProc{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
+typedef {{FunctionReturns .}} (*WGPUProc{{PascalCaseName .Base}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
 /**
@@ -379,27 +376,16 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUStringView procName) WGPU_FUNCTIO
 {{  end}}
 
 {{- range $object := .Objects}}
-// Procs of {{$object.Name | PascalCase}}
+
+// Procs of {{PascalCaseName $object.Base}}
 {{-   range $object.Methods}}
 /**
- * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}:
- * > @copydoc wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}
+ * Proc pointer type for @ref wgpu{{CMethodName $object .}}:
+ * > @copydoc wgpu{{CMethodName $object .}}
  */
-typedef {{FunctionReturns .}} (*WGPUProc{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}})({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
+typedef {{FunctionReturns .}} (*WGPUProc{{CMethodName $object .}})({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
-{{-   if not (or .IsStruct .Extended)}}
-/**
- * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}AddRef{{$.ExtSuffix}}.
- * > @copydoc wgpu{{$object.Name | PascalCase}}AddRef{{$.ExtSuffix}}
- */
-typedef void (*WGPUProc{{.Name | PascalCase}}AddRef{{$.ExtSuffix}})(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
-/**
- * Proc pointer type for @ref wgpu{{$object.Name | PascalCase}}Release{{$.ExtSuffix}}.
- * > @copydoc wgpu{{$object.Name | PascalCase}}Release{{$.ExtSuffix}}
- */
-typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
-{{-   end}}
-{{  end}}{{"\n" -}}
+{{- end}}
 
 #endif  // !defined(WGPU_SKIP_PROCS)
 
@@ -414,7 +400,7 @@ typedef void (*WGPUProc{{.Name | PascalCase}}Release{{$.ExtSuffix}})(WGPU{{.Name
 
 {{- range .Functions}}
 {{-   MCommentFunction . 0}}
-WGPU_EXPORT {{FunctionReturns .}} wgpu{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT {{FunctionReturns .}} wgpu{{PascalCaseName .Base}}({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
 /**
@@ -436,22 +422,17 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
 {{- range $object := .Objects}}
 
 /**
- * \defgroup WGPU{{$object.Name | PascalCase}}Methods WGPU{{$object.Name | PascalCase}} methods
- * \brief Functions whose first argument has type WGPU{{$object.Name | PascalCase}}.
+ * \defgroup WGPU{{PascalCaseName $object.Base}}Methods WGPU{{PascalCaseName $object.Base}} methods
+ * \brief Functions whose first argument has type WGPU{{PascalCaseName $object.Base}}.
  *
  * @{
  */
 {{-   range $object.Methods}}
 {{-     MCommentFunction . 0}}
-WGPU_EXPORT {{FunctionReturns .}} wgpu{{$object.Name | PascalCase}}{{.Name | PascalCase}}{{$.ExtSuffix}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
-{{-   end}}
-{{-   if not (or .IsStruct .Extended)}}
-WGPU_EXPORT void wgpu{{.Name | PascalCase}}AddRef{{$.ExtSuffix}}(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT void wgpu{{.Name | PascalCase}}Release{{$.ExtSuffix}}(WGPU{{.Name | PascalCase}} {{.Name | CamelCase}}) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT {{FunctionReturns .}} wgpu{{CMethodName $object .}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 /** @} */
-
-{{  end}}{{"\n" -}}
+{{- end}}
 
 /** @} */
 
