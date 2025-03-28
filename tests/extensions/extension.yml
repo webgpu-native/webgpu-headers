@@ -6,7 +6,7 @@ name: prefix
 enum_prefix: 0xFFFF
 doc: |
   This is a bare minimum extensions file to verify all extension types.
-constants: 
+constants:
   - name: new_constant1
     value: uint32_max
     doc: |
