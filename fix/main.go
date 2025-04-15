@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	yamlPath   string
+	yamlPath string
 )
 
 func main() {

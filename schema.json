@@ -103,6 +103,11 @@
                     "$ref": "#/definitions/Name",
                     "description": "Callback name"
                 },
+                "namespace": {
+                    "type": "string",
+                    "description": "Optional property, specifying the namespace where this callback is defined",
+                    "pattern": "^[a-z]+$"
+                },
                 "doc": {
                     "type": "string"
                 },
@@ -151,11 +156,6 @@
                     "type": "boolean",
                     "description": "Optional property, to indicate if a parameter is optional"
                 },
-                "namespace": {
-                    "type": "string",
-                    "description": "Optional property, specifying the external namespace where this type is defined",
-                    "pattern": "^[a-z]+$"
-                },
                 "default": {
                     "type": [
                         "string",
@@ -196,6 +196,11 @@
                 "name": {
                     "$ref": "#/definitions/Name",
                     "description": "Name of the function"
+                },
+                "namespace": {
+                    "type": "string",
+                    "description": "Optional property, specifying the namespace where this function is defined",
+                    "pattern": "^[a-z]+$"
                 },
                 "doc": {
                     "type": "string"
@@ -262,7 +267,7 @@
         "enum_prefix": {
             "type": "number",
             "minimum": 0,
-            "maximum": 65535,
+            "maximum": 32767,
             "description": "The dedicated enum prefix for the implementation specific header to avoid collisions"
         },
         "doc": {
@@ -277,6 +282,11 @@
                 "properties": {
                     "name": {
                         "$ref": "#/definitions/Name"
+                    },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional property, specifying the namespace where this typedef is defined",
+                        "pattern": "^[a-z]+$"
                     },
                     "doc": {
                         "type": "string"
@@ -301,6 +311,11 @@
                     "name": {
                         "$ref": "#/definitions/Name",
                         "description": "Name of the constant variable/define"
+                    },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional property, specifying the namespace where this constant is defined",
+                        "pattern": "^[a-z]+$"
                     },
                     "value": {
                         "$ref": "#/definitions/Value64",
@@ -327,6 +342,11 @@
                         "$ref": "#/definitions/Name",
                         "description": "Name of the enum"
                     },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional property, specifying the namespace where this enum is defined",
+                        "pattern": "^[a-z]+$"
+                    },
                     "doc": {
                         "type": "string"
                     },
@@ -349,6 +369,11 @@
                                         "name": {
                                             "$ref": "#/definitions/Name",
                                             "description": "Name of the enum entry"
+                                        },
+                                        "namespace": {
+                                            "type": "string",
+                                            "description": "Optional property, specifying the namespace where this enum entry is defined",
+                                            "pattern": "^[a-z]+$"
                                         },
                                         "doc": {
                                             "type": "string"
@@ -383,6 +408,11 @@
                         "$ref": "#/definitions/Name",
                         "description": "Name of the bitflag"
                     },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional property, specifying the namespace where this bitflag is defined",
+                        "pattern": "^[a-z]+$"
+                    },
                     "doc": {
                         "type": "string"
                     },
@@ -399,6 +429,11 @@
                                 "name": {
                                     "$ref": "#/definitions/Name",
                                     "description": "Name of the bitflag entry"
+                                },
+                                "namespace": {
+                                    "type": "string",
+                                    "description": "Optional property, specifying the namespace where this bitmask entry is defined",
+                                    "pattern": "^[a-z]+$"
                                 },
                                 "doc": {
                                     "type": "string"
@@ -437,6 +472,11 @@
                     "name": {
                         "$ref": "#/definitions/Name",
                         "description": "Name of the structure"
+                    },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional property, specifying the namespace where this struct is defined",
+                        "pattern": "^[a-z]+$"
                     },
                     "doc": {
                         "type": "string"
@@ -499,17 +539,17 @@
                         "$ref": "#/definitions/Name",
                         "description": "Name of the object"
                     },
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional property, specifying the namespace where this object is defined",
+                        "pattern": "^[a-z]+$"
+                    },
                     "doc": {
                         "type": "string"
                     },
                     "extended": {
                         "type": "boolean",
                         "description": "Optional property, an indicator that this object is an extension of an already present object"
-                    },
-                    "namespace": {
-                        "type": "string",
-                        "description": "Optional property, specifying the external namespace where this object is defined",
-                        "pattern": "^[a-z]+$"
                     },
                     "methods": {
                         "type": "array",
