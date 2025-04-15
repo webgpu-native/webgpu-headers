@@ -3,7 +3,7 @@ copyright: |
 
   SPDX-License-Identifier: BSD-3-Clause
 name: prefix
-enum_prefix: 0xFFFF
+enum_prefix: 0x7FFF
 doc: |
   This is a bare minimum extensions file to verify all extension types.
 constants:

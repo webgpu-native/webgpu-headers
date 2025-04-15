@@ -455,7 +455,7 @@ func (g *Generator) FunctionArgs(f Function, o *Object) string {
 		}
 	}
 	if f.Callback != nil {
-		fmt.Fprintf(sb, ", %s callbackInfo", g.CType(*f.Callback, "")+"CallbackInfo")
+		fmt.Fprintf(sb, ", %sCallbackInfo callbackInfo", g.CType(*f.Callback, ""))
 	}
 	return sb.String()
 }
@@ -605,7 +605,7 @@ func (g *Generator) StructMember(s Struct, memberIndex int) (string, error) {
 		sb.WriteString("WGPU_NULLABLE ")
 	}
 	if strings.HasPrefix(member.Type, "callback.") {
-		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, "")+"CallbackInfo", CamelCase(member.Name))
+		fmt.Fprintf(sb, "%sCallbackInfo %s;", g.CType(member.Type, ""), CamelCase(member.Name))
 	} else {
 		fmt.Fprintf(sb, "%s %s;", g.CType(member.Type, member.Pointer), CamelCase(member.Name))
 	}

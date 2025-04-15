@@ -267,7 +267,7 @@
         "enum_prefix": {
             "type": "number",
             "minimum": 0,
-            "maximum": 65535,
+            "maximum": 32767,
             "description": "The dedicated enum prefix for the implementation specific header to avoid collisions"
         },
         "doc": {

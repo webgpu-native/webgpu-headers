@@ -97,7 +97,7 @@ struct WGPUNewCallback2CallbackInfo;
 /**
  * New enum entries that extend should have the prefix in the name by default.
  */
-_wgpu_EXTEND_ENUM(WGPUOldEnum, WGPUOldEnum_PrefixNewValue, 0xFFFF0000);
+_wgpu_EXTEND_ENUM(WGPUOldEnum, WGPUOldEnum_PrefixNewValue, 0x7FFF0000);
 
 /**
  * New enum should have the namespace prefix in the name by default.
@@ -106,7 +106,7 @@ typedef enum WGPUPrefixNewEnum1 {
     /**
      * New enum entries for a new enum should not duplicate prefix.
      */
-    WGPUPrefixNewEnum1_NewValue = 0xFFFF0000,
+    WGPUPrefixNewEnum1_NewValue = 0x7FFF0000,
     WGPUPrefixNewEnum1_Force32 = 0x7FFFFFFF
 } WGPUPrefixNewEnum1 WGPU_ENUM_ATTRIBUTE;
 
@@ -117,7 +117,7 @@ typedef enum WGPUNewEnum2 {
     /**
      * New enum entries for a new enum should not duplicate prefix.
      */
-    WGPUNewEnum2_NewValue = 0xFFFF0000,
+    WGPUNewEnum2_NewValue = 0x7FFF0000,
     WGPUNewEnum2_Force32 = 0x7FFFFFFF
 } WGPUNewEnum2 WGPU_ENUM_ATTRIBUTE;
 /** @} */
