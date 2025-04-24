@@ -90,19 +90,55 @@
  *
  * @{
  */
+/**
+ * Indicates no array layer count is specified. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_ARRAY_LAYER_COUNT_UNDEFINED (UINT32_MAX)
+/**
+ * Indicates no copy stride is specified. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_COPY_STRIDE_UNDEFINED (UINT32_MAX)
 /**
- * Value to be assigned to member depthClearValue of @ref WGPURenderPassDepthStencilAttachment
- * to mean that it is not defined.
+ * Indicates no depth clear value is specified. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
  */
 #define WGPU_DEPTH_CLEAR_VALUE_UNDEFINED (NAN)
+/**
+ * Indicates no depth slice is specified. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_DEPTH_SLICE_UNDEFINED (UINT32_MAX)
+/**
+ * Indicates no limit value is specified. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_LIMIT_U32_UNDEFINED (UINT32_MAX)
+/**
+ * Indicates no limit value is specified. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_LIMIT_U64_UNDEFINED (UINT64_MAX)
+/**
+ * Indicates no mip level count is specified. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_MIP_LEVEL_COUNT_UNDEFINED (UINT32_MAX)
+/**
+ * Indicates no query set index is specified. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_QUERY_SET_INDEX_UNDEFINED (UINT32_MAX)
+/**
+ * Indicates a request for the maximum size. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_WHOLE_MAP_SIZE (SIZE_MAX)
+/**
+ * Indicates a request for the maximum size. For more info,
+ * see @ref SentinelValues and the places that use this sentinel value.
+ */
 #define WGPU_WHOLE_SIZE (UINT64_MAX)
 
 /** @} */
