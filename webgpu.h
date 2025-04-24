@@ -1277,8 +1277,17 @@ typedef void (*WGPUPopErrorScopeCallback)(WGPUPopErrorScopeStatus status, WGPUEr
 
 /**
  * See also @ref CallbackError.
+ *
+ * @param status
+ * See @ref WGPUQueueWorkDoneStatus.
+ *
+ * @param message
+ * If the `status` is not @ref WGPUQueueWorkDoneStatus_Success,
+ * this is a non-empty @ref LocalizableHumanReadableMessageString;
+ * otherwise, this is an empty string.
+ * This parameter is @ref PassedWithoutOwnership.
  */
-typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUQueueWorkDoneCallback)(WGPUQueueWorkDoneStatus status, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
 
 /**
  * See also @ref CallbackError.
