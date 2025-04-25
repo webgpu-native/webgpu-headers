@@ -2265,6 +2265,10 @@ structs:
           TODO
         type: uint32
         default: constant.limit_u32_undefined
+      - name: max_immediate_data_range_byte_size
+        doc: |
+          TODO
+        type: uint32
   - name: multisample_state
     doc: |
       TODO
@@ -2338,6 +2342,11 @@ structs:
           TODO
         type: array<object.bind_group_layout>
         pointer: immutable
+      - name: immediate_data_range_byte_size
+        doc: |
+          TODO
+        type: uint32
+        default: 0
   - name: primitive_state
     doc: |
       TODO

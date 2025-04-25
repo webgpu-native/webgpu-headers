@@ -2192,6 +2192,10 @@ typedef struct WGPULimits {
      * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
      */
     uint32_t maxComputeWorkgroupsPerDimension;
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t maxImmediateDataRangeByteSize;
 } WGPULimits WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -2230,6 +2234,7 @@ typedef struct WGPULimits {
     /*.maxComputeWorkgroupSizeY=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxComputeWorkgroupSizeZ=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxComputeWorkgroupsPerDimension=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxImmediateDataRangeByteSize=*/0 _wgpu_COMMA \
 })
 
 /**
@@ -2338,6 +2343,10 @@ typedef struct WGPUPipelineLayoutDescriptor {
      * The `INIT` macro sets this to `NULL`.
      */
     WGPUBindGroupLayout const * bindGroupLayouts;
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t immediateDataRangeByteSize;
 } WGPUPipelineLayoutDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -2348,6 +2357,7 @@ typedef struct WGPUPipelineLayoutDescriptor {
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.bindGroupLayoutCount=*/0 _wgpu_COMMA \
     /*.bindGroupLayouts=*/NULL _wgpu_COMMA \
+    /*.immediateDataRangeByteSize=*/0 _wgpu_COMMA \
 })
 
 /**
