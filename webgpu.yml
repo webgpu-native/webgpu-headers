@@ -4049,6 +4049,9 @@ objects:
   - name: device
     doc: |
       TODO
+
+      Releasing the last ref to a `WGPUDevice` also calls @ref wgpuDeviceDestroy.
+      For more info, see @ref DeviceRelease.
     methods:
       - name: create_bind_group
         doc: |
