@@ -62,12 +62,12 @@ constants:
   - name: whole_map_size
     value: usize_max
     doc: |
-      Indicates a request for the maximum size. For more info,
+      Indicates a size extending to the end of the buffer. For more info,
       see @ref SentinelValues and the places that use this sentinel value.
   - name: whole_size
     value: uint64_max
     doc: |
-      Indicates a request for the maximum size. For more info,
+      Indicates a size extending to the end of the buffer. For more info,
       see @ref SentinelValues and the places that use this sentinel value.
 typedefs: []
 enums:
