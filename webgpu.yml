@@ -3343,7 +3343,10 @@ callbacks:
     args:
       - name: device
         doc: |
-          Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
+          Pointer to the device which was lost. This is always a non-null pointer.
+          The pointed-to @ref WGPUDevice will be null if, and only if, either:
+          (1) The `reason` is @ref WGPUDeviceLostReason_FailedCreation.
+          (2) The last ref of the device has been released (or is being released).
         type: object.device
         pointer: immutable
         passed_with_ownership: false

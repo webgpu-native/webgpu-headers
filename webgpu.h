@@ -187,6 +187,12 @@ typedef struct WGPUCommandBufferImpl* WGPUCommandBuffer WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUCommandEncoderImpl* WGPUCommandEncoder WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUComputePassEncoderImpl* WGPUComputePassEncoder WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUComputePipelineImpl* WGPUComputePipeline WGPU_OBJECT_ATTRIBUTE;
+/**
+ * TODO
+ *
+ * Releasing the last ref to a `WGPUDevice` also calls @ref wgpuDeviceDestroy.
+ * For more info, see @ref DeviceRelease.
+ */
 typedef struct WGPUDeviceImpl* WGPUDevice WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUInstanceImpl* WGPUInstance WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUPipelineLayoutImpl* WGPUPipelineLayout WGPU_OBJECT_ATTRIBUTE;
@@ -1263,7 +1269,10 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
  * See also @ref CallbackError.
  *
  * @param device
- * Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
+ * Pointer to the device which was lost. This is always a non-null pointer.
+ * The pointed-to @ref WGPUDevice will be null if, and only if, either:
+ * (1) The `reason` is @ref WGPUDeviceLostReason_FailedCreation.
+ * (2) The last ref of the device has been released (or is being released).
  * This parameter is @ref PassedWithoutOwnership.
  *
  * @param message

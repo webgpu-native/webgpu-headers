@@ -26,10 +26,11 @@ Note also that some structs with `FreeMembers` functions may be used as both inp
 
 ## Releasing a Device object {#DeviceRelease}
 
-Unlike other destroyable objects, releasing the last (external) ref to a device causes it to be automatically destroyed (via @ref wgpuDeviceDestroy). Though the device object is no longer valid to use after dropping the last ref, this has some direct effects:
+Unlike other destroyable objects, releasing the last (external) ref to a device causes it to be automatically destroyed (via @ref wgpuDeviceDestroy) if it isn't already lost or destroyed. Though the device object is no longer valid to use after releasing the last ref, this has some notable direct effects:
 
-- Buffers are destroyed, aborting any pending map requests, and preventing future ones.
-- The @ref WGPUDevice object passed to @ref WGPUDeviceLostCallback is still a valid pointer, but since the refcount has reached 0, the object may not be used for any API operation.
+- It destroy buffers, aborting any pending map requests and preventing future ones.
+- It fires the DeviceLost event (which will call the registered callback at some point, depending on its @ref WGPUCallbackMode).
+    - Because the device's last ref has already been released, DeviceLost callbacks triggered in this way will *not* receive a pointer to the device object. This is still true if the callback was triggered *during* the release of the last ref (via @ref WGPUCallbackMode_AllowSpontaneous).
 
 ## Callback Arguments {#CallbackArgs}
 
