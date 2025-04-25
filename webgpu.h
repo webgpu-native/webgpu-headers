@@ -555,10 +555,6 @@ typedef enum WGPUFeatureLevel {
 } WGPUFeatureLevel WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUFeatureName {
-    /**
-     * `0`.
-     */
-    WGPUFeatureName_Undefined = 0x00000000,
     WGPUFeatureName_DepthClipControl = 0x00000001,
     WGPUFeatureName_Depth32FloatStencil8 = 0x00000002,
     WGPUFeatureName_TimestampQuery = 0x00000003,
