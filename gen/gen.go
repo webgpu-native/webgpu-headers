@@ -725,13 +725,13 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 		}
 	case member.Type == "bool":
 		if member.Default == nil {
-			return literal("0")
+			return literal("WGPU_FALSE")
 		} else if strings.HasPrefix(*member.Default, "constant.") {
 			return ref("WGPU_" + g.ConstantCaseName(g.FindBaseType(*member.Default)))
 		} else if *member.Default == "true" {
-			return literal("1")
+			return literal("WGPU_TRUE")
 		} else if *member.Default == "false" {
-			return literal("0")
+			return literal("WGPU_FALSE")
 		} else {
 			return *member.Default
 		}
