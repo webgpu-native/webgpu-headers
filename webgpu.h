@@ -3626,6 +3626,12 @@ typedef struct WGPUBindGroupLayoutEntry {
      */
     uint32_t binding;
     /**
+     * The number of bindings (size of the binding array) defined by this entry.
+     *
+     * The `INIT` macro sets this to `1`.
+     */
+    uint32_t bindingCount;
+    /**
      * The `INIT` macro sets this to @ref WGPUShaderStage_None.
      */
     WGPUShaderStage visibility;
@@ -3653,6 +3659,7 @@ typedef struct WGPUBindGroupLayoutEntry {
 #define WGPU_BIND_GROUP_LAYOUT_ENTRY_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBindGroupLayoutEntry, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.binding=*/0 _wgpu_COMMA \
+    /*.bindingCount=*/1 _wgpu_COMMA \
     /*.visibility=*/WGPUShaderStage_None _wgpu_COMMA \
     /*.buffer=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \
     /*.sampler=*/_wgpu_STRUCT_ZERO_INIT _wgpu_COMMA \

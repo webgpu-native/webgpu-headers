@@ -1655,6 +1655,11 @@ structs:
         doc: |
           TODO
         type: uint32
+      - name: binding_count
+        doc: |
+          The number of bindings (size of the binding array) defined by this entry.
+        type: uint32
+        default: 1
       - name: visibility
         doc: |
           TODO
