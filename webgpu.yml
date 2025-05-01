@@ -427,9 +427,7 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
-        doc: |
-          TODO
+      - null
       - name: depth_clip_control
         doc: |
           TODO

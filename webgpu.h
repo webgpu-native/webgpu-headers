@@ -90,6 +90,21 @@
  *
  * @{
  */
+
+/**
+ * 'True' value of @ref WGPUBool.
+ *
+ * @remark It's not usually necessary to use this, as `true` (from
+ * `stdbool.h` or C++) casts to the same value.
+ */
+#define WGPU_TRUE (UINT32_C(1))
+/**
+ * 'False' value of @ref WGPUBool.
+ *
+ * @remark It's not usually necessary to use this, as `false` (from
+ * `stdbool.h` or C++) casts to the same value.
+ */
+#define WGPU_FALSE (UINT32_C(0))
 #define WGPU_ARRAY_LAYER_COUNT_UNDEFINED (UINT32_MAX)
 #define WGPU_COPY_STRIDE_UNDEFINED (UINT32_MAX)
 /**
@@ -540,10 +555,6 @@ typedef enum WGPUFeatureLevel {
 } WGPUFeatureLevel WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUFeatureName {
-    /**
-     * `0`.
-     */
-    WGPUFeatureName_Undefined = 0x00000000,
     WGPUFeatureName_DepthClipControl = 0x00000001,
     WGPUFeatureName_Depth32FloatStencil8 = 0x00000002,
     WGPUFeatureName_TimestampQuery = 0x00000003,
@@ -1770,7 +1781,7 @@ typedef struct WGPUBufferBindingLayout {
      */
     WGPUBufferBindingType type;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool hasDynamicOffset;
     /**
@@ -1785,7 +1796,7 @@ typedef struct WGPUBufferBindingLayout {
 #define WGPU_BUFFER_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBufferBindingLayout, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.type=*/WGPUBufferBindingType_Undefined _wgpu_COMMA \
-    /*.hasDynamicOffset=*/0 _wgpu_COMMA \
+    /*.hasDynamicOffset=*/WGPU_FALSE _wgpu_COMMA \
     /*.minBindingSize=*/0 _wgpu_COMMA \
 })
 
@@ -1809,7 +1820,7 @@ typedef struct WGPUBufferDescriptor {
      */
     uint64_t size;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool mappedAtCreation;
 } WGPUBufferDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -1822,7 +1833,7 @@ typedef struct WGPUBufferDescriptor {
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.usage=*/WGPUBufferUsage_None _wgpu_COMMA \
     /*.size=*/0 _wgpu_COMMA \
-    /*.mappedAtCreation=*/0 _wgpu_COMMA \
+    /*.mappedAtCreation=*/WGPU_FALSE _wgpu_COMMA \
 })
 
 /**
@@ -2052,7 +2063,7 @@ typedef struct WGPUInstanceCapabilities {
     /**
      * Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
      *
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool timedWaitAnyEnable;
     /**
@@ -2068,7 +2079,7 @@ typedef struct WGPUInstanceCapabilities {
  */
 #define WGPU_INSTANCE_CAPABILITIES_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceCapabilities, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.timedWaitAnyEnable=*/0 _wgpu_COMMA \
+    /*.timedWaitAnyEnable=*/WGPU_FALSE _wgpu_COMMA \
     /*.timedWaitAnyMaxCount=*/0 _wgpu_COMMA \
 })
 
@@ -2255,7 +2266,7 @@ typedef struct WGPUMultisampleState {
      */
     uint32_t mask;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool alphaToCoverageEnabled;
 } WGPUMultisampleState WGPU_STRUCTURE_ATTRIBUTE;
@@ -2267,7 +2278,7 @@ typedef struct WGPUMultisampleState {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.count=*/1 _wgpu_COMMA \
     /*.mask=*/0xFFFFFFFF _wgpu_COMMA \
-    /*.alphaToCoverageEnabled=*/0 _wgpu_COMMA \
+    /*.alphaToCoverageEnabled=*/WGPU_FALSE _wgpu_COMMA \
 })
 
 /**
@@ -2390,7 +2401,7 @@ typedef struct WGPUPrimitiveState {
      */
     WGPUCullMode cullMode;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool unclippedDepth;
 } WGPUPrimitiveState WGPU_STRUCTURE_ATTRIBUTE;
@@ -2404,7 +2415,7 @@ typedef struct WGPUPrimitiveState {
     /*.stripIndexFormat=*/_wgpu_ENUM_ZERO_INIT(WGPUIndexFormat) _wgpu_COMMA \
     /*.frontFace=*/WGPUFrontFace_Undefined _wgpu_COMMA \
     /*.cullMode=*/WGPUCullMode_Undefined _wgpu_COMMA \
-    /*.unclippedDepth=*/0 _wgpu_COMMA \
+    /*.unclippedDepth=*/WGPU_FALSE _wgpu_COMMA \
 })
 
 /**
@@ -2508,11 +2519,11 @@ typedef struct WGPURenderBundleEncoderDescriptor {
      */
     uint32_t sampleCount;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool depthReadOnly;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool stencilReadOnly;
 } WGPURenderBundleEncoderDescriptor WGPU_STRUCTURE_ATTRIBUTE;
@@ -2527,8 +2538,8 @@ typedef struct WGPURenderBundleEncoderDescriptor {
     /*.colorFormats=*/NULL _wgpu_COMMA \
     /*.depthStencilFormat=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.sampleCount=*/1 _wgpu_COMMA \
-    /*.depthReadOnly=*/0 _wgpu_COMMA \
-    /*.stencilReadOnly=*/0 _wgpu_COMMA \
+    /*.depthReadOnly=*/WGPU_FALSE _wgpu_COMMA \
+    /*.stencilReadOnly=*/WGPU_FALSE _wgpu_COMMA \
 })
 
 /**
@@ -2560,7 +2571,7 @@ typedef struct WGPURenderPassDepthStencilAttachment {
      */
     float depthClearValue;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool depthReadOnly;
     /**
@@ -2576,7 +2587,7 @@ typedef struct WGPURenderPassDepthStencilAttachment {
      */
     uint32_t stencilClearValue;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool stencilReadOnly;
 } WGPURenderPassDepthStencilAttachment WGPU_STRUCTURE_ATTRIBUTE;
@@ -2590,11 +2601,11 @@ typedef struct WGPURenderPassDepthStencilAttachment {
     /*.depthLoadOp=*/WGPULoadOp_Undefined _wgpu_COMMA \
     /*.depthStoreOp=*/WGPUStoreOp_Undefined _wgpu_COMMA \
     /*.depthClearValue=*/WGPU_DEPTH_CLEAR_VALUE_UNDEFINED _wgpu_COMMA \
-    /*.depthReadOnly=*/0 _wgpu_COMMA \
+    /*.depthReadOnly=*/WGPU_FALSE _wgpu_COMMA \
     /*.stencilLoadOp=*/WGPULoadOp_Undefined _wgpu_COMMA \
     /*.stencilStoreOp=*/WGPUStoreOp_Undefined _wgpu_COMMA \
     /*.stencilClearValue=*/0 _wgpu_COMMA \
-    /*.stencilReadOnly=*/0 _wgpu_COMMA \
+    /*.stencilReadOnly=*/WGPU_FALSE _wgpu_COMMA \
 })
 
 /**
@@ -2643,7 +2654,7 @@ typedef struct WGPURequestAdapterOptions {
      * If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
      * If this is not possible, the request returns null.
      *
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool forceFallbackAdapter;
     /**
@@ -2669,7 +2680,7 @@ typedef struct WGPURequestAdapterOptions {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.featureLevel=*/WGPUFeatureLevel_Undefined _wgpu_COMMA \
     /*.powerPreference=*/WGPUPowerPreference_Undefined _wgpu_COMMA \
-    /*.forceFallbackAdapter=*/0 _wgpu_COMMA \
+    /*.forceFallbackAdapter=*/WGPU_FALSE _wgpu_COMMA \
     /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
     /*.compatibleSurface=*/NULL _wgpu_COMMA \
 })
@@ -2684,7 +2695,7 @@ typedef struct WGPURequestAdapterWebXROptions {
     /**
      * Sets the `xrCompatible` option in the JS API.
      *
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool xrCompatible;
 } WGPURequestAdapterWebXROptions WGPU_STRUCTURE_ATTRIBUTE;
@@ -2697,7 +2708,7 @@ typedef struct WGPURequestAdapterWebXROptions {
         /*.next=*/NULL _wgpu_COMMA \
         /*.sType=*/WGPUSType_RequestAdapterWebXROptions _wgpu_COMMA \
     }) _wgpu_COMMA \
-    /*.xrCompatible=*/0 _wgpu_COMMA \
+    /*.xrCompatible=*/WGPU_FALSE _wgpu_COMMA \
 })
 
 /**
@@ -3481,7 +3492,7 @@ typedef struct WGPUTextureBindingLayout {
      */
     WGPUTextureViewDimension viewDimension;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool multisampled;
 } WGPUTextureBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
@@ -3493,7 +3504,7 @@ typedef struct WGPUTextureBindingLayout {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.sampleType=*/WGPUTextureSampleType_Undefined _wgpu_COMMA \
     /*.viewDimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
-    /*.multisampled=*/0 _wgpu_COMMA \
+    /*.multisampled=*/WGPU_FALSE _wgpu_COMMA \
 })
 
 /**
@@ -3923,7 +3934,7 @@ typedef struct WGPUFutureWaitInfo {
     /**
      * Whether or not the future completed.
      *
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool completed;
 } WGPUFutureWaitInfo WGPU_STRUCTURE_ATTRIBUTE;
@@ -3933,7 +3944,7 @@ typedef struct WGPUFutureWaitInfo {
  */
 #define WGPU_FUTURE_WAIT_INFO_INIT _wgpu_MAKE_INIT_STRUCT(WGPUFutureWaitInfo, { \
     /*.future=*/WGPU_FUTURE_INIT _wgpu_COMMA \
-    /*.completed=*/0 _wgpu_COMMA \
+    /*.completed=*/WGPU_FALSE _wgpu_COMMA \
 })
 
 /**
