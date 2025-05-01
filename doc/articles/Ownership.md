@@ -24,6 +24,20 @@ Note that such functions will *not* free any previously-allocated data: overwrit
 
 Note also that some structs with `FreeMembers` functions may be used as both inputs and outputs. In this case `FreeMembers` must only be used if the member allocations were made by the `webgpu.h` implementation (as an output), not if they were made by the application (as an input).
 
+## Releasing a Device object {#DeviceRelease}
+
+Unlike other destroyable objects, releasing the last (external) ref to a device causes it to be automatically destroyed, if it isn't already lost or destroyed. Though the device object is no longer valid to use after releasing the last ref, the direct effects of @ref wgpuDeviceDestroy() still take effect:
+
+- It destroys all buffers on the device, which will unmap them and abort any pending map requests.
+- It loses the device and triggers the DeviceLost event.
+
+Because the device's last ref has already been released, DeviceLost callbacks triggered in this way will *not* receive a pointer to the device object. More specifically, freeing the last ref:
+
+1. Sets a flag on the DeviceLost future (if it is uncompleted, even if it is already ready) indicating it should pass a null @ref WGPUDevice to the callback.
+1. Calls @ref wgpuDeviceDestroy(), readying the DeviceLost future.
+    - This may call the DeviceLost callback, if it is @ref WGPUCallbackMode_AllowSpontaneous.
+1. Decrements the refcount, bringing it to 0.
+
 ## Callback Arguments {#CallbackArgs}
 
 Output arguments passed from the API to application callbacks include objects and message strings, which are passed to most callbacks.
