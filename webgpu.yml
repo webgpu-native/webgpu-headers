@@ -1419,34 +1419,36 @@ bitflags:
           TODO
       - name: map_read
         doc: |
-          TODO
+          The buffer can be *mapped* on the CPU side in *read* mode (using @ref WGPUMapMode_Read).
       - name: map_write
         doc: |
-          TODO
+          The buffer can be *mapped* on the CPU side in *write* mode (using @ref WGPUMapMode_Write).
+
+          @note This usage is **not** required to set `mappedAtCreation` to `true` in @ref WGPUBufferDescriptor.
       - name: copy_src
         doc: |
-          TODO
+          The buffer can be used as the *source* of a GPU-side copy operation.
       - name: copy_dst
         doc: |
-          TODO
+          The buffer can be used as the *destination* of a GPU-side copy operation.
       - name: index
         doc: |
-          TODO
+          The buffer can be used as an Index buffer when doing indexed drawing in a render pipeline.
       - name: vertex
         doc: |
-          TODO
+          The buffer can be used as an Vertex buffer when using a render pipeline.
       - name: uniform
         doc: |
-          TODO
+          The buffer can be bound to a shader as a uniform buffer.
       - name: storage
         doc: |
-          TODO
+          The buffer can be bound to a shader as a storage buffer.
       - name: indirect
         doc: |
-          TODO
+          The buffer can store arguments for an indirect draw call.
       - name: query_resolve
         doc: |
-          TODO
+          The buffer can store the result of a timestamp or occlusion query.
   - name: color_write_mask
     doc: |
       TODO
@@ -1767,7 +1769,9 @@ structs:
         type: uint64
       - name: mapped_at_creation
         doc: |
-          TODO
+          When true, the buffer is mapped in write mode at creation. It should thus be unmapped once its initial data has been written.
+
+          @note Mapping at creation does **not** require the usage @ref WGPUBufferUsage_MapWrite.
         type: bool
         default: false
   - name: color

@@ -1145,15 +1145,47 @@ typedef WGPUFlags WGPUBufferUsage;
  * `0`.
  */
 static const WGPUBufferUsage WGPUBufferUsage_None = 0x0000000000000000;
+/**
+ * The buffer can be *mapped* on the CPU side in *read* mode (using @ref WGPUMapMode_Read).
+ */
 static const WGPUBufferUsage WGPUBufferUsage_MapRead = 0x0000000000000001;
+/**
+ * The buffer can be *mapped* on the CPU side in *write* mode (using @ref WGPUMapMode_Write).
+ *
+ * @note This usage is **not** required to set `mappedAtCreation` to `true` in @ref WGPUBufferDescriptor.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_MapWrite = 0x0000000000000002;
+/**
+ * The buffer can be used as the *source* of a GPU-side copy operation.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_CopySrc = 0x0000000000000004;
+/**
+ * The buffer can be used as the *destination* of a GPU-side copy operation.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_CopyDst = 0x0000000000000008;
+/**
+ * The buffer can be used as an Index buffer when doing indexed drawing in a render pipeline.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_Index = 0x0000000000000010;
+/**
+ * The buffer can be used as an Vertex buffer when using a render pipeline.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_Vertex = 0x0000000000000020;
+/**
+ * The buffer can be bound to a shader as a uniform buffer.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_Uniform = 0x0000000000000040;
+/**
+ * The buffer can be bound to a shader as a storage buffer.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_Storage = 0x0000000000000080;
+/**
+ * The buffer can store arguments for an indirect draw call.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_Indirect = 0x0000000000000100;
+/**
+ * The buffer can store the result of a timestamp or occlusion query.
+ */
 static const WGPUBufferUsage WGPUBufferUsage_QueryResolve = 0x0000000000000200;
 
 /**
@@ -1820,6 +1852,10 @@ typedef struct WGPUBufferDescriptor {
      */
     uint64_t size;
     /**
+     * When true, the buffer is mapped in write mode at creation. It should thus be unmapped once its initial data has been written.
+     *
+     * @note Mapping at creation does **not** require the usage @ref WGPUBufferUsage_MapWrite.
+     *
      * The `INIT` macro sets this to `WGPU_FALSE`.
      */
     WGPUBool mappedAtCreation;
