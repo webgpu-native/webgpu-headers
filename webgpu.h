@@ -1272,7 +1272,7 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
  * Pointer to the device which was lost. This is always a non-null pointer.
  * The pointed-to @ref WGPUDevice will be null if, and only if, either:
  * (1) The `reason` is @ref WGPUDeviceLostReason_FailedCreation.
- * (2) The last ref of the device has been released (or is being released).
+ * (2) The last ref of the device has been (or is being) released: see @ref DeviceRelease.
  * This parameter is @ref PassedWithoutOwnership.
  *
  * @param message

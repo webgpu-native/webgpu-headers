@@ -26,11 +26,17 @@ Note also that some structs with `FreeMembers` functions may be used as both inp
 
 ## Releasing a Device object {#DeviceRelease}
 
-Unlike other destroyable objects, releasing the last (external) ref to a device causes it to be automatically destroyed (via @ref wgpuDeviceDestroy) if it isn't already lost or destroyed. Though the device object is no longer valid to use after releasing the last ref, this has some notable direct effects:
+Unlike other destroyable objects, releasing the last (external) ref to a device causes it to be automatically destroyed, if it isn't already lost or destroyed. Though the device object is no longer valid to use after releasing the last ref, the direct effects of @ref wgpuDeviceDestroy() still take effect:
 
-- Destroying a device destroys its buffers, which will unmap them, abort any pending map requests, and prevent future map requests.
-- It fires the DeviceLost event (which will call the registered callback at some point, depending on its @ref WGPUCallbackMode).
-    - Because the device's last ref has already been released, DeviceLost callbacks triggered in this way will *not* receive a pointer to the device object. This is still true if the callback was triggered *during* the release of the last ref (via @ref WGPUCallbackMode_AllowSpontaneous).
+- It destroys all buffers on the device, which will unmap them and abort any pending map requests.
+- It loses the device and triggers the DeviceLost event.
+
+Because the device's last ref has already been released, DeviceLost callbacks triggered in this way will *not* receive a pointer to the device object. More specifically, freeing the last ref:
+
+1. Sets a flag on the DeviceLost future (if it is uncompleted, even if it is already ready) indicating it should pass a null @ref WGPUDevice to the callback.
+1. Calls @ref wgpuDeviceDestroy(), readying the DeviceLost future.
+    - This may call the DeviceLost callback, if it is @ref WGPUCallbackMode_AllowSpontaneous.
+1. Decrements the refcount, bringing it to 0.
 
 ## Callback Arguments {#CallbackArgs}
 
