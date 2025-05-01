@@ -1655,16 +1655,15 @@ structs:
         doc: |
           TODO
         type: uint32
-      - name: binding_count
-        doc: |
-          The number of bindings (size of the binding array) defined by this entry.
-        type: uint32
-        default: 1
       - name: visibility
         doc: |
           TODO
         type: bitflag.shader_stage
         default: none
+      - name: binding_array_size
+        doc: |
+          If non-zero, this entry defines a binding array with this size.
+        type: uint32
       - name: buffer
         doc: |
           TODO
