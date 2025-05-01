@@ -3383,8 +3383,15 @@ callbacks:
     args:
       - name: status
         doc: |
-          TODO
+          See @ref WGPUQueueWorkDoneStatus.
         type: enum.queue_work_done_status
+      - name: message
+        doc: |
+          If the `status` is not @ref WGPUQueueWorkDoneStatus_Success,
+          this is a non-empty @ref LocalizableHumanReadableMessageString;
+          otherwise, this is an empty string.
+        type: out_string
+        passed_with_ownership: false
   - name: request_adapter
     doc: |
       TODO
