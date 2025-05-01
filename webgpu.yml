@@ -436,9 +436,7 @@ enums:
     doc: |
       TODO
     entries:
-      - name: undefined
-        doc: |
-          TODO
+      - null
       - name: depth_clip_control
         doc: |
           TODO
@@ -526,6 +524,18 @@ enums:
       - name: uint32
         doc: |
           TODO
+  - name: instance_feature_name
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: timed_wait_any_enable
+        doc: |
+          Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+      - name: shader_source_SPIRV
+        doc: |
+          Enable passing SPIR-V shaders to @ref wgpuDeviceCreateShaderModule,
+          via @ref WGPUShaderSourceSPIRV.
   - name: load_op
     doc: |
       TODO
@@ -1430,34 +1440,36 @@ bitflags:
           TODO
       - name: map_read
         doc: |
-          TODO
+          The buffer can be *mapped* on the CPU side in *read* mode (using @ref WGPUMapMode_Read).
       - name: map_write
         doc: |
-          TODO
+          The buffer can be *mapped* on the CPU side in *write* mode (using @ref WGPUMapMode_Write).
+
+          @note This usage is **not** required to set `mappedAtCreation` to `true` in @ref WGPUBufferDescriptor.
       - name: copy_src
         doc: |
-          TODO
+          The buffer can be used as the *source* of a GPU-side copy operation.
       - name: copy_dst
         doc: |
-          TODO
+          The buffer can be used as the *destination* of a GPU-side copy operation.
       - name: index
         doc: |
-          TODO
+          The buffer can be used as an Index buffer when doing indexed drawing in a render pipeline.
       - name: vertex
         doc: |
-          TODO
+          The buffer can be used as an Vertex buffer when using a render pipeline.
       - name: uniform
         doc: |
-          TODO
+          The buffer can be bound to a shader as a uniform buffer.
       - name: storage
         doc: |
-          TODO
+          The buffer can be bound to a shader as a storage buffer.
       - name: indirect
         doc: |
-          TODO
+          The buffer can store arguments for an indirect draw call.
       - name: query_resolve
         doc: |
-          TODO
+          The buffer can store the result of a timestamp or occlusion query.
   - name: color_write_mask
     doc: |
       TODO
@@ -1778,7 +1790,9 @@ structs:
         type: uint64
       - name: mapped_at_creation
         doc: |
-          TODO
+          When true, the buffer is mapped in write mode at creation. It should thus be unmapped once its initial data has been written.
+
+          @note Mapping at creation does **not** require the usage @ref WGPUBufferUsage_MapWrite.
         type: bool
         default: false
   - name: color
@@ -2095,25 +2109,30 @@ structs:
       - name: completed
         doc: Whether or not the future completed.
         type: bool
-  - name: instance_capabilities
-    doc: |
-      Features enabled on the WGPUInstance
-    type: extensible
-    members:
-      - name: timed_wait_any_enable
-        doc: Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
-        type: bool
-      - name: timed_wait_any_max_count
-        doc: The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
-        type: usize
   - name: instance_descriptor
     doc: |
       TODO
     type: extensible
     members:
-      - name: capabilities
-        doc: Instance capabilities to enable.
-        type: struct.instance_capabilities
+      - name: required_features
+        doc: |
+          TODO
+        type: array<enum.instance_feature_name>
+        pointer: immutable
+      - name: required_limits
+        doc: |
+          TODO
+        type: struct.instance_limits
+        pointer: immutable
+        optional: true
+  - name: instance_limits
+    doc: |
+      TODO
+    type: extensible
+    members:
+      - name: timed_wait_any_max_count
+        doc: The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+        type: usize
   - name: limits
     doc: |
       TODO
@@ -2844,6 +2863,17 @@ structs:
           TODO
         type: array<enum.feature_name>
         pointer: immutable
+  - name: supported_instance_features
+    doc: |
+      TODO
+    type: standalone
+    free_members: true
+    members:
+      - name: features
+        doc: |
+          TODO
+        type: array<enum.instance_feature_name>
+        pointer: immutable
   - name: supported_WGSL_language_features
     doc: |
       TODO
@@ -3352,7 +3382,10 @@ callbacks:
     args:
       - name: device
         doc: |
-          Reference to the device which was lost. If, and only if, the `reason` is @ref WGPUDeviceLostReason_FailedCreation, this is a non-null pointer to a null @ref WGPUDevice.
+          Pointer to the device which was lost. This is always a non-null pointer.
+          The pointed-to @ref WGPUDevice will be null if, and only if, either:
+          (1) The `reason` is @ref WGPUDeviceLostReason_FailedCreation.
+          (2) The last ref of the device has been (or is being) released: see @ref DeviceRelease.
         type: object.device
         pointer: immutable
         passed_with_ownership: false
@@ -3394,8 +3427,15 @@ callbacks:
     args:
       - name: status
         doc: |
-          TODO
+          See @ref WGPUQueueWorkDoneStatus.
         type: enum.queue_work_done_status
+      - name: message
+        doc: |
+          If the `status` is not @ref WGPUQueueWorkDoneStatus_Success,
+          this is a non-empty @ref LocalizableHumanReadableMessageString;
+          otherwise, this is an empty string.
+        type: out_string
+        passed_with_ownership: false
   - name: request_adapter
     doc: |
       TODO
@@ -3469,16 +3509,40 @@ functions:
         type: struct.instance_descriptor
         pointer: immutable
         optional: true
-  - name: get_instance_capabilities
-    doc: Query the supported instance capabilities.
+  - name: get_instance_features
+    doc: |
+      Get the list of @ref WGPUInstanceFeatureName values supported by the instance.
+    args:
+      - name: features
+        doc: |
+          TODO
+        type: struct.supported_instance_features
+        pointer: mutable
+        passed_with_ownership: true
+  - name: get_instance_limits
+    doc: |
+      Get the limits supported by the instance.
     returns:
       doc: Indicates if there was an @ref OutStructChainError.
       type: enum.status
     args:
-      - name: capabilities
-        doc: The supported instance capabilities
-        type: struct.instance_capabilities
+      - name: limits
+        doc: |
+          TODO
+        type: struct.instance_limits
         pointer: mutable
+  - name: has_instance_feature
+    doc: |
+      Check whether a particular @ref WGPUInstanceFeatureName is supported by the instance.
+    returns:
+      doc: |
+        TODO
+      type: bool
+    args:
+      - name: feature
+        doc: |
+          TODO
+        type: enum.instance_feature_name
 objects:
   - name: adapter
     doc: |
@@ -4058,6 +4122,9 @@ objects:
   - name: device
     doc: |
       TODO
+
+      Releasing the last ref to a `WGPUDevice` also calls @ref wgpuDeviceDestroy.
+      For more info, see @ref DeviceRelease.
     methods:
       - name: create_bind_group
         doc: |
