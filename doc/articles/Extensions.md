@@ -34,7 +34,8 @@ When an application is running against an unknown `webgpu.h` implementation, ext
     - New (root) structs, enum/bitflag types, and callback types are always supported if the methods that accept them exist.
 - New enum/bitflag values and [chained structs](@ref StructChaining) are available iff the corresponding "feature" was already explicitly enabled for the context where they're used:
     - Device features are detected via @ref wgpuAdapterGetFeatures() and enabled via @ref WGPUDeviceDescriptor::requiredFeatures.
-    - Instance features are detected via @ref wgpuGetInstanceCapabilities() and enabled via @ref WGPUInstanceDescriptor::capabilities.
+    - Instance features are detected via @ref wgpuHasInstanceFeature() and @ref wgpuGetInstanceFeatures(), and enabled via @ref WGPUInstanceDescriptor::requiredFeatures.
+    - Instance limits are detected via @ref wgpuGetInstanceLimits(), and enabled via @ref WGPUInstanceDescriptor::requiredLimits.
 
 The following design principles should be followed to ensure future extensibility:
 

@@ -16,10 +16,11 @@ can be called equivalently as `b.getMappedRange()`, `b.getMappedRange(0)`,
 
 To represent `undefined` in C, `webgpu.h` uses `NULL` where possible (anything
 behind a pointer, including objects), `*_UNDEFINED` sentinel numeric values
-(usually `UINT32_MAX` or similar) and `*_Undefined` enum values (usually `0`).
+(usually `UINT32_MAX` or similar), `*_Undefined` enum values (usually `0`),
+or other semantic-specific names (like `WGPU_WHOLE_SIZE`).
 
-The place that uses the type will define what to do with an undefined value.
-It may be:
+The place that uses the type will define what to do with an undefined or
+other sentinel value. It may be:
 
 - Required, in which case an error is produced.
 - Defaulting, in which case it trivially defaults to some other value.

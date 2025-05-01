@@ -82,6 +82,20 @@
  * @{
  */
 
+/**
+ * 'True' value of @ref WGPUBool.
+ *
+ * @remark It's not usually necessary to use this, as `true` (from
+ * `stdbool.h` or C++) casts to the same value.
+ */
+#define WGPU_TRUE (UINT32_C(1))
+/**
+ * 'False' value of @ref WGPUBool.
+ *
+ * @remark It's not usually necessary to use this, as `false` (from
+ * `stdbool.h` or C++) casts to the same value.
+ */
+#define WGPU_FALSE (UINT32_C(0))
 {{-   range .Constants}}
 {{-     MComment .Doc 0}}
 #define WGPU_{{ConstantCaseName .Base}} ({{.Value | CValue}})
