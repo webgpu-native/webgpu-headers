@@ -86,7 +86,7 @@ int main(void) {
     { WGPUCompilationMessage x = WGPU_COMPILATION_MESSAGE_INIT; }
     { WGPUConstantEntry x = WGPU_CONSTANT_ENTRY_INIT; }
     { WGPUFuture x = WGPU_FUTURE_INIT; }
-    { WGPUInstanceCapabilities x = WGPU_INSTANCE_CAPABILITIES_INIT; }
+    { WGPUInstanceLimits x = WGPU_INSTANCE_LIMITS_INIT; }
     { WGPULimits x = WGPU_LIMITS_INIT; }
     { WGPUMultisampleState x = WGPU_MULTISAMPLE_STATE_INIT; }
     { WGPUPassTimestampWrites x = WGPU_PASS_TIMESTAMP_WRITES_INIT; }
@@ -107,6 +107,7 @@ int main(void) {
     { WGPUStencilFaceState x = WGPU_STENCIL_FACE_STATE_INIT; }
     { WGPUStorageTextureBindingLayout x = WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT; }
     { WGPUSupportedFeatures x = WGPU_SUPPORTED_FEATURES_INIT; }
+    { WGPUSupportedInstanceFeatures x = WGPU_SUPPORTED_INSTANCE_FEATURES_INIT; }
     { WGPUSupportedWGSLLanguageFeatures x = WGPU_SUPPORTED_WGSL_LANGUAGE_FEATURES_INIT; }
     { WGPUSurfaceCapabilities x = WGPU_SURFACE_CAPABILITIES_INIT; }
     { WGPUSurfaceConfiguration x = WGPU_SURFACE_CONFIGURATION_INIT; }
