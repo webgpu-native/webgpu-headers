@@ -1681,6 +1681,10 @@ structs:
           TODO
         type: bitflag.shader_stage
         default: none
+      - name: binding_array_size
+        doc: |
+          If non-zero, this entry defines a binding array with this size.
+        type: uint32
       - name: buffer
         doc: |
           TODO
