@@ -220,7 +220,7 @@ struct WGPUCompilationMessage;
 struct WGPUConstantEntry;
 struct WGPUExtent3D;
 struct WGPUFuture;
-struct WGPUInstanceCapabilities;
+struct WGPUInstanceLimits;
 struct WGPULimits;
 struct WGPUMultisampleState;
 struct WGPUOrigin3D;
@@ -243,6 +243,7 @@ struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
 struct WGPUStorageTextureBindingLayout;
 struct WGPUSupportedFeatures;
+struct WGPUSupportedInstanceFeatures;
 struct WGPUSupportedWGSLLanguageFeatures;
 struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceColorManagement;
@@ -604,6 +605,19 @@ typedef enum WGPUIndexFormat {
     WGPUIndexFormat_Uint32 = 0x00000002,
     WGPUIndexFormat_Force32 = 0x7FFFFFFF
 } WGPUIndexFormat WGPU_ENUM_ATTRIBUTE;
+
+typedef enum WGPUInstanceFeatureName {
+    /**
+     * Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+     */
+    WGPUInstanceFeatureName_TimedWaitAnyEnable = 0x00000001,
+    /**
+     * Enable passing SPIR-V shaders to @ref wgpuDeviceCreateShaderModule,
+     * via @ref WGPUShaderSourceSPIRV.
+     */
+    WGPUInstanceFeatureName_ShaderSourceSPIRV = 0x00000002,
+    WGPUInstanceFeatureName_Force32 = 0x7FFFFFFF
+} WGPUInstanceFeatureName WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPULoadOp {
     /**
@@ -2054,32 +2068,23 @@ typedef struct WGPUFuture {
 })
 
 /**
- * Features enabled on the WGPUInstance
- *
- * Default values can be set using @ref WGPU_INSTANCE_CAPABILITIES_INIT as initializer.
+ * Default values can be set using @ref WGPU_INSTANCE_LIMITS_INIT as initializer.
  */
-typedef struct WGPUInstanceCapabilities {
+typedef struct WGPUInstanceLimits {
     WGPUChainedStruct * nextInChain;
-    /**
-     * Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
-     *
-     * The `INIT` macro sets this to `WGPU_FALSE`.
-     */
-    WGPUBool timedWaitAnyEnable;
     /**
      * The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
      *
      * The `INIT` macro sets this to `0`.
      */
     size_t timedWaitAnyMaxCount;
-} WGPUInstanceCapabilities WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUInstanceLimits WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPUInstanceCapabilities.
+ * Initializer for @ref WGPUInstanceLimits.
  */
-#define WGPU_INSTANCE_CAPABILITIES_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceCapabilities, { \
+#define WGPU_INSTANCE_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceLimits, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.timedWaitAnyEnable=*/WGPU_FALSE _wgpu_COMMA \
     /*.timedWaitAnyMaxCount=*/0 _wgpu_COMMA \
 })
 
@@ -2999,6 +3004,28 @@ typedef struct WGPUSupportedFeatures {
  * Initializer for @ref WGPUSupportedFeatures.
  */
 #define WGPU_SUPPORTED_FEATURES_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSupportedFeatures, { \
+    /*.featureCount=*/0 _wgpu_COMMA \
+    /*.features=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_SUPPORTED_INSTANCE_FEATURES_INIT as initializer.
+ */
+typedef struct WGPUSupportedInstanceFeatures {
+    /**
+     * Array count for `features`. The `INIT` macro sets this to 0.
+     */
+    size_t featureCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPUInstanceFeatureName const * features;
+} WGPUSupportedInstanceFeatures WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUSupportedInstanceFeatures.
+ */
+#define WGPU_SUPPORTED_INSTANCE_FEATURES_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSupportedInstanceFeatures, { \
     /*.featureCount=*/0 _wgpu_COMMA \
     /*.features=*/NULL _wgpu_COMMA \
 })
@@ -3953,11 +3980,17 @@ typedef struct WGPUFutureWaitInfo {
 typedef struct WGPUInstanceDescriptor {
     WGPUChainedStruct * nextInChain;
     /**
-     * Instance capabilities to enable.
-     *
-     * The `INIT` macro sets this to @ref WGPU_INSTANCE_CAPABILITIES_INIT.
+     * Array count for `requiredFeatures`. The `INIT` macro sets this to 0.
      */
-    WGPUInstanceCapabilities capabilities;
+    size_t requiredFeatureCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPUInstanceFeatureName const * requiredFeatures;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPU_NULLABLE WGPUInstanceLimits const * requiredLimits;
 } WGPUInstanceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
@@ -3965,7 +3998,9 @@ typedef struct WGPUInstanceDescriptor {
  */
 #define WGPU_INSTANCE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceDescriptor, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.capabilities=*/WGPU_INSTANCE_CAPABILITIES_INIT _wgpu_COMMA \
+    /*.requiredFeatureCount=*/0 _wgpu_COMMA \
+    /*.requiredFeatures=*/NULL _wgpu_COMMA \
+    /*.requiredLimits=*/NULL _wgpu_COMMA \
 })
 
 /**
@@ -4481,10 +4516,20 @@ extern "C" {
  */
 typedef WGPUInstance (*WGPUProcCreateInstance)(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Proc pointer type for @ref wgpuGetInstanceCapabilities:
- * > @copydoc wgpuGetInstanceCapabilities
+ * Proc pointer type for @ref wgpuGetInstanceFeatures:
+ * > @copydoc wgpuGetInstanceFeatures
  */
-typedef WGPUStatus (*WGPUProcGetInstanceCapabilities)(WGPUInstanceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcGetInstanceFeatures)(WGPUSupportedInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuGetInstanceLimits:
+ * > @copydoc wgpuGetInstanceLimits
+ */
+typedef WGPUStatus (*WGPUProcGetInstanceLimits)(WGPUInstanceLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuHasInstanceFeature:
+ * > @copydoc wgpuHasInstanceFeature
+ */
+typedef WGPUBool (*WGPUProcHasInstanceFeature)(WGPUInstanceFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuGetProcAddress:
  * > @copydoc wgpuGetProcAddress
@@ -5349,6 +5394,13 @@ typedef void (*WGPUProcShaderModuleRelease)(WGPUShaderModule shaderModule) WGPU_
  */
 typedef void (*WGPUProcSupportedFeaturesFreeMembers)(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
 
+// Procs of SupportedInstanceFeatures
+/**
+ * Proc pointer type for @ref wgpuSupportedInstanceFeaturesFreeMembers:
+ * > @copydoc wgpuSupportedInstanceFeaturesFreeMembers
+ */
+typedef void (*WGPUProcSupportedInstanceFeaturesFreeMembers)(WGPUSupportedInstanceFeatures supportedInstanceFeatures) WGPU_FUNCTION_ATTRIBUTE;
+
 // Procs of SupportedWGSLLanguageFeatures
 /**
  * Proc pointer type for @ref wgpuSupportedWGSLLanguageFeaturesFreeMembers:
@@ -5506,15 +5558,23 @@ typedef void (*WGPUProcTextureViewRelease)(WGPUTextureView textureView) WGPU_FUN
  */
 WGPU_EXPORT WGPUInstance wgpuCreateInstance(WGPU_NULLABLE WGPUInstanceDescriptor const * descriptor) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Query the supported instance capabilities.
+ * Get the list of @ref WGPUInstanceFeatureName values supported by the instance.
  *
- * @param capabilities
- * The supported instance capabilities
+ * @param features
+ * This parameter is @ref ReturnedWithOwnership.
+ */
+WGPU_EXPORT void wgpuGetInstanceFeatures(WGPUSupportedInstanceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Get the limits supported by the instance.
  *
  * @returns
  * Indicates if there was an @ref OutStructChainError.
  */
-WGPU_EXPORT WGPUStatus wgpuGetInstanceCapabilities(WGPUInstanceCapabilities * capabilities) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUStatus wgpuGetInstanceLimits(WGPUInstanceLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Check whether a particular @ref WGPUInstanceFeatureName is supported by the instance.
+ */
+WGPU_EXPORT WGPUBool wgpuHasInstanceFeature(WGPUInstanceFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns the "procedure address" (function pointer) of the named function.
  * The result must be cast to the appropriate proc pointer type.
@@ -6110,6 +6170,18 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
  * Frees members which were allocated by the API.
  */
 WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
+/** @} */
+
+/**
+ * \defgroup WGPUSupportedInstanceFeaturesMethods WGPUSupportedInstanceFeatures methods
+ * \brief Functions whose first argument has type WGPUSupportedInstanceFeatures.
+ *
+ * @{
+ */
+/**
+ * Frees members which were allocated by the API.
+ */
+WGPU_EXPORT void wgpuSupportedInstanceFeaturesFreeMembers(WGPUSupportedInstanceFeatures supportedInstanceFeatures) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */
 
 /**

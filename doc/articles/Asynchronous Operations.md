@@ -61,7 +61,7 @@ Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nan
 
 ### Timed Wait {#Timed-Wait}
 
-Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in @ref wgpuCreateInstance with `WGPUInstanceFeatures::timedWaitAnyEnable`, and the number of futures waited on must be less than or equal to `WGPUInstanceFeatures::timedWaitAnyMaxCount`. Supported instance features may be queried using @ref wgpuGetInstanceCapabilities.
+Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in @ref wgpuCreateInstance() with @ref WGPUInstanceFeatureName_TimedWaitAnyEnable, and the number of futures waited on must be less than or equal to @ref WGPUInstanceLimits::timedWaitAnyMaxCount.
 
 ### Mixed Sources {#Mixed-Sources}
 
