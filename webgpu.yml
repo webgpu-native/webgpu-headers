@@ -42,12 +42,12 @@ constants:
   - name: limit_u32_undefined
     value: uint32_max
     doc: |
-      For `uint32_t` limits, indicates no limit value is specified. For more info,
+      For `uint32_t` limits, indicates no limit value is requested. For more info,
       see @ref SentinelValues and the places that use this sentinel value.
   - name: limit_u64_undefined
     value: uint64_max
     doc: |
-      For `uint64_t` limits, indicates no limit value is specified. For more info,
+      For `uint64_t` limits, indicates no limit value is requested. For more info,
       see @ref SentinelValues and the places that use this sentinel value.
   - name: mip_level_count_undefined
     value: uint32_max
@@ -369,6 +369,62 @@ enums:
       - name: back
         doc: |
           TODO
+  - name: device_feature_name
+    doc: |
+      TODO
+    entries:
+      - null
+      - name: depth_clip_control
+        doc: |
+          TODO
+      - name: depth32_float_stencil8
+        doc: |
+          TODO
+      - name: timestamp_query
+        doc: |
+          TODO
+      - name: texture_compression_BC
+        doc: |
+          TODO
+      - name: texture_compression_BC_sliced_3D
+        doc: |
+          TODO
+      - name: texture_compression_ETC2
+        doc: |
+          TODO
+      - name: texture_compression_ASTC
+        doc: |
+          TODO
+      - name: texture_compression_ASTC_sliced_3D
+        doc: |
+          TODO
+      - name: indirect_first_instance
+        doc: |
+          TODO
+      - name: shader_f16
+        doc: |
+          TODO
+      - name: RG11B10_ufloat_renderable
+        doc: |
+          TODO
+      - name: BGRA8_unorm_storage
+        doc: |
+          TODO
+      - name: float32_filterable
+        doc: |
+          TODO
+      - name: float32_blendable
+        doc: |
+          TODO
+      - name: clip_distances
+        doc: |
+          TODO
+      - name: dual_source_blending
+        doc: |
+          TODO
+      - name: subgroups
+        doc: |
+          TODO
   - name: device_lost_reason
     doc: |
       TODO
@@ -432,62 +488,6 @@ enums:
       - name: core
         doc: |
           "Core" profile which can be supported on Vulkan/Metal/D3D12 (at least).
-  - name: feature_name
-    doc: |
-      TODO
-    entries:
-      - null
-      - name: depth_clip_control
-        doc: |
-          TODO
-      - name: depth32_float_stencil8
-        doc: |
-          TODO
-      - name: timestamp_query
-        doc: |
-          TODO
-      - name: texture_compression_BC
-        doc: |
-          TODO
-      - name: texture_compression_BC_sliced_3D
-        doc: |
-          TODO
-      - name: texture_compression_ETC2
-        doc: |
-          TODO
-      - name: texture_compression_ASTC
-        doc: |
-          TODO
-      - name: texture_compression_ASTC_sliced_3D
-        doc: |
-          TODO
-      - name: indirect_first_instance
-        doc: |
-          TODO
-      - name: shader_f16
-        doc: |
-          TODO
-      - name: RG11B10_ufloat_renderable
-        doc: |
-          TODO
-      - name: BGRA8_unorm_storage
-        doc: |
-          TODO
-      - name: float32_filterable
-        doc: |
-          TODO
-      - name: float32_blendable
-        doc: |
-          TODO
-      - name: clip_distances
-        doc: |
-          TODO
-      - name: dual_source_blending
-        doc: |
-          TODO
-      - name: subgroups
-        doc: |
-          TODO
   - name: filter_mode
     doc: |
       TODO
@@ -2031,12 +2031,12 @@ structs:
       - name: required_features
         doc: |
           TODO
-        type: array<enum.feature_name>
+        type: array<enum.device_feature_name>
         pointer: immutable
       - name: required_limits
         doc: |
           TODO
-        type: struct.limits
+        type: struct.device_limits
         pointer: immutable
         optional: true
       - name: default_queue
@@ -2054,92 +2054,11 @@ structs:
 
           **Important:** This callback does not have a configurable @ref WGPUCallbackMode; it may be called at any time (like @ref WGPUCallbackMode_AllowSpontaneous). As such, calls into the `webgpu.h` API from this callback are unsafe. See @ref CallbackReentrancy.
         type: callback.uncaptured_error
-  - name: extent_3D
+  - name: device_limits
     doc: |
-      TODO
-    type: standalone
-    members:
-      - name: width
-        doc: |
-          TODO
-        type: uint32
-      - name: height
-        doc: |
-          TODO
-        type: uint32
-        default: 1
-      - name: depth_or_array_layers
-        doc: |
-          TODO
-        type: uint32
-        default: 1
-  - name: fragment_state
-    doc: |
-      TODO
-    type: extensible
-    members:
-      - name: module
-        doc: |
-          TODO
-        type: object.shader_module
-      - name: entry_point
-        doc: |
-          TODO
-        type: nullable_string
-      - name: constants
-        doc: |
-          TODO
-        type: array<struct.constant_entry>
-        pointer: immutable
-      - name: targets
-        doc: |
-          TODO
-        type: array<struct.color_target_state>
-        pointer: immutable
-  - name: future
-    doc: Opaque handle to an asynchronous operation. See @ref Asynchronous-Operations for more information.
-    type: standalone
-    members:
-      - name: id
-        doc: Opaque id of the @ref WGPUFuture
-        type: uint64
-  - name: future_wait_info
-    doc: Struct holding a future to wait on, and a `completed` boolean flag.
-    type: standalone
-    members:
-      - name: future
-        doc: The future to wait on.
-        type: struct.future
-      - name: completed
-        doc: Whether or not the future completed.
-        type: bool
-  - name: instance_descriptor
-    doc: |
-      TODO
-    type: extensible
-    members:
-      - name: required_features
-        doc: |
-          TODO
-        type: array<enum.instance_feature_name>
-        pointer: immutable
-      - name: required_limits
-        doc: |
-          TODO
-        type: struct.instance_limits
-        pointer: immutable
-        optional: true
-  - name: instance_limits
-    doc: |
-      TODO
-    type: extensible
-    members:
-      - name: timed_wait_any_max_count
-        doc: The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
-        type: usize
-  - name: limits
-    doc: |
-      TODO
+      Limits of a @ref WGPUAdapter, @ref WGPUDeviceDescriptor, or @ref WGPUDevice.
+      In @ref WGPUDeviceDescriptor, an `UNDEFINED` sentinel value
+      indicates no request for that limit.
     type: extensible
     members:
       - name: max_texture_dimension_1D
@@ -2301,6 +2220,89 @@ structs:
         doc: |
           TODO
         type: uint32
+  - name: extent_3D
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: width
+        doc: |
+          TODO
+        type: uint32
+      - name: height
+        doc: |
+          TODO
+        type: uint32
+        default: 1
+      - name: depth_or_array_layers
+        doc: |
+          TODO
+        type: uint32
+        default: 1
+  - name: fragment_state
+    doc: |
+      TODO
+    type: extensible
+    members:
+      - name: module
+        doc: |
+          TODO
+        type: object.shader_module
+      - name: entry_point
+        doc: |
+          TODO
+        type: nullable_string
+      - name: constants
+        doc: |
+          TODO
+        type: array<struct.constant_entry>
+        pointer: immutable
+      - name: targets
+        doc: |
+          TODO
+        type: array<struct.color_target_state>
+        pointer: immutable
+  - name: future
+    doc: Opaque handle to an asynchronous operation. See @ref Asynchronous-Operations for more information.
+    type: standalone
+    members:
+      - name: id
+        doc: Opaque id of the @ref WGPUFuture
+        type: uint64
+  - name: future_wait_info
+    doc: Struct holding a future to wait on, and a `completed` boolean flag.
+    type: standalone
+    members:
+      - name: future
+        doc: The future to wait on.
+        type: struct.future
+      - name: completed
+        doc: Whether or not the future completed.
+        type: bool
+  - name: instance_descriptor
+    doc: |
+      TODO
+    type: extensible
+    members:
+      - name: required_features
+        doc: |
+          TODO
+        type: array<enum.instance_feature_name>
+        pointer: immutable
+      - name: required_limits
+        doc: |
+          TODO
+        type: struct.instance_limits
+        pointer: immutable
+        optional: true
+  - name: instance_limits
+    doc: |
+      Limits of a @ref WGPUInstanceDescriptor or @ref WGPUInstance.
+    type: extensible
+    members:
+      - name: timed_wait_any_max_count
+        doc: The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+        type: usize
   - name: multisample_state
     doc: |
       TODO
@@ -2865,7 +2867,7 @@ structs:
           [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
         default: undefined
-  - name: supported_features
+  - name: supported_device_features
     doc: |
       TODO
     type: standalone
@@ -2874,7 +2876,7 @@ structs:
       - name: features
         doc: |
           TODO
-        type: array<enum.feature_name>
+        type: array<enum.device_feature_name>
         pointer: immutable
   - name: supported_instance_features
     doc: |
@@ -3571,7 +3573,7 @@ objects:
           - name: limits
             doc: |
               TODO
-            type: struct.limits
+            type: struct.device_limits
             pointer: mutable
       - name: has_feature
         doc: |
@@ -3584,7 +3586,7 @@ objects:
           - name: feature
             doc: |
               TODO
-            type: enum.feature_name
+            type: enum.device_feature_name
       - name: get_features
         doc: |
           Get the list of @ref WGPUFeatureName values supported by the adapter.
@@ -3592,7 +3594,7 @@ objects:
           - name: features
             doc: |
               TODO
-            type: struct.supported_features
+            type: struct.supported_device_features
             pointer: mutable
             passed_with_ownership: true
       - name: get_info
@@ -4352,7 +4354,7 @@ objects:
           - name: limits
             doc: |
               TODO
-            type: struct.limits
+            type: struct.device_limits
             pointer: mutable
       - name: has_feature
         doc: |
@@ -4365,7 +4367,7 @@ objects:
           - name: feature
             doc: |
               TODO
-            type: enum.feature_name
+            type: enum.device_feature_name
       - name: get_features
         doc: |
           Get the list of @ref WGPUFeatureName values supported by the device.
@@ -4373,7 +4375,7 @@ objects:
           - name: features
             doc: |
               TODO
-            type: struct.supported_features
+            type: struct.supported_device_features
             pointer: mutable
             passed_with_ownership: true
       - name: get_adapter_info

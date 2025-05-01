@@ -33,20 +33,6 @@
  */
 
 /**
- * 'True' value of @ref WGPUBool.
- *
- * @remark It's not usually necessary to use this, as `true` (from
- * `stdbool.h` or C++) casts to the same value.
- */
-#define WGPU_TRUE (UINT32_C(1))
-/**
- * 'False' value of @ref WGPUBool.
- *
- * @remark It's not usually necessary to use this, as `false` (from
- * `stdbool.h` or C++) casts to the same value.
- */
-#define WGPU_FALSE (UINT32_C(0))
-/**
  * New constant should have the namespace prefix in the name by default.
  */
 #define WGPU_PREFIX_NEW_CONSTANT1 (UINT32_MAX)

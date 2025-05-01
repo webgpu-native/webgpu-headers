@@ -33,6 +33,11 @@ int main(void) {
         uint64_t y = a.maxBufferSize = WGPU_LIMIT_U64_UNDEFINED;
     }
     {
+        WGPUDeviceLimits a;
+        uint32_t x = a.maxTextureDimension2D = WGPU_LIMIT_U32_UNDEFINED;
+        uint64_t y = a.maxBufferSize = WGPU_LIMIT_U64_UNDEFINED;
+    }
+    {
         WGPUPassTimestampWrites a;
         a.beginningOfPassWriteIndex = WGPU_QUERY_SET_INDEX_UNDEFINED;
         a.endOfPassWriteIndex = WGPU_QUERY_SET_INDEX_UNDEFINED;
@@ -75,6 +80,7 @@ int main(void) {
     { WGPURequestAdapterCallbackInfo x = WGPU_REQUEST_ADAPTER_CALLBACK_INFO_INIT; }
     { WGPURequestDeviceCallbackInfo x = WGPU_REQUEST_DEVICE_CALLBACK_INFO_INIT; }
     { WGPUUncapturedErrorCallbackInfo x = WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT; }
+
     { WGPUAdapterInfo x = WGPU_ADAPTER_INFO_INIT; }
     { WGPUBindGroupEntry x = WGPU_BIND_GROUP_ENTRY_INIT; }
     { WGPUBlendComponent x = WGPU_BLEND_COMPONENT_INIT; }
@@ -85,6 +91,7 @@ int main(void) {
     { WGPUCommandEncoderDescriptor x = WGPU_COMMAND_ENCODER_DESCRIPTOR_INIT; }
     { WGPUCompilationMessage x = WGPU_COMPILATION_MESSAGE_INIT; }
     { WGPUConstantEntry x = WGPU_CONSTANT_ENTRY_INIT; }
+    { WGPUDeviceLimits x = WGPU_DEVICE_LIMITS_INIT; }
     { WGPUFuture x = WGPU_FUTURE_INIT; }
     { WGPUInstanceLimits x = WGPU_INSTANCE_LIMITS_INIT; }
     { WGPULimits x = WGPU_LIMITS_INIT; }
@@ -106,6 +113,7 @@ int main(void) {
     { WGPUShaderSourceWGSL x = WGPU_SHADER_SOURCE_WGSL_INIT; }
     { WGPUStencilFaceState x = WGPU_STENCIL_FACE_STATE_INIT; }
     { WGPUStorageTextureBindingLayout x = WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT; }
+    { WGPUSupportedDeviceFeatures x = WGPU_SUPPORTED_DEVICE_FEATURES_INIT; }
     { WGPUSupportedFeatures x = WGPU_SUPPORTED_FEATURES_INIT; }
     { WGPUSupportedInstanceFeatures x = WGPU_SUPPORTED_INSTANCE_FEATURES_INIT; }
     { WGPUSupportedWGSLLanguageFeatures x = WGPU_SUPPORTED_WGSL_LANGUAGE_FEATURES_INIT; }

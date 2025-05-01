@@ -81,7 +81,7 @@
  *
  * @{
  */
-
+{{ if eq .Name "webgpu"}}
 /**
  * 'True' value of @ref WGPUBool.
  *
@@ -96,12 +96,72 @@
  * `stdbool.h` or C++) casts to the same value.
  */
 #define WGPU_FALSE (UINT32_C(0))
-{{-   range .Constants}}
-{{-     MComment .Doc 0}}
+{{- end }}
+{{- range .Constants}}
+{{-   MComment .Doc 0}}
 #define WGPU_{{ConstantCaseName .Base}} ({{.Value | CValue}})
-{{-   end}}
+{{- end}}
 
 /** @} */
+
+{{ if eq .Name "webgpu" -}}
+/**
+ * \defgroup Aliases Aliases
+ * \brief Deprecated aliases for other definitions.
+ *
+ * @{
+ */
+
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName WGPUDeviceFeatureName
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_DepthClipControl WGPUDeviceFeatureName_DepthClipControl
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_Depth32FloatStencil8 WGPUDeviceFeatureName_Depth32FloatStencil8
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TimestampQuery WGPUDeviceFeatureName_TimestampQuery
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionBC WGPUDeviceFeatureName_TextureCompressionBC
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionBCSliced3D WGPUDeviceFeatureName_TextureCompressionBCSliced3D
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionETC2 WGPUDeviceFeatureName_TextureCompressionETC2
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionASTC WGPUDeviceFeatureName_TextureCompressionASTC
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionASTCSliced3D WGPUDeviceFeatureName_TextureCompressionASTCSliced3D
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_IndirectFirstInstance WGPUDeviceFeatureName_IndirectFirstInstance
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_ShaderF16 WGPUDeviceFeatureName_ShaderF16
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_RG11B10UfloatRenderable WGPUDeviceFeatureName_RG11B10UfloatRenderable
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_BGRA8UnormStorage WGPUDeviceFeatureName_BGRA8UnormStorage
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_Float32Filterable WGPUDeviceFeatureName_Float32Filterable
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_Float32Blendable WGPUDeviceFeatureName_Float32Blendable
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_ClipDistances WGPUDeviceFeatureName_ClipDistances
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_DualSourceBlending WGPUDeviceFeatureName_DualSourceBlending
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_Subgroups WGPUDeviceFeatureName_Subgroups
+
+/** @deprecated alias for the new, more specific struct name. */
+#define WGPULimits WGPUDeviceLimits
+/** @deprecated alias for the new, more specific struct init macro name. */
+#define WGPU_LIMITS_INIT WGPU_DEVICE_LIMITS_INIT
+
+/** @deprecated alias for the new, more specific struct name. */
+#define WGPUSupportedFeatures WGPUSupportedDeviceFeatures
+/** @deprecated alias for the new, more specific struct init macro name. */
+#define WGPU_SUPPORTED_FEATURES_INIT WGPU_SUPPORTED_DEVICE_FEATURES_INIT
+
+/** @} */
+
+{{ end -}}
 
 /**
  * \defgroup UtilityTypes Utility Types
