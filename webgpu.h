@@ -126,12 +126,12 @@
  */
 #define WGPU_DEPTH_SLICE_UNDEFINED (UINT32_MAX)
 /**
- * Indicates no limit value is specified. For more info,
+ * For `uint32_t` limits, indicates no limit value is specified. For more info,
  * see @ref SentinelValues and the places that use this sentinel value.
  */
 #define WGPU_LIMIT_U32_UNDEFINED (UINT32_MAX)
 /**
- * Indicates no limit value is specified. For more info,
+ * For `uint64_t` limits, indicates no limit value is specified. For more info,
  * see @ref SentinelValues and the places that use this sentinel value.
  */
 #define WGPU_LIMIT_U64_UNDEFINED (UINT64_MAX)

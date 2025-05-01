@@ -42,12 +42,12 @@ constants:
   - name: limit_u32_undefined
     value: uint32_max
     doc: |
-      Indicates no limit value is specified. For more info,
+      For `uint32_t` limits, indicates no limit value is specified. For more info,
       see @ref SentinelValues and the places that use this sentinel value.
   - name: limit_u64_undefined
     value: uint64_max
     doc: |
-      Indicates no limit value is specified. For more info,
+      For `uint64_t` limits, indicates no limit value is specified. For more info,
       see @ref SentinelValues and the places that use this sentinel value.
   - name: mip_level_count_undefined
     value: uint32_max
