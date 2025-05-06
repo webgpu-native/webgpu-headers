@@ -45,6 +45,10 @@
 #    define WGPU_EXPORT
 #endif  // defined(WGPU_SHARED_LIBRARY)
 
+#if !defined(WGPU_DISABLE_DEPRECATED_ALIASES)
+#define WGPU_DISABLE_DEPRECATED_ALIASES 0
+#endif
+
 #if !defined(WGPU_OBJECT_ATTRIBUTE)
 #define WGPU_OBJECT_ATTRIBUTE
 #endif
@@ -164,6 +168,7 @@
  *
  * @{
  */
+#if !WGPU_DISABLE_DEPRECATED_ALIASES
 
 /** @deprecated alias for the new, more specific enum name. */
 #define WGPUFeatureName WGPUDeviceFeatureName
@@ -212,6 +217,7 @@
 /** @deprecated alias for the new, more specific struct init macro name. */
 #define WGPU_SUPPORTED_FEATURES_INIT WGPU_SUPPORTED_DEVICE_FEATURES_INIT
 
+#endif // !WGPU_DISABLE_DEPRECATED_ALIASES
 /** @} */
 
 /**

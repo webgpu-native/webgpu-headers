@@ -153,4 +153,12 @@ int main(void) {
     { WGPUVertexState x = WGPU_VERTEX_STATE_INIT; }
     { WGPUFragmentState x = WGPU_FRAGMENT_STATE_INIT; }
     { WGPURenderPipelineDescriptor x = WGPU_RENDER_PIPELINE_DESCRIPTOR_INIT; }
+
+    // Tests for deprecations
+    { WGPUFeatureName x = WGPUDeviceFeatureName_ShaderF16; }
+    { WGPUDeviceFeatureName x = WGPUFeatureName_ShaderF16; }
+    { WGPULimits x = WGPU_DEVICE_LIMITS_INIT; }
+    { WGPUDeviceLimits x = WGPU_LIMITS_INIT; }
+    { WGPUSupportedFeatures x = WGPU_SUPPORTED_DEVICE_FEATURES_INIT; }
+    { WGPUSupportedDeviceFeatures x = WGPU_SUPPORTED_FEATURES_INIT; }
 }
