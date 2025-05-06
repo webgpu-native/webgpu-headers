@@ -536,6 +536,11 @@ enums:
         doc: |
           Enable passing SPIR-V shaders to @ref wgpuDeviceCreateShaderModule,
           via @ref WGPUShaderSourceSPIRV.
+      - name: reusable_adapters
+        doc: |
+          Normally, a @ref WGPUAdapter can only create a single device.
+          If this is available and enabled, then adapters won't immediately expire
+          when they create a device. They may still expire for other reasons.
   - name: load_op
     doc: |
       TODO
