@@ -45,6 +45,10 @@
 #    define WGPU_EXPORT
 #endif  // defined(WGPU_SHARED_LIBRARY)
 
+#if !defined(WGPU_DISABLE_DEPRECATED_ALIASES)
+#define WGPU_DISABLE_DEPRECATED_ALIASES 0
+#endif
+
 #if !defined(WGPU_OBJECT_ATTRIBUTE)
 #define WGPU_OBJECT_ATTRIBUTE
 #endif
@@ -126,12 +130,12 @@
  */
 #define WGPU_DEPTH_SLICE_UNDEFINED (UINT32_MAX)
 /**
- * For `uint32_t` limits, indicates no limit value is specified. For more info,
+ * For `uint32_t` limits, indicates no limit value is requested. For more info,
  * see @ref SentinelValues and the places that use this sentinel value.
  */
 #define WGPU_LIMIT_U32_UNDEFINED (UINT32_MAX)
 /**
- * For `uint64_t` limits, indicates no limit value is specified. For more info,
+ * For `uint64_t` limits, indicates no limit value is requested. For more info,
  * see @ref SentinelValues and the places that use this sentinel value.
  */
 #define WGPU_LIMIT_U64_UNDEFINED (UINT64_MAX)
@@ -156,6 +160,64 @@
  */
 #define WGPU_WHOLE_SIZE (UINT64_MAX)
 
+/** @} */
+
+/**
+ * \defgroup Aliases Aliases
+ * \brief Deprecated aliases for other definitions.
+ *
+ * @{
+ */
+#if !WGPU_DISABLE_DEPRECATED_ALIASES
+
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName WGPUDeviceFeatureName
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_DepthClipControl WGPUDeviceFeatureName_DepthClipControl
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_Depth32FloatStencil8 WGPUDeviceFeatureName_Depth32FloatStencil8
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TimestampQuery WGPUDeviceFeatureName_TimestampQuery
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionBC WGPUDeviceFeatureName_TextureCompressionBC
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionBCSliced3D WGPUDeviceFeatureName_TextureCompressionBCSliced3D
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionETC2 WGPUDeviceFeatureName_TextureCompressionETC2
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionASTC WGPUDeviceFeatureName_TextureCompressionASTC
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_TextureCompressionASTCSliced3D WGPUDeviceFeatureName_TextureCompressionASTCSliced3D
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_IndirectFirstInstance WGPUDeviceFeatureName_IndirectFirstInstance
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_ShaderF16 WGPUDeviceFeatureName_ShaderF16
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_RG11B10UfloatRenderable WGPUDeviceFeatureName_RG11B10UfloatRenderable
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_BGRA8UnormStorage WGPUDeviceFeatureName_BGRA8UnormStorage
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_Float32Filterable WGPUDeviceFeatureName_Float32Filterable
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_Float32Blendable WGPUDeviceFeatureName_Float32Blendable
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_ClipDistances WGPUDeviceFeatureName_ClipDistances
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_DualSourceBlending WGPUDeviceFeatureName_DualSourceBlending
+/** @deprecated alias for the new, more specific enum name. */
+#define WGPUFeatureName_Subgroups WGPUDeviceFeatureName_Subgroups
+
+/** @deprecated alias for the new, more specific struct name. */
+#define WGPULimits WGPUDeviceLimits
+/** @deprecated alias for the new, more specific struct init macro name. */
+#define WGPU_LIMITS_INIT WGPU_DEVICE_LIMITS_INIT
+
+/** @deprecated alias for the new, more specific struct name. */
+#define WGPUSupportedFeatures WGPUSupportedDeviceFeatures
+/** @deprecated alias for the new, more specific struct init macro name. */
+#define WGPU_SUPPORTED_FEATURES_INIT WGPU_SUPPORTED_DEVICE_FEATURES_INIT
+
+#endif // !WGPU_DISABLE_DEPRECATED_ALIASES
 /** @} */
 
 /**
@@ -260,10 +322,10 @@ struct WGPUCommandBufferDescriptor;
 struct WGPUCommandEncoderDescriptor;
 struct WGPUCompilationMessage;
 struct WGPUConstantEntry;
+struct WGPUDeviceLimits;
 struct WGPUExtent3D;
 struct WGPUFuture;
 struct WGPUInstanceLimits;
-struct WGPULimits;
 struct WGPUMultisampleState;
 struct WGPUOrigin3D;
 struct WGPUPassTimestampWrites;
@@ -284,7 +346,7 @@ struct WGPUShaderSourceSPIRV;
 struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
 struct WGPUStorageTextureBindingLayout;
-struct WGPUSupportedFeatures;
+struct WGPUSupportedDeviceFeatures;
 struct WGPUSupportedInstanceFeatures;
 struct WGPUSupportedWGSLLanguageFeatures;
 struct WGPUSurfaceCapabilities;
@@ -551,6 +613,27 @@ typedef enum WGPUCullMode {
     WGPUCullMode_Force32 = 0x7FFFFFFF
 } WGPUCullMode WGPU_ENUM_ATTRIBUTE;
 
+typedef enum WGPUDeviceFeatureName {
+    WGPUDeviceFeatureName_DepthClipControl = 0x00000001,
+    WGPUDeviceFeatureName_Depth32FloatStencil8 = 0x00000002,
+    WGPUDeviceFeatureName_TimestampQuery = 0x00000003,
+    WGPUDeviceFeatureName_TextureCompressionBC = 0x00000004,
+    WGPUDeviceFeatureName_TextureCompressionBCSliced3D = 0x00000005,
+    WGPUDeviceFeatureName_TextureCompressionETC2 = 0x00000006,
+    WGPUDeviceFeatureName_TextureCompressionASTC = 0x00000007,
+    WGPUDeviceFeatureName_TextureCompressionASTCSliced3D = 0x00000008,
+    WGPUDeviceFeatureName_IndirectFirstInstance = 0x00000009,
+    WGPUDeviceFeatureName_ShaderF16 = 0x0000000A,
+    WGPUDeviceFeatureName_RG11B10UfloatRenderable = 0x0000000B,
+    WGPUDeviceFeatureName_BGRA8UnormStorage = 0x0000000C,
+    WGPUDeviceFeatureName_Float32Filterable = 0x0000000D,
+    WGPUDeviceFeatureName_Float32Blendable = 0x0000000E,
+    WGPUDeviceFeatureName_ClipDistances = 0x0000000F,
+    WGPUDeviceFeatureName_DualSourceBlending = 0x00000010,
+    WGPUDeviceFeatureName_Subgroups = 0x00000011,
+    WGPUDeviceFeatureName_Force32 = 0x7FFFFFFF
+} WGPUDeviceFeatureName WGPU_ENUM_ATTRIBUTE;
+
 typedef enum WGPUDeviceLostReason {
     WGPUDeviceLostReason_Unknown = 0x00000001,
     WGPUDeviceLostReason_Destroyed = 0x00000002,
@@ -596,27 +679,6 @@ typedef enum WGPUFeatureLevel {
     WGPUFeatureLevel_Core = 0x00000002,
     WGPUFeatureLevel_Force32 = 0x7FFFFFFF
 } WGPUFeatureLevel WGPU_ENUM_ATTRIBUTE;
-
-typedef enum WGPUFeatureName {
-    WGPUFeatureName_DepthClipControl = 0x00000001,
-    WGPUFeatureName_Depth32FloatStencil8 = 0x00000002,
-    WGPUFeatureName_TimestampQuery = 0x00000003,
-    WGPUFeatureName_TextureCompressionBC = 0x00000004,
-    WGPUFeatureName_TextureCompressionBCSliced3D = 0x00000005,
-    WGPUFeatureName_TextureCompressionETC2 = 0x00000006,
-    WGPUFeatureName_TextureCompressionASTC = 0x00000007,
-    WGPUFeatureName_TextureCompressionASTCSliced3D = 0x00000008,
-    WGPUFeatureName_IndirectFirstInstance = 0x00000009,
-    WGPUFeatureName_ShaderF16 = 0x0000000A,
-    WGPUFeatureName_RG11B10UfloatRenderable = 0x0000000B,
-    WGPUFeatureName_BGRA8UnormStorage = 0x0000000C,
-    WGPUFeatureName_Float32Filterable = 0x0000000D,
-    WGPUFeatureName_Float32Blendable = 0x0000000E,
-    WGPUFeatureName_ClipDistances = 0x0000000F,
-    WGPUFeatureName_DualSourceBlending = 0x00000010,
-    WGPUFeatureName_Subgroups = 0x00000011,
-    WGPUFeatureName_Force32 = 0x7FFFFFFF
-} WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 
 typedef enum WGPUFilterMode {
     /**
@@ -2101,78 +2163,13 @@ typedef struct WGPUConstantEntry {
 })
 
 /**
- * Default values can be set using @ref WGPU_EXTENT_3D_INIT as initializer.
- */
-typedef struct WGPUExtent3D {
-    /**
-     * The `INIT` macro sets this to `0`.
-     */
-    uint32_t width;
-    /**
-     * The `INIT` macro sets this to `1`.
-     */
-    uint32_t height;
-    /**
-     * The `INIT` macro sets this to `1`.
-     */
-    uint32_t depthOrArrayLayers;
-} WGPUExtent3D WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUExtent3D.
- */
-#define WGPU_EXTENT_3D_INIT _wgpu_MAKE_INIT_STRUCT(WGPUExtent3D, { \
-    /*.width=*/0 _wgpu_COMMA \
-    /*.height=*/1 _wgpu_COMMA \
-    /*.depthOrArrayLayers=*/1 _wgpu_COMMA \
-})
-
-/**
- * Opaque handle to an asynchronous operation. See @ref Asynchronous-Operations for more information.
+ * Limits of a @ref WGPUAdapter, @ref WGPUDeviceDescriptor, or @ref WGPUDevice.
+ * In @ref WGPUDeviceDescriptor, an `UNDEFINED` sentinel value
+ * indicates no request for that limit.
  *
- * Default values can be set using @ref WGPU_FUTURE_INIT as initializer.
+ * Default values can be set using @ref WGPU_DEVICE_LIMITS_INIT as initializer.
  */
-typedef struct WGPUFuture {
-    /**
-     * Opaque id of the @ref WGPUFuture
-     *
-     * The `INIT` macro sets this to `0`.
-     */
-    uint64_t id;
-} WGPUFuture WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUFuture.
- */
-#define WGPU_FUTURE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUFuture, { \
-    /*.id=*/0 _wgpu_COMMA \
-})
-
-/**
- * Default values can be set using @ref WGPU_INSTANCE_LIMITS_INIT as initializer.
- */
-typedef struct WGPUInstanceLimits {
-    WGPUChainedStruct * nextInChain;
-    /**
-     * The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
-     *
-     * The `INIT` macro sets this to `0`.
-     */
-    size_t timedWaitAnyMaxCount;
-} WGPUInstanceLimits WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUInstanceLimits.
- */
-#define WGPU_INSTANCE_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceLimits, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.timedWaitAnyMaxCount=*/0 _wgpu_COMMA \
-})
-
-/**
- * Default values can be set using @ref WGPU_LIMITS_INIT as initializer.
- */
-typedef struct WGPULimits {
+typedef struct WGPUDeviceLimits {
     WGPUChainedStruct * nextInChain;
     /**
      * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
@@ -2302,12 +2299,12 @@ typedef struct WGPULimits {
      * The `INIT` macro sets this to `0`.
      */
     uint32_t maxImmediateSize;
-} WGPULimits WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUDeviceLimits WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPULimits.
+ * Initializer for @ref WGPUDeviceLimits.
  */
-#define WGPU_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPULimits, { \
+#define WGPU_DEVICE_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDeviceLimits, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.maxTextureDimension1D=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxTextureDimension2D=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
@@ -2341,6 +2338,77 @@ typedef struct WGPULimits {
     /*.maxComputeWorkgroupSizeZ=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxComputeWorkgroupsPerDimension=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxImmediateSize=*/0 _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_EXTENT_3D_INIT as initializer.
+ */
+typedef struct WGPUExtent3D {
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t width;
+    /**
+     * The `INIT` macro sets this to `1`.
+     */
+    uint32_t height;
+    /**
+     * The `INIT` macro sets this to `1`.
+     */
+    uint32_t depthOrArrayLayers;
+} WGPUExtent3D WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUExtent3D.
+ */
+#define WGPU_EXTENT_3D_INIT _wgpu_MAKE_INIT_STRUCT(WGPUExtent3D, { \
+    /*.width=*/0 _wgpu_COMMA \
+    /*.height=*/1 _wgpu_COMMA \
+    /*.depthOrArrayLayers=*/1 _wgpu_COMMA \
+})
+
+/**
+ * Opaque handle to an asynchronous operation. See @ref Asynchronous-Operations for more information.
+ *
+ * Default values can be set using @ref WGPU_FUTURE_INIT as initializer.
+ */
+typedef struct WGPUFuture {
+    /**
+     * Opaque id of the @ref WGPUFuture
+     *
+     * The `INIT` macro sets this to `0`.
+     */
+    uint64_t id;
+} WGPUFuture WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUFuture.
+ */
+#define WGPU_FUTURE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUFuture, { \
+    /*.id=*/0 _wgpu_COMMA \
+})
+
+/**
+ * Limits of a @ref WGPUInstanceDescriptor or @ref WGPUInstance.
+ *
+ * Default values can be set using @ref WGPU_INSTANCE_LIMITS_INIT as initializer.
+ */
+typedef struct WGPUInstanceLimits {
+    WGPUChainedStruct * nextInChain;
+    /**
+     * The maximum number @ref WGPUFutureWaitInfo supported in a call to ::wgpuInstanceWaitAny with `timeoutNS > 0`.
+     *
+     * The `INIT` macro sets this to `0`.
+     */
+    size_t timedWaitAnyMaxCount;
+} WGPUInstanceLimits WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUInstanceLimits.
+ */
+#define WGPU_INSTANCE_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceLimits, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.timedWaitAnyMaxCount=*/0 _wgpu_COMMA \
 })
 
 /**
@@ -3078,9 +3146,9 @@ typedef struct WGPUStorageTextureBindingLayout {
 })
 
 /**
- * Default values can be set using @ref WGPU_SUPPORTED_FEATURES_INIT as initializer.
+ * Default values can be set using @ref WGPU_SUPPORTED_DEVICE_FEATURES_INIT as initializer.
  */
-typedef struct WGPUSupportedFeatures {
+typedef struct WGPUSupportedDeviceFeatures {
     /**
      * Array count for `features`. The `INIT` macro sets this to 0.
      */
@@ -3088,13 +3156,13 @@ typedef struct WGPUSupportedFeatures {
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    WGPUFeatureName const * features;
-} WGPUSupportedFeatures WGPU_STRUCTURE_ATTRIBUTE;
+    WGPUDeviceFeatureName const * features;
+} WGPUSupportedDeviceFeatures WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPUSupportedFeatures.
+ * Initializer for @ref WGPUSupportedDeviceFeatures.
  */
-#define WGPU_SUPPORTED_FEATURES_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSupportedFeatures, { \
+#define WGPU_SUPPORTED_DEVICE_FEATURES_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSupportedDeviceFeatures, { \
     /*.featureCount=*/0 _wgpu_COMMA \
     /*.features=*/NULL _wgpu_COMMA \
 })
@@ -4006,11 +4074,11 @@ typedef struct WGPUDeviceDescriptor {
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    WGPUFeatureName const * requiredFeatures;
+    WGPUDeviceFeatureName const * requiredFeatures;
     /**
      * The `INIT` macro sets this to `NULL`.
      */
-    WGPU_NULLABLE WGPULimits const * requiredLimits;
+    WGPU_NULLABLE WGPUDeviceLimits const * requiredLimits;
     /**
      * The `INIT` macro sets this to @ref WGPU_QUEUE_DESCRIPTOR_INIT.
      */
@@ -4640,7 +4708,7 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUStringView procName) WGPU_FUNCTIO
  * Proc pointer type for @ref wgpuAdapterGetFeatures:
  * > @copydoc wgpuAdapterGetFeatures
  */
-typedef void (*WGPUProcAdapterGetFeatures)(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcAdapterGetFeatures)(WGPUAdapter adapter, WGPUSupportedDeviceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuAdapterGetInfo:
  * > @copydoc wgpuAdapterGetInfo
@@ -4650,12 +4718,12 @@ typedef WGPUStatus (*WGPUProcAdapterGetInfo)(WGPUAdapter adapter, WGPUAdapterInf
  * Proc pointer type for @ref wgpuAdapterGetLimits:
  * > @copydoc wgpuAdapterGetLimits
  */
-typedef WGPUStatus (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcAdapterGetLimits)(WGPUAdapter adapter, WGPUDeviceLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuAdapterHasFeature:
  * > @copydoc wgpuAdapterHasFeature
  */
-typedef WGPUBool (*WGPUProcAdapterHasFeature)(WGPUAdapter adapter, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUBool (*WGPUProcAdapterHasFeature)(WGPUAdapter adapter, WGPUDeviceFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuAdapterRequestDevice:
  * > @copydoc wgpuAdapterRequestDevice
@@ -5043,12 +5111,12 @@ typedef WGPUStatus (*WGPUProcDeviceGetAdapterInfo)(WGPUDevice device, WGPUAdapte
  * Proc pointer type for @ref wgpuDeviceGetFeatures:
  * > @copydoc wgpuDeviceGetFeatures
  */
-typedef void (*WGPUProcDeviceGetFeatures)(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcDeviceGetFeatures)(WGPUDevice device, WGPUSupportedDeviceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceGetLimits:
  * > @copydoc wgpuDeviceGetLimits
  */
-typedef WGPUStatus (*WGPUProcDeviceGetLimits)(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUStatus (*WGPUProcDeviceGetLimits)(WGPUDevice device, WGPUDeviceLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDeviceGetLostFuture:
  * > @copydoc wgpuDeviceGetLostFuture
@@ -5063,7 +5131,7 @@ typedef WGPUQueue (*WGPUProcDeviceGetQueue)(WGPUDevice device) WGPU_FUNCTION_ATT
  * Proc pointer type for @ref wgpuDeviceHasFeature:
  * > @copydoc wgpuDeviceHasFeature
  */
-typedef WGPUBool (*WGPUProcDeviceHasFeature)(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+typedef WGPUBool (*WGPUProcDeviceHasFeature)(WGPUDevice device, WGPUDeviceFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuDevicePopErrorScope:
  * > @copydoc wgpuDevicePopErrorScope
@@ -5485,12 +5553,12 @@ typedef void (*WGPUProcShaderModuleAddRef)(WGPUShaderModule shaderModule) WGPU_F
  */
 typedef void (*WGPUProcShaderModuleRelease)(WGPUShaderModule shaderModule) WGPU_FUNCTION_ATTRIBUTE;
 
-// Procs of SupportedFeatures
+// Procs of SupportedDeviceFeatures
 /**
- * Proc pointer type for @ref wgpuSupportedFeaturesFreeMembers:
- * > @copydoc wgpuSupportedFeaturesFreeMembers
+ * Proc pointer type for @ref wgpuSupportedDeviceFeaturesFreeMembers:
+ * > @copydoc wgpuSupportedDeviceFeaturesFreeMembers
  */
-typedef void (*WGPUProcSupportedFeaturesFreeMembers)(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
+typedef void (*WGPUProcSupportedDeviceFeaturesFreeMembers)(WGPUSupportedDeviceFeatures supportedDeviceFeatures) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of SupportedInstanceFeatures
 /**
@@ -5701,7 +5769,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
  * @param features
  * This parameter is @ref ReturnedWithOwnership.
  */
-WGPU_EXPORT void wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuAdapterGetFeatures(WGPUAdapter adapter, WGPUSupportedDeviceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @param info
  * This parameter is @ref ReturnedWithOwnership.
@@ -5714,8 +5782,8 @@ WGPU_EXPORT WGPUStatus wgpuAdapterGetInfo(WGPUAdapter adapter, WGPUAdapterInfo *
  * @returns
  * Indicates if there was an @ref OutStructChainError.
  */
-WGPU_EXPORT WGPUStatus wgpuAdapterGetLimits(WGPUAdapter adapter, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUStatus wgpuAdapterGetLimits(WGPUAdapter adapter, WGPUDeviceLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUBool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUDeviceFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUFuture wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPU_NULLABLE WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuAdapterAddRef(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuAdapterRelease(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
@@ -6027,12 +6095,12 @@ WGPU_EXPORT WGPUStatus wgpuDeviceGetAdapterInfo(WGPUDevice device, WGPUAdapterIn
  * @param features
  * This parameter is @ref ReturnedWithOwnership.
  */
-WGPU_EXPORT void wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuDeviceGetFeatures(WGPUDevice device, WGPUSupportedDeviceFeatures * features) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @returns
  * Indicates if there was an @ref OutStructChainError.
  */
-WGPU_EXPORT WGPUStatus wgpuDeviceGetLimits(WGPUDevice device, WGPULimits * limits) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUStatus wgpuDeviceGetLimits(WGPUDevice device, WGPUDeviceLimits * limits) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * @returns
  * The @ref WGPUFuture for the device-lost event of the device.
@@ -6043,7 +6111,7 @@ WGPU_EXPORT WGPUFuture wgpuDeviceGetLostFuture(WGPUDevice device) WGPU_FUNCTION_
  * This value is @ref ReturnedWithOwnership.
  */
 WGPU_EXPORT WGPUQueue wgpuDeviceGetQueue(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBool wgpuDeviceHasFeature(WGPUDevice device, WGPUFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUBool wgpuDeviceHasFeature(WGPUDevice device, WGPUDeviceFeatureName feature) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Pops an error scope to the current thread's error scope stack,
  * asynchronously returning the result. See @ref ErrorScopes.
@@ -6259,15 +6327,15 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
 /** @} */
 
 /**
- * \defgroup WGPUSupportedFeaturesMethods WGPUSupportedFeatures methods
- * \brief Functions whose first argument has type WGPUSupportedFeatures.
+ * \defgroup WGPUSupportedDeviceFeaturesMethods WGPUSupportedDeviceFeatures methods
+ * \brief Functions whose first argument has type WGPUSupportedDeviceFeatures.
  *
  * @{
  */
 /**
  * Frees members which were allocated by the API.
  */
-WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuSupportedDeviceFeaturesFreeMembers(WGPUSupportedDeviceFeatures supportedDeviceFeatures) WGPU_FUNCTION_ATTRIBUTE;
 /** @} */
 
 /**
