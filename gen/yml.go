@@ -95,6 +95,7 @@ type Struct struct {
 	Type        string          `yaml:"type"`
 	FreeMembers bool            `yaml:"free_members"`
 	Members     []ParameterType `yaml:"members"`
+	Extends     []string        `yaml:"extends"`
 }
 
 type Object struct {
@@ -108,13 +109,23 @@ var arrayTypeRegexp = regexp.MustCompile(`array<([a-zA-Z0-9._]+)>`)
 
 func SortStructs(structs []Struct) {
 	type node struct {
-		visited bool
-		depth   int
+		visited    bool
+		depth      int
+		Extensions []string
 		Struct
 	}
 	nodeMap := make(map[string]node, len(structs))
 	for _, s := range structs {
-		nodeMap[s.Name] = node{Struct: s}
+		node := nodeMap[s.Name]
+		node.Struct = s
+		nodeMap[s.Name] = node
+		if s.Type == "extension" {
+			for _, extend := range s.Extends {
+				parent := nodeMap[extend]
+				parent.Extensions = append(parent.Extensions, s.Name)
+				nodeMap[extend] = parent
+			}
+		}
 	}
 
 	slices.SortStableFunc(structs, func(a, b Struct) int {
@@ -123,12 +134,17 @@ func SortStructs(structs []Struct) {
 
 	var computeDepth func(string) int
 	computeDepth = func(name string) int {
-		if nodeMap[name].visited {
-			return nodeMap[name].depth
+		node, ok := nodeMap[name]
+		if !ok {
+			panic("found invalid non-existing type: " + name)
+		}
+
+		if node.visited {
+			return node.depth
 		}
 
 		maxDependentDepth := 0
-		for _, member := range nodeMap[name].Members {
+		for _, member := range node.Members {
 			if strings.HasPrefix(member.Type, "struct.") {
 				dependentDepth := computeDepth(strings.TrimPrefix(member.Type, "struct."))
 				maxDependentDepth = int(math.Max(float64(maxDependentDepth), float64(dependentDepth+1)))
@@ -143,8 +159,11 @@ func SortStructs(structs []Struct) {
 				}
 			}
 		}
+		for _, extension := range node.Extensions {
+			dependentDepth := computeDepth(extension)
+			maxDependentDepth = int(math.Max(float64(maxDependentDepth), float64(dependentDepth+1)))
+		}
 
-		node := nodeMap[name]
 		node.depth = maxDependentDepth
 		node.visited = true
 		nodeMap[name] = node

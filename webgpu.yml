@@ -59,6 +59,11 @@ constants:
     doc: |
       Indicates no query set index is specified. For more info,
       see @ref SentinelValues and the places that use this sentinel value.
+  - name: strlen
+    value: usize_max
+    doc: |
+      Sentinel value used in @ref WGPUStringView to indicate that the pointer
+      is to a null-terminated string, rather than an explicitly-sized string.
   - name: whole_map_size
     value: usize_max
     doc: |

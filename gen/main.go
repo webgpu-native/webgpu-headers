@@ -84,13 +84,17 @@ func main() {
 	}
 }
 
+func UpperConcatCase(s string) string {
+	return strings.ToUpper(PascalCase(s))
+}
+
 func SortAndTransform(yml *Yml) {
 	// Sort structs
 	SortStructs(yml.Structs)
 
 	// Sort constants
 	slices.SortStableFunc(yml.Constants, func(a, b Constant) int {
-		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
+		return strings.Compare(UpperConcatCase(a.Name), UpperConcatCase(b.Name))
 	})
 
 	// Sort enums
@@ -101,7 +105,7 @@ func SortAndTransform(yml *Yml) {
 		} else if !a.Extended && b.Extended {
 			return 1
 		}
-		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
+		return strings.Compare(UpperConcatCase(a.Name), UpperConcatCase(b.Name))
 	})
 
 	// Sort bitflags
@@ -112,7 +116,7 @@ func SortAndTransform(yml *Yml) {
 		} else if !a.Extended && b.Extended {
 			return 1
 		}
-		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
+		return strings.Compare(UpperConcatCase(a.Name), UpperConcatCase(b.Name))
 	})
 
 	// Add free_member function for relevant structs
@@ -133,13 +137,13 @@ func SortAndTransform(yml *Yml) {
 
 	// Sort objects
 	slices.SortStableFunc(yml.Objects, func(a, b Object) int {
-		return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
+		return strings.Compare(UpperConcatCase(a.Name), UpperConcatCase(b.Name))
 	})
 
 	// Sort methods
 	for _, obj := range yml.Objects {
 		slices.SortStableFunc(obj.Methods, func(a, b Function) int {
-			return strings.Compare(PascalCase(a.Name), PascalCase(b.Name))
+			return strings.Compare(UpperConcatCase(a.Name), UpperConcatCase(b.Name))
 		})
 	}
 
