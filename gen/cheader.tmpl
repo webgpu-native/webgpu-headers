@@ -131,15 +131,9 @@
  * For info on how this is used in various places, see \ref Strings.
  */
 typedef struct WGPUStringView {
-    char const * WGPU_NULLABLE data;
+    WGPU_NULLABLE char const * data;
     size_t length;
-} WGPUStringView;
-
-/**
- * Sentinel value used in @ref WGPUStringView to indicate that the pointer
- * is to a null-terminated string, rather than an explicitly-sized string.
- */
-#define WGPU_STRLEN SIZE_MAX
+} WGPUStringView WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Initializer for @ref WGPUStringView.
@@ -219,6 +213,7 @@ typedef enum {{CType .Base ""}} {
 } {{CType .Base ""}} WGPU_ENUM_ATTRIBUTE;
 {{-   end}}
 {{- end}}
+
 /** @} */
 
 /**
@@ -375,17 +370,11 @@ extern "C" {
 
 // Global procs
 {{- range .Functions}}
-/**
- * Proc pointer type for @ref wgpu{{PascalCaseName .Base}}:
- * > @copydoc wgpu{{PascalCaseName .Base}}
- */
+{{-   MCommentProcPointer (PascalCaseName .Base) 0}}
 typedef {{FunctionReturns .}} (*WGPUProc{{PascalCaseName .Base}})({{FunctionArgs . nil}}) WGPU_FUNCTION_ATTRIBUTE;
 {{- end}}
 {{- if eq .Name "webgpu"}}
-/**
- * Proc pointer type for @ref wgpuGetProcAddress:
- * > @copydoc wgpuGetProcAddress
- */
+{{-   MCommentProcPointer "GetProcAddress" 0}}
 typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUStringView procName) WGPU_FUNCTION_ATTRIBUTE;
 {{  end}}
 
@@ -393,10 +382,7 @@ typedef WGPUProc (*WGPUProcGetProcAddress)(WGPUStringView procName) WGPU_FUNCTIO
 
 // Procs of {{PascalCaseName $object.Base}}
 {{-   range $object.Methods}}
-/**
- * Proc pointer type for @ref wgpu{{CMethodName $object .}}:
- * > @copydoc wgpu{{CMethodName $object .}}
- */
+{{-   MCommentProcPointer (CMethodName $object .) 0}}
 typedef {{FunctionReturns .}} (*WGPUProc{{CMethodName $object .}})({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
 {{- end}}
@@ -422,7 +408,7 @@ WGPU_EXPORT {{FunctionReturns .}} wgpu{{PascalCaseName .Base}}({{FunctionArgs . 
  * The result must be cast to the appropriate proc pointer type.
  */
 WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_ATTRIBUTE;
-{{  end}}
+{{- end}}
 
 /** @} */
 
@@ -445,6 +431,7 @@ WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_A
 {{-     MCommentFunction . 0}}
 WGPU_EXPORT {{FunctionReturns .}} wgpu{{CMethodName $object .}}({{FunctionArgs . $object}}) WGPU_FUNCTION_ATTRIBUTE;
 {{-   end}}
+
 /** @} */
 {{- end}}
 

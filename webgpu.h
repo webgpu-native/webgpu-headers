@@ -146,6 +146,11 @@
  */
 #define WGPU_QUERY_SET_INDEX_UNDEFINED (UINT32_MAX)
 /**
+ * Sentinel value used in @ref WGPUStringView to indicate that the pointer
+ * is to a null-terminated string, rather than an explicitly-sized string.
+ */
+#define WGPU_STRLEN (SIZE_MAX)
+/**
  * Indicates a size extending to the end of the buffer. For more info,
  * see @ref SentinelValues and the places that use this sentinel value.
  */
@@ -186,15 +191,9 @@
  * For info on how this is used in various places, see \ref Strings.
  */
 typedef struct WGPUStringView {
-    char const * WGPU_NULLABLE data;
+    WGPU_NULLABLE char const * data;
     size_t length;
-} WGPUStringView;
-
-/**
- * Sentinel value used in @ref WGPUStringView to indicate that the pointer
- * is to a null-terminated string, rather than an explicitly-sized string.
- */
-#define WGPU_STRLEN SIZE_MAX
+} WGPUStringView WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
  * Initializer for @ref WGPUStringView.
@@ -275,11 +274,9 @@ struct WGPURenderBundleDescriptor;
 struct WGPURenderBundleEncoderDescriptor;
 struct WGPURenderPassDepthStencilAttachment;
 struct WGPURenderPassMaxDrawCount;
-struct WGPURequestAdapterOptions;
 struct WGPURequestAdapterWebXROptions;
 struct WGPUSamplerBindingLayout;
 struct WGPUSamplerDescriptor;
-struct WGPUShaderModuleDescriptor;
 struct WGPUShaderSourceSPIRV;
 struct WGPUShaderSourceWGSL;
 struct WGPUStencilFaceState;
@@ -290,7 +287,6 @@ struct WGPUSupportedWGSLLanguageFeatures;
 struct WGPUSurfaceCapabilities;
 struct WGPUSurfaceColorManagement;
 struct WGPUSurfaceConfiguration;
-struct WGPUSurfaceDescriptor;
 struct WGPUSurfaceSourceAndroidNativeWindow;
 struct WGPUSurfaceSourceMetalLayer;
 struct WGPUSurfaceSourceWaylandSurface;
@@ -313,6 +309,9 @@ struct WGPUDeviceDescriptor;
 struct WGPUFutureWaitInfo;
 struct WGPUInstanceDescriptor;
 struct WGPURenderPassColorAttachment;
+struct WGPURequestAdapterOptions;
+struct WGPUShaderModuleDescriptor;
+struct WGPUSurfaceDescriptor;
 struct WGPUTexelCopyBufferInfo;
 struct WGPUTexelCopyTextureInfo;
 struct WGPUTextureDescriptor;
@@ -821,21 +820,6 @@ typedef enum WGPURequestDeviceStatus {
     WGPURequestDeviceStatus_Force32 = 0x7FFFFFFF
 } WGPURequestDeviceStatus WGPU_ENUM_ATTRIBUTE;
 
-typedef enum WGPUSType {
-    WGPUSType_ShaderSourceSPIRV = 0x00000001,
-    WGPUSType_ShaderSourceWGSL = 0x00000002,
-    WGPUSType_RenderPassMaxDrawCount = 0x00000003,
-    WGPUSType_SurfaceSourceMetalLayer = 0x00000004,
-    WGPUSType_SurfaceSourceWindowsHWND = 0x00000005,
-    WGPUSType_SurfaceSourceXlibWindow = 0x00000006,
-    WGPUSType_SurfaceSourceWaylandSurface = 0x00000007,
-    WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
-    WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
-    WGPUSType_SurfaceColorManagement = 0x0000000A,
-    WGPUSType_RequestAdapterWebXROptions = 0x0000000B,
-    WGPUSType_Force32 = 0x7FFFFFFF
-} WGPUSType WGPU_ENUM_ATTRIBUTE;
-
 typedef enum WGPUSamplerBindingType {
     /**
      * `0`. Indicates that this @ref WGPUSamplerBindingLayout member of
@@ -906,6 +890,21 @@ typedef enum WGPUStoreOp {
     WGPUStoreOp_Discard = 0x00000002,
     WGPUStoreOp_Force32 = 0x7FFFFFFF
 } WGPUStoreOp WGPU_ENUM_ATTRIBUTE;
+
+typedef enum WGPUSType {
+    WGPUSType_ShaderSourceSPIRV = 0x00000001,
+    WGPUSType_ShaderSourceWGSL = 0x00000002,
+    WGPUSType_RenderPassMaxDrawCount = 0x00000003,
+    WGPUSType_SurfaceSourceMetalLayer = 0x00000004,
+    WGPUSType_SurfaceSourceWindowsHWND = 0x00000005,
+    WGPUSType_SurfaceSourceXlibWindow = 0x00000006,
+    WGPUSType_SurfaceSourceWaylandSurface = 0x00000007,
+    WGPUSType_SurfaceSourceAndroidNativeWindow = 0x00000008,
+    WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
+    WGPUSType_SurfaceColorManagement = 0x0000000A,
+    WGPUSType_RequestAdapterWebXROptions = 0x0000000B,
+    WGPUSType_Force32 = 0x7FFFFFFF
+} WGPUSType WGPU_ENUM_ATTRIBUTE;
 
 /**
  * The status enum for @ref wgpuSurfaceGetCurrentTexture.
@@ -1157,14 +1156,6 @@ typedef enum WGPUVertexStepMode {
     WGPUVertexStepMode_Force32 = 0x7FFFFFFF
 } WGPUVertexStepMode WGPU_ENUM_ATTRIBUTE;
 
-typedef enum WGPUWGSLLanguageFeatureName {
-    WGPUWGSLLanguageFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
-    WGPUWGSLLanguageFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
-    WGPUWGSLLanguageFeatureName_UnrestrictedPointerParameters = 0x00000003,
-    WGPUWGSLLanguageFeatureName_PointerCompositeAccess = 0x00000004,
-    WGPUWGSLLanguageFeatureName_Force32 = 0x7FFFFFFF
-} WGPUWGSLLanguageFeatureName WGPU_ENUM_ATTRIBUTE;
-
 /**
  * Status returned from a call to ::wgpuInstanceWaitAny.
  */
@@ -1184,6 +1175,15 @@ typedef enum WGPUWaitStatus {
     WGPUWaitStatus_Error = 0x00000003,
     WGPUWaitStatus_Force32 = 0x7FFFFFFF
 } WGPUWaitStatus WGPU_ENUM_ATTRIBUTE;
+
+typedef enum WGPUWGSLLanguageFeatureName {
+    WGPUWGSLLanguageFeatureName_ReadonlyAndReadwriteStorageTextures = 0x00000001,
+    WGPUWGSLLanguageFeatureName_Packed4x8IntegerDotProduct = 0x00000002,
+    WGPUWGSLLanguageFeatureName_UnrestrictedPointerParameters = 0x00000003,
+    WGPUWGSLLanguageFeatureName_PointerCompositeAccess = 0x00000004,
+    WGPUWGSLLanguageFeatureName_Force32 = 0x7FFFFFFF
+} WGPUWGSLLanguageFeatureName WGPU_ENUM_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -2727,61 +2727,6 @@ typedef struct WGPURenderPassMaxDrawCount {
 })
 
 /**
- * Default values can be set using @ref WGPU_REQUEST_ADAPTER_OPTIONS_INIT as initializer.
- */
-typedef struct WGPURequestAdapterOptions {
-    WGPUChainedStruct * nextInChain;
-    /**
-     * "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
-     *
-     * If set to @ref WGPUFeatureLevel_Undefined,
-     * [defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
-     * Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
-     * and provide @ref WGPUFeatureLevel_Core instead.
-     *
-     * The `INIT` macro sets this to @ref WGPUFeatureLevel_Undefined.
-     */
-    WGPUFeatureLevel featureLevel;
-    /**
-     * The `INIT` macro sets this to @ref WGPUPowerPreference_Undefined.
-     */
-    WGPUPowerPreference powerPreference;
-    /**
-     * If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
-     * If this is not possible, the request returns null.
-     *
-     * The `INIT` macro sets this to `WGPU_FALSE`.
-     */
-    WGPUBool forceFallbackAdapter;
-    /**
-     * If set, requires the adapter to have a particular backend type.
-     * If this is not possible, the request returns null.
-     *
-     * The `INIT` macro sets this to @ref WGPUBackendType_Undefined.
-     */
-    WGPUBackendType backendType;
-    /**
-     * If set, requires the adapter to be able to output to a particular surface.
-     * If this is not possible, the request returns null.
-     *
-     * The `INIT` macro sets this to `NULL`.
-     */
-    WGPU_NULLABLE WGPUSurface compatibleSurface;
-} WGPURequestAdapterOptions WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPURequestAdapterOptions.
- */
-#define WGPU_REQUEST_ADAPTER_OPTIONS_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterOptions, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.featureLevel=*/WGPUFeatureLevel_Undefined _wgpu_COMMA \
-    /*.powerPreference=*/WGPUPowerPreference_Undefined _wgpu_COMMA \
-    /*.forceFallbackAdapter=*/WGPU_FALSE _wgpu_COMMA \
-    /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
-    /*.compatibleSurface=*/NULL _wgpu_COMMA \
-})
-
-/**
  * Extension providing requestAdapter options for implementations with WebXR interop (i.e. Wasm).
  *
  * Default values can be set using @ref WGPU_REQUEST_ADAPTER_WEBXR_OPTIONS_INIT as initializer.
@@ -2924,27 +2869,6 @@ typedef struct WGPUSamplerDescriptor {
     /*.lodMaxClamp=*/32.f _wgpu_COMMA \
     /*.compare=*/WGPUCompareFunction_Undefined _wgpu_COMMA \
     /*.maxAnisotropy=*/1 _wgpu_COMMA \
-})
-
-/**
- * Default values can be set using @ref WGPU_SHADER_MODULE_DESCRIPTOR_INIT as initializer.
- */
-typedef struct WGPUShaderModuleDescriptor {
-    WGPUChainedStruct * nextInChain;
-    /**
-     * This is a \ref NonNullInputString.
-     *
-     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
-     */
-    WGPUStringView label;
-} WGPUShaderModuleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUShaderModuleDescriptor.
- */
-#define WGPU_SHADER_MODULE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUShaderModuleDescriptor, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
 })
 
 /**
@@ -3317,33 +3241,6 @@ typedef struct WGPUSurfaceConfiguration {
     /*.viewFormats=*/NULL _wgpu_COMMA \
     /*.alphaMode=*/WGPUCompositeAlphaMode_Auto _wgpu_COMMA \
     /*.presentMode=*/WGPUPresentMode_Undefined _wgpu_COMMA \
-})
-
-/**
- * The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
- * It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
- * See @ref Surface-Creation for more details.
- *
- * Default values can be set using @ref WGPU_SURFACE_DESCRIPTOR_INIT as initializer.
- */
-typedef struct WGPUSurfaceDescriptor {
-    WGPUChainedStruct * nextInChain;
-    /**
-     * Label used to refer to the object.
-     *
-     * This is a \ref NonNullInputString.
-     *
-     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
-     */
-    WGPUStringView label;
-} WGPUSurfaceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUSurfaceDescriptor.
- */
-#define WGPU_SURFACE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceDescriptor, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
 })
 
 /**
@@ -4149,6 +4046,109 @@ typedef struct WGPURenderPassColorAttachment {
 })
 
 /**
+ * Default values can be set using @ref WGPU_REQUEST_ADAPTER_OPTIONS_INIT as initializer.
+ */
+typedef struct WGPURequestAdapterOptions {
+    WGPUChainedStruct * nextInChain;
+    /**
+     * "Feature level" for the adapter request. If an adapter is returned, it must support the features and limits in the requested feature level.
+     *
+     * If set to @ref WGPUFeatureLevel_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUFeatureLevel_Core.
+     * Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
+     * and provide @ref WGPUFeatureLevel_Core instead.
+     *
+     * The `INIT` macro sets this to @ref WGPUFeatureLevel_Undefined.
+     */
+    WGPUFeatureLevel featureLevel;
+    /**
+     * The `INIT` macro sets this to @ref WGPUPowerPreference_Undefined.
+     */
+    WGPUPowerPreference powerPreference;
+    /**
+     * If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
+     * If this is not possible, the request returns null.
+     *
+     * The `INIT` macro sets this to `WGPU_FALSE`.
+     */
+    WGPUBool forceFallbackAdapter;
+    /**
+     * If set, requires the adapter to have a particular backend type.
+     * If this is not possible, the request returns null.
+     *
+     * The `INIT` macro sets this to @ref WGPUBackendType_Undefined.
+     */
+    WGPUBackendType backendType;
+    /**
+     * If set, requires the adapter to be able to output to a particular surface.
+     * If this is not possible, the request returns null.
+     *
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPU_NULLABLE WGPUSurface compatibleSurface;
+} WGPURequestAdapterOptions WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPURequestAdapterOptions.
+ */
+#define WGPU_REQUEST_ADAPTER_OPTIONS_INIT _wgpu_MAKE_INIT_STRUCT(WGPURequestAdapterOptions, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.featureLevel=*/WGPUFeatureLevel_Undefined _wgpu_COMMA \
+    /*.powerPreference=*/WGPUPowerPreference_Undefined _wgpu_COMMA \
+    /*.forceFallbackAdapter=*/WGPU_FALSE _wgpu_COMMA \
+    /*.backendType=*/WGPUBackendType_Undefined _wgpu_COMMA \
+    /*.compatibleSurface=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_SHADER_MODULE_DESCRIPTOR_INIT as initializer.
+ */
+typedef struct WGPUShaderModuleDescriptor {
+    WGPUChainedStruct * nextInChain;
+    /**
+     * This is a \ref NonNullInputString.
+     *
+     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
+     */
+    WGPUStringView label;
+} WGPUShaderModuleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUShaderModuleDescriptor.
+ */
+#define WGPU_SHADER_MODULE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUShaderModuleDescriptor, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
+})
+
+/**
+ * The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
+ * It isn't sufficient by itself and must have one of the `WGPUSurfaceSource*` in its chain.
+ * See @ref Surface-Creation for more details.
+ *
+ * Default values can be set using @ref WGPU_SURFACE_DESCRIPTOR_INIT as initializer.
+ */
+typedef struct WGPUSurfaceDescriptor {
+    WGPUChainedStruct * nextInChain;
+    /**
+     * Label used to refer to the object.
+     *
+     * This is a \ref NonNullInputString.
+     *
+     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
+     */
+    WGPUStringView label;
+} WGPUSurfaceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUSurfaceDescriptor.
+ */
+#define WGPU_SURFACE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUSurfaceDescriptor, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
+})
+
+/**
  * Default values can be set using @ref WGPU_TEXEL_COPY_BUFFER_INFO_INIT as initializer.
  */
 typedef struct WGPUTexelCopyBufferInfo {
@@ -4725,15 +4725,15 @@ typedef void (*WGPUProcBufferDestroy)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE
  */
 typedef void const * (*WGPUProcBufferGetConstMappedRange)(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 /**
- * Proc pointer type for @ref wgpuBufferGetMapState:
- * > @copydoc wgpuBufferGetMapState
- */
-typedef WGPUBufferMapState (*WGPUProcBufferGetMapState)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
-/**
  * Proc pointer type for @ref wgpuBufferGetMappedRange:
  * > @copydoc wgpuBufferGetMappedRange
  */
 typedef void * (*WGPUProcBufferGetMappedRange)(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuBufferGetMapState:
+ * > @copydoc wgpuBufferGetMapState
+ */
+typedef WGPUBufferMapState (*WGPUProcBufferGetMapState)(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Proc pointer type for @ref wgpuBufferGetSize:
  * > @copydoc wgpuBufferGetSize
@@ -5679,7 +5679,6 @@ WGPU_EXPORT WGPUBool wgpuHasInstanceFeature(WGPUInstanceFeatureName feature) WGP
  */
 WGPU_EXPORT WGPUProc wgpuGetProcAddress(WGPUStringView procName) WGPU_FUNCTION_ATTRIBUTE;
 
-
 /** @} */
 
 /**
@@ -5719,6 +5718,7 @@ WGPU_EXPORT WGPUBool wgpuAdapterHasFeature(WGPUAdapter adapter, WGPUFeatureName 
 WGPU_EXPORT WGPUFuture wgpuAdapterRequestDevice(WGPUAdapter adapter, WGPU_NULLABLE WGPUDeviceDescriptor const * descriptor, WGPURequestDeviceCallbackInfo callbackInfo) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuAdapterAddRef(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuAdapterRelease(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -5731,6 +5731,7 @@ WGPU_EXPORT void wgpuAdapterRelease(WGPUAdapter adapter) WGPU_FUNCTION_ATTRIBUTE
  * Frees members which were allocated by the API.
  */
 WGPU_EXPORT void wgpuAdapterInfoFreeMembers(WGPUAdapterInfo adapterInfo) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -5742,6 +5743,7 @@ WGPU_EXPORT void wgpuAdapterInfoFreeMembers(WGPUAdapterInfo adapterInfo) WGPU_FU
 WGPU_EXPORT void wgpuBindGroupSetLabel(WGPUBindGroup bindGroup, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBindGroupAddRef(WGPUBindGroup bindGroup) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBindGroupRelease(WGPUBindGroup bindGroup) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -5753,6 +5755,7 @@ WGPU_EXPORT void wgpuBindGroupRelease(WGPUBindGroup bindGroup) WGPU_FUNCTION_ATT
 WGPU_EXPORT void wgpuBindGroupLayoutSetLabel(WGPUBindGroupLayout bindGroupLayout, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBindGroupLayoutAddRef(WGPUBindGroupLayout bindGroupLayout) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBindGroupLayoutRelease(WGPUBindGroupLayout bindGroupLayout) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -5780,7 +5783,6 @@ WGPU_EXPORT void wgpuBufferDestroy(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
  * The returned pointer is valid for exactly this many bytes.
  */
 WGPU_EXPORT void const * wgpuBufferGetConstMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
-WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
  * Returns a mutable pointer to beginning of the mapped range.
  * See @ref MappedRangeBehavior for error conditions and guarantees.
@@ -5798,6 +5800,7 @@ WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUN
  * The returned pointer is valid for exactly this many bytes.
  */
 WGPU_EXPORT void * wgpuBufferGetMappedRange(WGPUBuffer buffer, size_t offset, size_t size) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferUsage wgpuBufferGetUsage(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
@@ -5855,6 +5858,7 @@ WGPU_EXPORT void wgpuBufferUnmap(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUStatus wgpuBufferWriteMappedRange(WGPUBuffer buffer, size_t offset, void const * data, size_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBufferAddRef(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuBufferRelease(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -5866,6 +5870,7 @@ WGPU_EXPORT void wgpuBufferRelease(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuCommandBufferSetLabel(WGPUCommandBuffer commandBuffer, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuCommandBufferAddRef(WGPUCommandBuffer commandBuffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuCommandBufferRelease(WGPUCommandBuffer commandBuffer) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -5902,6 +5907,7 @@ WGPU_EXPORT void wgpuCommandEncoderSetLabel(WGPUCommandEncoder commandEncoder, W
 WGPU_EXPORT void wgpuCommandEncoderWriteTimestamp(WGPUCommandEncoder commandEncoder, WGPUQuerySet querySet, uint32_t queryIndex) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuCommandEncoderAddRef(WGPUCommandEncoder commandEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuCommandEncoderRelease(WGPUCommandEncoder commandEncoder) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -5921,6 +5927,7 @@ WGPU_EXPORT void wgpuComputePassEncoderSetLabel(WGPUComputePassEncoder computePa
 WGPU_EXPORT void wgpuComputePassEncoderSetPipeline(WGPUComputePassEncoder computePassEncoder, WGPUComputePipeline pipeline) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePassEncoderAddRef(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePassEncoderRelease(WGPUComputePassEncoder computePassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -5937,6 +5944,7 @@ WGPU_EXPORT WGPUBindGroupLayout wgpuComputePipelineGetBindGroupLayout(WGPUComput
 WGPU_EXPORT void wgpuComputePipelineSetLabel(WGPUComputePipeline computePipeline, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePipelineAddRef(WGPUComputePipeline computePipeline) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuComputePipelineRelease(WGPUComputePipeline computePipeline) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6057,6 +6065,7 @@ WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter fil
 WGPU_EXPORT void wgpuDeviceSetLabel(WGPUDevice device, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceAddRef(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6096,6 +6105,7 @@ WGPU_EXPORT WGPUFuture wgpuInstanceRequestAdapter(WGPUInstance instance, WGPU_NU
 WGPU_EXPORT WGPUWaitStatus wgpuInstanceWaitAny(WGPUInstance instance, size_t futureCount, WGPU_NULLABLE WGPUFutureWaitInfo * futures, uint64_t timeoutNS) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuInstanceAddRef(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuInstanceRelease(WGPUInstance instance) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6107,6 +6117,7 @@ WGPU_EXPORT void wgpuInstanceRelease(WGPUInstance instance) WGPU_FUNCTION_ATTRIB
 WGPU_EXPORT void wgpuPipelineLayoutSetLabel(WGPUPipelineLayout pipelineLayout, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuPipelineLayoutAddRef(WGPUPipelineLayout pipelineLayout) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuPipelineLayoutRelease(WGPUPipelineLayout pipelineLayout) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6121,6 +6132,7 @@ WGPU_EXPORT WGPUQueryType wgpuQuerySetGetType(WGPUQuerySet querySet) WGPU_FUNCTI
 WGPU_EXPORT void wgpuQuerySetSetLabel(WGPUQuerySet querySet, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQuerySetAddRef(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQuerySetRelease(WGPUQuerySet querySet) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6140,6 +6152,7 @@ WGPU_EXPORT void wgpuQueueWriteBuffer(WGPUQueue queue, WGPUBuffer buffer, uint64
 WGPU_EXPORT void wgpuQueueWriteTexture(WGPUQueue queue, WGPUTexelCopyTextureInfo const * destination, void const * data, size_t dataSize, WGPUTexelCopyBufferLayout const * dataLayout, WGPUExtent3D const * writeSize) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueAddRef(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuQueueRelease(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6151,6 +6164,7 @@ WGPU_EXPORT void wgpuQueueRelease(WGPUQueue queue) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleSetLabel(WGPURenderBundle renderBundle, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleAddRef(WGPURenderBundle renderBundle) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleRelease(WGPURenderBundle renderBundle) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6178,6 +6192,7 @@ WGPU_EXPORT void wgpuRenderBundleEncoderSetPipeline(WGPURenderBundleEncoder rend
 WGPU_EXPORT void wgpuRenderBundleEncoderSetVertexBuffer(WGPURenderBundleEncoder renderBundleEncoder, uint32_t slot, WGPU_NULLABLE WGPUBuffer buffer, uint64_t offset, uint64_t size) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleEncoderAddRef(WGPURenderBundleEncoder renderBundleEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderBundleEncoderRelease(WGPURenderBundleEncoder renderBundleEncoder) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6217,6 +6232,7 @@ WGPU_EXPORT void wgpuRenderPassEncoderSetVertexBuffer(WGPURenderPassEncoder rend
 WGPU_EXPORT void wgpuRenderPassEncoderSetViewport(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderAddRef(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPassEncoderRelease(WGPURenderPassEncoder renderPassEncoder) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6233,6 +6249,7 @@ WGPU_EXPORT WGPUBindGroupLayout wgpuRenderPipelineGetBindGroupLayout(WGPURenderP
 WGPU_EXPORT void wgpuRenderPipelineSetLabel(WGPURenderPipeline renderPipeline, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPipelineAddRef(WGPURenderPipeline renderPipeline) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuRenderPipelineRelease(WGPURenderPipeline renderPipeline) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6244,6 +6261,7 @@ WGPU_EXPORT void wgpuRenderPipelineRelease(WGPURenderPipeline renderPipeline) WG
 WGPU_EXPORT void wgpuSamplerSetLabel(WGPUSampler sampler, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuSamplerAddRef(WGPUSampler sampler) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuSamplerRelease(WGPUSampler sampler) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6256,6 +6274,7 @@ WGPU_EXPORT WGPUFuture wgpuShaderModuleGetCompilationInfo(WGPUShaderModule shade
 WGPU_EXPORT void wgpuShaderModuleSetLabel(WGPUShaderModule shaderModule, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuShaderModuleAddRef(WGPUShaderModule shaderModule) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6268,6 +6287,7 @@ WGPU_EXPORT void wgpuShaderModuleRelease(WGPUShaderModule shaderModule) WGPU_FUN
  * Frees members which were allocated by the API.
  */
 WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supportedFeatures) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6280,6 +6300,7 @@ WGPU_EXPORT void wgpuSupportedFeaturesFreeMembers(WGPUSupportedFeatures supporte
  * Frees members which were allocated by the API.
  */
 WGPU_EXPORT void wgpuSupportedInstanceFeaturesFreeMembers(WGPUSupportedInstanceFeatures supportedInstanceFeatures) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6292,6 +6313,7 @@ WGPU_EXPORT void wgpuSupportedInstanceFeaturesFreeMembers(WGPUSupportedInstanceF
  * Frees members which were allocated by the API.
  */
 WGPU_EXPORT void wgpuSupportedWGSLLanguageFeaturesFreeMembers(WGPUSupportedWGSLLanguageFeatures supportedWGSLLanguageFeatures) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6358,6 +6380,7 @@ WGPU_EXPORT void wgpuSurfaceSetLabel(WGPUSurface surface, WGPUStringView label) 
 WGPU_EXPORT void wgpuSurfaceUnconfigure(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuSurfaceAddRef(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuSurfaceRelease(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6370,6 +6393,7 @@ WGPU_EXPORT void wgpuSurfaceRelease(WGPUSurface surface) WGPU_FUNCTION_ATTRIBUTE
  * Frees members which were allocated by the API.
  */
 WGPU_EXPORT void wgpuSurfaceCapabilitiesFreeMembers(WGPUSurfaceCapabilities surfaceCapabilities) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6395,6 +6419,7 @@ WGPU_EXPORT uint32_t wgpuTextureGetWidth(WGPUTexture texture) WGPU_FUNCTION_ATTR
 WGPU_EXPORT void wgpuTextureSetLabel(WGPUTexture texture, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuTextureAddRef(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuTextureRelease(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -6406,6 +6431,7 @@ WGPU_EXPORT void wgpuTextureRelease(WGPUTexture texture) WGPU_FUNCTION_ATTRIBUTE
 WGPU_EXPORT void wgpuTextureViewSetLabel(WGPUTextureView textureView, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuTextureViewAddRef(WGPUTextureView textureView) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuTextureViewRelease(WGPUTextureView textureView) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /** @} */
