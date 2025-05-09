@@ -657,6 +657,13 @@ typedef enum WGPUInstanceFeatureName {
      * via @ref WGPUShaderSourceSPIRV.
      */
     WGPUInstanceFeatureName_ShaderSourceSPIRV = 0x00000002,
+    /**
+     * Normally, a @ref WGPUAdapter can only create a single device. If this is
+     * available and enabled, then adapters won't immediately expire when they
+     * create a device, so can be reused to make multiple devices. They may
+     * still expire for other reasons.
+     */
+    WGPUInstanceFeatureName_MultipleDevicesPerAdapter = 0x00000003,
     WGPUInstanceFeatureName_Force32 = 0x7FFFFFFF
 } WGPUInstanceFeatureName WGPU_ENUM_ATTRIBUTE;
 
