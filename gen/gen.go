@@ -183,6 +183,12 @@ func (g *Generator) Gen(dst io.Writer) error {
 
 				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
 			},
+			"MCommentProcPointer": func(name string, indent int) string {
+				var s string
+				s += "Proc pointer type for @ref wgpu" + name + ":\n"
+				s += "> @copydoc wgpu" + name
+				return Comment(strings.TrimSpace(s), CommentTypeMultiLine, indent, true)
+			},
 			"ConstantCase":     ConstantCase,
 			"PascalCase":       PascalCase,
 			"CamelCase":        CamelCase,

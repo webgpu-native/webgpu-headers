@@ -135,6 +135,7 @@ typedef enum WGPUNewEnum2 {
     WGPUNewEnum2_NewValue = 0x7FFF0000,
     WGPUNewEnum2_Force32 = 0x7FFFFFFF
 } WGPUNewEnum2 WGPU_ENUM_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -436,6 +437,7 @@ WGPU_EXPORT void wgpuNewFunction2() WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuPrefixNewObject1NewMethod(WGPUPrefixNewObject1 newObject1) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuPrefixNewObject1AddRef(WGPUPrefixNewObject1 newObject1) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuPrefixNewObject1Release(WGPUPrefixNewObject1 newObject1) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -450,6 +452,7 @@ WGPU_EXPORT void wgpuPrefixNewObject1Release(WGPUPrefixNewObject1 newObject1) WG
 WGPU_EXPORT void wgpuNewObject2NewMethod(WGPUNewObject2 newObject2) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuNewObject2AddRef(WGPUNewObject2 newObject2) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuNewObject2Release(WGPUNewObject2 newObject2) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /**
@@ -466,6 +469,7 @@ WGPU_EXPORT void wgpuOldObjectPrefixNewMethod1(WGPUOldObject oldObject) WGPU_FUN
  * New method on old object can be declared in the 'webgpu' namespace explicitly.
  */
 WGPU_EXPORT void wgpuOldObjectNewMethod2(WGPUOldObject oldObject) WGPU_FUNCTION_ATTRIBUTE;
+
 /** @} */
 
 /** @} */
