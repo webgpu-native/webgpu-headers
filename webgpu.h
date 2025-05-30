@@ -2306,7 +2306,7 @@ typedef struct WGPULimits {
      */
     uint32_t maxComputeWorkgroupsPerDimension;
     /**
-     * The `INIT` macro sets this to `0`.
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
      */
     uint32_t maxImmediateSize;
 } WGPULimits WGPU_STRUCTURE_ATTRIBUTE;
@@ -2347,7 +2347,7 @@ typedef struct WGPULimits {
     /*.maxComputeWorkgroupSizeY=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxComputeWorkgroupSizeZ=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
     /*.maxComputeWorkgroupsPerDimension=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxImmediateSize=*/0 _wgpu_COMMA \
+    /*.maxImmediateSize=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
 })
 
 /**

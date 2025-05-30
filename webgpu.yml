@@ -2312,6 +2312,7 @@ structs:
         doc: |
           TODO
         type: uint32
+        default: constant.limit_u32_undefined
   - name: multisample_state
     doc: |
       TODO
