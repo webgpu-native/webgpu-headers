@@ -165,19 +165,25 @@ When a surface is successfully configured, the new configuration overrides any p
 
 The behavior of <code>@ref wgpuSurfaceConfigure</code><code>(surface, config)</code> is:
 
- - If any of these validation steps fails, TODO: what should happen on failure?
+ - Unconfigure the surface.
+ - If `config->device` is nullptr, produce @ref ImplementationDefinedLogging
+   and return.
+ - If any of these validation steps fails, report the error as a
+   @ref DeviceError to `config->device` and return. (If the device is lost, it
+   won't report errors. There may be @ref ImplementationDefinedLogging.)
 
+   - Validate that `config` does not have any @ref StructChainingError.
    - Validate that `surface` is not an error.
-   - Let `adapter` be the adapter used to create `device`.
+   - Validate that `config->device` is not lost.
+   - Let `adapter` be the adapter used to create `config->device`.
    - Let `caps` be the @ref WGPUSurfaceCapabilities filled with <code>@ref wgpuSurfaceGetCapabilities</code><code>(surface, adapter, &caps)</code>.
    - Validate that all the sub-descriptors in the chain for `caps` are known to this implementation.
-   - Validate that `device` is alive.
    - Validate that `config->presentMode` is in `caps->presentModes`.
    - Validate that `config->alphaMode` is either `WGPUCompositeAlphaMode_Auto` or in `caps->alphaModes`.
    - Validate that `config->format` if in `caps->formats`.
    - Validate that `config->usage` is a subset of `caps->usages`.
    - Let `textureDesc` be `GetSurfaceEquivalentTextureDescriptor(config)`.
-   - Validate that `wgpuDeviceCreateTexture(device, &textureDesc)` would succeed.
+   - Validate that `wgpuDeviceCreateTexture(config->device, &textureDesc)` would succeed.
 
  - Set `surface.config` to a deep copy of `config`.
  - If `surface.currentFrame` is not `None`:
