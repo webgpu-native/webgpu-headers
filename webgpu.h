@@ -2486,7 +2486,7 @@ typedef struct WGPUPrimitiveState {
      */
     WGPUPrimitiveTopology topology;
     /**
-     * The `INIT` macro sets this to (@ref WGPUIndexFormat)0.
+     * The `INIT` macro sets this to @ref WGPUIndexFormat_Undefined.
      */
     WGPUIndexFormat stripIndexFormat;
     /**
@@ -2515,7 +2515,7 @@ typedef struct WGPUPrimitiveState {
 #define WGPU_PRIMITIVE_STATE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUPrimitiveState, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.topology=*/WGPUPrimitiveTopology_Undefined _wgpu_COMMA \
-    /*.stripIndexFormat=*/_wgpu_ENUM_ZERO_INIT(WGPUIndexFormat) _wgpu_COMMA \
+    /*.stripIndexFormat=*/WGPUIndexFormat_Undefined _wgpu_COMMA \
     /*.frontFace=*/WGPUFrontFace_Undefined _wgpu_COMMA \
     /*.cullMode=*/WGPUCullMode_Undefined _wgpu_COMMA \
     /*.unclippedDepth=*/WGPU_FALSE _wgpu_COMMA \
@@ -3834,7 +3834,7 @@ typedef struct WGPUDepthStencilState {
      */
     WGPUOptionalBool depthWriteEnabled;
     /**
-     * The `INIT` macro sets this to (@ref WGPUCompareFunction)0.
+     * The `INIT` macro sets this to @ref WGPUCompareFunction_Undefined.
      */
     WGPUCompareFunction depthCompare;
     /**
@@ -3882,7 +3882,7 @@ typedef struct WGPUDepthStencilState {
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
     /*.depthWriteEnabled=*/WGPUOptionalBool_Undefined _wgpu_COMMA \
-    /*.depthCompare=*/_wgpu_ENUM_ZERO_INIT(WGPUCompareFunction) _wgpu_COMMA \
+    /*.depthCompare=*/WGPUCompareFunction_Undefined _wgpu_COMMA \
     /*.stencilFront=*/WGPU_STENCIL_FACE_STATE_INIT _wgpu_COMMA \
     /*.stencilBack=*/WGPU_STENCIL_FACE_STATE_INIT _wgpu_COMMA \
     /*.stencilReadMask=*/0xFFFFFFFF _wgpu_COMMA \
@@ -4026,11 +4026,11 @@ typedef struct WGPURenderPassColorAttachment {
      */
     WGPU_NULLABLE WGPUTextureView resolveTarget;
     /**
-     * The `INIT` macro sets this to (@ref WGPULoadOp)0.
+     * The `INIT` macro sets this to @ref WGPULoadOp_Undefined.
      */
     WGPULoadOp loadOp;
     /**
-     * The `INIT` macro sets this to (@ref WGPUStoreOp)0.
+     * The `INIT` macro sets this to @ref WGPUStoreOp_Undefined.
      */
     WGPUStoreOp storeOp;
     /**
@@ -4047,8 +4047,8 @@ typedef struct WGPURenderPassColorAttachment {
     /*.view=*/NULL _wgpu_COMMA \
     /*.depthSlice=*/WGPU_DEPTH_SLICE_UNDEFINED _wgpu_COMMA \
     /*.resolveTarget=*/NULL _wgpu_COMMA \
-    /*.loadOp=*/_wgpu_ENUM_ZERO_INIT(WGPULoadOp) _wgpu_COMMA \
-    /*.storeOp=*/_wgpu_ENUM_ZERO_INIT(WGPUStoreOp) _wgpu_COMMA \
+    /*.loadOp=*/WGPULoadOp_Undefined _wgpu_COMMA \
+    /*.storeOp=*/WGPUStoreOp_Undefined _wgpu_COMMA \
     /*.clearValue=*/WGPU_COLOR_INIT _wgpu_COMMA \
 })
 

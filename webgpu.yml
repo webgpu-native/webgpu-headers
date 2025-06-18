@@ -1586,7 +1586,6 @@ structs:
         doc: |
           TODO
         type: enum.backend_type
-        default: undefined
       - name: adapter_type
         doc: |
           TODO
@@ -1738,19 +1737,16 @@ structs:
           If set to @ref WGPUBlendOperation_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUBlendOperation_Add.
         type: enum.blend_operation
-        default: undefined
       - name: src_factor
         doc: |
           If set to @ref WGPUBlendFactor_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_One.
         type: enum.blend_factor
-        default: undefined
       - name: dst_factor
         doc: |
           If set to @ref WGPUBlendFactor_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUBlendFactor_Zero.
         type: enum.blend_factor
-        default: undefined
   - name: blend_state
     doc: |
       TODO
@@ -1774,7 +1770,6 @@ structs:
           If set to @ref WGPUBufferBindingType_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUBufferBindingType_Uniform.
         type: enum.buffer_binding_type
-        default: undefined
       - name: has_dynamic_offset
         doc: |
           TODO
@@ -1840,7 +1835,6 @@ structs:
           indicates a "hole" in the parent @ref WGPUFragmentState `targets` array:
           the pipeline does not output a value at this `location`.
         type: enum.texture_format
-        default: undefined
       - name: blend
         doc: |
           TODO
@@ -1984,7 +1978,6 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
-        default: undefined
       - name: depth_write_enabled
         doc: |
           TODO
@@ -2401,7 +2394,6 @@ structs:
           If set to @ref WGPUPrimitiveTopology_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUPrimitiveTopology_TriangleList.
         type: enum.primitive_topology
-        default: undefined
       - name: strip_index_format
         doc: |
           TODO
@@ -2411,13 +2403,11 @@ structs:
           If set to @ref WGPUFrontFace_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUFrontFace_CCW.
         type: enum.front_face
-        default: undefined
       - name: cull_mode
         doc: |
           If set to @ref WGPUCullMode_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUCullMode_None.
         type: enum.cull_mode
-        default: undefined
       - name: unclipped_depth
         doc: |
           TODO
@@ -2476,7 +2466,6 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
-        default: undefined
       - name: sample_count
         doc: |
           TODO
@@ -2538,12 +2527,10 @@ structs:
         doc: |
           TODO
         type: enum.load_op
-        default: undefined
       - name: depth_store_op
         doc: |
           TODO
         type: enum.store_op
-        default: undefined
       - name: depth_clear_value
         doc: |
           This is a @ref NullableFloatingPointType.
@@ -2563,12 +2550,10 @@ structs:
         doc: |
           TODO
         type: enum.load_op
-        default: undefined
       - name: stencil_store_op
         doc: |
           TODO
         type: enum.store_op
-        default: undefined
       - name: stencil_clear_value
         doc: |
           TODO
@@ -2673,12 +2658,10 @@ structs:
           Additionally, implementations may ignore @ref WGPUFeatureLevel_Compatibility
           and provide @ref WGPUFeatureLevel_Core instead.
         type: enum.feature_level
-        default: undefined
       - name: power_preference
         doc: |
           TODO
         type: enum.power_preference
-        default: undefined
       - name: force_fallback_adapter
         doc: |
           If true, requires the adapter to be a "fallback" adapter as defined by the JS spec.
@@ -2690,7 +2673,6 @@ structs:
           If set, requires the adapter to have a particular backend type.
           If this is not possible, the request returns null.
         type: enum.backend_type
-        default: undefined
       - name: compatible_surface
         doc: |
           If set, requires the adapter to be able to output to a particular surface.
@@ -2719,7 +2701,6 @@ structs:
           If set to @ref WGPUSamplerBindingType_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUSamplerBindingType_Filtering.
         type: enum.sampler_binding_type
-        default: undefined
   - name: sampler_descriptor
     doc: |
       TODO
@@ -2734,37 +2715,31 @@ structs:
           If set to @ref WGPUAddressMode_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
-        default: undefined
       - name: address_mode_v
         doc: |
           If set to @ref WGPUAddressMode_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
-        default: undefined
       - name: address_mode_w
         doc: |
           If set to @ref WGPUAddressMode_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUAddressMode_ClampToEdge.
         type: enum.address_mode
-        default: undefined
       - name: mag_filter
         doc: |
           If set to @ref WGPUFilterMode_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
         type: enum.filter_mode
-        default: undefined
       - name: min_filter
         doc: |
           If set to @ref WGPUFilterMode_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUFilterMode_Nearest.
         type: enum.filter_mode
-        default: undefined
       - name: mipmap_filter
         doc: |
           If set to @ref WGPUFilterMode_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUMipmapFilterMode_Nearest.
         type: enum.mipmap_filter_mode
-        default: undefined
       - name: lod_min_clamp
         doc: |
           TODO
@@ -2783,7 +2758,6 @@ structs:
         doc: |
           TODO
         type: enum.compare_function
-        default: undefined
       - name: max_anisotropy
         doc: |
           TODO
@@ -2836,25 +2810,21 @@ structs:
           If set to @ref WGPUCompareFunction_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUCompareFunction_Always.
         type: enum.compare_function
-        default: undefined
       - name: fail_op
         doc: |
           If set to @ref WGPUStencilOperation_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
-        default: undefined
       - name: depth_fail_op
         doc: |
           If set to @ref WGPUStencilOperation_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
-        default: undefined
       - name: pass_op
         doc: |
           If set to @ref WGPUStencilOperation_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUStencilOperation_Keep.
         type: enum.stencil_operation
-        default: undefined
   - name: storage_texture_binding_layout
     doc: |
       TODO
@@ -2865,18 +2835,15 @@ structs:
           If set to @ref WGPUStorageTextureAccess_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUStorageTextureAccess_WriteOnly.
         type: enum.storage_texture_access
-        default: undefined
       - name: format
         doc: |
           TODO
         type: enum.texture_format
-        default: undefined
       - name: view_dimension
         doc: |
           If set to @ref WGPUTextureViewDimension_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
-        default: undefined
   - name: supported_features
     doc: |
       TODO
@@ -2959,7 +2926,6 @@ structs:
       - name: format
         doc: The @ref WGPUTextureFormat of the surface's textures.
         type: enum.texture_format
-        default: undefined
       - name: usage
         doc: The @ref WGPUTextureUsage of the surface's textures.
         type: bitflag.texture_usage
@@ -2990,7 +2956,6 @@ structs:
           If set to @ref WGPUPresentMode_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUPresentMode_Fifo.
         type: enum.present_mode
-        default: undefined
   - name: surface_descriptor
     doc: |
       The root descriptor for the creation of an @ref WGPUSurface with @ref wgpuInstanceCreateSurface.
@@ -3147,7 +3112,6 @@ structs:
           If set to @ref WGPUTextureAspect_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
         type: enum.texture_aspect
-        default: undefined
   - name: texture_binding_layout
     doc: |
       TODO
@@ -3158,13 +3122,11 @@ structs:
           If set to @ref WGPUTextureSampleType_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUTextureSampleType_Float.
         type: enum.texture_sample_type
-        default: undefined
       - name: view_dimension
         doc: |
           If set to @ref WGPUTextureViewDimension_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUTextureViewDimension_2D.
         type: enum.texture_view_dimension
-        default: undefined
       - name: multisampled
         doc: |
           TODO
@@ -3189,7 +3151,6 @@ structs:
           If set to @ref WGPUTextureDimension_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUTextureDimension_2D.
         type: enum.texture_dimension
-        default: undefined
       - name: size
         doc: |
           TODO
@@ -3198,7 +3159,6 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
-        default: undefined
       - name: mip_level_count
         doc: |
           TODO
@@ -3227,12 +3187,10 @@ structs:
         doc: |
           TODO
         type: enum.texture_format
-        default: undefined
       - name: dimension
         doc: |
           TODO
         type: enum.texture_view_dimension
-        default: undefined
       - name: base_mip_level
         doc: |
           TODO
@@ -3258,7 +3216,6 @@ structs:
           If set to @ref WGPUTextureAspect_Undefined,
           [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
         type: enum.texture_aspect
-        default: undefined
       - name: usage
         doc: |
           TODO
@@ -3301,7 +3258,6 @@ structs:
         doc: |
           TODO
         type: enum.vertex_step_mode
-        default: undefined
       - name: array_stride
         doc: |
           TODO
