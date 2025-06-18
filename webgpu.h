@@ -651,7 +651,7 @@ typedef enum WGPUInstanceFeatureName {
     /**
      * Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
      */
-    WGPUInstanceFeatureName_TimedWaitAnyEnable = 0x00000001,
+    WGPUInstanceFeatureName_TimedWaitAny = 0x00000001,
     /**
      * Enable passing SPIR-V shaders to @ref wgpuDeviceCreateShaderModule,
      * via @ref WGPUShaderSourceSPIRV.

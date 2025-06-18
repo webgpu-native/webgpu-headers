@@ -534,7 +534,7 @@ enums:
       TODO
     entries:
       - null
-      - name: timed_wait_any_enable
+      - name: timed_wait_any
         doc: |
           Enable use of ::wgpuInstanceWaitAny with `timeoutNS > 0`.
       - name: shader_source_SPIRV

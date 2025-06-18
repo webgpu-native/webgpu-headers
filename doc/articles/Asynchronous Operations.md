@@ -55,13 +55,13 @@ Waits on any WGPUFuture in the list of `futures` to complete for `timeoutNS` nan
     - Note that the timeout applies only to the "wait" phase, and does not affect the callback firing phase.
 - Returns @ref WGPUWaitStatus_TimedOut if the timeout passed without any futures completing.
 - Returns @ref WGPUWaitStatus_Error if the call was invalid for any of the following reasons:
-    - A @ref Timed-Wait was performed when WGPUInstanceFeatures::timedWaitAnyEnable is not enabled.
+    - A @ref Timed-Wait was performed when @ref WGPUInstanceFeatureName_TimedWaitAny is not enabled.
     - The number of futures waited on in a @ref Timed-Wait is greater than the enabled WGPUInstanceFeatures::timedWaitAnyMaxCount.
     - A wait was attempted with @ref Mixed-Sources.
 
 ### Timed Wait {#Timed-Wait}
 
-Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in @ref wgpuCreateInstance() with @ref WGPUInstanceFeatureName_TimedWaitAnyEnable, and the number of futures waited on must be less than or equal to @ref WGPUInstanceLimits::timedWaitAnyMaxCount.
+Use of _timed waits_ (`timeoutNS > 0`), must be enabled on the WGPUInstance in @ref wgpuCreateInstance() with @ref WGPUInstanceFeatureName_TimedWaitAny, and the number of futures waited on must be less than or equal to @ref WGPUInstanceLimits::timedWaitAnyMaxCount.
 
 ### Mixed Sources {#Mixed-Sources}
 
