@@ -684,15 +684,25 @@ func (g *Generator) DefaultValue(member ParameterType, isDocString bool) string 
 	// Cases that may have member.Default
 	case strings.HasPrefix(member.Type, "enum."):
 		if member.Default == nil {
-			if member.Type == "enum.optional_bool" {
-				// This Undefined is a special one that is not the zero-value, so that
-				// a stdbool.h bool cast correctly to WGPUOptionalBool; this means we
-				// must explicitly initialize it
-				return ref("WGPUOptionalBool_Undefined")
-			} else if isDocString {
-				return "(@ref " + g.CType(member.Type, "") + ")0"
+			_, name, _ := strings.Cut(member.Type, ".")
+
+			// Find the enum type.
+			idx := slices.IndexFunc(g.Enums, func(e Enum) bool { return e.Name == name })
+			if idx == -1 {
+				panic("Invalid enum type: " + name)
+			}
+
+			// If the enum type has an explicit "Undefined" use it, otherwise, use 0.
+			enumType := g.Enums[idx]
+			undefIdx := slices.IndexFunc(enumType.Entries, func(entry *EnumEntry) bool { return entry != nil && entry.Name == "undefined" })
+			if undefIdx == -1 {
+				if isDocString {
+					return "(@ref " + g.CType(member.Type, "") + ")0"
+				} else {
+					return "_wgpu_ENUM_ZERO_INIT(" + g.CType(member.Type, "") + ")"
+				}
 			} else {
-				return "_wgpu_ENUM_ZERO_INIT(" + g.CType(member.Type, "") + ")"
+				return ref(g.CType(member.Type, "") + "_" + PascalCase("undefined"))
 			}
 		} else {
 			return ref(g.CType(member.Type, "") + "_" + PascalCase(*member.Default))
