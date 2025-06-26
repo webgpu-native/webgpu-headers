@@ -442,13 +442,13 @@ enums:
       TODO
     entries:
       - null
+      - name: core_features_and_limits
+        doc: |
+          TODO
       - name: depth_clip_control
         doc: |
           TODO
       - name: depth32_float_stencil8
-        doc: |
-          TODO
-      - name: timestamp_query
         doc: |
           TODO
       - name: texture_compression_BC
@@ -464,6 +464,9 @@ enums:
         doc: |
           TODO
       - name: texture_compression_ASTC_sliced_3D
+        doc: |
+          TODO
+      - name: timestamp_query
         doc: |
           TODO
       - name: indirect_first_instance
@@ -491,6 +494,12 @@ enums:
         doc: |
           TODO
       - name: subgroups
+        doc: |
+          TODO
+      - name: texture_formats_tier_1
+        doc: |
+          TODO
+      - name: texture_formats_tier_2
         doc: |
           TODO
   - name: filter_mode
