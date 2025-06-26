@@ -442,6 +442,9 @@ enums:
       TODO
     entries:
       - null
+      - name: core_features_and_limits
+        doc: |
+          TODO
       - name: depth_clip_control
         doc: |
           TODO
@@ -493,7 +496,10 @@ enums:
       - name: subgroups
         doc: |
           TODO
-      - name: core_features_and_limits
+      - name: texture_formats_tier_1
+        doc: |
+          TODO
+      - name: texture_formats_tier_2
         doc: |
           TODO
   - name: filter_mode
