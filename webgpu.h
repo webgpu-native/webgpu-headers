@@ -614,6 +614,7 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_ClipDistances = 0x0000000F,
     WGPUFeatureName_DualSourceBlending = 0x00000010,
     WGPUFeatureName_Subgroups = 0x00000011,
+    WGPUFeatureName_CoreFeaturesAndLimits = 0x00000012,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 

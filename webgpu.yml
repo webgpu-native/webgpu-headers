@@ -493,6 +493,9 @@ enums:
       - name: subgroups
         doc: |
           TODO
+      - name: core_features_and_limits
+        doc: |
+          TODO
   - name: filter_mode
     doc: |
       TODO
