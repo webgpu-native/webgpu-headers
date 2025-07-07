@@ -946,6 +946,12 @@ enums:
       - name: R8_sint
         doc: |
           TODO
+      - name: R16_unorm
+        doc: |
+          TODO
+      - name: R16_snorm
+        doc: |
+          TODO
       - name: R16_uint
         doc: |
           TODO
@@ -974,6 +980,12 @@ enums:
         doc: |
           TODO
       - name: R32_sint
+        doc: |
+          TODO
+      - name: RG16_unorm
+        doc: |
+          TODO
+      - name: RG16_snorm
         doc: |
           TODO
       - name: RG16_uint
@@ -1025,6 +1037,12 @@ enums:
         doc: |
           TODO
       - name: RG32_sint
+        doc: |
+          TODO
+      - name: RGBA16_unorm
+        doc: |
+          TODO
+      - name: RGBA16_snorm
         doc: |
           TODO
       - name: RGBA16_uint
