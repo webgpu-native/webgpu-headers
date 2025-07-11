@@ -4432,10 +4432,6 @@ objects:
       - name: get_WGSL_language_features
         doc: |
           Get the list of @ref WGPUWGSLLanguageFeatureName values supported by the instance.
-        returns:
-          doc: |
-            TODO
-          type: enum.status
         args:
           - name: features
             doc: |
