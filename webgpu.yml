@@ -502,6 +502,9 @@ enums:
       - name: texture_formats_tier_2
         doc: |
           TODO
+      - name: primitive_index
+        doc: |
+          TODO
   - name: filter_mode
     doc: |
       TODO
