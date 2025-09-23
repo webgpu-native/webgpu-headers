@@ -1,8 +1,8 @@
 # WebGPU Headers
 
-This repository contains C headers equivalent to the [WebGPU](https://gpuweb.github.io/gpuweb/) API and documentation on the native specificities of the headers.
+This repository contains C stable headers equivalent to the [WebGPU](https://gpuweb.github.io/gpuweb/) API and documentation on the native specificities of the headers.
 
-**This header is NOT STABLE yet, and the documentation is very much a work in progress!**
+**The documentation is very much a work in progress!**
 
 All of the API is defined in the [webgpu.h](./webgpu.h) header file.
 **[Read the documentation here!](https://webgpu-native.github.io/webgpu-headers/)**
