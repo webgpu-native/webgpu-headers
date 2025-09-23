@@ -1,32 +1,49 @@
 # WebGPU Headers
 
-This repository contains C stable headers equivalent to the [WebGPU](https://gpuweb.github.io/gpuweb/) API and documentation on the native specificities of the headers.
+This repository contains the stable C header `webgpu.h`, a C API equivalent of
+the [WebGPU](https://gpuweb.github.io/gpuweb/) API for JavaScript.
 
-**The documentation is very much a work in progress!**
+All of the C API is defined in the [`webgpu.h`](./webgpu.h) header file.
+This header, its documentation, and the attached documentation articles
+describe the native specifities of the C API;
+for everything else, refer to the WebGPU specification.
+Together, these form a rough "specification" for `webgpu.h`.
 
-All of the API is defined in the [webgpu.h](./webgpu.h) header file.
-**[Read the documentation here!](https://webgpu-native.github.io/webgpu-headers/)**
+Multiple implementations strive to implement this "specification" compatibly,
+in addition to their own extensions which are not specified here.
+For access to those extensions, use your implementation's extended headers.
+
+### [Read the documentation here!](https://webgpu-native.github.io/webgpu-headers/)
 
 ## Why?
 
 While WebGPU is a JavaScript API made for the Web, it is a good tradeoff of ergonomic, efficient and portable graphics API.
-Almost all of its concepts are not specific to the Web platform and the headers replicate them exactly, while adding capabilities to interact with native concepts (like windows).
+Almost all of its concepts are not specific to the Web platform and the headers replicate them exactly, while adding capabilities to interact with native concepts (like windowing).
 
 Implementations of this header include:
 
  - [Dawn](https://dawn.googlesource.com/dawn), the C++ WebGPU implementation used in Chromium
- - [wgpu-native](https://github.com/gfx-rs/wgpu-native), C bindings to [wgpu](https://github.com/gfx-rs/wgpu), the Rust WebGPU implementation used in Firefox
- - [Emscripten](https://github.com/emscripten-core/emscripten/blob/main/src/library_webgpu.js) translates [webgpu.h](./webgpu.h) calls to JavaScript WebGPU calls when compiling to WASM
+ - [Emdawnwebgpu](https://dawn.googlesource.com/dawn/+/refs/heads/main/src/emdawnwebgpu/pkg/README.md) for Emscripten translates `webgpu.h` calls to JavaScript WebGPU calls when compiling to WebAssembly.
+ - [wgpu-native](https://github.com/gfx-rs/wgpu-native), C bindings to [wgpu](https://github.com/gfx-rs/wgpu), the Rust WebGPU implementation used in Firefox.
+    - **wgpu-native does not yet implement the stable version of this header. Contributions needed!**
 
-## Details
+## `webgpu.yml`
+
+`webgpu.yml` is the main machine-readable source of truth for the C API and its documentation (in [YAML](https://yaml.org/) format). It is used to generate the official `webgpu.h` header present in this repository to generate the official documentation, and may be used by any other third party to design tools and wrappers around WebGPU-Native, especially bindings into other languages.
+
+**If you are developing bindings of `webgpu.h` into another language and find that any additional high-level/semantic information would be useful in `webgpu.yml`, please contribute it!**
+
+## Contributing to this project
+
+**Important:** When submitting a change, one must modify both the `webgpu.yml` and `webgpu.h` files in a consistent way. One should first edit `webgpu.yml` (the source of truth), then run `make gen` to update `webgpu.h` and finally commit both changes together.
 
 Here are some details about the structure of this repository.
 
 ### Main files
 
- - `webgpu.h` is the one and only header file that defines the WebGPU C API. Only this needs to be integrated in a C project that links against a WebGPU implementation.
+ - `webgpu.h` is the one and only header file that defines the WebGPU C API. Only this needs to be integrated in a C project that links against a WebGPU implementation. (But be sure to use the headers from your implementation if you need any extensions, or if the implementation doesn't match this header exactly.)
 
- - `webgpu.yml` is the main machine-readable source of truth for the C API and its documentation (in [YAML](https://yaml.org/) format). It is used to generate the official `webgpu.h` header present in this repository, (will be used) to generate the official documentation, and may be used by any other third party to design tools and wrappers around WebGPU-Native.
+ - `webgpu.yml` - see above.
 
  - `schema.json` is the [JSON schema](https://json-schema.org/) that formally specifies the structure of `webgpu.yml`.
 
@@ -41,7 +58,3 @@ Here are some details about the structure of this repository.
 ### Workflows
 
  - `.github/workflows` defines the automated processes that run upon new commits/PR, to check that changes in `webgpu.yml` and `webgpu.h` are consistent.
-
-## Contributing
-
-**Important** When submitting a change, one must modify both the `webgpu.yml` and `webgpu.h` files in a consistent way. One should first edit `webgpu.yml` (the source of truth), then run `make gen` to update `webgpu.h` and finally commit both changes together.
