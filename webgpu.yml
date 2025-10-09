@@ -329,6 +329,30 @@ enums:
       - name: info
         doc: |
           TODO
+  - name: component_swizzle
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+      - name: zero
+        doc: |
+          TODO
+      - name: one
+        doc: |
+          TODO
+      - name: r
+        doc: |
+          TODO
+      - name: g
+        doc: |
+          TODO
+      - name: b
+        doc: |
+          TODO
+      - name: a
+        doc: |
+          TODO
   - name: composite_alpha_mode
     doc: Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
     entries:
@@ -503,6 +527,9 @@ enums:
         doc: |
           TODO
       - name: primitive_index
+        doc: |
+          TODO
+      - name: texture_component_swizzle
         doc: |
           TODO
   - name: filter_mode
@@ -3162,6 +3189,42 @@ structs:
           TODO
         type: bool
         default: false
+  - name: texture_component_swizzle
+    doc: |
+      TODO
+    type: standalone
+    members:
+      - name: r
+        doc: |
+          TODO
+        type: enum.component_swizzle
+        default: r
+      - name: g
+        doc: |
+          TODO
+        type: enum.component_swizzle
+        default: g
+      - name: b
+        doc: |
+          TODO
+        type: enum.component_swizzle
+        default: b
+      - name: a
+        doc: |
+          TODO
+        type: enum.component_swizzle
+        default: a
+  - name: texture_component_swizzle_descriptor
+    doc: |
+      TODO
+    type: extension
+    extends:
+      - struct.texture_view_descriptor
+    members:
+      - name: swizzle
+        doc: |
+          TODO
+        type: struct.texture_component_swizzle
   - name: texture_descriptor
     doc: |
       TODO

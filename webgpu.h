@@ -296,6 +296,7 @@ struct WGPUSurfaceSourceXlibWindow;
 struct WGPUSurfaceTexture;
 struct WGPUTexelCopyBufferLayout;
 struct WGPUTextureBindingLayout;
+struct WGPUTextureComponentSwizzle;
 struct WGPUTextureViewDescriptor;
 struct WGPUVertexAttribute;
 struct WGPUBindGroupDescriptor;
@@ -314,6 +315,7 @@ struct WGPUShaderModuleDescriptor;
 struct WGPUSurfaceDescriptor;
 struct WGPUTexelCopyBufferInfo;
 struct WGPUTexelCopyTextureInfo;
+struct WGPUTextureComponentSwizzleDescriptor;
 struct WGPUTextureDescriptor;
 struct WGPUVertexBufferLayout;
 struct WGPUBindGroupLayoutDescriptor;
@@ -501,6 +503,20 @@ typedef enum WGPUCompilationMessageType {
     WGPUCompilationMessageType_Force32 = 0x7FFFFFFF
 } WGPUCompilationMessageType WGPU_ENUM_ATTRIBUTE;
 
+typedef enum WGPUComponentSwizzle {
+    /**
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
+     */
+    WGPUComponentSwizzle_Undefined = 0x00000000,
+    WGPUComponentSwizzle_Zero = 0x00000001,
+    WGPUComponentSwizzle_One = 0x00000002,
+    WGPUComponentSwizzle_R = 0x00000003,
+    WGPUComponentSwizzle_G = 0x00000004,
+    WGPUComponentSwizzle_B = 0x00000005,
+    WGPUComponentSwizzle_A = 0x00000006,
+    WGPUComponentSwizzle_Force32 = 0x7FFFFFFF
+} WGPUComponentSwizzle WGPU_ENUM_ATTRIBUTE;
+
 /**
  * Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
  */
@@ -618,6 +634,7 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_TextureFormatsTier1 = 0x00000013,
     WGPUFeatureName_TextureFormatsTier2 = 0x00000014,
     WGPUFeatureName_PrimitiveIndex = 0x00000015,
+    WGPUFeatureName_TextureComponentSwizzle = 0x00000016,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 
@@ -3540,6 +3557,38 @@ typedef struct WGPUTextureBindingLayout {
 })
 
 /**
+ * Default values can be set using @ref WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT as initializer.
+ */
+typedef struct WGPUTextureComponentSwizzle {
+    /**
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_R.
+     */
+    WGPUComponentSwizzle r;
+    /**
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_G.
+     */
+    WGPUComponentSwizzle g;
+    /**
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_B.
+     */
+    WGPUComponentSwizzle b;
+    /**
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_A.
+     */
+    WGPUComponentSwizzle a;
+} WGPUTextureComponentSwizzle WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUTextureComponentSwizzle.
+ */
+#define WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureComponentSwizzle, { \
+    /*.r=*/WGPUComponentSwizzle_R _wgpu_COMMA \
+    /*.g=*/WGPUComponentSwizzle_G _wgpu_COMMA \
+    /*.b=*/WGPUComponentSwizzle_B _wgpu_COMMA \
+    /*.a=*/WGPUComponentSwizzle_A _wgpu_COMMA \
+})
+
+/**
  * Default values can be set using @ref WGPU_TEXTURE_VIEW_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUTextureViewDescriptor {
@@ -4220,6 +4269,28 @@ typedef struct WGPUTexelCopyTextureInfo {
     /*.mipLevel=*/0 _wgpu_COMMA \
     /*.origin=*/WGPU_ORIGIN_3D_INIT _wgpu_COMMA \
     /*.aspect=*/WGPUTextureAspect_Undefined _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_TEXTURE_COMPONENT_SWIZZLE_DESCRIPTOR_INIT as initializer.
+ */
+typedef struct WGPUTextureComponentSwizzleDescriptor {
+    WGPUChainedStruct chain;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT.
+     */
+    WGPUTextureComponentSwizzle swizzle;
+} WGPUTextureComponentSwizzleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUTextureComponentSwizzleDescriptor.
+ */
+#define WGPU_TEXTURE_COMPONENT_SWIZZLE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureComponentSwizzleDescriptor, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_TextureComponentSwizzleDescriptor _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.swizzle=*/WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT _wgpu_COMMA \
 })
 
 /**
