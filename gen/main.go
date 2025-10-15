@@ -17,21 +17,21 @@ import (
 var tmpl string
 
 var (
-	schemaPath   string
-	yamlPaths    StringListFlag
-	outjsonPaths StringListFlag
-	headerPaths  StringListFlag
-	extPrefix    bool
+	schemaPath     string
+	yamlPaths      StringListFlag
+	outJsonPaths   StringListFlag
+	outHeaderPaths StringListFlag
+	extPrefix      bool
 )
 
 func main() {
 	flag.StringVar(&schemaPath, "schema", "", "path of the json schema")
 	flag.Var(&yamlPaths, "yaml", "path of the yaml spec")
-	flag.Var(&outjsonPaths, "outjson", "output path of the json version of the yaml")
-	flag.Var(&headerPaths, "header", "output path of the header")
-	flag.BoolVar(&extPrefix, "extprefix", true, "append prefix to extension identifiers")
+	flag.Var(&outJsonPaths, "out-json", "output path of the json version of the yaml")
+	flag.Var(&outHeaderPaths, "out-header", "output path of the header")
+	flag.BoolVar(&extPrefix, "ext-prefix", true, "append prefix to extension identifiers")
 	flag.Parse()
-	if schemaPath == "" || len(yamlPaths) == 0 || len(headerPaths) != len(yamlPaths) || len(outjsonPaths) != len(yamlPaths) {
+	if schemaPath == "" || len(yamlPaths) == 0 || len(outHeaderPaths) != len(yamlPaths) || len(outJsonPaths) != len(yamlPaths) {
 		flag.Usage()
 		os.Exit(1)
 	}
@@ -48,23 +48,23 @@ func main() {
 
 	// Generate the header files
 	for i, yamlPath := range yamlPaths {
-		headerPath := headerPaths[i]
-		headerFileName := filepath.Base(headerPath)
-		headerFileNameSplit := strings.Split(headerFileName, ".")
-		if len(headerFileNameSplit) != 2 {
-			panic("got invalid header file name: " + headerFileName)
+		outHeaderPath := outHeaderPaths[i]
+		outHeaderFileName := filepath.Base(outHeaderPath)
+		outHeaderFileNameSplit := strings.Split(outHeaderFileName, ".")
+		if len(outHeaderFileNameSplit) != 2 {
+			panic("got invalid out-header file name: " + outHeaderFileName)
 		}
 
-		outjsonPath := outjsonPaths[i]
+		outJsonPath := outJsonPaths[i]
 
 		src, err := os.ReadFile(yamlPath)
 		if err != nil {
 			panic(err)
 		}
 
-		ConvertToJSON(src, outjsonPath)
+		ConvertToJSON(src, outJsonPath)
 
-		dst, err := os.Create(headerPath)
+		dst, err := os.Create(outHeaderPath)
 		if err != nil {
 			panic(err)
 		}
@@ -82,7 +82,7 @@ func main() {
 		}
 		g := &Generator{
 			Yml:        &yml,
-			HeaderName: headerFileNameSplit[0],
+			HeaderName: outHeaderFileNameSplit[0],
 			ExtPrefix:  prefix,
 		}
 		if err := g.Gen(dst); err != nil {
@@ -176,7 +176,7 @@ func SortAndTransform(yml *Yml) {
 	}
 }
 
-func ConvertToJSON(ymlString []byte, outjsonPath string) {
+func ConvertToJSON(ymlString []byte, outJsonPath string) {
 	var body interface{}
 	if err := yaml.Unmarshal(ymlString, &body); err != nil {
 		panic(err)
@@ -194,11 +194,11 @@ func ConvertToJSON(ymlString []byte, outjsonPath string) {
 
 	body = convertToJSONHelper(body)
 
-	if outjson, err := json.MarshalIndent(body, "", "  "); err != nil {
+	if outJson, err := json.MarshalIndent(body, "", "  "); err != nil {
 		panic(err)
 	} else {
-		outjson = append(outjson, '\n')
-		if err := os.WriteFile(outjsonPath, outjson, 0644); err != nil {
+		outJson = append(outJson, '\n')
+		if err := os.WriteFile(outJsonPath, outJson, 0644); err != nil {
 			panic(err)
 		}
 	}

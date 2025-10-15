@@ -14,11 +14,11 @@ help:
 gen: schema.json webgpu.yml tests/extensions/extension.yml
 	go run ./gen -schema schema.json \
 		-yaml webgpu.yml \
-		-outjson webgpu.json \
-		-header webgpu.h \
+		-out-json webgpu.json \
+		-out-header webgpu.h \
 		-yaml tests/extensions/extension.yml \
-		-outjson tests/extensions/extension.json \
-		-header tests/extensions/webgpu_extension.h
+		-out-json tests/extensions/extension.json \
+		-out-header tests/extensions/webgpu_extension.h
 
 # Regenerate files (to validate schema) then autoformat YAML
 fix: gen
