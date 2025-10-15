@@ -27,15 +27,15 @@ Implementations of this header include:
  - [wgpu-native](https://github.com/gfx-rs/wgpu-native), C bindings to [wgpu](https://github.com/gfx-rs/wgpu), the Rust WebGPU implementation used in Firefox.
     - **wgpu-native does not yet implement the stable version of this header. Contributions needed!**
 
-## `webgpu.yml`
+## `webgpu.yml` and `webgpu.json`
 
-`webgpu.yml` is the main machine-readable source of truth for the C API and its documentation (in [YAML](https://yaml.org/) format). It is used to generate the official `webgpu.h` header present in this repository to generate the official documentation, and may be used by any other third party to design tools and wrappers around WebGPU-Native, especially bindings into other languages.
+`webgpu.yml` and `webgpu.json` (same contents, different formats) are the main machine-readable source of truth for the C API and its documentation. This data is used to generate the official `webgpu.h` header present in this repository to generate the official documentation, and may be used by any other third party to design tools and wrappers around WebGPU-Native, especially bindings into other languages.
 
 **If you are developing bindings of `webgpu.h` into another language and find that any additional high-level/semantic information would be useful in `webgpu.yml`, please contribute it!**
 
 ## Contributing to this project
 
-**Important:** When submitting a change, one must modify both the `webgpu.yml` and `webgpu.h` files in a consistent way. One should first edit `webgpu.yml` (the source of truth), then run `make gen` to update `webgpu.h` and finally commit both changes together.
+**Important:** When submitting a change, one must modify `webgpu.yml`, `webgpu.json`, and `webgpu.h` files in a consistent way. One should first edit `webgpu.yml` (the source of truth), then run `make gen` to update `webgpu.json` and `webgpu.h`, and finally commit all changes together.
 
 Here are some details about the structure of this repository.
 
@@ -43,7 +43,7 @@ Here are some details about the structure of this repository.
 
  - `webgpu.h` is the one and only header file that defines the WebGPU C API. Only this needs to be integrated in a C project that links against a WebGPU implementation. (But be sure to use the headers from your implementation if you need any extensions, or if the implementation doesn't match this header exactly.)
 
- - `webgpu.yml` - see above.
+ - `webgpu.yml` and `webgpu.json` - see above.
 
  - `schema.json` is the [JSON schema](https://json-schema.org/) that formally specifies the structure of `webgpu.yml`.
 

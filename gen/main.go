@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"os"
 	"path/filepath"
@@ -16,19 +17,21 @@ import (
 var tmpl string
 
 var (
-	schemaPath  string
-	headerPaths StringListFlag
-	yamlPaths   StringListFlag
-	extPrefix   bool
+	schemaPath   string
+	yamlPaths    StringListFlag
+	outjsonPaths StringListFlag
+	headerPaths  StringListFlag
+	extPrefix    bool
 )
 
 func main() {
 	flag.StringVar(&schemaPath, "schema", "", "path of the json schema")
 	flag.Var(&yamlPaths, "yaml", "path of the yaml spec")
+	flag.Var(&outjsonPaths, "outjson", "output path of the json version of the yaml")
 	flag.Var(&headerPaths, "header", "output path of the header")
 	flag.BoolVar(&extPrefix, "extprefix", true, "append prefix to extension identifiers")
 	flag.Parse()
-	if schemaPath == "" || len(headerPaths) == 0 || len(yamlPaths) == 0 || len(headerPaths) != len(yamlPaths) {
+	if schemaPath == "" || len(yamlPaths) == 0 || len(headerPaths) != len(yamlPaths) || len(outjsonPaths) != len(yamlPaths) {
 		flag.Usage()
 		os.Exit(1)
 	}
@@ -52,10 +55,14 @@ func main() {
 			panic("got invalid header file name: " + headerFileName)
 		}
 
+		outjsonPath := outjsonPaths[i]
+
 		src, err := os.ReadFile(yamlPath)
 		if err != nil {
 			panic(err)
 		}
+
+		ConvertToJSON(src, outjsonPath)
 
 		dst, err := os.Create(headerPath)
 		if err != nil {
@@ -167,4 +174,51 @@ func SortAndTransform(yml *Yml) {
 				})
 		}
 	}
+}
+
+func ConvertToJSON(ymlString []byte, outjsonPath string) {
+	var body interface{}
+	if err := yaml.Unmarshal(ymlString, &body); err != nil {
+		panic(err)
+	}
+
+	switch b := body.(type) {
+	case map[string]interface{}:
+		// Insert an extra copy of the copyright that will get sorted at the
+		// top, and auto-gen warning.
+		b["__copyright"] = b["copyright"]
+		b["_comment"] = "AUTO-GENERATED FILE! Edit webgpu.yml instead."
+	default:
+		panic("unexpected")
+	}
+
+	body = convertToJSONHelper(body)
+
+	if outjson, err := json.MarshalIndent(body, "", "  "); err != nil {
+		panic(err)
+	} else {
+		outjson = append(outjson, '\n')
+		if err := os.WriteFile(outjsonPath, outjson, 0644); err != nil {
+			panic(err)
+		}
+	}
+}
+
+// From https://stackoverflow.com/a/40737676
+// Note the original key order is not preserved as Go's map isn't ordered.
+// This is fine because JSON keys are unordered per spec.
+func convertToJSONHelper(i interface{}) interface{} {
+	switch x := i.(type) {
+	case map[interface{}]interface{}:
+		m2 := map[string]interface{}{}
+		for k, v := range x {
+			m2[k.(string)] = convertToJSONHelper(v)
+		}
+		return m2
+	case []interface{}:
+		for i, v := range x {
+			x[i] = convertToJSONHelper(v)
+		}
+	}
+	return i
 }
