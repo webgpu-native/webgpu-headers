@@ -337,22 +337,22 @@ enums:
         doc: Indicates no value is passed for this argument. See @ref SentinelValues.
       - name: zero
         doc: |
-          TODO
+          Force its value to 0.
       - name: one
         doc: |
-          TODO
+          Force its value to 1.
       - name: r
         doc: |
-          TODO
+          Take its value from the red channel of the texture.
       - name: g
         doc: |
-          TODO
+          Take its value from the green channel of the texture.
       - name: b
         doc: |
-          TODO
+          Take its value from the blue channel of the texture.
       - name: a
         doc: |
-          TODO
+          Take its value from the alpha channel of the texture.
   - name: composite_alpha_mode
     doc: Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
     entries:
@@ -3191,27 +3191,30 @@ structs:
         default: false
   - name: texture_component_swizzle
     doc: |
-      TODO
+      When accessed by a shader, the red/green/blue/alpha channels are replaced
+      by the value corresponding to the component specified in r, g, b, and a,
+      respectively unlike the JS API which uses a string of length four, with
+      each character mapping to the texture view's red/green/blue/alpha channels.
     type: standalone
     members:
       - name: r
         doc: |
-          TODO
+          The value that replaces the red channel in the shader.
         type: enum.component_swizzle
         default: r
       - name: g
         doc: |
-          TODO
+          The value that replaces the green channel in the shader.
         type: enum.component_swizzle
         default: g
       - name: b
         doc: |
-          TODO
+          The value that replaces the blue channel in the shader.
         type: enum.component_swizzle
         default: b
       - name: a
         doc: |
-          TODO
+          The value that replaces the alpha channel in the shader.
         type: enum.component_swizzle
         default: a
   - name: texture_component_swizzle_descriptor

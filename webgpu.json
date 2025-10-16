@@ -780,6 +780,40 @@
       "name": "compilation_message_type"
     },
     {
+      "doc": "TODO\n",
+      "entries": [
+        {
+          "doc": "Indicates no value is passed for this argument. See @ref SentinelValues.",
+          "name": "undefined"
+        },
+        {
+          "doc": "Force its value to 0.\n",
+          "name": "zero"
+        },
+        {
+          "doc": "Force its value to 1.\n",
+          "name": "one"
+        },
+        {
+          "doc": "Take its value from the red channel of the texture.\n",
+          "name": "r"
+        },
+        {
+          "doc": "Take its value from the green channel of the texture.\n",
+          "name": "g"
+        },
+        {
+          "doc": "Take its value from the blue channel of the texture.\n",
+          "name": "b"
+        },
+        {
+          "doc": "Take its value from the alpha channel of the texture.\n",
+          "name": "a"
+        }
+      ],
+      "name": "component_swizzle"
+    },
+    {
       "doc": "Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.",
       "entries": [
         {
@@ -1024,6 +1058,10 @@
         {
           "doc": "TODO\n",
           "name": "primitive_index"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "texture_component_swizzle"
         }
       ],
       "name": "feature_name"
@@ -6496,6 +6534,52 @@
       ],
       "name": "texture_binding_layout",
       "type": "extensible"
+    },
+    {
+      "doc": "When accessed by a shader, the red/green/blue/alpha channels are replaced\nby the value corresponding to the component specified in r, g, b, and a,\nrespectively unlike the JS API which uses a string of length four, with\neach character mapping to the texture view's red/green/blue/alpha channels.\n",
+      "members": [
+        {
+          "default": "r",
+          "doc": "The value that replaces the red channel in the shader.\n",
+          "name": "r",
+          "type": "enum.component_swizzle"
+        },
+        {
+          "default": "g",
+          "doc": "The value that replaces the green channel in the shader.\n",
+          "name": "g",
+          "type": "enum.component_swizzle"
+        },
+        {
+          "default": "b",
+          "doc": "The value that replaces the blue channel in the shader.\n",
+          "name": "b",
+          "type": "enum.component_swizzle"
+        },
+        {
+          "default": "a",
+          "doc": "The value that replaces the alpha channel in the shader.\n",
+          "name": "a",
+          "type": "enum.component_swizzle"
+        }
+      ],
+      "name": "texture_component_swizzle",
+      "type": "standalone"
+    },
+    {
+      "doc": "TODO\n",
+      "extends": [
+        "struct.texture_view_descriptor"
+      ],
+      "members": [
+        {
+          "doc": "TODO\n",
+          "name": "swizzle",
+          "type": "struct.texture_component_swizzle"
+        }
+      ],
+      "name": "texture_component_swizzle_descriptor",
+      "type": "extension"
     },
     {
       "doc": "TODO\n",

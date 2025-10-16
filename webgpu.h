@@ -508,11 +508,29 @@ typedef enum WGPUComponentSwizzle {
      * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
      */
     WGPUComponentSwizzle_Undefined = 0x00000000,
+    /**
+     * Force its value to 0.
+     */
     WGPUComponentSwizzle_Zero = 0x00000001,
+    /**
+     * Force its value to 1.
+     */
     WGPUComponentSwizzle_One = 0x00000002,
+    /**
+     * Take its value from the red channel of the texture.
+     */
     WGPUComponentSwizzle_R = 0x00000003,
+    /**
+     * Take its value from the green channel of the texture.
+     */
     WGPUComponentSwizzle_G = 0x00000004,
+    /**
+     * Take its value from the blue channel of the texture.
+     */
     WGPUComponentSwizzle_B = 0x00000005,
+    /**
+     * Take its value from the alpha channel of the texture.
+     */
     WGPUComponentSwizzle_A = 0x00000006,
     WGPUComponentSwizzle_Force32 = 0x7FFFFFFF
 } WGPUComponentSwizzle WGPU_ENUM_ATTRIBUTE;
@@ -3557,22 +3575,35 @@ typedef struct WGPUTextureBindingLayout {
 })
 
 /**
+ * When accessed by a shader, the red/green/blue/alpha channels are replaced
+ * by the value corresponding to the component specified in r, g, b, and a,
+ * respectively unlike the JS API which uses a string of length four, with
+ * each character mapping to the texture view's red/green/blue/alpha channels.
+ *
  * Default values can be set using @ref WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT as initializer.
  */
 typedef struct WGPUTextureComponentSwizzle {
     /**
+     * The value that replaces the red channel in the shader.
+     *
      * The `INIT` macro sets this to @ref WGPUComponentSwizzle_R.
      */
     WGPUComponentSwizzle r;
     /**
+     * The value that replaces the green channel in the shader.
+     *
      * The `INIT` macro sets this to @ref WGPUComponentSwizzle_G.
      */
     WGPUComponentSwizzle g;
     /**
+     * The value that replaces the blue channel in the shader.
+     *
      * The `INIT` macro sets this to @ref WGPUComponentSwizzle_B.
      */
     WGPUComponentSwizzle b;
     /**
+     * The value that replaces the alpha channel in the shader.
+     *
      * The `INIT` macro sets this to @ref WGPUComponentSwizzle_A.
      */
     WGPUComponentSwizzle a;
