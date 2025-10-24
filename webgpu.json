@@ -2339,6 +2339,10 @@
         {
           "doc": "TODO\n",
           "name": "pointer_composite_access"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "uniform_buffer_standard_layout"
         }
       ],
       "name": "WGSL_language_feature_name"
