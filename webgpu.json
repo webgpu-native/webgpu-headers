@@ -6539,26 +6539,22 @@
       "doc": "When accessed by a shader, the red/green/blue/alpha channels are replaced\nby the value corresponding to the component specified in r, g, b, and a,\nrespectively unlike the JS API which uses a string of length four, with\neach character mapping to the texture view's red/green/blue/alpha channels.\n",
       "members": [
         {
-          "default": "r",
-          "doc": "The value that replaces the red channel in the shader.\n",
+          "doc": "The value that replaces the red channel in the shader.\n\nIf set to @ref WGPUComponentSwizzle_Undefined,\n[defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_R.\n",
           "name": "r",
           "type": "enum.component_swizzle"
         },
         {
-          "default": "g",
-          "doc": "The value that replaces the green channel in the shader.\n",
+          "doc": "The value that replaces the green channel in the shader.\n\nIf set to @ref WGPUComponentSwizzle_Undefined,\n[defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_G.\n",
           "name": "g",
           "type": "enum.component_swizzle"
         },
         {
-          "default": "b",
-          "doc": "The value that replaces the blue channel in the shader.\n",
+          "doc": "The value that replaces the blue channel in the shader.\n\nIf set to @ref WGPUComponentSwizzle_Undefined,\n[defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_B.\n",
           "name": "b",
           "type": "enum.component_swizzle"
         },
         {
-          "default": "a",
-          "doc": "The value that replaces the alpha channel in the shader.\n",
+          "doc": "The value that replaces the alpha channel in the shader.\n\nIf set to @ref WGPUComponentSwizzle_Undefined,\n[defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_A.\n",
           "name": "a",
           "type": "enum.component_swizzle"
         }

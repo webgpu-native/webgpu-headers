@@ -3200,23 +3200,31 @@ structs:
       - name: r
         doc: |
           The value that replaces the red channel in the shader.
+
+          If set to @ref WGPUComponentSwizzle_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_R.
         type: enum.component_swizzle
-        default: r
       - name: g
         doc: |
           The value that replaces the green channel in the shader.
+
+          If set to @ref WGPUComponentSwizzle_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_G.
         type: enum.component_swizzle
-        default: g
       - name: b
         doc: |
           The value that replaces the blue channel in the shader.
+
+          If set to @ref WGPUComponentSwizzle_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_B.
         type: enum.component_swizzle
-        default: b
       - name: a
         doc: |
           The value that replaces the alpha channel in the shader.
+
+          If set to @ref WGPUComponentSwizzle_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_A.
         type: enum.component_swizzle
-        default: a
   - name: texture_component_swizzle_descriptor
     doc: |
       TODO

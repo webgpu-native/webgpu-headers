@@ -3586,25 +3586,37 @@ typedef struct WGPUTextureComponentSwizzle {
     /**
      * The value that replaces the red channel in the shader.
      *
-     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_R.
+     * If set to @ref WGPUComponentSwizzle_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_R.
+     *
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_Undefined.
      */
     WGPUComponentSwizzle r;
     /**
      * The value that replaces the green channel in the shader.
      *
-     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_G.
+     * If set to @ref WGPUComponentSwizzle_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_G.
+     *
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_Undefined.
      */
     WGPUComponentSwizzle g;
     /**
      * The value that replaces the blue channel in the shader.
      *
-     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_B.
+     * If set to @ref WGPUComponentSwizzle_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_B.
+     *
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_Undefined.
      */
     WGPUComponentSwizzle b;
     /**
      * The value that replaces the alpha channel in the shader.
      *
-     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_A.
+     * If set to @ref WGPUComponentSwizzle_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_A.
+     *
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_Undefined.
      */
     WGPUComponentSwizzle a;
 } WGPUTextureComponentSwizzle WGPU_STRUCTURE_ATTRIBUTE;
@@ -3613,10 +3625,10 @@ typedef struct WGPUTextureComponentSwizzle {
  * Initializer for @ref WGPUTextureComponentSwizzle.
  */
 #define WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureComponentSwizzle, { \
-    /*.r=*/WGPUComponentSwizzle_R _wgpu_COMMA \
-    /*.g=*/WGPUComponentSwizzle_G _wgpu_COMMA \
-    /*.b=*/WGPUComponentSwizzle_B _wgpu_COMMA \
-    /*.a=*/WGPUComponentSwizzle_A _wgpu_COMMA \
+    /*.r=*/WGPUComponentSwizzle_Undefined _wgpu_COMMA \
+    /*.g=*/WGPUComponentSwizzle_Undefined _wgpu_COMMA \
+    /*.b=*/WGPUComponentSwizzle_Undefined _wgpu_COMMA \
+    /*.a=*/WGPUComponentSwizzle_Undefined _wgpu_COMMA \
 })
 
 /**
