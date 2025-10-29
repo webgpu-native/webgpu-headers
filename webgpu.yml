@@ -1498,6 +1498,9 @@ enums:
       - name: pointer_composite_access
         doc: |
           TODO
+      - name: uniform_buffer_standard_layout
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
