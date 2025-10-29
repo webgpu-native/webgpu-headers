@@ -296,6 +296,7 @@ struct WGPUSurfaceSourceXlibWindow;
 struct WGPUSurfaceTexture;
 struct WGPUTexelCopyBufferLayout;
 struct WGPUTextureBindingLayout;
+struct WGPUTextureComponentSwizzle;
 struct WGPUTextureViewDescriptor;
 struct WGPUVertexAttribute;
 struct WGPUBindGroupDescriptor;
@@ -314,6 +315,7 @@ struct WGPUShaderModuleDescriptor;
 struct WGPUSurfaceDescriptor;
 struct WGPUTexelCopyBufferInfo;
 struct WGPUTexelCopyTextureInfo;
+struct WGPUTextureComponentSwizzleDescriptor;
 struct WGPUTextureDescriptor;
 struct WGPUVertexBufferLayout;
 struct WGPUBindGroupLayoutDescriptor;
@@ -501,6 +503,38 @@ typedef enum WGPUCompilationMessageType {
     WGPUCompilationMessageType_Force32 = 0x7FFFFFFF
 } WGPUCompilationMessageType WGPU_ENUM_ATTRIBUTE;
 
+typedef enum WGPUComponentSwizzle {
+    /**
+     * `0`. Indicates no value is passed for this argument. See @ref SentinelValues.
+     */
+    WGPUComponentSwizzle_Undefined = 0x00000000,
+    /**
+     * Force its value to 0.
+     */
+    WGPUComponentSwizzle_Zero = 0x00000001,
+    /**
+     * Force its value to 1.
+     */
+    WGPUComponentSwizzle_One = 0x00000002,
+    /**
+     * Take its value from the red channel of the texture.
+     */
+    WGPUComponentSwizzle_R = 0x00000003,
+    /**
+     * Take its value from the green channel of the texture.
+     */
+    WGPUComponentSwizzle_G = 0x00000004,
+    /**
+     * Take its value from the blue channel of the texture.
+     */
+    WGPUComponentSwizzle_B = 0x00000005,
+    /**
+     * Take its value from the alpha channel of the texture.
+     */
+    WGPUComponentSwizzle_A = 0x00000006,
+    WGPUComponentSwizzle_Force32 = 0x7FFFFFFF
+} WGPUComponentSwizzle WGPU_ENUM_ATTRIBUTE;
+
 /**
  * Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
  */
@@ -618,6 +652,7 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_TextureFormatsTier1 = 0x00000013,
     WGPUFeatureName_TextureFormatsTier2 = 0x00000014,
     WGPUFeatureName_PrimitiveIndex = 0x00000015,
+    WGPUFeatureName_TextureComponentSwizzle = 0x00000016,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 
@@ -3541,6 +3576,63 @@ typedef struct WGPUTextureBindingLayout {
 })
 
 /**
+ * When accessed by a shader, the red/green/blue/alpha channels are replaced
+ * by the value corresponding to the component specified in r, g, b, and a,
+ * respectively unlike the JS API which uses a string of length four, with
+ * each character mapping to the texture view's red/green/blue/alpha channels.
+ *
+ * Default values can be set using @ref WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT as initializer.
+ */
+typedef struct WGPUTextureComponentSwizzle {
+    /**
+     * The value that replaces the red channel in the shader.
+     *
+     * If set to @ref WGPUComponentSwizzle_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_R.
+     *
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_Undefined.
+     */
+    WGPUComponentSwizzle r;
+    /**
+     * The value that replaces the green channel in the shader.
+     *
+     * If set to @ref WGPUComponentSwizzle_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_G.
+     *
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_Undefined.
+     */
+    WGPUComponentSwizzle g;
+    /**
+     * The value that replaces the blue channel in the shader.
+     *
+     * If set to @ref WGPUComponentSwizzle_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_B.
+     *
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_Undefined.
+     */
+    WGPUComponentSwizzle b;
+    /**
+     * The value that replaces the alpha channel in the shader.
+     *
+     * If set to @ref WGPUComponentSwizzle_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_A.
+     *
+     * The `INIT` macro sets this to @ref WGPUComponentSwizzle_Undefined.
+     */
+    WGPUComponentSwizzle a;
+} WGPUTextureComponentSwizzle WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUTextureComponentSwizzle.
+ */
+#define WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureComponentSwizzle, { \
+    /*.r=*/WGPUComponentSwizzle_Undefined _wgpu_COMMA \
+    /*.g=*/WGPUComponentSwizzle_Undefined _wgpu_COMMA \
+    /*.b=*/WGPUComponentSwizzle_Undefined _wgpu_COMMA \
+    /*.a=*/WGPUComponentSwizzle_Undefined _wgpu_COMMA \
+})
+
+/**
  * Default values can be set using @ref WGPU_TEXTURE_VIEW_DESCRIPTOR_INIT as initializer.
  */
 typedef struct WGPUTextureViewDescriptor {
@@ -4221,6 +4313,28 @@ typedef struct WGPUTexelCopyTextureInfo {
     /*.mipLevel=*/0 _wgpu_COMMA \
     /*.origin=*/WGPU_ORIGIN_3D_INIT _wgpu_COMMA \
     /*.aspect=*/WGPUTextureAspect_Undefined _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_TEXTURE_COMPONENT_SWIZZLE_DESCRIPTOR_INIT as initializer.
+ */
+typedef struct WGPUTextureComponentSwizzleDescriptor {
+    WGPUChainedStruct chain;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT.
+     */
+    WGPUTextureComponentSwizzle swizzle;
+} WGPUTextureComponentSwizzleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUTextureComponentSwizzleDescriptor.
+ */
+#define WGPU_TEXTURE_COMPONENT_SWIZZLE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureComponentSwizzleDescriptor, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_TextureComponentSwizzleDescriptor _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.swizzle=*/WGPU_TEXTURE_COMPONENT_SWIZZLE_INIT _wgpu_COMMA \
 })
 
 /**

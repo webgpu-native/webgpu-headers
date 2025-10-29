@@ -329,6 +329,30 @@ enums:
       - name: info
         doc: |
           TODO
+  - name: component_swizzle
+    doc: |
+      TODO
+    entries:
+      - name: undefined
+        doc: Indicates no value is passed for this argument. See @ref SentinelValues.
+      - name: zero
+        doc: |
+          Force its value to 0.
+      - name: one
+        doc: |
+          Force its value to 1.
+      - name: r
+        doc: |
+          Take its value from the red channel of the texture.
+      - name: g
+        doc: |
+          Take its value from the green channel of the texture.
+      - name: b
+        doc: |
+          Take its value from the blue channel of the texture.
+      - name: a
+        doc: |
+          Take its value from the alpha channel of the texture.
   - name: composite_alpha_mode
     doc: Describes how frames are composited with other contents on the screen when @ref wgpuSurfacePresent is called.
     entries:
@@ -503,6 +527,9 @@ enums:
         doc: |
           TODO
       - name: primitive_index
+        doc: |
+          TODO
+      - name: texture_component_swizzle
         doc: |
           TODO
   - name: filter_mode
@@ -3165,6 +3192,53 @@ structs:
           TODO
         type: bool
         default: false
+  - name: texture_component_swizzle
+    doc: |
+      When accessed by a shader, the red/green/blue/alpha channels are replaced
+      by the value corresponding to the component specified in r, g, b, and a,
+      respectively unlike the JS API which uses a string of length four, with
+      each character mapping to the texture view's red/green/blue/alpha channels.
+    type: standalone
+    members:
+      - name: r
+        doc: |
+          The value that replaces the red channel in the shader.
+
+          If set to @ref WGPUComponentSwizzle_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_R.
+        type: enum.component_swizzle
+      - name: g
+        doc: |
+          The value that replaces the green channel in the shader.
+
+          If set to @ref WGPUComponentSwizzle_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_G.
+        type: enum.component_swizzle
+      - name: b
+        doc: |
+          The value that replaces the blue channel in the shader.
+
+          If set to @ref WGPUComponentSwizzle_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_B.
+        type: enum.component_swizzle
+      - name: a
+        doc: |
+          The value that replaces the alpha channel in the shader.
+
+          If set to @ref WGPUComponentSwizzle_Undefined,
+          [defaults](@ref SentinelValues) to @ref WGPUComponentSwizzle_A.
+        type: enum.component_swizzle
+  - name: texture_component_swizzle_descriptor
+    doc: |
+      TODO
+    type: extension
+    extends:
+      - struct.texture_view_descriptor
+    members:
+      - name: swizzle
+        doc: |
+          TODO
+        type: struct.texture_component_swizzle
   - name: texture_descriptor
     doc: |
       TODO
