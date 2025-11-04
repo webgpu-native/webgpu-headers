@@ -2381,6 +2381,10 @@
         {
           "doc": "TODO\n",
           "name": "uniform_buffer_standard_layout"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "subgroup_id"
         }
       ],
       "name": "WGSL_language_feature_name"
