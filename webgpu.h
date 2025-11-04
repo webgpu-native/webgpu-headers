@@ -1234,6 +1234,7 @@ typedef enum WGPUWGSLLanguageFeatureName {
     WGPUWGSLLanguageFeatureName_UnrestrictedPointerParameters = 0x00000003,
     WGPUWGSLLanguageFeatureName_PointerCompositeAccess = 0x00000004,
     WGPUWGSLLanguageFeatureName_UniformBufferStandardLayout = 0x00000005,
+    WGPUWGSLLanguageFeatureName_SubgroupId = 0x00000006,
     WGPUWGSLLanguageFeatureName_Force32 = 0x7FFFFFFF
 } WGPUWGSLLanguageFeatureName WGPU_ENUM_ATTRIBUTE;
 

@@ -1501,6 +1501,9 @@ enums:
       - name: uniform_buffer_standard_layout
         doc: |
           TODO
+      - name: subgroup_id
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
