@@ -3482,11 +3482,11 @@ callbacks:
         passed_with_ownership: false
       - name: reason
         doc: |
-          TODO
+          An error code explaining why the device was lost.
         type: enum.device_lost_reason
       - name: message
         doc: |
-          TODO
+          Textual description of the error.
         type: out_string
         passed_with_ownership: false
   - name: pop_error_scope
@@ -3732,7 +3732,7 @@ objects:
         args:
           - name: mode
             doc: |
-              TODO
+              The mapping mode (read or write).
             type: bitflag.map_mode
           - name: offset
             doc: |
