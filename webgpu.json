@@ -258,7 +258,7 @@
           "type": "enum.device_lost_reason"
         },
         {
-          "doc": "Textual description of the error.\n",
+          "doc": "A @ref LocalizableHumanReadableMessageString describing why the device was lost.\n",
           "name": "message",
           "passed_with_ownership": false,
           "type": "out_string"

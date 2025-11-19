@@ -1412,7 +1412,7 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
  * An error code explaining why the device was lost.
  *
  * @param message
- * Textual description of the error.
+ * A @ref LocalizableHumanReadableMessageString describing why the device was lost.
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLostReason reason, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;

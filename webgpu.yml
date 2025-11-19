@@ -3489,7 +3489,7 @@ callbacks:
         type: enum.device_lost_reason
       - name: message
         doc: |
-          Textual description of the error.
+          A @ref LocalizableHumanReadableMessageString describing why the device was lost.
         type: out_string
         passed_with_ownership: false
   - name: pop_error_scope
