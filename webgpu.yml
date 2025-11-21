@@ -820,6 +820,12 @@ enums:
       - name: texture_component_swizzle_descriptor
         doc: |
           TODO
+      - name: external_texture_binding_layout
+        doc: |
+          TODO
+      - name: external_texture_binding_entry
+        doc: |
+          TODO
   - name: sampler_binding_type
     doc: |
       TODO
@@ -2143,6 +2149,21 @@ structs:
           TODO
         type: uint32
         default: 1
+  - name: external_texture_binding_entry
+    doc: Chained in an @ref WGPUBindGroupEntry to set it to an @ref WGPUExternalTexture. This must have a corresponding @ref WGPUExternalTextureBindingLayout in the @ref WGPUBindGroupLayout.
+    type: extension
+    extends:
+      - bind_group_entry
+    members:
+      - name: external_texture
+        type: object.external_texture
+        doc: |
+          TODO
+  - name: external_texture_binding_layout
+    doc: Chained in @ref WGPUBindGroupLayoutEntry to specify that the corresponding entries in an @ref WGPUBindGroup will contain an @ref WGPUExternalTexture.
+    type: extension
+    extends:
+      - bind_group_layout_entry
   - name: fragment_state
     doc: |
       TODO
@@ -4492,6 +4513,17 @@ objects:
           Pops an error scope to the current thread's error scope stack,
           asynchronously returning the result. See @ref ErrorScopes.
         callback: callback.pop_error_scope
+      - name: set_label
+        doc: |
+          TODO
+        args:
+          - name: label
+            doc: |
+              TODO
+            type: string_with_default_empty
+  - name: external_texture
+    doc: A sampleable 2D texture that may perform 0-copy YUV sampling internally. Creation of @ref WGPUExternalTexture is extremely implementation-dependent and not defined in this header.
+    methods:
       - name: set_label
         doc: |
           TODO

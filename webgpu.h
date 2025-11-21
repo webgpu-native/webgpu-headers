@@ -229,6 +229,10 @@ typedef struct WGPUComputePipelineImpl* WGPUComputePipeline WGPU_OBJECT_ATTRIBUT
  * For more info, see @ref DeviceRelease.
  */
 typedef struct WGPUDeviceImpl* WGPUDevice WGPU_OBJECT_ATTRIBUTE;
+/**
+ * A sampleable 2D texture that may perform 0-copy YUV sampling internally. Creation of @ref WGPUExternalTexture is extremely implementation-dependent and not defined in this header.
+ */
+typedef struct WGPUExternalTextureImpl* WGPUExternalTexture WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUInstanceImpl* WGPUInstance WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUPipelineLayoutImpl* WGPUPipelineLayout WGPU_OBJECT_ATTRIBUTE;
 typedef struct WGPUQuerySetImpl* WGPUQuerySet WGPU_OBJECT_ATTRIBUTE;
@@ -250,7 +254,6 @@ typedef struct WGPUTextureViewImpl* WGPUTextureView WGPU_OBJECT_ATTRIBUTE;
 
 // Structure forward declarations
 struct WGPUAdapterInfo;
-struct WGPUBindGroupEntry;
 struct WGPUBlendComponent;
 struct WGPUBufferBindingLayout;
 struct WGPUBufferDescriptor;
@@ -260,6 +263,8 @@ struct WGPUCommandEncoderDescriptor;
 struct WGPUCompilationMessage;
 struct WGPUConstantEntry;
 struct WGPUExtent3D;
+struct WGPUExternalTextureBindingEntry;
+struct WGPUExternalTextureBindingLayout;
 struct WGPUFuture;
 struct WGPUInstanceLimits;
 struct WGPULimits;
@@ -299,7 +304,7 @@ struct WGPUTextureBindingLayout;
 struct WGPUTextureComponentSwizzle;
 struct WGPUTextureViewDescriptor;
 struct WGPUVertexAttribute;
-struct WGPUBindGroupDescriptor;
+struct WGPUBindGroupEntry;
 struct WGPUBindGroupLayoutEntry;
 struct WGPUBlendState;
 struct WGPUCompilationInfo;
@@ -318,6 +323,7 @@ struct WGPUTexelCopyTextureInfo;
 struct WGPUTextureComponentSwizzleDescriptor;
 struct WGPUTextureDescriptor;
 struct WGPUVertexBufferLayout;
+struct WGPUBindGroupDescriptor;
 struct WGPUBindGroupLayoutDescriptor;
 struct WGPUColorTargetState;
 struct WGPUComputePipelineDescriptor;
@@ -950,6 +956,8 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceColorManagement = 0x0000000A,
     WGPUSType_RequestAdapterWebXROptions = 0x0000000B,
     WGPUSType_TextureComponentSwizzleDescriptor = 0x0000000C,
+    WGPUSType_ExternalTextureBindingLayout = 0x0000000D,
+    WGPUSType_ExternalTextureBindingEntry = 0x0000000E,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -1817,68 +1825,6 @@ typedef struct WGPUAdapterInfo {
 })
 
 /**
- * Default values can be set using @ref WGPU_BIND_GROUP_ENTRY_INIT as initializer.
- */
-typedef struct WGPUBindGroupEntry {
-    WGPUChainedStruct * nextInChain;
-    /**
-     * Binding index in the bind group.
-     *
-     * The `INIT` macro sets this to `0`.
-     */
-    uint32_t binding;
-    /**
-     * Set this if the binding is a buffer object.
-     * Otherwise must be null.
-     *
-     * The `INIT` macro sets this to `NULL`.
-     */
-    WGPU_NULLABLE WGPUBuffer buffer;
-    /**
-     * If the binding is a buffer, this is the byte offset of the binding range.
-     * Otherwise ignored.
-     *
-     * The `INIT` macro sets this to `0`.
-     */
-    uint64_t offset;
-    /**
-     * If the binding is a buffer, this is the byte size of the binding range
-     * (@ref WGPU_WHOLE_SIZE means the binding ends at the end of the buffer).
-     * Otherwise ignored.
-     *
-     * The `INIT` macro sets this to @ref WGPU_WHOLE_SIZE.
-     */
-    uint64_t size;
-    /**
-     * Set this if the binding is a sampler object.
-     * Otherwise must be null.
-     *
-     * The `INIT` macro sets this to `NULL`.
-     */
-    WGPU_NULLABLE WGPUSampler sampler;
-    /**
-     * Set this if the binding is a texture view object.
-     * Otherwise must be null.
-     *
-     * The `INIT` macro sets this to `NULL`.
-     */
-    WGPU_NULLABLE WGPUTextureView textureView;
-} WGPUBindGroupEntry WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUBindGroupEntry.
- */
-#define WGPU_BIND_GROUP_ENTRY_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBindGroupEntry, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.binding=*/0 _wgpu_COMMA \
-    /*.buffer=*/NULL _wgpu_COMMA \
-    /*.offset=*/0 _wgpu_COMMA \
-    /*.size=*/WGPU_WHOLE_SIZE _wgpu_COMMA \
-    /*.sampler=*/NULL _wgpu_COMMA \
-    /*.textureView=*/NULL _wgpu_COMMA \
-})
-
-/**
  * Default values can be set using @ref WGPU_BLEND_COMPONENT_INIT as initializer.
  */
 typedef struct WGPUBlendComponent {
@@ -2180,6 +2126,49 @@ typedef struct WGPUExtent3D {
     /*.width=*/0 _wgpu_COMMA \
     /*.height=*/1 _wgpu_COMMA \
     /*.depthOrArrayLayers=*/1 _wgpu_COMMA \
+})
+
+/**
+ * Chained in an @ref WGPUBindGroupEntry to set it to an @ref WGPUExternalTexture. This must have a corresponding @ref WGPUExternalTextureBindingLayout in the @ref WGPUBindGroupLayout.
+ *
+ * Default values can be set using @ref WGPU_EXTERNAL_TEXTURE_BINDING_ENTRY_INIT as initializer.
+ */
+typedef struct WGPUExternalTextureBindingEntry {
+    WGPUChainedStruct chain;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPUExternalTexture externalTexture;
+} WGPUExternalTextureBindingEntry WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUExternalTextureBindingEntry.
+ */
+#define WGPU_EXTERNAL_TEXTURE_BINDING_ENTRY_INIT _wgpu_MAKE_INIT_STRUCT(WGPUExternalTextureBindingEntry, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_ExternalTextureBindingEntry _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.externalTexture=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Chained in @ref WGPUBindGroupLayoutEntry to specify that the corresponding entries in an @ref WGPUBindGroup will contain an @ref WGPUExternalTexture.
+ *
+ * Default values can be set using @ref WGPU_EXTERNAL_TEXTURE_BINDING_LAYOUT_INIT as initializer.
+ */
+typedef struct WGPUExternalTextureBindingLayout {
+    WGPUChainedStruct chain;
+} WGPUExternalTextureBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUExternalTextureBindingLayout.
+ */
+#define WGPU_EXTERNAL_TEXTURE_BINDING_LAYOUT_INIT _wgpu_MAKE_INIT_STRUCT(WGPUExternalTextureBindingLayout, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_ExternalTextureBindingLayout _wgpu_COMMA \
+    }) _wgpu_COMMA \
 })
 
 /**
@@ -3728,39 +3717,65 @@ typedef struct WGPUVertexAttribute {
 })
 
 /**
- * Default values can be set using @ref WGPU_BIND_GROUP_DESCRIPTOR_INIT as initializer.
+ * Default values can be set using @ref WGPU_BIND_GROUP_ENTRY_INIT as initializer.
  */
-typedef struct WGPUBindGroupDescriptor {
+typedef struct WGPUBindGroupEntry {
     WGPUChainedStruct * nextInChain;
     /**
-     * This is a \ref NonNullInputString.
+     * Binding index in the bind group.
      *
-     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
+     * The `INIT` macro sets this to `0`.
      */
-    WGPUStringView label;
+    uint32_t binding;
     /**
+     * Set this if the binding is a buffer object.
+     * Otherwise must be null.
+     *
      * The `INIT` macro sets this to `NULL`.
      */
-    WGPUBindGroupLayout layout;
+    WGPU_NULLABLE WGPUBuffer buffer;
     /**
-     * Array count for `entries`. The `INIT` macro sets this to 0.
+     * If the binding is a buffer, this is the byte offset of the binding range.
+     * Otherwise ignored.
+     *
+     * The `INIT` macro sets this to `0`.
      */
-    size_t entryCount;
+    uint64_t offset;
     /**
+     * If the binding is a buffer, this is the byte size of the binding range
+     * (@ref WGPU_WHOLE_SIZE means the binding ends at the end of the buffer).
+     * Otherwise ignored.
+     *
+     * The `INIT` macro sets this to @ref WGPU_WHOLE_SIZE.
+     */
+    uint64_t size;
+    /**
+     * Set this if the binding is a sampler object.
+     * Otherwise must be null.
+     *
      * The `INIT` macro sets this to `NULL`.
      */
-    WGPUBindGroupEntry const * entries;
-} WGPUBindGroupDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+    WGPU_NULLABLE WGPUSampler sampler;
+    /**
+     * Set this if the binding is a texture view object.
+     * Otherwise must be null.
+     *
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPU_NULLABLE WGPUTextureView textureView;
+} WGPUBindGroupEntry WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPUBindGroupDescriptor.
+ * Initializer for @ref WGPUBindGroupEntry.
  */
-#define WGPU_BIND_GROUP_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBindGroupDescriptor, { \
+#define WGPU_BIND_GROUP_ENTRY_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBindGroupEntry, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.layout=*/NULL _wgpu_COMMA \
-    /*.entryCount=*/0 _wgpu_COMMA \
-    /*.entries=*/NULL _wgpu_COMMA \
+    /*.binding=*/0 _wgpu_COMMA \
+    /*.buffer=*/NULL _wgpu_COMMA \
+    /*.offset=*/0 _wgpu_COMMA \
+    /*.size=*/WGPU_WHOLE_SIZE _wgpu_COMMA \
+    /*.sampler=*/NULL _wgpu_COMMA \
+    /*.textureView=*/NULL _wgpu_COMMA \
 })
 
 /**
@@ -4448,6 +4463,42 @@ typedef struct WGPUVertexBufferLayout {
     /*.arrayStride=*/0 _wgpu_COMMA \
     /*.attributeCount=*/0 _wgpu_COMMA \
     /*.attributes=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_BIND_GROUP_DESCRIPTOR_INIT as initializer.
+ */
+typedef struct WGPUBindGroupDescriptor {
+    WGPUChainedStruct * nextInChain;
+    /**
+     * This is a \ref NonNullInputString.
+     *
+     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
+     */
+    WGPUStringView label;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPUBindGroupLayout layout;
+    /**
+     * Array count for `entries`. The `INIT` macro sets this to 0.
+     */
+    size_t entryCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPUBindGroupEntry const * entries;
+} WGPUBindGroupDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUBindGroupDescriptor.
+ */
+#define WGPU_BIND_GROUP_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUBindGroupDescriptor, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
+    /*.layout=*/NULL _wgpu_COMMA \
+    /*.entryCount=*/0 _wgpu_COMMA \
+    /*.entries=*/NULL _wgpu_COMMA \
 })
 
 /**
@@ -5223,6 +5274,23 @@ typedef void (*WGPUProcDeviceAddRef)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
  * > @copydoc wgpuDeviceRelease
  */
 typedef void (*WGPUProcDeviceRelease)(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+
+// Procs of ExternalTexture
+/**
+ * Proc pointer type for @ref wgpuExternalTextureSetLabel:
+ * > @copydoc wgpuExternalTextureSetLabel
+ */
+typedef void (*WGPUProcExternalTextureSetLabel)(WGPUExternalTexture externalTexture, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuExternalTextureAddRef:
+ * > @copydoc wgpuExternalTextureAddRef
+ */
+typedef void (*WGPUProcExternalTextureAddRef)(WGPUExternalTexture externalTexture) WGPU_FUNCTION_ATTRIBUTE;
+/**
+ * Proc pointer type for @ref wgpuExternalTextureRelease:
+ * > @copydoc wgpuExternalTextureRelease
+ */
+typedef void (*WGPUProcExternalTextureRelease)(WGPUExternalTexture externalTexture) WGPU_FUNCTION_ATTRIBUTE;
 
 // Procs of Instance
 /**
@@ -6199,6 +6267,18 @@ WGPU_EXPORT void wgpuDevicePushErrorScope(WGPUDevice device, WGPUErrorFilter fil
 WGPU_EXPORT void wgpuDeviceSetLabel(WGPUDevice device, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceAddRef(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT void wgpuDeviceRelease(WGPUDevice device) WGPU_FUNCTION_ATTRIBUTE;
+
+/** @} */
+
+/**
+ * \defgroup WGPUExternalTextureMethods WGPUExternalTexture methods
+ * \brief Functions whose first argument has type WGPUExternalTexture.
+ *
+ * @{
+ */
+WGPU_EXPORT void wgpuExternalTextureSetLabel(WGPUExternalTexture externalTexture, WGPUStringView label) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuExternalTextureAddRef(WGPUExternalTexture externalTexture) WGPU_FUNCTION_ATTRIBUTE;
+WGPU_EXPORT void wgpuExternalTextureRelease(WGPUExternalTexture externalTexture) WGPU_FUNCTION_ATTRIBUTE;
 
 /** @} */
 
