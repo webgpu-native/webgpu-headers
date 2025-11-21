@@ -949,6 +949,7 @@ typedef enum WGPUSType {
     WGPUSType_SurfaceSourceXCBWindow = 0x00000009,
     WGPUSType_SurfaceColorManagement = 0x0000000A,
     WGPUSType_RequestAdapterWebXROptions = 0x0000000B,
+    WGPUSType_TextureComponentSwizzleDescriptor = 0x0000000C,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
