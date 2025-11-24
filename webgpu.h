@@ -1278,7 +1278,7 @@ static const WGPUBufferUsage WGPUBufferUsage_CopyDst = 0x0000000000000008;
  */
 static const WGPUBufferUsage WGPUBufferUsage_Index = 0x0000000000000010;
 /**
- * The buffer can be used as an Vertex buffer when using a render pipeline.
+ * The buffer can be used as a Vertex buffer when using a render pipeline.
  */
 static const WGPUBufferUsage WGPUBufferUsage_Vertex = 0x0000000000000020;
 /**

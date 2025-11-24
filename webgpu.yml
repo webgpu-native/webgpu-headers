@@ -1531,7 +1531,7 @@ bitflags:
           The buffer can be used as an Index buffer when doing indexed drawing in a render pipeline.
       - name: vertex
         doc: |
-          The buffer can be used as an Vertex buffer when using a render pipeline.
+          The buffer can be used as a Vertex buffer when using a render pipeline.
       - name: uniform
         doc: |
           The buffer can be bound to a shader as a uniform buffer.
