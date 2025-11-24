@@ -30,7 +30,7 @@
           "name": "index"
         },
         {
-          "doc": "The buffer can be used as an Vertex buffer when using a render pipeline.\n",
+          "doc": "The buffer can be used as a Vertex buffer when using a render pipeline.\n",
           "name": "vertex"
         },
         {
