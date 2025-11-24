@@ -1447,6 +1447,10 @@
         {
           "doc": "TODO\n",
           "name": "request_adapter_WebXR_options"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "texture_component_swizzle_descriptor"
         }
       ],
       "name": "s_type"

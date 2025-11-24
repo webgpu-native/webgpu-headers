@@ -817,6 +817,9 @@ enums:
       - name: request_adapter_WebXR_options
         doc: |
           TODO
+      - name: texture_component_swizzle_descriptor
+        doc: |
+          TODO
   - name: sampler_binding_type
     doc: |
       TODO
