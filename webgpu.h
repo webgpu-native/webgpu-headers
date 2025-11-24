@@ -1408,7 +1408,11 @@ typedef void (*WGPUCreateRenderPipelineAsyncCallback)(WGPUCreatePipelineAsyncSta
  * (2) The last ref of the device has been (or is being) released: see @ref DeviceRelease.
  * This parameter is @ref PassedWithoutOwnership.
  *
+ * @param reason
+ * An error code explaining why the device was lost.
+ *
  * @param message
+ * A @ref LocalizableHumanReadableMessageString describing why the device was lost.
  * This parameter is @ref PassedWithoutOwnership.
  */
 typedef void (*WGPUDeviceLostCallback)(WGPUDevice const * device, WGPUDeviceLostReason reason, WGPUStringView message, WGPU_NULLABLE void* userdata1, WGPU_NULLABLE void* userdata2) WGPU_FUNCTION_ATTRIBUTE;
@@ -5938,6 +5942,9 @@ WGPU_EXPORT WGPUBufferMapState wgpuBufferGetMapState(WGPUBuffer buffer) WGPU_FUN
 WGPU_EXPORT uint64_t wgpuBufferGetSize(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 WGPU_EXPORT WGPUBufferUsage wgpuBufferGetUsage(WGPUBuffer buffer) WGPU_FUNCTION_ATTRIBUTE;
 /**
+ * @param mode
+ * The mapping mode (read or write).
+ *
  * @param offset
  * Byte offset relative to beginning of the buffer.
  *
