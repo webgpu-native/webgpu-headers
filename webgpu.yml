@@ -1625,6 +1625,9 @@ bitflags:
       - name: render_attachment
         doc: |
           TODO
+      - name: transient_attachment
+        doc: |
+          TODO
 structs:
   - name: adapter_info
     doc: |
