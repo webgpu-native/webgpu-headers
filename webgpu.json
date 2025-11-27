@@ -30,7 +30,7 @@
           "name": "index"
         },
         {
-          "doc": "The buffer can be used as an Vertex buffer when using a render pipeline.\n",
+          "doc": "The buffer can be used as a Vertex buffer when using a render pipeline.\n",
           "name": "vertex"
         },
         {
@@ -253,12 +253,12 @@
           "type": "object.device"
         },
         {
-          "doc": "TODO\n",
+          "doc": "An error code explaining why the device was lost.\n",
           "name": "reason",
           "type": "enum.device_lost_reason"
         },
         {
-          "doc": "TODO\n",
+          "doc": "A @ref LocalizableHumanReadableMessageString describing why the device was lost.\n",
           "name": "message",
           "passed_with_ownership": false,
           "type": "out_string"
@@ -2589,7 +2589,7 @@
         {
           "args": [
             {
-              "doc": "TODO\n",
+              "doc": "The mapping mode (read or write).\n",
               "name": "mode",
               "type": "bitflag.map_mode"
             },

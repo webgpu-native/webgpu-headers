@@ -1540,7 +1540,7 @@ bitflags:
           The buffer can be used as an Index buffer when doing indexed drawing in a render pipeline.
       - name: vertex
         doc: |
-          The buffer can be used as an Vertex buffer when using a render pipeline.
+          The buffer can be used as a Vertex buffer when using a render pipeline.
       - name: uniform
         doc: |
           The buffer can be bound to a shader as a uniform buffer.
@@ -3506,11 +3506,11 @@ callbacks:
         passed_with_ownership: false
       - name: reason
         doc: |
-          TODO
+          An error code explaining why the device was lost.
         type: enum.device_lost_reason
       - name: message
         doc: |
-          TODO
+          A @ref LocalizableHumanReadableMessageString describing why the device was lost.
         type: out_string
         passed_with_ownership: false
   - name: pop_error_scope
@@ -3756,7 +3756,7 @@ objects:
         args:
           - name: mode
             doc: |
-              TODO
+              The mapping mode (read or write).
             type: bitflag.map_mode
           - name: offset
             doc: |
