@@ -154,6 +154,10 @@
         {
           "doc": "TODO\n",
           "name": "render_attachment"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "transient_attachment"
         }
       ],
       "name": "texture_usage"
