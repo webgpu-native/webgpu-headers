@@ -5356,6 +5356,13 @@ objects:
           doc: |
             TODO
           type: enum.texture_dimension
+      - name: get_texture_binding_view_dimension
+        doc: |
+          TODO
+        returns:
+          doc: |
+            TODO
+          type: enum.texture_view_dimension
       - name: get_format
         doc: |
           TODO
