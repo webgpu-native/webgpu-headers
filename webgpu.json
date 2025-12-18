@@ -4611,6 +4611,14 @@
         },
         {
           "doc": "TODO\n",
+          "name": "get_texture_binding_view_dimension",
+          "returns": {
+            "doc": "TODO\n",
+            "type": "enum.texture_view_dimension"
+          }
+        },
+        {
+          "doc": "TODO\n",
           "name": "get_format",
           "returns": {
             "doc": "TODO\n",
