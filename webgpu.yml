@@ -1513,6 +1513,9 @@ enums:
       - name: subgroup_id
         doc: |
           TODO
+      - name: texture_and_sampler_let
+        doc: |
+          Allow textures and samplers to be assigned in a let expression.
 bitflags:
   - name: buffer_usage
     doc: |
