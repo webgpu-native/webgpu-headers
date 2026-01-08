@@ -1513,6 +1513,9 @@ enums:
       - name: subgroup_id
         doc: |
           TODO
+      - name: subgroup_uniformity
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |

@@ -2397,6 +2397,10 @@
         {
           "doc": "TODO\n",
           "name": "subgroup_id"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "subgroup_uniformity"
         }
       ],
       "name": "WGSL_language_feature_name"
