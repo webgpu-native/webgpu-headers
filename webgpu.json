@@ -2399,7 +2399,7 @@
           "name": "subgroup_id"
         },
         {
-          "doc": "Allow textures and samplers to be assigned in a let expression.\n",
+          "doc": "TODO\n",
           "name": "texture_and_sampler_let"
         }
       ],
