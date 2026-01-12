@@ -1513,6 +1513,9 @@ enums:
       - name: subgroup_id
         doc: |
           TODO
+      - name: texture_and_sampler_let
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |

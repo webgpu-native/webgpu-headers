@@ -2397,6 +2397,10 @@
         {
           "doc": "TODO\n",
           "name": "subgroup_id"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "texture_and_sampler_let"
         }
       ],
       "name": "WGSL_language_feature_name"
