@@ -1515,7 +1515,7 @@ enums:
           TODO
       - name: texture_and_sampler_let
         doc: |
-          Allow textures and samplers to be assigned in a let expression.
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
