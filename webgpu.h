@@ -1244,9 +1244,6 @@ typedef enum WGPUWGSLLanguageFeatureName {
     WGPUWGSLLanguageFeatureName_PointerCompositeAccess = 0x00000004,
     WGPUWGSLLanguageFeatureName_UniformBufferStandardLayout = 0x00000005,
     WGPUWGSLLanguageFeatureName_SubgroupId = 0x00000006,
-    /**
-     * Allow textures and samplers to be assigned in a let expression.
-     */
     WGPUWGSLLanguageFeatureName_TextureAndSamplerLet = 0x00000007,
     WGPUWGSLLanguageFeatureName_Force32 = 0x7FFFFFFF
 } WGPUWGSLLanguageFeatureName WGPU_ENUM_ATTRIBUTE;
