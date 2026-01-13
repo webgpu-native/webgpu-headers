@@ -1361,6 +1361,7 @@ static const WGPUTextureUsage WGPUTextureUsage_CopyDst = 0x0000000000000002;
 static const WGPUTextureUsage WGPUTextureUsage_TextureBinding = 0x0000000000000004;
 static const WGPUTextureUsage WGPUTextureUsage_StorageBinding = 0x0000000000000008;
 static const WGPUTextureUsage WGPUTextureUsage_RenderAttachment = 0x0000000000000010;
+static const WGPUTextureUsage WGPUTextureUsage_TransientAttachment = 0x0000000000000020;
 
 /** @} */
 
