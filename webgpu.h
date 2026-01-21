@@ -1244,7 +1244,8 @@ typedef enum WGPUWGSLLanguageFeatureName {
     WGPUWGSLLanguageFeatureName_PointerCompositeAccess = 0x00000004,
     WGPUWGSLLanguageFeatureName_UniformBufferStandardLayout = 0x00000005,
     WGPUWGSLLanguageFeatureName_SubgroupId = 0x00000006,
-    WGPUWGSLLanguageFeatureName_SubgroupUniformity = 0x00000007,
+    WGPUWGSLLanguageFeatureName_TextureAndSamplerLet = 0x00000007,
+    WGPUWGSLLanguageFeatureName_SubgroupUniformity = 0x00000008,
     WGPUWGSLLanguageFeatureName_Force32 = 0x7FFFFFFF
 } WGPUWGSLLanguageFeatureName WGPU_ENUM_ATTRIBUTE;
 
@@ -1361,6 +1362,7 @@ static const WGPUTextureUsage WGPUTextureUsage_CopyDst = 0x0000000000000002;
 static const WGPUTextureUsage WGPUTextureUsage_TextureBinding = 0x0000000000000004;
 static const WGPUTextureUsage WGPUTextureUsage_StorageBinding = 0x0000000000000008;
 static const WGPUTextureUsage WGPUTextureUsage_RenderAttachment = 0x0000000000000010;
+static const WGPUTextureUsage WGPUTextureUsage_TransientAttachment = 0x0000000000000020;
 
 /** @} */
 

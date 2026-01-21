@@ -1513,6 +1513,9 @@ enums:
       - name: subgroup_id
         doc: |
           TODO
+      - name: texture_and_sampler_let
+        doc: |
+          TODO
       - name: subgroup_uniformity
         doc: |
           TODO
@@ -1632,6 +1635,9 @@ bitflags:
         doc: |
           TODO
       - name: render_attachment
+        doc: |
+          TODO
+      - name: transient_attachment
         doc: |
           TODO
 structs:

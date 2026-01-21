@@ -154,6 +154,10 @@
         {
           "doc": "TODO\n",
           "name": "render_attachment"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "transient_attachment"
         }
       ],
       "name": "texture_usage"
@@ -2397,6 +2401,10 @@
         {
           "doc": "TODO\n",
           "name": "subgroup_id"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "texture_and_sampler_let"
         },
         {
           "doc": "TODO\n",
