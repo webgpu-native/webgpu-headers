@@ -1945,6 +1945,33 @@ structs:
         doc: |
           TODO
         type: string_with_default_empty
+  - name: compatibility_mode_limits
+    doc: |
+      TODO
+    type: extension
+    extends:
+      - limits
+    members:
+      - name: max_storage_buffers_in_vertex_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_textures_in_vertex_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_buffers_in_fragment_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_textures_in_fragment_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
   - name: compilation_info
     doc: |
       TODO
@@ -3228,6 +3255,17 @@ structs:
           TODO
         type: bool
         default: false
+  - name: texture_binding_view_dimension_descriptor
+    doc: |
+      TODO
+    type: extension
+    extends:
+      - texture_descriptor
+    members:
+      - name: texture_binding_view_dimension
+        doc: |
+          TODO
+        type: enum.texture_view_dimension
   - name: texture_component_swizzle
     doc: |
       When accessed by a shader, the red/green/blue/alpha channels are replaced

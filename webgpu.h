@@ -260,6 +260,7 @@ struct WGPUBufferDescriptor;
 struct WGPUColor;
 struct WGPUCommandBufferDescriptor;
 struct WGPUCommandEncoderDescriptor;
+struct WGPUCompatibilityModeLimits;
 struct WGPUCompilationMessage;
 struct WGPUConstantEntry;
 struct WGPUExtent3D;
@@ -267,7 +268,6 @@ struct WGPUExternalTextureBindingEntry;
 struct WGPUExternalTextureBindingLayout;
 struct WGPUFuture;
 struct WGPUInstanceLimits;
-struct WGPULimits;
 struct WGPUMultisampleState;
 struct WGPUOrigin3D;
 struct WGPUPassTimestampWrites;
@@ -301,6 +301,7 @@ struct WGPUSurfaceSourceXlibWindow;
 struct WGPUSurfaceTexture;
 struct WGPUTexelCopyBufferLayout;
 struct WGPUTextureBindingLayout;
+struct WGPUTextureBindingViewDimensionDescriptor;
 struct WGPUTextureComponentSwizzle;
 struct WGPUTextureViewDescriptor;
 struct WGPUVertexAttribute;
@@ -311,9 +312,9 @@ struct WGPUCompilationInfo;
 struct WGPUComputePassDescriptor;
 struct WGPUComputeState;
 struct WGPUDepthStencilState;
-struct WGPUDeviceDescriptor;
 struct WGPUFutureWaitInfo;
 struct WGPUInstanceDescriptor;
+struct WGPULimits;
 struct WGPURenderPassColorAttachment;
 struct WGPURequestAdapterOptions;
 struct WGPUShaderModuleDescriptor;
@@ -327,6 +328,7 @@ struct WGPUBindGroupDescriptor;
 struct WGPUBindGroupLayoutDescriptor;
 struct WGPUColorTargetState;
 struct WGPUComputePipelineDescriptor;
+struct WGPUDeviceDescriptor;
 struct WGPURenderPassDescriptor;
 struct WGPUVertexState;
 struct WGPUFragmentState;
@@ -2018,6 +2020,43 @@ typedef struct WGPUCommandEncoderDescriptor {
 })
 
 /**
+ * Default values can be set using @ref WGPU_COMPATIBILITY_MODE_LIMITS_INIT as initializer.
+ */
+typedef struct WGPUCompatibilityModeLimits {
+    WGPUChainedStruct chain;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageBuffersInVertexStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageTexturesInVertexStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageBuffersInFragmentStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageTexturesInFragmentStage;
+} WGPUCompatibilityModeLimits WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUCompatibilityModeLimits.
+ */
+#define WGPU_COMPATIBILITY_MODE_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPUCompatibilityModeLimits, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_CompatibilityModeLimits _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.maxStorageBuffersInVertexStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageTexturesInVertexStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageBuffersInFragmentStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageTexturesInFragmentStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+})
+
+/**
  * This is an @ref ImplementationAllocatedStructChain root.
  * Arbitrary chains must be handled gracefully by the application!
  *
@@ -2218,180 +2257,6 @@ typedef struct WGPUInstanceLimits {
 #define WGPU_INSTANCE_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPUInstanceLimits, { \
     /*.nextInChain=*/NULL _wgpu_COMMA \
     /*.timedWaitAnyMaxCount=*/0 _wgpu_COMMA \
-})
-
-/**
- * Default values can be set using @ref WGPU_LIMITS_INIT as initializer.
- */
-typedef struct WGPULimits {
-    WGPUChainedStruct * nextInChain;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxTextureDimension1D;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxTextureDimension2D;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxTextureDimension3D;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxTextureArrayLayers;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxBindGroups;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxBindGroupsPlusVertexBuffers;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxBindingsPerBindGroup;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxDynamicUniformBuffersPerPipelineLayout;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxDynamicStorageBuffersPerPipelineLayout;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxSampledTexturesPerShaderStage;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxSamplersPerShaderStage;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxStorageBuffersPerShaderStage;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxStorageTexturesPerShaderStage;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxUniformBuffersPerShaderStage;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U64_UNDEFINED.
-     */
-    uint64_t maxUniformBufferBindingSize;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U64_UNDEFINED.
-     */
-    uint64_t maxStorageBufferBindingSize;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t minUniformBufferOffsetAlignment;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t minStorageBufferOffsetAlignment;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxVertexBuffers;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U64_UNDEFINED.
-     */
-    uint64_t maxBufferSize;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxVertexAttributes;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxVertexBufferArrayStride;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxInterStageShaderVariables;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxColorAttachments;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxColorAttachmentBytesPerSample;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxComputeWorkgroupStorageSize;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxComputeInvocationsPerWorkgroup;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxComputeWorkgroupSizeX;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxComputeWorkgroupSizeY;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxComputeWorkgroupSizeZ;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxComputeWorkgroupsPerDimension;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
-     */
-    uint32_t maxImmediateSize;
-} WGPULimits WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPULimits.
- */
-#define WGPU_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPULimits, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.maxTextureDimension1D=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxTextureDimension2D=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxTextureDimension3D=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxTextureArrayLayers=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxBindGroups=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxBindGroupsPlusVertexBuffers=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxBindingsPerBindGroup=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxDynamicUniformBuffersPerPipelineLayout=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxDynamicStorageBuffersPerPipelineLayout=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxSampledTexturesPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxSamplersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxStorageBuffersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxStorageTexturesPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxUniformBuffersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxUniformBufferBindingSize=*/WGPU_LIMIT_U64_UNDEFINED _wgpu_COMMA \
-    /*.maxStorageBufferBindingSize=*/WGPU_LIMIT_U64_UNDEFINED _wgpu_COMMA \
-    /*.minUniformBufferOffsetAlignment=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.minStorageBufferOffsetAlignment=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxVertexBuffers=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxBufferSize=*/WGPU_LIMIT_U64_UNDEFINED _wgpu_COMMA \
-    /*.maxVertexAttributes=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxVertexBufferArrayStride=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxInterStageShaderVariables=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxColorAttachments=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxColorAttachmentBytesPerSample=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxComputeWorkgroupStorageSize=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxComputeInvocationsPerWorkgroup=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxComputeWorkgroupSizeX=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxComputeWorkgroupSizeY=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxComputeWorkgroupSizeZ=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxComputeWorkgroupsPerDimension=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
-    /*.maxImmediateSize=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
 })
 
 /**
@@ -3574,6 +3439,28 @@ typedef struct WGPUTextureBindingLayout {
 })
 
 /**
+ * Default values can be set using @ref WGPU_TEXTURE_BINDING_VIEW_DIMENSION_DESCRIPTOR_INIT as initializer.
+ */
+typedef struct WGPUTextureBindingViewDimensionDescriptor {
+    WGPUChainedStruct chain;
+    /**
+     * The `INIT` macro sets this to @ref WGPUTextureViewDimension_Undefined.
+     */
+    WGPUTextureViewDimension textureBindingViewDimension;
+} WGPUTextureBindingViewDimensionDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUTextureBindingViewDimensionDescriptor.
+ */
+#define WGPU_TEXTURE_BINDING_VIEW_DIMENSION_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureBindingViewDimensionDescriptor, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_TextureBindingViewDimensionDescriptor _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.textureBindingViewDimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
+})
+
+/**
  * When accessed by a shader, the red/green/blue/alpha channels are replaced
  * by the value corresponding to the component specified in r, g, b, and a,
  * respectively unlike the JS API which uses a string of length four, with
@@ -4020,62 +3907,6 @@ typedef struct WGPUDepthStencilState {
 })
 
 /**
- * Default values can be set using @ref WGPU_DEVICE_DESCRIPTOR_INIT as initializer.
- */
-typedef struct WGPUDeviceDescriptor {
-    WGPUChainedStruct * nextInChain;
-    /**
-     * This is a \ref NonNullInputString.
-     *
-     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
-     */
-    WGPUStringView label;
-    /**
-     * Array count for `requiredFeatures`. The `INIT` macro sets this to 0.
-     */
-    size_t requiredFeatureCount;
-    /**
-     * The `INIT` macro sets this to `NULL`.
-     */
-    WGPUFeatureName const * requiredFeatures;
-    /**
-     * The `INIT` macro sets this to `NULL`.
-     */
-    WGPU_NULLABLE WGPULimits const * requiredLimits;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_QUEUE_DESCRIPTOR_INIT.
-     */
-    WGPUQueueDescriptor defaultQueue;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_DEVICE_LOST_CALLBACK_INFO_INIT.
-     */
-    WGPUDeviceLostCallbackInfo deviceLostCallbackInfo;
-    /**
-     * Called when there is an uncaptured error on this device, from any thread.
-     * See @ref ErrorScopes.
-     *
-     * **Important:** This callback does not have a configurable @ref WGPUCallbackMode; it may be called at any time (like @ref WGPUCallbackMode_AllowSpontaneous). As such, calls into the `webgpu.h` API from this callback are unsafe. See @ref CallbackReentrancy.
-     *
-     * The `INIT` macro sets this to @ref WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT.
-     */
-    WGPUUncapturedErrorCallbackInfo uncapturedErrorCallbackInfo;
-} WGPUDeviceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUDeviceDescriptor.
- */
-#define WGPU_DEVICE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDeviceDescriptor, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.requiredFeatureCount=*/0 _wgpu_COMMA \
-    /*.requiredFeatures=*/NULL _wgpu_COMMA \
-    /*.requiredLimits=*/NULL _wgpu_COMMA \
-    /*.defaultQueue=*/WGPU_QUEUE_DESCRIPTOR_INIT _wgpu_COMMA \
-    /*.deviceLostCallbackInfo=*/WGPU_DEVICE_LOST_CALLBACK_INFO_INIT _wgpu_COMMA \
-    /*.uncapturedErrorCallbackInfo=*/WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT _wgpu_COMMA \
-})
-
-/**
  * Struct holding a future to wait on, and a `completed` boolean flag.
  *
  * Default values can be set using @ref WGPU_FUTURE_WAIT_INFO_INIT as initializer.
@@ -4130,6 +3961,180 @@ typedef struct WGPUInstanceDescriptor {
     /*.requiredFeatureCount=*/0 _wgpu_COMMA \
     /*.requiredFeatures=*/NULL _wgpu_COMMA \
     /*.requiredLimits=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_LIMITS_INIT as initializer.
+ */
+typedef struct WGPULimits {
+    WGPUChainedStruct * nextInChain;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxTextureDimension1D;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxTextureDimension2D;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxTextureDimension3D;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxTextureArrayLayers;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxBindGroups;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxBindGroupsPlusVertexBuffers;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxBindingsPerBindGroup;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxDynamicUniformBuffersPerPipelineLayout;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxDynamicStorageBuffersPerPipelineLayout;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxSampledTexturesPerShaderStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxSamplersPerShaderStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageBuffersPerShaderStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxStorageTexturesPerShaderStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxUniformBuffersPerShaderStage;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U64_UNDEFINED.
+     */
+    uint64_t maxUniformBufferBindingSize;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U64_UNDEFINED.
+     */
+    uint64_t maxStorageBufferBindingSize;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t minUniformBufferOffsetAlignment;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t minStorageBufferOffsetAlignment;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxVertexBuffers;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U64_UNDEFINED.
+     */
+    uint64_t maxBufferSize;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxVertexAttributes;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxVertexBufferArrayStride;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxInterStageShaderVariables;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxColorAttachments;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxColorAttachmentBytesPerSample;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxComputeWorkgroupStorageSize;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxComputeInvocationsPerWorkgroup;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxComputeWorkgroupSizeX;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxComputeWorkgroupSizeY;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxComputeWorkgroupSizeZ;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxComputeWorkgroupsPerDimension;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_LIMIT_U32_UNDEFINED.
+     */
+    uint32_t maxImmediateSize;
+} WGPULimits WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPULimits.
+ */
+#define WGPU_LIMITS_INIT _wgpu_MAKE_INIT_STRUCT(WGPULimits, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.maxTextureDimension1D=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxTextureDimension2D=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxTextureDimension3D=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxTextureArrayLayers=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxBindGroups=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxBindGroupsPlusVertexBuffers=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxBindingsPerBindGroup=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxDynamicUniformBuffersPerPipelineLayout=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxDynamicStorageBuffersPerPipelineLayout=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxSampledTexturesPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxSamplersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageBuffersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageTexturesPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxUniformBuffersPerShaderStage=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxUniformBufferBindingSize=*/WGPU_LIMIT_U64_UNDEFINED _wgpu_COMMA \
+    /*.maxStorageBufferBindingSize=*/WGPU_LIMIT_U64_UNDEFINED _wgpu_COMMA \
+    /*.minUniformBufferOffsetAlignment=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.minStorageBufferOffsetAlignment=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxVertexBuffers=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxBufferSize=*/WGPU_LIMIT_U64_UNDEFINED _wgpu_COMMA \
+    /*.maxVertexAttributes=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxVertexBufferArrayStride=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxInterStageShaderVariables=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxColorAttachments=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxColorAttachmentBytesPerSample=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxComputeWorkgroupStorageSize=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxComputeInvocationsPerWorkgroup=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxComputeWorkgroupSizeX=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxComputeWorkgroupSizeY=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxComputeWorkgroupSizeZ=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxComputeWorkgroupsPerDimension=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
+    /*.maxImmediateSize=*/WGPU_LIMIT_U32_UNDEFINED _wgpu_COMMA \
 })
 
 /**
@@ -4601,6 +4606,62 @@ typedef struct WGPUComputePipelineDescriptor {
     /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
     /*.layout=*/NULL _wgpu_COMMA \
     /*.compute=*/WGPU_COMPUTE_STATE_INIT _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_DEVICE_DESCRIPTOR_INIT as initializer.
+ */
+typedef struct WGPUDeviceDescriptor {
+    WGPUChainedStruct * nextInChain;
+    /**
+     * This is a \ref NonNullInputString.
+     *
+     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
+     */
+    WGPUStringView label;
+    /**
+     * Array count for `requiredFeatures`. The `INIT` macro sets this to 0.
+     */
+    size_t requiredFeatureCount;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPUFeatureName const * requiredFeatures;
+    /**
+     * The `INIT` macro sets this to `NULL`.
+     */
+    WGPU_NULLABLE WGPULimits const * requiredLimits;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_QUEUE_DESCRIPTOR_INIT.
+     */
+    WGPUQueueDescriptor defaultQueue;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_DEVICE_LOST_CALLBACK_INFO_INIT.
+     */
+    WGPUDeviceLostCallbackInfo deviceLostCallbackInfo;
+    /**
+     * Called when there is an uncaptured error on this device, from any thread.
+     * See @ref ErrorScopes.
+     *
+     * **Important:** This callback does not have a configurable @ref WGPUCallbackMode; it may be called at any time (like @ref WGPUCallbackMode_AllowSpontaneous). As such, calls into the `webgpu.h` API from this callback are unsafe. See @ref CallbackReentrancy.
+     *
+     * The `INIT` macro sets this to @ref WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT.
+     */
+    WGPUUncapturedErrorCallbackInfo uncapturedErrorCallbackInfo;
+} WGPUDeviceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUDeviceDescriptor.
+ */
+#define WGPU_DEVICE_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDeviceDescriptor, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
+    /*.requiredFeatureCount=*/0 _wgpu_COMMA \
+    /*.requiredFeatures=*/NULL _wgpu_COMMA \
+    /*.requiredLimits=*/NULL _wgpu_COMMA \
+    /*.defaultQueue=*/WGPU_QUEUE_DESCRIPTOR_INIT _wgpu_COMMA \
+    /*.deviceLostCallbackInfo=*/WGPU_DEVICE_LOST_CALLBACK_INFO_INIT _wgpu_COMMA \
+    /*.uncapturedErrorCallbackInfo=*/WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT _wgpu_COMMA \
 })
 
 /**

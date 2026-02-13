@@ -5028,6 +5028,40 @@
     },
     {
       "doc": "TODO\n",
+      "extends": [
+        "limits"
+      ],
+      "members": [
+        {
+          "default": "constant.limit_u32_undefined",
+          "doc": "TODO\n",
+          "name": "max_storage_buffers_in_vertex_stage",
+          "type": "uint32"
+        },
+        {
+          "default": "constant.limit_u32_undefined",
+          "doc": "TODO\n",
+          "name": "max_storage_textures_in_vertex_stage",
+          "type": "uint32"
+        },
+        {
+          "default": "constant.limit_u32_undefined",
+          "doc": "TODO\n",
+          "name": "max_storage_buffers_in_fragment_stage",
+          "type": "uint32"
+        },
+        {
+          "default": "constant.limit_u32_undefined",
+          "doc": "TODO\n",
+          "name": "max_storage_textures_in_fragment_stage",
+          "type": "uint32"
+        }
+      ],
+      "name": "compatibility_mode_limits",
+      "type": "extension"
+    },
+    {
+      "doc": "TODO\n",
       "members": [
         {
           "doc": "TODO\n",
@@ -6614,6 +6648,21 @@
       ],
       "name": "texture_binding_layout",
       "type": "extensible"
+    },
+    {
+      "doc": "TODO\n",
+      "extends": [
+        "texture_descriptor"
+      ],
+      "members": [
+        {
+          "doc": "TODO\n",
+          "name": "texture_binding_view_dimension",
+          "type": "enum.texture_view_dimension"
+        }
+      ],
+      "name": "texture_binding_view_dimension_descriptor",
+      "type": "extension"
     },
     {
       "doc": "When accessed by a shader, the red/green/blue/alpha channels are replaced\nby the value corresponding to the component specified in r, g, b, and a,\nrespectively unlike the JS API which uses a string of length four, with\neach character mapping to the texture view's red/green/blue/alpha channels.\n",
