@@ -58,13 +58,19 @@ If an implementation does not have an assigned prefix and block, it **should** b
 |                      | Prefix       | Enum Block    | Description
 |----------------------|--------------|---------------|------------
 | Standard             | (none)       | `0x0000_????` | Extensions standardized in webgpu.h
-| Compatibility Mode   | *TBD*        | `0x0002_????` | **Special:** implementations that don't support Compatibility Mode must ignore any chained structs with @ref WGPUSType values in this block, instead of erroring. This block must only be used for Compat additions that can be ignored without affecting the semantics of a non-erroring program.
+| Compatibility Mode   | (none)       | `0x0002_????` | **Special:** see @ref CompatibilityModeExtension below.
 | wgpu-native          | `Wgpu`       | `0x0003_????` | -
 | Emscripten           | `Emscripten` | `0x0004_????` | -
 | Dawn                 | `Dawn`       | `0x0005_????` | -
 | Wagyu                | `Wagyu`      | `0x0006_????` | -
 
 Note all negative values (values with the most-significant bit set to 1) are reserved for future use.
+
+### Compatibility Mode Extension {#CompatibilityModeExtension}
+
+Implementations that don't support Compatibility Mode must ignore any chained structs with @ref WGPUSType values in this block, instead of erroring.
+
+This block must only be used for Compat additions that can be ignored without affecting the semantics of a non-erroring program. (They can only be used in input-only structs; output-able chained structs cannot use this block because that may result in uninitialized values.)
 
 ## Bitflag Registry {#BitflagRegistry}
 
