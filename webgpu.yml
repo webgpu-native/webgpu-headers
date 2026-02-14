@@ -826,6 +826,15 @@ enums:
       - name: external_texture_binding_entry
         doc: |
           TODO
+      - name: compatibility_mode_limits
+        doc: |
+          TODO
+      # Prefixed entries below this point
+      - name: texture_binding_view_dimension
+        namespace: compatibility_mode
+        value: 0
+        doc: |
+          TODO
   - name: sampler_binding_type
     doc: |
       TODO
@@ -1947,7 +1956,12 @@ structs:
         type: string_with_default_empty
   - name: compatibility_mode_limits
     doc: |
-      TODO
+      Limits that are only used in Compatibility Mode.
+
+      Note: This is *not* a @ref CompatibilityModeExtension; its SType is in the
+      core namespace. It is meant to be supported as both an input and output by
+      all implementations (even those which don't implement Compatibility Mode),
+      behaving as described in the WebGPU specification.
     type: extension
     extends:
       - limits
@@ -3255,9 +3269,9 @@ structs:
           TODO
         type: bool
         default: false
-  - name: texture_binding_view_dimension_descriptor
+  - name: texture_binding_view_dimension
     doc: |
-      TODO
+      This is a @ref CompatibilityModeExtension.
     type: extension
     extends:
       - texture_descriptor
