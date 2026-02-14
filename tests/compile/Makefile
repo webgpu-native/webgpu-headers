@@ -30,7 +30,7 @@ CLANG_WARNINGS = -Werror -Weverything \
 GCC_WARNINGS   = -Werror -Wall -Wextra \
 	-Wno-unused-variable -Wno-unused-but-set-variable
 
-main-c.out: main.c main.inl ../../webgpu.h Makefile
+main-c.out: main.c main.inl init_tests_autogen.inl ../../webgpu.h Makefile
 	# Compile as C
 	clang -o $@ $< -std=c99 $(CLANG_WARNINGS)
 	gcc   -o $@ $< -std=c99 $(GCC_WARNINGS)
@@ -42,7 +42,7 @@ main-c.out: main.c main.inl ../../webgpu.h Makefile
 	clang -o $@ $< -std=c2x $(CLANG_WARNINGS)
 	gcc   -o $@ $< -std=c2x $(GCC_WARNINGS)
 
-main-cpp.out: main.cpp main.inl ../../webgpu.h Makefile
+main-cpp.out: main.cpp main.inl init_tests_autogen.inl ../../webgpu.h Makefile
 	# Compile as C++
 	clang++ -o $@ $< -std=c++98 $(CLANG_WARNINGS) -Wno-c++11-long-long
 	g++     -o $@ $< -std=c++98 $(GCC_WARNINGS)
