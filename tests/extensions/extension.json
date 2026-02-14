@@ -84,6 +84,12 @@
       "name": "new_constant2",
       "namespace": "webgpu",
       "value": "uint64_max"
+    },
+    {
+      "doc": "The 'compatibility_mode' namespace also has no prefix.\n(This test is not really related to extensions, it's just easiest to test here.)\n",
+      "name": "new_constant3",
+      "namespace": "compatibility_mode",
+      "value": "uint64_max"
     }
   ],
   "copyright": "Copyright 2025 WebGPU-Native developers\n\nSPDX-License-Identifier: BSD-3-Clause\n",

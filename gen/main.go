@@ -76,14 +76,10 @@ func main() {
 
 		SortAndTransform(&yml)
 
-		prefix := ""
-		if yml.Name != "webgpu" && extPrefix {
-			prefix = yml.Name
-		}
 		g := &Generator{
-			Yml:        &yml,
-			HeaderName: outHeaderFileNameSplit[0],
-			ExtPrefix:  prefix,
+			Yml:          &yml,
+			HeaderName:   outHeaderFileNameSplit[0],
+			UseExtPrefix: extPrefix,
 		}
 		if err := g.Gen(dst); err != nil {
 			panic(err)

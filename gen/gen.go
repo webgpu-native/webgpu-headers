@@ -12,8 +12,8 @@ import (
 )
 
 type Generator struct {
-	ExtPrefix  string
-	HeaderName string
+	UseExtPrefix bool
+	HeaderName   string
 	*Yml
 }
 
@@ -291,9 +291,10 @@ func (g *Generator) ResolveNamespaceForTopLevel(b Base) string {
 	if b.Namespace != "" {
 		return b.Namespace
 	} else if b.Extended {
-		return ""
+		// If we're extending an enum, assume it's in the core namespace if not otherwise specified
+		return "webgpu"
 	} else {
-		return g.ExtPrefix
+		return g.Name
 	}
 }
 
@@ -303,7 +304,7 @@ func (g *Generator) ResolveNamespaceForSecondLevel(typ Base, entry Base) string 
 	} else if typ.Namespace != "" {
 		return typ.Namespace
 	} else {
-		return g.ExtPrefix
+		return g.Name
 	}
 }
 
@@ -611,12 +612,18 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int, isDocString bool) (s
 
 func (g *Generator) PrefixForNamespace(namespace string) string {
 	switch namespace {
+	case "":
+		panic("Missing namespace")
 	case "webgpu":
 		return ""
 	case "compatibility_mode":
 		return ""
 	default:
-		return namespace
+		if g.UseExtPrefix {
+			return namespace
+		} else {
+			return ""
+		}
 	}
 }
 
