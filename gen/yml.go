@@ -46,7 +46,7 @@ type Enum struct {
 }
 type EnumEntry struct {
 	Base  `yaml:",inline"`
-	Value string `yaml:"value"`
+	Value *uint16 `yaml:"value"`
 }
 
 type Bitflag struct {

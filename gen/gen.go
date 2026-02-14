@@ -194,7 +194,7 @@ func (g *Generator) Gen(dst io.Writer) error {
 			"CamelCase":        CamelCase,
 			"ConstantCaseName": g.ConstantCaseName,
 			"PascalCaseName":   g.PascalCaseName,
-			"CEnumName":        g.CEnumName,
+			"CEnumValueName":   g.CEnumValueName,
 			"CMethodName":      g.CMethodName,
 			"CType":            g.CType,
 			"CValue":           g.CValue,
@@ -243,43 +243,43 @@ func (g *Generator) FindBaseType(typ string) Base {
 	case "constant":
 		idx := slices.IndexFunc(g.Constants, func(c Constant) bool { return c.Name == name })
 		if idx == -1 {
-			return Base{Name: name, Namespace: g.PrefixForNamespace("")}
+			return Base{Name: name, Namespace: "webgpu"}
 		}
 		return g.Constants[idx].Base
 	case "typedef":
 		idx := slices.IndexFunc(g.Typedefs, func(t Typedef) bool { return t.Name == name })
 		if idx == -1 {
-			return Base{Name: name, Namespace: g.PrefixForNamespace("")}
+			return Base{Name: name, Namespace: "webgpu"}
 		}
 		return g.Typedefs[idx].Base
 	case "enum":
 		idx := slices.IndexFunc(g.Enums, func(e Enum) bool { return e.Name == name })
 		if idx == -1 {
-			return Base{Name: name, Namespace: g.PrefixForNamespace("")}
+			return Base{Name: name, Namespace: "webgpu"}
 		}
 		return g.Enums[idx].Base
 	case "bitflag":
 		idx := slices.IndexFunc(g.Bitflags, func(b Bitflag) bool { return b.Name == name })
 		if idx == -1 {
-			return Base{Name: name, Namespace: g.PrefixForNamespace("")}
+			return Base{Name: name, Namespace: "webgpu"}
 		}
 		return g.Bitflags[idx].Base
 	case "struct":
 		idx := slices.IndexFunc(g.Structs, func(s Struct) bool { return s.Name == name })
 		if idx == -1 {
-			return Base{Name: name, Namespace: g.PrefixForNamespace("")}
+			return Base{Name: name, Namespace: "webgpu"}
 		}
 		return g.Structs[idx].Base
 	case "callback":
 		idx := slices.IndexFunc(g.Callbacks, func(c Callback) bool { return c.Name == name })
 		if idx == -1 {
-			return Base{Name: name, Namespace: g.PrefixForNamespace("")}
+			return Base{Name: name, Namespace: "webgpu"}
 		}
 		return g.Callbacks[idx].Base
 	case "object":
 		idx := slices.IndexFunc(g.Objects, func(o Object) bool { return o.Name == name })
 		if idx == -1 {
-			return Base{Name: name, Namespace: g.PrefixForNamespace("")}
+			return Base{Name: name, Namespace: "webgpu"}
 		}
 		return g.Objects[idx].Base
 	default:
@@ -287,40 +287,58 @@ func (g *Generator) FindBaseType(typ string) Base {
 	}
 }
 
-func (g *Generator) ConstantCaseName(b Base) string {
-	if b.Extended {
-		return ConstantCase(b.Name)
+func (g *Generator) ResolveNamespaceForTopLevel(b Base) string {
+	if b.Namespace != "" {
+		return b.Namespace
+	} else if b.Extended {
+		return ""
+	} else {
+		return g.ExtPrefix
 	}
+}
 
-	prefix := g.PrefixForNamespace(b.Namespace)
+func (g *Generator) ResolveNamespaceForSecondLevel(typ Base, entry Base) string {
+	if entry.Namespace != "" {
+		return entry.Namespace
+	} else if typ.Namespace != "" {
+		return typ.Namespace
+	} else {
+		return g.ExtPrefix
+	}
+}
+
+func (g *Generator) CanonicalCaseName(prefix string, b Base) string {
 	switch prefix {
 	case "":
-		return ConstantCase(b.Name)
+		return b.Name
 	default:
-		return ConstantCase(prefix + "_" + b.Name)
+		return prefix + "_" + b.Name
 	}
+}
+
+func (g *Generator) ConstantCaseName(b Base) string {
+	prefix := g.PrefixForNamespace(g.ResolveNamespaceForTopLevel(b))
+	return ConstantCase(g.CanonicalCaseName(prefix, b))
 }
 
 func (g *Generator) PascalCaseName(b Base) string {
-	if b.Extended {
-		return PascalCase(b.Name)
-	}
+	prefix := g.PrefixForNamespace(g.ResolveNamespaceForTopLevel(b))
+	return PascalCase(g.CanonicalCaseName(prefix, b))
+}
 
-	prefix := g.PrefixForNamespace(b.Namespace)
-	switch prefix {
-	case "":
-		return PascalCase(b.Name)
-	default:
-		return PascalCase(prefix + "_" + b.Name)
+func (g *Generator) PrefixForNamespaceAtSecondLevel(typ Base, entry Base) string {
+	outerNamespace := g.ResolveNamespaceForTopLevel(typ)
+	innerNamespace := g.ResolveNamespaceForSecondLevel(typ, entry)
+	if outerNamespace == innerNamespace {
+		return ""
+	} else {
+		return g.PrefixForNamespace(innerNamespace)
 	}
 }
 
-func (g *Generator) CEnumName(typ Base, entry Base) string {
-	if !typ.Extended {
-		return g.CType(typ, "") + "_" + PascalCase(entry.Name)
-	} else {
-		return g.CType(typ, "") + "_" + g.PascalCaseName(entry)
-	}
+func (g *Generator) CEnumValueName(typ Base, entry Base) string {
+	entryPrefix := g.PrefixForNamespaceAtSecondLevel(typ, entry)
+	return g.CType(typ, "") + "_" + PascalCase(g.CanonicalCaseName(entryPrefix, entry))
 }
 
 func (g *Generator) CMethodName(o Object, m Function) string {
@@ -488,34 +506,38 @@ func (g *Generator) CallbackArgs(f Callback) string {
 	return sb.String()
 }
 
-func (g *Generator) EnumValue16(e Enum, entryIndex int) (uint16, error) {
-	entry := e.Entries[entryIndex]
-	if entry.Value == "" {
-		return uint16(entryIndex), nil
-	} else {
-		var num string
-		var base int
-		if strings.HasPrefix(entry.Value, "0x") {
-			base = 16
-			num = strings.TrimPrefix(entry.Value, "0x")
-		} else {
-			base = 10
-			num = entry.Value
-		}
-		value, err := strconv.ParseUint(num, base, 16)
-		if err != nil {
-			return 0, err
-		}
-		return uint16(value), nil
-	}
-}
-
 func (g *Generator) EnumValue32(e Enum, entryIndex int) (uint32, error) {
-	value16, err := g.EnumValue16(e, entryIndex)
-	if err != nil {
-		return 0, err
+	entry := e.Entries[entryIndex]
+
+	var enum_prefix uint16
+	if entry.Namespace != "" {
+		if g.EnumPrefix != 0 {
+			return 0, fmt.Errorf("EnumValue32: entry %s with overridden namespace %s can only be used in core webgpu.h (with global enum_prefix 0)", entry.Name, entry.Namespace)
+		}
+		if entry.Value == nil {
+			return 0, fmt.Errorf("EnumValue32: entry %s with overridden namespace %s must have an explicit value", entry.Name, entry.Namespace)
+		}
+		switch entry.Namespace {
+		case "compatibility_mode":
+			enum_prefix = 0x2000
+		default:
+			return 0, fmt.Errorf("EnumValue32: unknown namespace %s", entry.Namespace)
+		}
+	} else {
+		enum_prefix = g.EnumPrefix
 	}
-	return uint32(g.EnumPrefix)<<16 | uint32(value16), nil
+
+	var value16 uint16
+	if entry.Value == nil {
+		value16 = uint16(entryIndex)
+		if int(value16) != entryIndex {
+			return 0, fmt.Errorf("EnumValue32: entry %s default value (entry index %d) is too large", entry.Name, entryIndex)
+		}
+	} else {
+		value16 = *entry.Value
+	}
+
+	return uint32(enum_prefix)<<16 | uint32(value16), nil
 }
 
 func bitflagEntryValue(entry BitflagEntry, entryIndex int) (uint64, error) {
@@ -589,9 +611,9 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int, isDocString bool) (s
 
 func (g *Generator) PrefixForNamespace(namespace string) string {
 	switch namespace {
-	case "":
-		return g.ExtPrefix
 	case "webgpu":
+		return ""
+	case "compatibility_mode":
 		return ""
 	default:
 		return namespace

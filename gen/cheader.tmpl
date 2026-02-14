@@ -198,7 +198,7 @@ struct {{CType .Base ""}}CallbackInfo;
 {{-     range $entryIndex, $_ := .Entries}}
 {{-       if .}}
 {{-         MCommentEnumValue .Doc 0 $enum $entryIndex }}
-_wgpu_EXTEND_ENUM({{CType $enum.Base ""}}, {{CEnumName $enum.Base .Base}}, {{EnumValue32 $enum $entryIndex | printf "0x%.8X"}});
+_wgpu_EXTEND_ENUM({{CType $enum.Base ""}}, {{CEnumValueName $enum.Base .Base}}, {{EnumValue32 $enum $entryIndex | printf "0x%.8X"}});
 {{-       end}}
 {{-     end}}
 {{-   else}}
@@ -206,7 +206,7 @@ typedef enum {{CType .Base ""}} {
 {{-     range $entryIndex, $_ := .Entries}}
 {{-       if .}}
 {{-         MCommentEnumValue .Doc 4 $enum $entryIndex }}
-    {{CEnumName $enum.Base .Base}} = {{EnumValue32 $enum $entryIndex | printf "0x%.8X"}},
+    {{CEnumValueName $enum.Base .Base}} = {{EnumValue32 $enum $entryIndex | printf "0x%.8X"}},
 {{-       end}}
 {{-     end}}
     {{CType $enum.Base ""}}_Force32 = 0x7FFFFFFF
@@ -230,7 +230,7 @@ typedef WGPUFlags {{CType .Base ""}};
 {{-   end}}
 {{-   range $entryIndex, $_ := .Entries}}
 {{-     MCommentBitflagValue .Doc 0 $bitflag $entryIndex }}
-static const {{CType $bitflag.Base ""}} {{CEnumName $bitflag.Base .Base}} = {{BitflagValue $bitflag $entryIndex}};
+static const {{CType $bitflag.Base ""}} {{CEnumValueName $bitflag.Base .Base}} = {{BitflagValue $bitflag $entryIndex}};
 {{-   end}}
 {{- end}}
 
