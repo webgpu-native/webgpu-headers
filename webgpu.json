@@ -1463,6 +1463,16 @@
         {
           "doc": "TODO\n",
           "name": "external_texture_binding_entry"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "compatibility_mode_limits"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "texture_binding_view_dimension",
+          "namespace": "compatibility_mode",
+          "value": 0
         }
       ],
       "name": "s_type"
@@ -5027,7 +5037,7 @@
       "type": "extensible"
     },
     {
-      "doc": "TODO\n",
+      "doc": "Limits that are only used in Compatibility Mode.\n\nNote: This is *not* a @ref CompatibilityModeExtension; its SType is in the\ncore namespace. It is meant to be supported as both an input and output by\nall implementations (even those which don't implement Compatibility Mode),\nbehaving as described in the WebGPU specification.\n",
       "extends": [
         "limits"
       ],
@@ -6650,7 +6660,7 @@
       "type": "extensible"
     },
     {
-      "doc": "TODO\n",
+      "doc": "This is a @ref CompatibilityModeExtension.\n",
       "extends": [
         "texture_descriptor"
       ],
@@ -6661,7 +6671,7 @@
           "type": "enum.texture_view_dimension"
         }
       ],
-      "name": "texture_binding_view_dimension_descriptor",
+      "name": "texture_binding_view_dimension",
       "type": "extension"
     },
     {

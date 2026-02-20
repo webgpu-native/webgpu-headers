@@ -301,7 +301,7 @@ struct WGPUSurfaceSourceXlibWindow;
 struct WGPUSurfaceTexture;
 struct WGPUTexelCopyBufferLayout;
 struct WGPUTextureBindingLayout;
-struct WGPUTextureBindingViewDimensionDescriptor;
+struct WGPUTextureBindingViewDimension;
 struct WGPUTextureComponentSwizzle;
 struct WGPUTextureViewDescriptor;
 struct WGPUVertexAttribute;
@@ -960,6 +960,8 @@ typedef enum WGPUSType {
     WGPUSType_TextureComponentSwizzleDescriptor = 0x0000000C,
     WGPUSType_ExternalTextureBindingLayout = 0x0000000D,
     WGPUSType_ExternalTextureBindingEntry = 0x0000000E,
+    WGPUSType_CompatibilityModeLimits = 0x0000000F,
+    WGPUSType_TextureBindingViewDimension = 0x20000000,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -2020,6 +2022,13 @@ typedef struct WGPUCommandEncoderDescriptor {
 })
 
 /**
+ * Limits that are only used in Compatibility Mode.
+ *
+ * Note: This is *not* a @ref CompatibilityModeExtension; its SType is in the
+ * core namespace. It is meant to be supported as both an input and output by
+ * all implementations (even those which don't implement Compatibility Mode),
+ * behaving as described in the WebGPU specification.
+ *
  * Default values can be set using @ref WGPU_COMPATIBILITY_MODE_LIMITS_INIT as initializer.
  */
 typedef struct WGPUCompatibilityModeLimits {
@@ -3439,23 +3448,25 @@ typedef struct WGPUTextureBindingLayout {
 })
 
 /**
- * Default values can be set using @ref WGPU_TEXTURE_BINDING_VIEW_DIMENSION_DESCRIPTOR_INIT as initializer.
+ * This is a @ref CompatibilityModeExtension.
+ *
+ * Default values can be set using @ref WGPU_TEXTURE_BINDING_VIEW_DIMENSION_INIT as initializer.
  */
-typedef struct WGPUTextureBindingViewDimensionDescriptor {
+typedef struct WGPUTextureBindingViewDimension {
     WGPUChainedStruct chain;
     /**
      * The `INIT` macro sets this to @ref WGPUTextureViewDimension_Undefined.
      */
     WGPUTextureViewDimension textureBindingViewDimension;
-} WGPUTextureBindingViewDimensionDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+} WGPUTextureBindingViewDimension WGPU_STRUCTURE_ATTRIBUTE;
 
 /**
- * Initializer for @ref WGPUTextureBindingViewDimensionDescriptor.
+ * Initializer for @ref WGPUTextureBindingViewDimension.
  */
-#define WGPU_TEXTURE_BINDING_VIEW_DIMENSION_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureBindingViewDimensionDescriptor, { \
+#define WGPU_TEXTURE_BINDING_VIEW_DIMENSION_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureBindingViewDimension, { \
     /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
         /*.next=*/NULL _wgpu_COMMA \
-        /*.sType=*/WGPUSType_TextureBindingViewDimensionDescriptor _wgpu_COMMA \
+        /*.sType=*/WGPUSType_TextureBindingViewDimension _wgpu_COMMA \
     }) _wgpu_COMMA \
     /*.textureBindingViewDimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
 })
