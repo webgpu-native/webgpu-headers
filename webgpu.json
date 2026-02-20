@@ -1470,9 +1470,7 @@
         },
         {
           "doc": "TODO\n",
-          "name": "texture_binding_view_dimension",
-          "namespace": "compatibility_mode",
-          "value": 0
+          "name": "texture_binding_view_dimension"
         }
       ],
       "name": "s_type"
@@ -5037,7 +5035,7 @@
       "type": "extensible"
     },
     {
-      "doc": "Limits that are only used in Compatibility Mode.\n\nNote: This is *not* a @ref CompatibilityModeExtension; its SType is in the\ncore namespace. It is meant to be supported as both an input and output by\nall implementations (even those which don't implement Compatibility Mode),\nbehaving as described in the WebGPU specification.\n",
+      "doc": "Note: While Compatibility Mode is optional to implement, this extension struct\nis required to be supported (for both queries and requests) and behave as\ndefined in the WebGPU spec.\n",
       "extends": [
         "limits"
       ],
@@ -6660,7 +6658,7 @@
       "type": "extensible"
     },
     {
-      "doc": "This is a @ref CompatibilityModeExtension.\n",
+      "doc": "Note: While Compatibility Mode is optional to implement, this extension struct\nis required to be accepted (but per the WebGPU spec, its contents are ignored\non devices that have the @ref WGPUFeatureName_CoreFeaturesAndLimits feature).\n",
       "extends": [
         "texture_descriptor"
       ],

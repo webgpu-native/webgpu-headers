@@ -961,7 +961,7 @@ typedef enum WGPUSType {
     WGPUSType_ExternalTextureBindingLayout = 0x0000000D,
     WGPUSType_ExternalTextureBindingEntry = 0x0000000E,
     WGPUSType_CompatibilityModeLimits = 0x0000000F,
-    WGPUSType_TextureBindingViewDimension = 0x20000000,
+    WGPUSType_TextureBindingViewDimension = 0x00000010,
     WGPUSType_Force32 = 0x7FFFFFFF
 } WGPUSType WGPU_ENUM_ATTRIBUTE;
 
@@ -2022,12 +2022,9 @@ typedef struct WGPUCommandEncoderDescriptor {
 })
 
 /**
- * Limits that are only used in Compatibility Mode.
- *
- * Note: This is *not* a @ref CompatibilityModeExtension; its SType is in the
- * core namespace. It is meant to be supported as both an input and output by
- * all implementations (even those which don't implement Compatibility Mode),
- * behaving as described in the WebGPU specification.
+ * Note: While Compatibility Mode is optional to implement, this extension struct
+ * is required to be supported (for both queries and requests) and behave as
+ * defined in the WebGPU spec.
  *
  * Default values can be set using @ref WGPU_COMPATIBILITY_MODE_LIMITS_INIT as initializer.
  */
@@ -3448,7 +3445,9 @@ typedef struct WGPUTextureBindingLayout {
 })
 
 /**
- * This is a @ref CompatibilityModeExtension.
+ * Note: While Compatibility Mode is optional to implement, this extension struct
+ * is required to be accepted (but per the WebGPU spec, its contents are ignored
+ * on devices that have the @ref WGPUFeatureName_CoreFeaturesAndLimits feature).
  *
  * Default values can be set using @ref WGPU_TEXTURE_BINDING_VIEW_DIMENSION_INIT as initializer.
  */
