@@ -287,7 +287,8 @@ func (g *Generator) FindBaseType(typ string) Base {
 	}
 }
 
-func (g *Generator) ResolveNamespaceForTopLevel(b Base) string {
+// Top-level items: constants, typedefs, and types (objects/enums/bitflags/structs/callbacks)
+func (g *Generator) ResolveNamespaceForTopLevelItem(b Base) string {
 	if b.Namespace != "" {
 		return b.Namespace
 	} else if b.Extended {
@@ -298,11 +299,12 @@ func (g *Generator) ResolveNamespaceForTopLevel(b Base) string {
 	}
 }
 
-func (g *Generator) ResolveNamespaceForSecondLevel(typ Base, entry Base) string {
-	if entry.Namespace != "" {
-		return entry.Namespace
-	} else if typ.Namespace != "" {
-		return typ.Namespace
+// Items nested inside other items: methods, enum values, and bitflag values
+func (g *Generator) ResolveNamespaceForNestedItem(topLevelItem Base, nestedItem Base) string {
+	if nestedItem.Namespace != "" {
+		return nestedItem.Namespace
+	} else if topLevelItem.Namespace != "" {
+		return topLevelItem.Namespace
 	} else {
 		return g.Name
 	}
@@ -318,27 +320,27 @@ func (g *Generator) CanonicalCaseName(prefix string, b Base) string {
 }
 
 func (g *Generator) ConstantCaseName(b Base) string {
-	prefix := g.PrefixForNamespace(g.ResolveNamespaceForTopLevel(b))
+	prefix := g.GetNamespacePrefix(g.ResolveNamespaceForTopLevelItem(b))
 	return ConstantCase(g.CanonicalCaseName(prefix, b))
 }
 
 func (g *Generator) PascalCaseName(b Base) string {
-	prefix := g.PrefixForNamespace(g.ResolveNamespaceForTopLevel(b))
+	prefix := g.GetNamespacePrefix(g.ResolveNamespaceForTopLevelItem(b))
 	return PascalCase(g.CanonicalCaseName(prefix, b))
 }
 
-func (g *Generator) PrefixForNamespaceAtSecondLevel(typ Base, entry Base) string {
-	outerNamespace := g.ResolveNamespaceForTopLevel(typ)
-	innerNamespace := g.ResolveNamespaceForSecondLevel(typ, entry)
+func (g *Generator) GetNamespacePrefixForNestedItem(topLevelItem Base, nestedItem Base) string {
+	outerNamespace := g.ResolveNamespaceForTopLevelItem(topLevelItem)
+	innerNamespace := g.ResolveNamespaceForNestedItem(topLevelItem, nestedItem)
 	if outerNamespace == innerNamespace {
 		return ""
 	} else {
-		return g.PrefixForNamespace(innerNamespace)
+		return g.GetNamespacePrefix(innerNamespace)
 	}
 }
 
 func (g *Generator) CEnumValueName(typ Base, entry Base) string {
-	entryPrefix := g.PrefixForNamespaceAtSecondLevel(typ, entry)
+	entryPrefix := g.GetNamespacePrefixForNestedItem(typ, entry)
 	return g.CType(typ, "") + "_" + PascalCase(g.CanonicalCaseName(entryPrefix, entry))
 }
 
@@ -610,7 +612,7 @@ func (g *Generator) BitflagValue(b Bitflag, entryIndex int, isDocString bool) (s
 	}
 }
 
-func (g *Generator) PrefixForNamespace(namespace string) string {
+func (g *Generator) GetNamespacePrefix(namespace string) string {
 	switch namespace {
 	case "":
 		panic("Missing namespace")
