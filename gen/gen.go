@@ -345,11 +345,8 @@ func (g *Generator) CEnumValueName(typ Base, entry Base) string {
 }
 
 func (g *Generator) CMethodName(o Object, m Function) string {
-	if !o.Extended {
-		return g.PascalCaseName(o.Base) + PascalCase(m.Name)
-	} else {
-		return PascalCase(o.Name) + g.PascalCaseName(m.Base)
-	}
+	entryPrefix := g.GetNamespacePrefixForNestedItem(o.Base, m.Base)
+	return g.PascalCaseName(o.Base) + PascalCase(g.CanonicalCaseName(entryPrefix, m.Base))
 }
 
 func (g *Generator) CValue(s string) (string, error) {
