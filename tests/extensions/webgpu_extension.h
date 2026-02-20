@@ -54,6 +54,11 @@
  * New constant can be declared in the 'webgpu' namespace explicitly.
  */
 #define WGPU_NEW_CONSTANT2 (UINT64_MAX)
+/**
+ * The 'compatibility_mode' namespace also has no prefix.
+ * (This test is not really related to extensions, it's just easiest to test here.)
+ */
+#define WGPU_NEW_CONSTANT3 (UINT64_MAX)
 
 /** @} */
 

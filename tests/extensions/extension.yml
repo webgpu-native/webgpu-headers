@@ -16,6 +16,12 @@ constants:
     value: uint64_max
     doc: |
       New constant can be declared in the 'webgpu' namespace explicitly.
+  - name: new_constant3
+    namespace: compatibility_mode
+    value: uint64_max
+    doc: |
+      The 'compatibility_mode' namespace also has no prefix.
+      (This test is not really related to extensions, it's just easiest to test here.)
 typedefs:
   - name: new_typedef1
     type: uint32
