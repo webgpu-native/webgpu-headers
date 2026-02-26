@@ -2409,6 +2409,10 @@
         {
           "doc": "TODO\n",
           "name": "subgroup_uniformity"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "texture_formats_tier1"
         }
       ],
       "name": "WGSL_language_feature_name"
