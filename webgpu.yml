@@ -826,6 +826,12 @@ enums:
       - name: external_texture_binding_entry
         doc: |
           TODO
+      - name: compatibility_mode_limits
+        doc: |
+          TODO
+      - name: texture_binding_view_dimension
+        doc: |
+          TODO
   - name: sampler_binding_type
     doc: |
       TODO
@@ -1948,6 +1954,35 @@ structs:
         doc: |
           TODO
         type: string_with_default_empty
+  - name: compatibility_mode_limits
+    doc: |
+      Note: While Compatibility Mode is optional to implement, this extension struct
+      is required to be supported (for both queries and requests) and behave as
+      defined in the WebGPU spec.
+    type: extension
+    extends:
+      - limits
+    members:
+      - name: max_storage_buffers_in_vertex_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_textures_in_vertex_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_buffers_in_fragment_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
+      - name: max_storage_textures_in_fragment_stage
+        doc: |
+          TODO
+        type: uint32
+        default: constant.limit_u32_undefined
   - name: compilation_info
     doc: |
       TODO
@@ -3231,6 +3266,19 @@ structs:
           TODO
         type: bool
         default: false
+  - name: texture_binding_view_dimension
+    doc: |
+      Note: While Compatibility Mode is optional to implement, this extension struct
+      is required to be accepted (but per the WebGPU spec, its contents are ignored
+      on devices that have the @ref WGPUFeatureName_CoreFeaturesAndLimits feature).
+    type: extension
+    extends:
+      - texture_descriptor
+    members:
+      - name: texture_binding_view_dimension
+        doc: |
+          TODO
+        type: enum.texture_view_dimension
   - name: texture_component_swizzle
     doc: |
       When accessed by a shader, the red/green/blue/alpha channels are replaced
