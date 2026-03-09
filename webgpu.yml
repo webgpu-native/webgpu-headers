@@ -1519,6 +1519,9 @@ enums:
       - name: subgroup_uniformity
         doc: |
           TODO
+      - name: texture_formats_tier1
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
