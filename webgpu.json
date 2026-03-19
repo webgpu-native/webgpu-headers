@@ -6706,7 +6706,7 @@
     {
       "doc": "TODO\n",
       "extends": [
-        "struct.texture_view_descriptor"
+        "texture_view_descriptor"
       ],
       "members": [
         {

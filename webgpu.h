@@ -303,7 +303,6 @@ struct WGPUTexelCopyBufferLayout;
 struct WGPUTextureBindingLayout;
 struct WGPUTextureBindingViewDimension;
 struct WGPUTextureComponentSwizzle;
-struct WGPUTextureViewDescriptor;
 struct WGPUVertexAttribute;
 struct WGPUBindGroupEntry;
 struct WGPUBindGroupLayoutEntry;
@@ -330,6 +329,7 @@ struct WGPUColorTargetState;
 struct WGPUComputePipelineDescriptor;
 struct WGPUDeviceDescriptor;
 struct WGPURenderPassDescriptor;
+struct WGPUTextureViewDescriptor;
 struct WGPUVertexState;
 struct WGPUFragmentState;
 struct WGPURenderPipelineDescriptor;
@@ -3529,70 +3529,6 @@ typedef struct WGPUTextureComponentSwizzle {
 })
 
 /**
- * Default values can be set using @ref WGPU_TEXTURE_VIEW_DESCRIPTOR_INIT as initializer.
- */
-typedef struct WGPUTextureViewDescriptor {
-    WGPUChainedStruct * nextInChain;
-    /**
-     * This is a \ref NonNullInputString.
-     *
-     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
-     */
-    WGPUStringView label;
-    /**
-     * The `INIT` macro sets this to @ref WGPUTextureFormat_Undefined.
-     */
-    WGPUTextureFormat format;
-    /**
-     * The `INIT` macro sets this to @ref WGPUTextureViewDimension_Undefined.
-     */
-    WGPUTextureViewDimension dimension;
-    /**
-     * The `INIT` macro sets this to `0`.
-     */
-    uint32_t baseMipLevel;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_MIP_LEVEL_COUNT_UNDEFINED.
-     */
-    uint32_t mipLevelCount;
-    /**
-     * The `INIT` macro sets this to `0`.
-     */
-    uint32_t baseArrayLayer;
-    /**
-     * The `INIT` macro sets this to @ref WGPU_ARRAY_LAYER_COUNT_UNDEFINED.
-     */
-    uint32_t arrayLayerCount;
-    /**
-     * If set to @ref WGPUTextureAspect_Undefined,
-     * [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
-     *
-     * The `INIT` macro sets this to @ref WGPUTextureAspect_Undefined.
-     */
-    WGPUTextureAspect aspect;
-    /**
-     * The `INIT` macro sets this to @ref WGPUTextureUsage_None.
-     */
-    WGPUTextureUsage usage;
-} WGPUTextureViewDescriptor WGPU_STRUCTURE_ATTRIBUTE;
-
-/**
- * Initializer for @ref WGPUTextureViewDescriptor.
- */
-#define WGPU_TEXTURE_VIEW_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureViewDescriptor, { \
-    /*.nextInChain=*/NULL _wgpu_COMMA \
-    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
-    /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
-    /*.dimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
-    /*.baseMipLevel=*/0 _wgpu_COMMA \
-    /*.mipLevelCount=*/WGPU_MIP_LEVEL_COUNT_UNDEFINED _wgpu_COMMA \
-    /*.baseArrayLayer=*/0 _wgpu_COMMA \
-    /*.arrayLayerCount=*/WGPU_ARRAY_LAYER_COUNT_UNDEFINED _wgpu_COMMA \
-    /*.aspect=*/WGPUTextureAspect_Undefined _wgpu_COMMA \
-    /*.usage=*/WGPUTextureUsage_None _wgpu_COMMA \
-})
-
-/**
  * Default values can be set using @ref WGPU_VERTEX_ATTRIBUTE_INIT as initializer.
  */
 typedef struct WGPUVertexAttribute {
@@ -4719,6 +4655,70 @@ typedef struct WGPURenderPassDescriptor {
     /*.depthStencilAttachment=*/NULL _wgpu_COMMA \
     /*.occlusionQuerySet=*/NULL _wgpu_COMMA \
     /*.timestampWrites=*/NULL _wgpu_COMMA \
+})
+
+/**
+ * Default values can be set using @ref WGPU_TEXTURE_VIEW_DESCRIPTOR_INIT as initializer.
+ */
+typedef struct WGPUTextureViewDescriptor {
+    WGPUChainedStruct * nextInChain;
+    /**
+     * This is a \ref NonNullInputString.
+     *
+     * The `INIT` macro sets this to @ref WGPU_STRING_VIEW_INIT.
+     */
+    WGPUStringView label;
+    /**
+     * The `INIT` macro sets this to @ref WGPUTextureFormat_Undefined.
+     */
+    WGPUTextureFormat format;
+    /**
+     * The `INIT` macro sets this to @ref WGPUTextureViewDimension_Undefined.
+     */
+    WGPUTextureViewDimension dimension;
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t baseMipLevel;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_MIP_LEVEL_COUNT_UNDEFINED.
+     */
+    uint32_t mipLevelCount;
+    /**
+     * The `INIT` macro sets this to `0`.
+     */
+    uint32_t baseArrayLayer;
+    /**
+     * The `INIT` macro sets this to @ref WGPU_ARRAY_LAYER_COUNT_UNDEFINED.
+     */
+    uint32_t arrayLayerCount;
+    /**
+     * If set to @ref WGPUTextureAspect_Undefined,
+     * [defaults](@ref SentinelValues) to @ref WGPUTextureAspect_All.
+     *
+     * The `INIT` macro sets this to @ref WGPUTextureAspect_Undefined.
+     */
+    WGPUTextureAspect aspect;
+    /**
+     * The `INIT` macro sets this to @ref WGPUTextureUsage_None.
+     */
+    WGPUTextureUsage usage;
+} WGPUTextureViewDescriptor WGPU_STRUCTURE_ATTRIBUTE;
+
+/**
+ * Initializer for @ref WGPUTextureViewDescriptor.
+ */
+#define WGPU_TEXTURE_VIEW_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUTextureViewDescriptor, { \
+    /*.nextInChain=*/NULL _wgpu_COMMA \
+    /*.label=*/WGPU_STRING_VIEW_INIT _wgpu_COMMA \
+    /*.format=*/WGPUTextureFormat_Undefined _wgpu_COMMA \
+    /*.dimension=*/WGPUTextureViewDimension_Undefined _wgpu_COMMA \
+    /*.baseMipLevel=*/0 _wgpu_COMMA \
+    /*.mipLevelCount=*/WGPU_MIP_LEVEL_COUNT_UNDEFINED _wgpu_COMMA \
+    /*.baseArrayLayer=*/0 _wgpu_COMMA \
+    /*.arrayLayerCount=*/WGPU_ARRAY_LAYER_COUNT_UNDEFINED _wgpu_COMMA \
+    /*.aspect=*/WGPUTextureAspect_Undefined _wgpu_COMMA \
+    /*.usage=*/WGPUTextureUsage_None _wgpu_COMMA \
 })
 
 /**

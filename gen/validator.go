@@ -135,6 +135,16 @@ func mergeAndValidateDuplicates(yamlPaths []string) (errs error) {
 				objects[o.Name] = o
 			}
 		}
+
+		for _, s := range structs {
+			if s.Type == "extension" {
+				for _, extend := range s.Extends {
+					if _, exists := structs[extend]; !exists {
+						errs = errors.Join(errs, fmt.Errorf("merge: struct.%s extends struct.%s that's not found (listed extends should not have the 'struct.' prefix)", s.Name, extend))
+					}
+				}
+			}
+		}
 	}
 	return
 }

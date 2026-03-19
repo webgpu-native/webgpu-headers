@@ -3320,7 +3320,7 @@ structs:
       TODO
     type: extension
     extends:
-      - struct.texture_view_descriptor
+      - texture_view_descriptor
     members:
       - name: swizzle
         doc: |
