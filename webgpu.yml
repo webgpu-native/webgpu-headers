@@ -1528,6 +1528,9 @@ enums:
       - name: texture_formats_tier1
         doc: |
           TODO
+      - name: linear_indexing
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
