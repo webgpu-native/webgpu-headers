@@ -3127,7 +3127,7 @@
           "args": [
             {
               "doc": "TODO\n",
-              "name": "range_offset",
+              "name": "offset",
               "type": "uint32"
             },
             {
@@ -3138,15 +3138,8 @@
             },
             {
               "doc": "TODO\n",
-              "name": "data_offset",
-              "optional": true,
-              "type": "uint64"
-            },
-            {
-              "doc": "TODO\n",
-              "name": "data_size",
-              "optional": true,
-              "type": "uint64"
+              "name": "size",
+              "type": "usize"
             }
           ],
           "doc": "TODO\n",
@@ -3908,7 +3901,7 @@
           "args": [
             {
               "doc": "TODO\n",
-              "name": "range_offset",
+              "name": "offset",
               "type": "uint32"
             },
             {
@@ -3919,15 +3912,8 @@
             },
             {
               "doc": "TODO\n",
-              "name": "data_offset",
-              "optional": true,
-              "type": "uint64"
-            },
-            {
-              "doc": "TODO\n",
-              "name": "data_size",
-              "optional": true,
-              "type": "uint64"
+              "name": "size",
+              "type": "usize"
             }
           ],
           "doc": "TODO\n",
@@ -4174,7 +4160,7 @@
           "args": [
             {
               "doc": "TODO\n",
-              "name": "range_offset",
+              "name": "offset",
               "type": "uint32"
             },
             {
@@ -4185,15 +4171,8 @@
             },
             {
               "doc": "TODO\n",
-              "name": "data_offset",
-              "optional": true,
-              "type": "uint64"
-            },
-            {
-              "doc": "TODO\n",
-              "name": "data_size",
-              "optional": true,
-              "type": "uint64"
+              "name": "size",
+              "type": "usize"
             }
           ],
           "doc": "TODO\n",

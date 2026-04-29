@@ -4237,7 +4237,7 @@ objects:
         doc: |
           TODO
         args:
-          - name: range_offset
+          - name: offset
             doc: |
               TODO
             type: uint32
@@ -4246,16 +4246,10 @@ objects:
               TODO
             type: c_void
             pointer: immutable
-          - name: data_offset
+          - name: size
             doc: |
               TODO
-            type: uint64
-            optional: true
-          - name: data_size
-            doc: |
-              TODO
-            type: uint64
-            optional: true
+            type: usize
       - name: dispatch_workgroups
         doc: |
           TODO
@@ -4856,7 +4850,7 @@ objects:
         doc: |
           TODO
         args:
-          - name: range_offset
+          - name: offset
             doc: |
               TODO
             type: uint32
@@ -4865,16 +4859,10 @@ objects:
               TODO
             type: c_void
             pointer: immutable
-          - name: data_offset
+          - name: size
             doc: |
               TODO
-            type: uint64
-            optional: true
-          - name: data_size
-            doc: |
-              TODO
-            type: uint64
-            optional: true
+            type: usize
       - name: draw
         doc: |
           TODO
@@ -5060,7 +5048,7 @@ objects:
         doc: |
           TODO
         args:
-          - name: range_offset
+          - name: offset
             doc: |
               TODO
             type: uint32
@@ -5069,16 +5057,10 @@ objects:
               TODO
             type: c_void
             pointer: immutable
-          - name: data_offset
+          - name: size
             doc: |
               TODO
-            type: uint64
-            optional: true
-          - name: data_size
-            doc: |
-              TODO
-            type: uint64
-            optional: true
+            type: usize
       - name: draw
         doc: |
           TODO
