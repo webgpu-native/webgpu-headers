@@ -4233,6 +4233,29 @@ objects:
               TODO
             type: array<uint32>
             pointer: immutable
+      - name: set_immediates
+        doc: |
+          TODO
+        args:
+          - name: range_offset
+            doc: |
+              TODO
+            type: uint32
+          - name: data
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+          - name: data_offset
+            doc: |
+              TODO
+            type: uint64
+            optional: true
+          - name: data_size
+            doc: |
+              TODO
+            type: uint64
+            optional: true
       - name: dispatch_workgroups
         doc: |
           TODO
@@ -4829,6 +4852,29 @@ objects:
               TODO
             type: array<uint32>
             pointer: immutable
+      - name: set_immediates
+        doc: |
+          TODO
+        args:
+          - name: range_offset
+            doc: |
+              TODO
+            type: uint32
+          - name: data
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+          - name: data_offset
+            doc: |
+              TODO
+            type: uint64
+            optional: true
+          - name: data_size
+            doc: |
+              TODO
+            type: uint64
+            optional: true
       - name: draw
         doc: |
           TODO
@@ -5010,6 +5056,29 @@ objects:
               TODO
             type: array<uint32>
             pointer: immutable
+      - name: set_immediates
+        doc: |
+          TODO
+        args:
+          - name: range_offset
+            doc: |
+              TODO
+            type: uint32
+          - name: data
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+          - name: data_offset
+            doc: |
+              TODO
+            type: uint64
+            optional: true
+          - name: data_size
+            doc: |
+              TODO
+            type: uint64
+            optional: true
       - name: draw
         doc: |
           TODO
