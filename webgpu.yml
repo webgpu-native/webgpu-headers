@@ -4233,6 +4233,23 @@ objects:
               TODO
             type: array<uint32>
             pointer: immutable
+      - name: set_immediates
+        doc: |
+          TODO
+        args:
+          - name: offset
+            doc: |
+              TODO
+            type: uint32
+          - name: data
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+          - name: size
+            doc: |
+              TODO
+            type: usize
       - name: dispatch_workgroups
         doc: |
           TODO
@@ -4829,6 +4846,23 @@ objects:
               TODO
             type: array<uint32>
             pointer: immutable
+      - name: set_immediates
+        doc: |
+          TODO
+        args:
+          - name: offset
+            doc: |
+              TODO
+            type: uint32
+          - name: data
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+          - name: size
+            doc: |
+              TODO
+            type: usize
       - name: draw
         doc: |
           TODO
@@ -5010,6 +5044,23 @@ objects:
               TODO
             type: array<uint32>
             pointer: immutable
+      - name: set_immediates
+        doc: |
+          TODO
+        args:
+          - name: offset
+            doc: |
+              TODO
+            type: uint32
+          - name: data
+            doc: |
+              TODO
+            type: c_void
+            pointer: immutable
+          - name: size
+            doc: |
+              TODO
+            type: usize
       - name: draw
         doc: |
           TODO

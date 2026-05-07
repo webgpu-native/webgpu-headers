@@ -3127,6 +3127,28 @@
           "args": [
             {
               "doc": "TODO\n",
+              "name": "offset",
+              "type": "uint32"
+            },
+            {
+              "doc": "TODO\n",
+              "name": "data",
+              "pointer": "immutable",
+              "type": "c_void"
+            },
+            {
+              "doc": "TODO\n",
+              "name": "size",
+              "type": "usize"
+            }
+          ],
+          "doc": "TODO\n",
+          "name": "set_immediates"
+        },
+        {
+          "args": [
+            {
+              "doc": "TODO\n",
               "name": "workgroupCountX",
               "type": "uint32"
             },
@@ -3879,6 +3901,28 @@
           "args": [
             {
               "doc": "TODO\n",
+              "name": "offset",
+              "type": "uint32"
+            },
+            {
+              "doc": "TODO\n",
+              "name": "data",
+              "pointer": "immutable",
+              "type": "c_void"
+            },
+            {
+              "doc": "TODO\n",
+              "name": "size",
+              "type": "usize"
+            }
+          ],
+          "doc": "TODO\n",
+          "name": "set_immediates"
+        },
+        {
+          "args": [
+            {
+              "doc": "TODO\n",
               "name": "vertex_count",
               "type": "uint32"
             },
@@ -4111,6 +4155,28 @@
           ],
           "doc": "TODO\n",
           "name": "set_bind_group"
+        },
+        {
+          "args": [
+            {
+              "doc": "TODO\n",
+              "name": "offset",
+              "type": "uint32"
+            },
+            {
+              "doc": "TODO\n",
+              "name": "data",
+              "pointer": "immutable",
+              "type": "c_void"
+            },
+            {
+              "doc": "TODO\n",
+              "name": "size",
+              "type": "usize"
+            }
+          ],
+          "doc": "TODO\n",
+          "name": "set_immediates"
         },
         {
           "args": [
