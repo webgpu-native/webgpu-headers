@@ -1531,6 +1531,9 @@ enums:
       - name: linear_indexing
         doc: |
           TODO
+      - name: immediate_address_space
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
