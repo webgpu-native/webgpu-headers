@@ -2425,6 +2425,10 @@
         {
           "doc": "TODO\n",
           "name": "linear_indexing"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "immediate_address_space"
         }
       ],
       "name": "WGSL_language_feature_name"
