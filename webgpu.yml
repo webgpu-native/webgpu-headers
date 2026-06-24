@@ -532,6 +532,9 @@ enums:
       - name: texture_component_swizzle
         doc: |
           TODO
+      - name: subgroup_size_control
+        doc: |
+          TODO
   - name: filter_mode
     doc: |
       TODO

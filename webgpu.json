@@ -1066,6 +1066,10 @@
         {
           "doc": "TODO\n",
           "name": "texture_component_swizzle"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "subgroup_size_control"
         }
       ],
       "name": "feature_name"
