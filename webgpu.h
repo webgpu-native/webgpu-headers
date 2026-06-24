@@ -657,11 +657,11 @@ typedef enum WGPUFeatureName {
     WGPUFeatureName_ClipDistances = 0x00000010,
     WGPUFeatureName_DualSourceBlending = 0x00000011,
     WGPUFeatureName_Subgroups = 0x00000012,
-    WGPUFeatureName_SubgroupSizeControl = 0x00000013,
-    WGPUFeatureName_TextureFormatsTier1 = 0x00000014,
-    WGPUFeatureName_TextureFormatsTier2 = 0x00000015,
-    WGPUFeatureName_PrimitiveIndex = 0x00000016,
-    WGPUFeatureName_TextureComponentSwizzle = 0x00000017,
+    WGPUFeatureName_TextureFormatsTier1 = 0x00000013,
+    WGPUFeatureName_TextureFormatsTier2 = 0x00000014,
+    WGPUFeatureName_PrimitiveIndex = 0x00000015,
+    WGPUFeatureName_TextureComponentSwizzle = 0x00000016,
+    WGPUFeatureName_SubgroupSizeControl = 0x00000017,
     WGPUFeatureName_Force32 = 0x7FFFFFFF
 } WGPUFeatureName WGPU_ENUM_ATTRIBUTE;
 
