@@ -520,6 +520,9 @@ enums:
       - name: subgroups
         doc: |
           TODO
+      - name: subgroup_size_control
+        doc: |
+          TODO
       - name: texture_formats_tier_1
         doc: |
           TODO

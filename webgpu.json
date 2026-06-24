@@ -1053,6 +1053,10 @@
         },
         {
           "doc": "TODO\n",
+          "name": "subgroup_size_control"
+        },
+        {
+          "doc": "TODO\n",
           "name": "texture_formats_tier_1"
         },
         {
