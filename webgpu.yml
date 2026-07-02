@@ -74,7 +74,47 @@ constants:
     doc: |
       Indicates a size extending to the end of the buffer. For more info,
       see @ref SentinelValues and the places that use this sentinel value.
-typedefs: []
+typedefs:
+  - name: data_ptr
+    type: c_void
+    doc: |
+      TODO
+  - name: a_native_window
+    type: c_void
+    doc: |
+      TODO
+  - name: ca_metal_layer
+    type: c_void
+    doc: |
+      TODO
+  - name: wl_display
+    type: c_void
+    doc: |
+      TODO
+  - name: wl_surface
+    type: c_void
+    doc: |
+      TODO
+  - name: h_instance
+    type: c_void
+    doc: |
+      TODO
+  - name: h_wnd
+    type: c_void
+    doc: |
+      TODO
+  - name: xcb_connection
+    type: c_void
+    doc: |
+      TODO
+  - name: x11_display
+    type: c_void
+    doc: |
+      TODO
+  - name: mapped_range_ptr
+    type: c_void
+    doc: |
+      TODO
 enums:
   - name: adapter_type
     doc: |
@@ -3117,7 +3157,7 @@ structs:
     members:
       - name: window
         doc: The pointer to the [`ANativeWindow`](https://developer.android.com/ndk/reference/group/a-native-window) that will be wrapped by the @ref WGPUSurface.
-        type: c_void
+        type: a_native_window
         pointer: mutable
   - name: surface_source_metal_layer
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc).
@@ -3127,7 +3167,7 @@ structs:
     members:
       - name: layer
         doc: The pointer to the [`CAMetalLayer`](https://developer.apple.com/documentation/quartzcore/cametallayer?language=objc) that will be wrapped by the @ref WGPUSurface.
-        type: c_void
+        type: ca_metal_layer
         pointer: mutable
   - name: surface_source_wayland_surface
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a [Wayland](https://wayland.freedesktop.org/) [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface).
@@ -3137,11 +3177,11 @@ structs:
     members:
       - name: display
         doc: A [`wl_display`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_display) for this Wayland instance.
-        type: c_void
+        type: wl_display
         pointer: mutable
       - name: surface
         doc: A [`wl_surface`](https://wayland.freedesktop.org/docs/html/apa.html#protocol-spec-wl_surface) that will be wrapped by the @ref WGPUSurface
-        type: c_void
+        type: wl_surface
         pointer: mutable
   - name: surface_source_windows_HWND
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping a Windows [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd).
@@ -3153,11 +3193,11 @@ structs:
         doc: |
           The [`HINSTANCE`](https://learn.microsoft.com/en-us/windows/win32/learnwin32/winmain--the-application-entry-point) for this application.
           Most commonly `GetModuleHandle(nullptr)`.
-        type: c_void
+        type: h_instance
         pointer: mutable
       - name: hwnd
         doc: The [`HWND`](https://learn.microsoft.com/en-us/windows/apps/develop/ui-input/retrieve-hwnd) that will be wrapped by the @ref WGPUSurface.
-        type: c_void
+        type: h_wnd
         pointer: mutable
   - name: surface_source_XCB_window
     doc: Chained in @ref WGPUSurfaceDescriptor to make an @ref WGPUSurface wrapping an [XCB](https://xcb.freedesktop.org/) `xcb_window_t`.
@@ -3167,7 +3207,7 @@ structs:
     members:
       - name: connection
         doc: The `xcb_connection_t` for the connection to the X server.
-        type: c_void
+        type: xcb_connection
         pointer: mutable
       - name: window
         doc: The `xcb_window_t` for the window that will be wrapped by the @ref WGPUSurface.
@@ -3180,7 +3220,7 @@ structs:
     members:
       - name: display
         doc: A pointer to the [`Display`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Opening_the_Display) connected to the X server.
-        type: c_void
+        type: x11_display
         pointer: mutable
       - name: window
         doc: The [`Window`](https://www.x.org/releases/current/doc/libX11/libX11/libX11.html#Creating_Windows) that will be wrapped by the @ref WGPUSurface.
@@ -3846,7 +3886,7 @@ objects:
           instead for better performance.
         returns:
           doc: ""
-          type: c_void
+          type: mapped_range_ptr
           pointer: mutable
         args:
           - name: offset
@@ -3870,7 +3910,7 @@ objects:
           instead for better performance.
         returns:
           doc: ""
-          type: c_void
+          type: mapped_range_ptr
           pointer: immutable
         args:
           - name: offset
@@ -3902,7 +3942,7 @@ objects:
           - name: data
             doc: |
               Destination, to read buffer data into.
-            type: c_void
+            type: data_ptr
             pointer: mutable
           - name: size
             doc: |
@@ -3928,7 +3968,7 @@ objects:
           - name: data
             doc: |
               Source, to write buffer data from.
-            type: c_void
+            type: data_ptr
             pointer: immutable
           - name: size
             doc: |
@@ -4250,7 +4290,7 @@ objects:
           - name: data
             doc: |
               TODO
-            type: c_void
+            type: data_ptr
             pointer: immutable
           - name: size
             doc: |
@@ -4768,7 +4808,7 @@ objects:
           - name: data
             doc: |
               TODO
-            type: c_void
+            type: data_ptr
             pointer: immutable
           - name: size
             doc: |
@@ -4786,7 +4826,7 @@ objects:
           - name: data
             doc: |
               TODO
-            type: c_void
+            type: data_ptr
             pointer: immutable
           - name: data_size
             doc: |
@@ -4863,7 +4903,7 @@ objects:
           - name: data
             doc: |
               TODO
-            type: c_void
+            type: data_ptr
             pointer: immutable
           - name: size
             doc: |
@@ -5061,7 +5101,7 @@ objects:
           - name: data
             doc: |
               TODO
-            type: c_void
+            type: data_ptr
             pointer: immutable
           - name: size
             doc: |
