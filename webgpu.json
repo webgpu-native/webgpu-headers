@@ -2433,6 +2433,10 @@
         {
           "doc": "TODO\n",
           "name": "immediate_address_space"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "buffer_view"
         }
       ],
       "name": "WGSL_language_feature_name"

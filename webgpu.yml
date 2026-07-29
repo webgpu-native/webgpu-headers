@@ -1537,6 +1537,9 @@ enums:
       - name: immediate_address_space
         doc: |
           TODO
+      - name: buffer_view
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
