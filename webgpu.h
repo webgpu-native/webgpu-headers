@@ -1255,6 +1255,7 @@ typedef enum WGPUWGSLLanguageFeatureName {
     WGPUWGSLLanguageFeatureName_LinearIndexing = 0x0000000A,
     WGPUWGSLLanguageFeatureName_ImmediateAddressSpace = 0x0000000B,
     WGPUWGSLLanguageFeatureName_BufferView = 0x0000000C,
+    WGPUWGSLLanguageFeatureName_SwizzleAssignment = 0x0000000D,
     WGPUWGSLLanguageFeatureName_Force32 = 0x7FFFFFFF
 } WGPUWGSLLanguageFeatureName WGPU_ENUM_ATTRIBUTE;
 
