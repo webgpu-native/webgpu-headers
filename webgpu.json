@@ -2437,6 +2437,10 @@
         {
           "doc": "TODO\n",
           "name": "buffer_view"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "swizzle_assignment"
         }
       ],
       "name": "WGSL_language_feature_name"

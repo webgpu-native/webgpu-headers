@@ -1540,6 +1540,9 @@ enums:
       - name: buffer_view
         doc: |
           TODO
+      - name: swizzle_assignment
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
