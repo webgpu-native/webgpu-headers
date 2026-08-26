@@ -1543,6 +1543,9 @@ enums:
       - name: swizzle_assignment
         doc: |
           TODO
+      - name: fragment_depth
+        doc: |
+          TODO
 bitflags:
   - name: buffer_usage
     doc: |
