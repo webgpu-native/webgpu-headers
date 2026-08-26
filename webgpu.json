@@ -2441,6 +2441,10 @@
         {
           "doc": "TODO\n",
           "name": "swizzle_assignment"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "fragment_depth"
         }
       ],
       "name": "WGSL_language_feature_name"
