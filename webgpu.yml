@@ -1475,6 +1475,9 @@ enums:
       - name: unorm8x4_B_G_R_A
         doc: |
           TODO
+      - name: snorm10__10__10__2
+        doc: |
+          TODO
   - name: vertex_step_mode
     doc: |
       TODO

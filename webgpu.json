@@ -2345,6 +2345,10 @@
         {
           "doc": "TODO\n",
           "name": "unorm8x4_B_G_R_A"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "snorm10__10__10__2"
         }
       ],
       "name": "vertex_format"
