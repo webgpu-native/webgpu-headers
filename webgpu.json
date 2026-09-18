@@ -1070,6 +1070,10 @@
         {
           "doc": "TODO\n",
           "name": "subgroup_size_control"
+        },
+        {
+          "doc": "TODO\n",
+          "name": "texture_compression_unaligned"
         }
       ],
       "name": "feature_name"

@@ -535,6 +535,9 @@ enums:
       - name: subgroup_size_control
         doc: |
           TODO
+      - name: texture_compression_unaligned
+        doc: |
+          TODO
   - name: filter_mode
     doc: |
       TODO
