@@ -538,6 +538,9 @@ enums:
       - name: texture_compression_unaligned
         doc: |
           TODO
+      - name: atomic_vec2u_min_max
+        doc: |
+          TODO
   - name: filter_mode
     doc: |
       TODO
